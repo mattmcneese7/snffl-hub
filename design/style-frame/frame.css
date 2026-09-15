@@ -59,14 +59,25 @@ body {
 
 .snffl-header-icon { font-size: 24px; line-height: 1; }
 
-.snffl-wordmark-svg { display: block; width: 160px; height: auto; margin: 0 auto; }
-.snffl-wordmark-text {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-style: italic;
-  font-stretch: 62%;
-  font-size: 56px;
-  letter-spacing: -0.02em;
+/* The artwork is 300x130, but the letters only occupy roughly y=13 to 66.
+   The rest is drips hanging below, which are allowed to overhang the header. */
+.snffl-wordmark-svg { display: block; width: 152px; height: auto; margin: 0 auto; overflow: visible; }
+
+.snffl-wordmark-wave { animation: snffl-wordmark-wave 2.4s linear infinite; }
+.snffl-wordmark-tilt { transform-box: view-box; transform-origin: 150px 58px; }
+.snffl-wordmark-fall {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  animation: snffl-wordmark-drop 3.4s cubic-bezier(0.5, 0, 0.9, 0.6) infinite;
+}
+
+@keyframes snffl-wordmark-wave { to { transform: translateX(-40px); } }
+@keyframes snffl-wordmark-drop {
+  0% { transform: translateY(-4px) scale(0.25); opacity: 0; }
+  35% { transform: none; opacity: 1; }
+  55% { transform: none; opacity: 1; }
+  90% { transform: translateY(24px); opacity: 0; }
+  100% { opacity: 0; }
 }
 
 .snffl-avatar-fallback {

@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>SNFFL Home, style frame</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&family=Permanent+Marker&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link rel="stylesheet" href="./tokens.css">
+<link rel="stylesheet" href="./colors.css">
+<link rel="stylesheet" href="./frame.css">
+</head>
+<body>
+<main class="snffl-page" id="snffl-home"></main>
+<script src="./frame.js"></script>
+<script>
+(async () => {
+  const d = await SNFFL.load();
+  SNFFL.chrome({ section: 'HOME', sub: '', week: d.state.scoredWeek, activeTab: 'Home' });
+
+  // Matchup of the week: the closest game, per the brief.
+  const feature = [...d.games].sort((a, b) => a.margin - b.margin)[0];
+  const me = d.teams.find((t) => t.manager === 'mattmcneese') || d.teams[0];
+  const mine = d.games.find((g) => g.home.rosterId === me.rosterId || g.away.rosterId === me.rosterId);
+
+  const side = (s) => {
+    const t = SNFFL.team(s.rosterId);
+    return `<div class="snffl-feature-side">
+      ${SNFFL.avatarTag(t, 'snffl-feature-side-avatar')}
+      <div class="snffl-feature-side-team">${t.teamName}</div>
+      <div class="snffl-feature-side-manager">${t.manager}</div>
+      <div class="snffl-feature-side-score snffl-numeric">${s.points.toFixed(2)}</div>
+    </div>`;
+  };
+
+  const featureCard = (g, label) => {
+    const home = SNFFL.color(g.home.rosterId);
+    const away = SNFFL.color(g.away.rosterId);
+    const total = g.home.points + g.away.points;
+    const awayShare = Math.round((g.away.points / total) * 100);
+    return `<section class="snffl-card snffl-feature-matchup" style="--snffl-home-primary:${home.primary};--snffl-away-primary:${away.primary}">
+      <div class="snffl-feature-matchup-split"></div>
+      <div class="snffl-feature-matchup-body">
+        <div class="snffl-feature-matchup-label">${label} &middot; Final &middot; Margin ${g.margin.toFixed(2)}</div>
+        <div class="snffl-feature-matchup-teams">
+          ${side(g.away)}
+          <div class="snffl-feature-versus">VS</div>
+          ${side(g.home)}
+        </div>
+        <div class="snffl-winprob">
+          <div class="snffl-winprob-bar"><div class="snffl-winprob-fill" style="width:${awayShare}%"></div></div>
+          <div class="snffl-winprob-legend"><span>${awayShare}% OF POINTS</span><span>${100 - awayShare}%</span></div>
+        </div>
+        <div class="snffl-players-left"><span>0 to play</span><span>0 to play</span></div>
+      </div>
+    </section>`;
+  };
+
+  const stories = d.teams.slice(0, 8).map((t, i) =>
+    `<div class="snffl-story-bubble">
+      <div class="snffl-story-ring ${i < 3 ? 'snffl-story-ring-unwatched' : ''}">${SNFFL.avatarTag(t, 'snffl-story-avatar')}</div>
+      <div class="snffl-story-label">${t.manager.slice(0, 9)}</div>
+    </div>`).join('');
+
+  const performers = d.topPerformers.map((p) =>
+    `<div class="snffl-performer-card">
+      <img class="snffl-performer-headshot" src="${p.headshot}" alt="" onerror="this.style.visibility='hidden'">
+      <div class="snffl-performer-name">${p.name}</div>
+      <div class="snffl-performer-meta">${p.position} &middot; ${p.team || 'FA'}</div>
+      <div class="snffl-performer-points snffl-numeric">${p.points.toFixed(2)}</div>
+    </div>`).join('');
+
+  const standings = d.standings.slice(0, 8).map((t, i) => {
+    const line = i === d.league.playoffTeams - 1 ? ' snffl-standings-playoff-line' : '';
+    return `<div class="snffl-standings-row mgr-${t.userId}${line}">
+      <span class="snffl-standings-seed snffl-numeric">${t.seed}</span>
+      <span class="snffl-standings-colorbar"></span>
+      <span class="snffl-standings-team">
+        <span class="snffl-standings-team-name">${t.teamName}</span>
+        <span class="snffl-standings-manager">${t.manager}</span>
+      </span>
+      <span class="snffl-standings-record snffl-numeric">${t.wins}-${t.losses}</span>
+      <span class="snffl-standings-points snffl-numeric">${t.pointsFor.toFixed(2)}</span>
+    </div>`;
+  }).join('');
+
+  document.getElementById('snffl-home').innerHTML = `
+    <section><div class="snffl-stories-rail">${stories}</div></section>
+
+    <section>
+      <div class="snffl-block-heading"><h2 class="snffl-headline">Matchup of the Week</h2></div>
+      ${featureCard(feature, 'CLOSEST GAME')}
+    </section>
+
+    <div class="snffl-home-grid">
+      <div class="snffl-home-grid-main">
+        <section>
+          <div class="snffl-block-heading"><h2 class="snffl-headline">Your Matchup</h2>
+            <a class="snffl-block-heading-link" href="#">Change Team</a></div>
+          ${featureCard(mine, me.teamName.toUpperCase())}
+        </section>
+
+        <section>
+          <div class="snffl-block-heading"><h2 class="snffl-headline">Top Performers</h2></div>
+          <div class="snffl-performers">${performers}</div>
+        </section>
+      </div>
+
+      <div class="snffl-home-grid-side">
+        <section>
+          <div class="snffl-block-heading"><h2 class="snffl-headline">Latest From The Rag</h2></div>
+          <div class="snffl-placeholder">
+            <span class="snffl-placeholder-label">Checkpoint 6</span>
+            <span class="snffl-placeholder-note">The SquirtRag writing pipeline lands later. Lead image will be a real highlight still.</span>
+          </div>
+        </section>
+
+        <section>
+          <div class="snffl-block-heading"><h2 class="snffl-headline">The Feed</h2></div>
+          <div class="snffl-placeholder">
+            <span class="snffl-placeholder-label">Checkpoint 7</span>
+            <span class="snffl-placeholder-note">Live alerts, C'mon Man and Shart Watch posts arrive with the live layer.</span>
+          </div>
+        </section>
+
+        <section>
+          <div class="snffl-block-heading"><h2 class="snffl-headline">Standings</h2>
+            <a class="snffl-block-heading-link" href="#">Full Table</a></div>
+          <div class="snffl-card">
+            ${standings}
+            <div class="snffl-standings-playoff-caption">Playoff line, top ${d.league.playoffTeams}</div>
+          </div>
+        </section>
+      </div>
+    </div>`;
+})();
+</script>
+</body>
+</html>

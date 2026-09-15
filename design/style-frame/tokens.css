@@ -1,0 +1,95 @@
+/* Design tokens, Brief Section 4. Single source of truth for both themes.
+   Rule 6: never reference these variables inside SVG presentation attributes. */
+
+:root {
+  /* Surfaces, light */
+  --bg: #f7f7f5;
+  --card: #ffffff;
+  --surface: #ececE8;
+  --ink: #141210;
+  --ink-secondary: rgba(20, 18, 16, 0.64);
+  --line: rgba(20, 18, 16, 0.12);
+
+  /* Theme-aware exceptions */
+  --shart: #7a4f31;
+  --shart-on: #ffffff;
+  --marker-red: #e3182d;
+  /* Water deep (#1f74c9) lands at 4.45:1 on --bg, just under the small-text
+     floor, so links use a darkened step of the same blue. */
+  --link: #1a6ab8;
+
+  /* Status, identical hex in both themes */
+  --good: #1f9460;
+  --good-chip: #157a4e;
+  --bad: #e54b5a;
+  --bad-chip: #c8323f;
+  --live: #3584d2;
+  --live-chip: #2b6cb0;
+  --pending: #7c8496;
+  --pending-chip: #5e6573;
+  --gold: #e3b341;
+  --gold-on: #141210;
+  --muted: #72809f;
+  --on-chip: #ffffff;
+
+  /* Brand, never used for status */
+  --logo-red: #e3182d;
+  --water-light: #c9eeff;
+  --water-mid: #5bb6f2;
+  --water-deep: #1f74c9;
+  --beer-light: #f7c04a;
+  --beer-dark: #b85f10;
+  --beer-foam: #fff3d6;
+  --ticker-band-a: #1c1a18;
+  --ticker-band-b: #141210;
+  /* Ticker bands stay dark in both themes, so their text is fixed, not themed. */
+  --ticker-ink: #f3efe6;
+  --ticker-ink-secondary: rgba(243, 239, 230, 0.66);
+  --ticker-good: #4cd08a;
+  --ticker-bad: #ff8a95;
+  --ticker-league-bg: #5bb6f2;
+  --ticker-league-ink: #141210;
+  --ticker-nfl-bg: #e3182d;
+  --ticker-nfl-ink: #ffffff;
+
+  /* Shape */
+  --slant: 12deg;
+  --tap: 44px;
+  --radius: 2px;
+
+  /* Type */
+  --font-display: 'Archivo', system-ui, sans-serif;
+  --font-body: 'Archivo', system-ui, sans-serif;
+  --font-article: 'Source Serif 4', Georgia, serif;
+  --font-marker: 'Permanent Marker', cursive;
+}
+
+:root[data-theme='dark'] {
+  --bg: #121110;
+  --card: #1c1a18;
+  --surface: #2a2724;
+  --ink: #f3efe6;
+  --ink-secondary: rgba(243, 239, 230, 0.64);
+  --line: rgba(243, 239, 230, 0.14);
+
+  --shart: #c4946e;
+  --shart-on: #141210;
+  --marker-red: #ff5a66;
+  --link: #5bb6f2;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #121110;
+    --card: #1c1a18;
+    --surface: #2a2724;
+    --ink: #f3efe6;
+    --ink-secondary: rgba(243, 239, 230, 0.64);
+    --line: rgba(243, 239, 230, 0.14);
+
+    --shart: #c4946e;
+    --shart-on: #141210;
+    --marker-red: #ff5a66;
+    --link: #5bb6f2;
+  }
+}

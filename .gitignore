@@ -29,3 +29,6 @@ next-env.d.ts
 tmp/
 coverage/
 .env*
+
+# Script caches, never commit the 5MB player database
+.cache/

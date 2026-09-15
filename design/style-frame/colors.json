@@ -1,0 +1,100 @@
+{
+ "466701626346827776": {
+  "manager": "DFWGilly",
+  "primary": "#40743e",
+  "secondary": "#5980a6",
+  "onPrimary": "#FFFFFF",
+  "contrast": 5.55
+ },
+ "759861676316143616": {
+  "manager": "tripnistico",
+  "primary": "#8153ec",
+  "secondary": "#cc51ec",
+  "onPrimary": "#FFFFFF",
+  "contrast": 4.79
+ },
+ "1004091692965580800": {
+  "manager": "ItsYaBoyJack",
+  "primary": "#0f8478",
+  "secondary": "#51aeec",
+  "onPrimary": "#FFFFFF",
+  "contrast": 4.57
+ },
+ "1262549737815429120": {
+  "manager": "Tayodin",
+  "primary": "#1576c1",
+  "secondary": "#515aec",
+  "onPrimary": "#FFFFFF",
+  "contrast": 4.78
+ },
+ "1285350940102127616": {
+  "manager": "BedBathNBIJAN22",
+  "primary": "#c25316",
+  "secondary": "#ecd651",
+  "onPrimary": "#FFFFFF",
+  "contrast": 4.62
+ },
+ "1394334403378827264": {
+  "manager": "mattmcneese",
+  "primary": "#ac3be9",
+  "secondary": "#ec51d5",
+  "onPrimary": "#FFFFFF",
+  "contrast": 4.61
+ },
+ "1394385750044217344": {
+  "manager": "sebeatty",
+  "primary": "#366ae9",
+  "secondary": "#7051ec",
+  "onPrimary": "#FFFFFF",
+  "contrast": 4.78
+ },
+ "1394399079663931392": {
+  "manager": "Bheinzeyo",
+  "primary": "#e3196a",
+  "secondary": "#ec7051",
+  "onPrimary": "#FFFFFF",
+  "contrast": 4.55
+ },
+ "1394522372035330048": {
+  "manager": "LoRdAcE1848",
+  "primary": "#c918d9",
+  "secondary": "#ec51ab",
+  "onPrimary": "#FFFFFF",
+  "contrast": 4.55
+ },
+ "1395473433927630848": {
+  "manager": "jwslaney",
+  "primary": "#10862b",
+  "secondary": "#52ead1",
+  "onPrimary": "#FFFFFF",
+  "contrast": 4.7
+ },
+ "1395619896850669568": {
+  "manager": "nunnells",
+  "primary": "#107d94",
+  "secondary": "#5183ec",
+  "onPrimary": "#FFFFFF",
+  "contrast": 4.79
+ },
+ "1395631787446636544": {
+  "manager": "JPellett3",
+  "primary": "#3f44ea",
+  "secondary": "#7ebff1",
+  "onPrimary": "#FFFFFF",
+  "contrast": 6.51
+ },
+ "1395668568820953088": {
+  "manager": "SexRobot69",
+  "primary": "#414a21",
+  "secondary": "#aa5c7b",
+  "onPrimary": "#FFFFFF",
+  "contrast": 9.43
+ },
+ "1396214318718013440": {
+  "manager": "bearcat2789",
+  "primary": "#d91899",
+  "secondary": "#f17eac",
+  "onPrimary": "#FFFFFF",
+  "contrast": 4.62
+ }
+}

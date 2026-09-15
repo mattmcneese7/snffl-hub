@@ -1,0 +1,30 @@
+# Secrets. Never commit these. The repo is public.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Node
+node_modules/
+npm-debug.log*
+.pnpm-debug.log*
+
+# Next.js
+.next/
+out/
+build/
+next-env.d.ts
+
+# Vercel
+.vercel
+
+# OS and editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Local scratch
+tmp/
+coverage/

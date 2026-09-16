@@ -29,7 +29,7 @@ export default async function HomePage() {
       <main className="snffl-page">
         <section>
           <div className="snffl-stories-rail">
-            {teams.slice(0, 10).map((team, i) => (
+            {teams.map((team, i) => (
               <div className="snffl-story-bubble" key={team.rosterId}>
                 <div className={`snffl-story-ring${i < 3 ? ' snffl-story-ring-unwatched' : ''}`}>
                   {team.avatarUrl ? (
@@ -128,7 +128,7 @@ export default async function HomePage() {
                   Full Table
                 </Link>
               </div>
-              <StandingsTable standings={standings} limit={8} />
+              <StandingsTable standings={standings} />
             </section>
           </div>
         </div>

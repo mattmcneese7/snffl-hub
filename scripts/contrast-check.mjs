@@ -3,7 +3,7 @@
 // Reads tokens.css so the tokens stay the single source of truth.
 import fs from 'node:fs';
 
-const CSS = fs.readFileSync('design/style-frame/tokens.css', 'utf8');
+const CSS = fs.readFileSync('app/globals.css', 'utf8');
 
 function block(selector) {
   const i = CSS.indexOf(selector);

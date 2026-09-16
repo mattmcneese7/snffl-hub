@@ -1,0 +1,278 @@
+/* Site chrome: header, section strip, stacked tickers, tab bar, desktop nav.
+   Class names are long and specific on purpose: a short name once turned every
+   tab icon red. Colors come only from the tokens in globals.css. */
+
+body { padding-bottom: 76px; }
+
+.snffl-numeric {
+  font-family: var(--font-archivo);
+  font-variant-numeric: tabular-nums;
+  font-stretch: 75%;
+  font-weight: 800;
+}
+
+.snffl-headline {
+  font-family: var(--font-archivo);
+  font-weight: 900;
+  font-style: italic;
+  font-stretch: 62%;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+/* ---------- Pinned header ---------- */
+
+.snffl-header {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  display: grid;
+  grid-template-columns: 48px 1fr 48px;
+  align-items: center;
+  height: 56px;
+  padding: 0 10px;
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+  transition: height 0.18s ease;
+}
+.snffl-header-compact { height: 46px; }
+
+.snffl-header-slot {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  background: none;
+  border: 0;
+  color: var(--ink);
+  cursor: pointer;
+}
+.snffl-header-icon { font-size: 24px; width: 24px; height: 24px; }
+
+/* The artwork is 300x130, but the letters only occupy roughly y=13 to 66.
+   The rest is drips hanging below, which may overhang the header edge. */
+.snffl-wordmark-svg {
+  display: block;
+  width: 152px;
+  height: auto;
+  margin: 0 auto;
+  overflow: visible;
+  transition: width 0.18s ease;
+}
+.snffl-header-compact .snffl-wordmark-svg { width: 92px; }
+
+.snffl-wave { animation: snffl-wave 2.4s linear infinite; }
+.snffl-tilt { transform-box: view-box; transform-origin: 150px 58px; }
+.snffl-tilt.snffl-slosh { animation: snffl-slosh 1.7s cubic-bezier(0.3, 0.6, 0.4, 1); }
+.snffl-fall {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  animation: snffl-drop 3.4s cubic-bezier(0.5, 0, 0.9, 0.6) infinite;
+  transition: opacity 0.2s;
+}
+.snffl-compact .snffl-fall { opacity: 0; animation-play-state: paused; }
+
+@keyframes snffl-wave { to { transform: translateX(-40px); } }
+@keyframes snffl-drop {
+  0% { transform: translateY(-4px) scale(0.25); opacity: 0; }
+  35% { transform: none; opacity: 1; }
+  55% { transform: none; opacity: 1; }
+  90% { transform: translateY(24px); opacity: 0; }
+  100% { opacity: 0; }
+}
+@keyframes snffl-slosh {
+  15% { transform: rotate(-7deg) translateY(-6px); }
+  35% { transform: rotate(5deg); }
+  55% { transform: rotate(-3deg); }
+  75% { transform: rotate(1.5deg); }
+  100% { transform: none; }
+}
+
+/* ---------- Section strip ---------- */
+
+.snffl-section-strip {
+  position: sticky;
+  top: 56px;
+  z-index: 55;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  height: 34px;
+  padding: 0 14px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+.snffl-section-strip-name {
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.snffl-section-strip-sub { color: var(--ink-secondary); font-weight: 600; }
+
+.snffl-week-tag {
+  transform: skewX(calc(-1 * var(--slant)));
+  background: var(--ink);
+  color: var(--bg);
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+.snffl-week-tag > span { display: inline-block; transform: skewX(var(--slant)); }
+
+/* ---------- Stacked tickers ---------- */
+
+.snffl-ticker-stack { position: sticky; top: 90px; z-index: 50; }
+
+.snffl-ticker-row { display: flex; align-items: stretch; height: 28px; overflow: hidden; }
+.snffl-ticker-row-league { background: var(--ticker-band-a); }
+.snffl-ticker-row-nfl { background: var(--ticker-band-b); }
+
+.snffl-ticker-tag {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  min-width: 86px;
+  padding: 0 16px 0 10px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  /* The animated track is later in DOM order and would paint over the tag. */
+  position: relative;
+  z-index: 1;
+}
+.snffl-ticker-tag-league { background: var(--ticker-league-bg); color: var(--ticker-league-ink); }
+.snffl-ticker-tag-nfl { background: var(--ticker-nfl-bg); color: var(--ticker-nfl-ink); }
+
+.snffl-ticker-track {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  white-space: nowrap;
+  padding-left: 16px;
+  color: var(--ticker-ink);
+  font-size: 12px;
+  font-weight: 700;
+  animation: snffl-ticker-scroll 42s linear infinite;
+}
+.snffl-ticker-item { display: inline-flex; align-items: center; gap: 7px; }
+.snffl-ticker-item-status {
+  color: var(--ticker-ink-secondary);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+@keyframes snffl-ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ---------- Bottom tab bar ---------- */
+
+.snffl-tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 70;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  background: var(--card);
+  border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.snffl-tab {
+  position: relative;
+  min-height: var(--tap);
+  padding: 9px 0 10px;
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  color: var(--ink-secondary);
+  font-size: 10px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.snffl-tab-active { color: var(--ink); }
+.snffl-tab-active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 26px;
+  height: 3px;
+  background: var(--ink);
+  transform: skewX(calc(-1 * var(--slant)));
+}
+.snffl-tab-icon { width: 23px; height: 23px; display: block; }
+
+/* ---------- Page shell ---------- */
+
+.snffl-page {
+  padding: 14px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.snffl-page > * { min-width: 0; }
+
+.snffl-placeholder {
+  padding: 14px;
+  display: grid;
+  gap: 5px;
+  border: 1px dashed var(--line);
+  background: var(--surface);
+}
+.snffl-placeholder-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.snffl-placeholder-note { font-size: 13px; color: var(--ink-secondary); }
+
+/* ---------- Desktop ---------- */
+
+.snffl-desktop-nav { display: none; }
+
+@media (min-width: 900px) {
+  body { padding-bottom: 0; }
+  .snffl-header { display: none; }
+  .snffl-tabbar { display: none; }
+
+  .snffl-desktop-nav {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    height: 62px;
+    padding: 0 26px;
+    background: var(--card);
+    border-bottom: 1px solid var(--line);
+  }
+  .snffl-desktop-nav .snffl-wordmark-svg { width: 132px; margin: 0; }
+  .snffl-desktop-nav-links { display: flex; gap: 22px; margin-left: 8px; }
+  .snffl-desktop-nav-link {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-secondary);
+    text-decoration: none;
+    padding: 6px 0;
+  }
+  .snffl-desktop-nav-link-active { color: var(--ink); border-bottom: 3px solid var(--logo-red); }
+  .snffl-desktop-nav-actions { margin-left: auto; display: flex; gap: 4px; }
+
+  .snffl-section-strip { top: 62px; }
+  .snffl-ticker-stack { top: 96px; }
+  .snffl-page { max-width: 1180px; padding: 22px 26px; }
+}

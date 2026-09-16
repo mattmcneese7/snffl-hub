@@ -4,40 +4,21 @@ import type { Game, GameSide } from '@/lib/types';
 import TeamAvatar from './TeamAvatar';
 
 /**
- * Status column.
+ * WIN or LOSE, inline to the left of the team's avatar.
  *
- * A finished head to head has a winner and a loser, so it gets a stacked W and
- * L lined up with the two team rows rather than one letter spanning both.
- * Live and pending are genuinely per matchup states, so those keep a single
- * dot or clock.
+ * Only rendered once a result exists: a live or pending game has no winner, so
+ * a badge there would be meaningless. The meta line below still reports the
+ * game state in those cases.
  */
-function StatusColumn({ game }: { game: Game }) {
-  if (game.status === 'pending') {
-    return (
-      <div className="snffl-bug-flag snffl-bug-flag-pending" title="Not started">
-        <span aria-hidden>&#9200;</span>
-      </div>
-    );
+function Outcome({ game, side }: { game: Game; side: GameSide }) {
+  if (game.winner == null) {
+    return <span className="snffl-outcome snffl-outcome-none" aria-hidden />;
   }
-
-  if (game.status === 'live') {
-    return (
-      <div className="snffl-bug-flag snffl-bug-flag-live" title="In progress">
-        <span className="snffl-live-dot" aria-hidden />
-      </div>
-    );
-  }
-
-  const awayWon = game.winner === game.away.rosterId;
+  const won = game.winner === side.rosterId;
   return (
-    <div className="snffl-bug-wl-stack">
-      <span className={`snffl-bug-wl ${awayWon ? 'snffl-bug-wl-win' : 'snffl-bug-wl-loss'}`}>
-        {awayWon ? 'W' : 'L'}
-      </span>
-      <span className={`snffl-bug-wl ${awayWon ? 'snffl-bug-wl-loss' : 'snffl-bug-wl-win'}`}>
-        {awayWon ? 'L' : 'W'}
-      </span>
-    </div>
+    <span className={`snffl-outcome ${won ? 'snffl-outcome-win' : 'snffl-outcome-lose'}`}>
+      {won ? 'WIN' : 'LOSE'}
+    </span>
   );
 }
 
@@ -48,6 +29,7 @@ function Side({ side, game }: { side: GameSide; game: Game }) {
 
   return (
     <div className={`snffl-bug-side${lost ? ' snffl-bug-side-loser' : ''}`}>
+      <Outcome game={game} side={side} />
       <TeamAvatar rosterId={side.rosterId} className="snffl-bug-avatar" />
       <span className="snffl-bug-team">{team?.teamName ?? side.team}</span>
       <span className="snffl-bug-score snffl-numeric">{side.points.toFixed(2)}</span>
@@ -61,7 +43,6 @@ export default function ResultBug({ game }: { game: Game }) {
   return (
     <Link className="snffl-bug-link" href={`/matchups/${game.week}/${game.matchupId}`}>
       <div className="snffl-bug">
-        <StatusColumn game={game} />
         <div className="snffl-bug-body">
           <Side side={game.away} game={game} />
           <Side side={game.home} game={game} />

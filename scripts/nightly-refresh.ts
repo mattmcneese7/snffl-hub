@@ -75,7 +75,10 @@ const leagueInfo: LeagueInfo = {
   rosterPositions: league.roster_positions,
   scoring: league.scoring_settings,
 };
-write('league.json', { ...leagueInfo, state, generatedAt: new Date().toISOString() });
+// No timestamp here on purpose: it would differ on every run and force a commit
+// even when nothing about the league actually changed. Git records when data
+// landed, and state.week says how current it is.
+write('league.json', { ...leagueInfo, state });
 
 // Manager colors, rebuilt from avatars with the portable decoder.
 const avatarInputs: AvatarInput[] = [];
@@ -144,23 +147,32 @@ for (const [id, raw] of Object.entries(all) as [string, RawPlayer][]) {
     continue;
   }
   const isTeamDefense = position === 'DEF' || !/^\d+$/.test(id);
-  if (!isTeamDefense && raw.active === false) {
+  // Inactive, or not on an NFL roster at all, means they cannot score, so they
+  // cannot appear in a lineup, a waiver add or a highlight.
+  if (!isTeamDefense && (raw.active === false || !raw.team)) {
     skipped++;
     continue;
   }
   const first = raw.first_name ?? '';
   const last = raw.last_name ?? '';
-  players[id] = {
+  const entry: PlayerLite = {
     id,
     name: `${first} ${last}`.trim() || id,
     short: isTeamDefense ? last || id : `${first.slice(0, 1)}. ${last}`,
     position,
-    team: raw.team ?? null,
     headshot: isTeamDefense ? TEAM_LOGO(id) : HEADSHOT(id),
-    logo: raw.team ? TEAM_LOGO(raw.team) : null,
-    espnId: espnIds[id] ?? null,
-    active: raw.active ?? true,
   };
+  // Null fields are dropped rather than written, since this ships to a public
+  // repo every night.
+  if (raw.team) {
+    entry.team = raw.team;
+    entry.logo = TEAM_LOGO(raw.team);
+  } else if (isTeamDefense) {
+    entry.team = id;
+    entry.logo = TEAM_LOGO(id);
+  }
+  if (espnIds[id]) entry.espnId = espnIds[id];
+  players[id] = entry;
 }
 
 console.log(`  players: kept ${Object.keys(players).length}, skipped ${skipped}`);

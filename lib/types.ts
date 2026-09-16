@@ -24,17 +24,20 @@ export type Team = {
   colors: ManagerColors;
 };
 
+/**
+ * Trimmed player record. Optional fields are omitted entirely rather than
+ * written as null, because this file is committed nightly to a public repo.
+ */
 export type PlayerLite = {
   id: string;
   name: string;
   short: string;
   position: string;
-  team: string | null;
+  team?: string;
   headshot: string;
-  logo: string | null;
+  logo?: string;
   /** ESPN id from the nflverse map, used for cutout art. */
-  espnId?: string | null;
-  active?: boolean;
+  espnId?: string;
 };
 
 export type LineupSlot = PlayerLite & {

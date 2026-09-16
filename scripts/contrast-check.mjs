@@ -94,6 +94,10 @@ const PAIRS = [
   ['on-chip', 'marker-red', 3, 'TOUCHDOWN wipe label'],
   ['live', 'surface', 3, 'lead change banner rule'],
   ['ink', 'surface', 4.5, 'lead change banner text'],
+  // The NFL score column's live label is 11px, and a live row sits on
+  // --surface while the rest sit on --card, so both backgrounds are checked.
+  ['marker-ink', 'surface', 4.5, 'NFL live label on a live row'],
+  ['marker-ink', 'card', 4.5, 'NFL live label on a card row'],
 ];
 
 let failures = 0;

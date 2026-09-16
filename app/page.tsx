@@ -10,8 +10,10 @@ import ResultBug from '@/components/ResultBug';
 import StandingsTable from '@/components/StandingsTable';
 import YourMatchup from '@/components/YourMatchup';
 import { getChugCounts } from '@/lib/awards';
+import NflScores from '@/components/NflScores';
 import { anyGameLive, getNflScoreboard } from '@/lib/espn';
 import { toFeature } from '@/lib/feature';
+import { getFeedPosts } from '@/lib/feed';
 import {
   getPowerRankings,
   getStandings,
@@ -37,16 +39,18 @@ const QUICK_LINKS = [
 
 export default async function HomePage() {
   const week = await scoredWeek();
-  const [games, standings, performers, rankings, odds, chugs, trades, nfl] = await Promise.all([
-    getWeekGames(week),
-    getStandings(),
-    getTopPerformers(week),
-    getPowerRankings(),
-    getPlayoffOdds(),
-    getChugCounts(),
-    getTrades(),
-    getNflScoreboard(),
-  ]);
+  const [games, standings, performers, rankings, odds, chugs, trades, nfl, livePosts] =
+    await Promise.all([
+      getWeekGames(week),
+      getStandings(),
+      getTopPerformers(week),
+      getPowerRankings(),
+      getPlayoffOdds(),
+      getChugCounts(),
+      getTrades(),
+      getNflScoreboard(),
+      getFeedPosts(8),
+    ]);
 
   // ESPN rather than the game status, which is derived from week arithmetic and
   // can read live on a week that merely has points on the board.
@@ -102,7 +106,10 @@ export default async function HomePage() {
           </HomeWidget>
         ) : null}
 
-        <div className="snffl-home-grid">
+        {/* Brief Section 40: during a live window Home carries a third column,
+            the live Feed and NFL scores, alongside the matchups the left column
+            already shows. Outside a live window it stays two columns. */}
+        <div className={`snffl-home-grid${liveNow ? ' snffl-home-grid-gameday' : ''}`}>
           <div>
             <HomeWidget title="Your Matchup">
               <YourMatchup
@@ -256,6 +263,39 @@ export default async function HomePage() {
               )}
             </HomeWidget>
           </div>
+
+          {/* Only while something is in play. Outside a live window this column
+              does not render at all, so the grid stays two columns and nobody
+              gets an empty Feed and a slate of scheduled kickoffs on Home. */}
+          {liveNow ? (
+            <div className="snffl-gameday-nfl">
+              <HomeWidget title="Live Feed" href="/feed" linkLabel="Full feed">
+                {livePosts.length ? (
+                  <div className="snffl-card">
+                    {livePosts.map((post) => (
+                      <article className="snffl-feed-post" key={post.id}>
+                        <div className="snffl-feed-post-head">
+                          <span className="snffl-feed-post-title">{post.title}</span>
+                        </div>
+                        {post.body ? <p className="snffl-feed-post-body">{post.body}</p> : null}
+                      </article>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="snffl-placeholder">
+                    <span className="snffl-placeholder-label">Quiet so far</span>
+                    <span className="snffl-placeholder-note">
+                      Touchdowns and lead changes land here as they happen.
+                    </span>
+                  </div>
+                )}
+              </HomeWidget>
+
+              <HomeWidget title="NFL Scores">
+                <NflScores games={nfl} />
+              </HomeWidget>
+            </div>
+          ) : null}
         </div>
 
         <HomeWidget title="Everything Else">

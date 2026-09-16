@@ -141,3 +141,66 @@
   .snffl-rag-hero-headline { font-size: 22px; }
   .snffl-quick-links { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+
+/* ---------- Game day, Checkpoint 7 ---------- */
+
+/* A third column only while something is actually in play, Brief Section 40.
+   Written as a modifier on the existing grid rather than a second declaration
+   of .snffl-home-grid: two rules for one selector at equal specificity is how
+   the column spacing broke earlier, where a desktop-only rule silently
+   overrode the base one. */
+@media (min-width: 1100px) {
+  .snffl-home-grid-gameday {
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 0.8fr);
+  }
+}
+
+/* Below that width the third column would squeeze the matchups too far, so it
+   drops back under the others rather than shrinking everything. */
+.snffl-gameday-nfl { display: grid; gap: 30px; min-width: 0; }
+
+.snffl-nfl-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.snffl-nfl-row:last-child { border-bottom: 0; }
+.snffl-nfl-row-live { background: var(--surface); }
+
+.snffl-nfl-teams { display: grid; gap: 2px; min-width: 0; }
+.snffl-nfl-team {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.snffl-nfl-abbr {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  min-width: 34px;
+}
+.snffl-nfl-score { font-size: 13px; }
+
+.snffl-nfl-status {
+  font-size: 11px;
+  color: var(--ink-secondary);
+  text-align: right;
+  white-space: nowrap;
+}
+.snffl-nfl-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--marker-ink);
+  font-weight: 800;
+}
+.snffl-nfl-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--marker-ink);
+  animation: snffl-live-pulse 1.8s ease-in-out infinite;
+}

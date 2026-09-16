@@ -1,8 +1,11 @@
 import type { Metadata, Viewport } from 'next';
+import Script from 'next/script';
 import { Archivo, Source_Serif_4, Permanent_Marker } from 'next/font/google';
 import './globals.css';
 import './chrome.css';
 import './pages.css';
+import './sections.css';
+import './profiles.css';
 // Generated nightly from Sleeper avatars. Gives every manager a .mgr-<userId>
 // class exposing --mgr-primary and --mgr-secondary.
 import './manager-colors.css';
@@ -36,7 +39,11 @@ export const metadata: Metadata = {
   // Hidden from search engines entirely. The matching header lives in next.config.ts.
   robots: { index: false, follow: false, nocache: true },
   manifest: '/manifest.webmanifest',
-  appleWebApp: { capable: true, title: 'SNFFL', statusBarStyle: 'black-translucent' },
+  // 'default' makes iOS reserve the status bar strip instead of running the web
+  // view underneath it. black-translucent put the clock and battery on top of
+  // the wordmark. The safe-area padding stays as a second line of defence, and
+  // reports 0 once iOS reserves the space, so the two do not double up.
+  appleWebApp: { capable: true, title: 'SNFFL', statusBarStyle: 'default' },
   icons: {
     icon: [{ url: '/favicon-32.png', sizes: '32x32', type: 'image/png' }],
     apple: '/apple-touch-icon.png',
@@ -64,10 +71,15 @@ try {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
       <body className={`${archivo.variable} ${sourceSerif.variable} ${permanentMarker.variable}`}>
+        {/* next/script rather than a raw <script>: rendered as a React child it
+            was re-inserted on every client navigation, three copies deep after
+            two, which is what broke hydration. */}
+        <Script
+          id="snffl-theme"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: themeScript }}
+        />
         {children}
       </body>
     </html>

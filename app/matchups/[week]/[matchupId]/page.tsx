@@ -37,7 +37,7 @@ export default async function MatchupDetail({
           <div className="snffl-block-heading">
             <h2 className="snffl-headline">Lineups</h2>
           </div>
-          <LineupTable away={game.away} home={game.home} />
+          <LineupTable away={game.away} home={game.home} winner={game.winner} />
         </section>
       </main>
     </>

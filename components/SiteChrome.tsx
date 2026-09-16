@@ -15,7 +15,9 @@ import {
 } from '@phosphor-icons/react';
 import SnfflWordmark from './SnfflWordmark';
 
-type TickerItem = { id: string; label: string; detail?: string };
+/** Parts rather than one string, so scores can read differently to names. */
+export type TickerPart = { text: string; kind: 'team' | 'score' | 'link' };
+type TickerItem = { id: string; parts: TickerPart[]; detail?: string };
 
 type SiteChromeProps = {
   section: string;
@@ -70,18 +72,40 @@ function useScrolled(threshold = 24) {
 }
 
 function Ticker({ tag, items, variant }: { tag: string; items: TickerItem[]; variant: 'league' | 'nfl' }) {
-  const content = items.length
+  const content: TickerItem[] = items.length
     ? [...items, ...items]
-    : [{ id: 'empty', label: variant === 'nfl' ? 'NFL scores appear during game windows' : 'League scores appear on game day' }];
+    : [
+        {
+          id: 'empty',
+          parts: [
+            {
+              text:
+                variant === 'nfl'
+                  ? 'NFL scores appear during game windows'
+                  : 'League scores appear on game day',
+              kind: 'team',
+            },
+          ],
+        },
+      ];
 
   return (
     <div className={`snffl-ticker-row snffl-ticker-row-${variant}`}>
       <span className={`snffl-ticker-tag snffl-ticker-tag-${variant}`}>{tag}</span>
       <div className="snffl-ticker-track">
         {content.map((item, i) => (
-          <span className="snffl-ticker-item" key={`${item.id}-${i}`}>
-            <span>{item.label}</span>
-            {item.detail ? <span className="snffl-ticker-item-status">{item.detail}</span> : null}
+          <span className="snffl-ticker-entry" key={`${item.id}-${i}`}>
+            <span className="snffl-ticker-item">
+              {item.parts.map((part, j) => (
+                <span className={`snffl-ticker-${part.kind}`} key={j}>
+                  {part.text}
+                </span>
+              ))}
+              {item.detail ? <span className="snffl-ticker-item-status">{item.detail}</span> : null}
+            </span>
+            <span className="snffl-ticker-divider" aria-hidden>
+              |
+            </span>
           </span>
         ))}
       </div>

@@ -28,7 +28,13 @@ export default async function Chrome({
     const home = teamByRoster(game.home.rosterId);
     return {
       id: `league-${game.matchupId}`,
-      label: `${away?.teamName ?? game.away.team} ${game.away.points.toFixed(2)} at ${home?.teamName ?? game.home.team} ${game.home.points.toFixed(2)}`,
+      parts: [
+        { text: away?.teamName ?? game.away.team, kind: 'team' as const },
+        { text: game.away.points.toFixed(2), kind: 'score' as const },
+        { text: 'at', kind: 'link' as const },
+        { text: home?.teamName ?? game.home.team, kind: 'team' as const },
+        { text: game.home.points.toFixed(2), kind: 'score' as const },
+      ],
       detail:
         game.status === 'pending' ? 'PENDING' : game.status === 'live' ? 'LIVE' : 'FINAL',
     };
@@ -36,7 +42,13 @@ export default async function Chrome({
 
   const nflTicker = nfl.slice(0, 14).map((game) => ({
     id: `nfl-${game.id}`,
-    label: `${game.away.abbr} ${game.away.score ?? ''} ${game.home.abbr} ${game.home.score ?? ''}`.trim(),
+    parts: [
+      { text: game.away.abbr, kind: 'team' as const },
+      { text: game.away.score != null ? String(game.away.score) : '', kind: 'score' as const },
+      { text: 'at', kind: 'link' as const },
+      { text: game.home.abbr, kind: 'team' as const },
+      { text: game.home.score != null ? String(game.home.score) : '', kind: 'score' as const },
+    ],
     detail: game.status,
   }));
 

@@ -1,0 +1,186 @@
+/* Chug Meter, charts, rules, menus and settings.
+   Colors come from tokens only, and SVG fills come from classes rather than
+   CSS variables in presentation attributes, per Brief Section 4 rule 6. */
+
+/* ---------- Chug Meter ---------- */
+
+.snffl-chug-card { padding: 14px 10px 10px; }
+.snffl-chug-plot {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+.snffl-chug-plot::-webkit-scrollbar { display: none; }
+
+.snffl-chug-column {
+  flex: 1 0 44px;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  min-width: 44px;
+}
+.snffl-chug-stack {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 1px;
+  min-height: 40px;
+  justify-content: flex-start;
+}
+.snffl-chug-empty {
+  width: 18px;
+  height: 3px;
+  background: var(--line);
+}
+.snffl-beer { display: block; width: 22px; }
+.snffl-beer-svg { display: block; width: 100%; height: auto; }
+/* The light beer fill is about 1.9:1 on a white card, under the 3:1 floor for
+   UI shapes, so the darker beer tone outlines it. Fill stays decorative. */
+.snffl-beer-glass {
+  fill: var(--beer-light);
+  stroke: var(--beer-dark);
+  stroke-width: 1.4;
+}
+.snffl-beer-foam { fill: var(--beer-foam); stroke: var(--beer-dark); stroke-width: 1.2; }
+.snffl-beer-bubble { fill: var(--beer-dark); opacity: 0.45; }
+
+.snffl-chug-count { font-size: 13px; }
+.snffl-chug-name {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ink-secondary);
+  max-width: 64px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* Angled so all 14 names fit on a phone. */
+  transform: rotate(-52deg);
+  transform-origin: center;
+  height: 58px;
+  display: grid;
+  align-items: center;
+}
+.snffl-chug-axis-note {
+  margin: 8px 4px 0;
+  font-size: 11px;
+  color: var(--ink-secondary);
+}
+
+/* ---------- Points by week chart ---------- */
+
+.snffl-chart { display: grid; gap: 6px; }
+.snffl-chart-svg { display: block; width: 100%; height: auto; }
+.snffl-chart-playoffs { fill: var(--surface); }
+.snffl-chart-bar-win { fill: var(--good); }
+.snffl-chart-bar-loss { fill: var(--bad); }
+.snffl-chart-axis { stroke: var(--line); stroke-width: 1; }
+.snffl-chart-legend {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ink-secondary);
+}
+
+/* ---------- Rules ---------- */
+
+.snffl-rules-card { padding: 14px; display: grid; gap: 10px; }
+.snffl-rules-intro { margin: 0; font-size: 13px; color: var(--ink-secondary); }
+.snffl-rules-list {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.snffl-rules-note {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ink-secondary);
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+.snffl-rules-group { margin-bottom: 14px; }
+.snffl-rules-subhead {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+}
+.snffl-rules-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+.snffl-rules-row:last-child { border-bottom: 0; }
+
+/* ---------- Menu rows ---------- */
+
+.snffl-menu-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: var(--tap);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  color: inherit;
+  text-decoration: none;
+}
+.snffl-menu-row:last-child { border-bottom: 0; }
+.snffl-menu-label { display: block; font-size: 14px; font-weight: 800; }
+.snffl-menu-note { display: block; font-size: 11px; color: var(--ink-secondary); }
+.snffl-menu-arrow { font-size: 20px; color: var(--ink-secondary); }
+
+/* ---------- Settings ---------- */
+
+.snffl-settings { display: grid; gap: 12px; }
+.snffl-settings-group { padding: 0; }
+.snffl-settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+}
+.snffl-settings-pending {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.snffl-theme-choices { display: flex; gap: 6px; }
+.snffl-theme-choice {
+  min-height: var(--tap);
+  padding: 0 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: capitalize;
+  cursor: pointer;
+  transform: skewX(calc(-1 * var(--slant)));
+}
+.snffl-theme-choice > span { display: inline-block; transform: skewX(var(--slant)); }
+.snffl-theme-choice-active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+@media (min-width: 900px) {
+  /* All 14 fit without angling once there is room. */
+  .snffl-chug-name { transform: none; height: auto; max-width: 78px; }
+  .snffl-chug-column { flex: 1 0 60px; }
+}

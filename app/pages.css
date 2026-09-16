@@ -261,9 +261,19 @@
 
 /* ---------- Standings ---------- */
 
+/* The table sets one column template and the rows inherit it, so headers and
+   cells cannot drift apart. It scrolls sideways on a phone instead of
+   squeezing team names into nothing. */
+.snffl-standings-scroll { overflow-x: auto; scrollbar-width: none; }
+.snffl-standings-scroll::-webkit-scrollbar { display: none; }
+
+.snffl-standings-table { min-width: 460px; }
+.snffl-standings-table-slim { min-width: 0; }
+
+.snffl-standings-head,
 .snffl-standings-row {
   display: grid;
-  grid-template-columns: 22px 4px minmax(0, 1fr) auto auto;
+  grid-template-columns: 22px 4px minmax(0, 1fr) 62px 52px 52px 42px;
   align-items: center;
   gap: 9px;
   padding: 8px 12px;
@@ -271,6 +281,21 @@
   color: inherit;
   text-decoration: none;
 }
+.snffl-standings-table-slim .snffl-standings-head,
+.snffl-standings-table-slim .snffl-standings-row {
+  grid-template-columns: 22px 4px minmax(0, 1fr) 62px 52px 52px;
+}
+
+.snffl-standings-head {
+  background: var(--surface);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+}
+.snffl-standings-num { text-align: right; }
+.snffl-standings-against { color: var(--ink-secondary); }
 .snffl-standings-row:last-child { border-bottom: 0; }
 .snffl-standings-seed { font-size: 12px; color: var(--ink-secondary); font-weight: 800; }
 .snffl-standings-colorbar { width: 4px; height: 26px; background: var(--mgr-primary, var(--muted)); }
@@ -291,7 +316,6 @@
 }
 .snffl-standings-record { font-size: 13px; }
 .snffl-standings-streak { font-size: 10px; color: var(--ink-secondary); font-weight: 700; }
-.snffl-standings-points { font-size: 12px; color: var(--ink-secondary); min-width: 58px; text-align: right; }
 .snffl-standings-playoff-line { border-bottom: 2px dashed var(--muted); }
 .snffl-standings-playoff-caption {
   font-size: 9px;
@@ -430,6 +454,94 @@
   background: var(--surface);
   font-size: 16px;
 }
+/* ---------- Boxscore ---------- */
+
+.snffl-boxscore { display: grid; }
+
+.snffl-box-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 54px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  padding: 10px 10px 8px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+.snffl-box-team {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--ink-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.snffl-box-team-right { justify-content: flex-end; }
+.snffl-box-team-won { color: var(--ink); }
+.snffl-box-flag {
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px;
+  padding: 1px 5px;
+  background: var(--good-chip);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  transform: skewX(calc(-1 * var(--slant)));
+}
+.snffl-box-head-slot {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--ink-secondary);
+  text-align: center;
+}
+
+.snffl-box-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 52px 54px 52px minmax(0, 1fr);
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--line);
+}
+.snffl-box-row:last-child { border-bottom: 0; }
+
+.snffl-box-player { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 8px; align-items: center; }
+.snffl-box-player-right { grid-template-columns: minmax(0, 1fr) 28px; }
+.snffl-box-player-right .snffl-lineup-headshot { order: 2; }
+.snffl-box-player-right .snffl-box-player-text { order: 1; text-align: right; }
+.snffl-box-player-text { min-width: 0; }
+
+/* The score gets its own box, which is what makes it read as a boxscore. */
+.snffl-box-score {
+  display: grid;
+  place-items: center;
+  min-height: 34px;
+  padding: 2px 4px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  font-size: 15px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.snffl-box-score-empty { color: var(--ink-secondary); }
+
+.snffl-box-total {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 54px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+}
+.snffl-box-total-score { font-size: 22px; color: var(--ink-secondary); }
+.snffl-box-total-score:last-of-type { text-align: right; }
+.snffl-box-total-won { color: var(--ink); }
+
 .snffl-lineup-bench summary {
   padding: 10px 12px;
   font-size: 12px;

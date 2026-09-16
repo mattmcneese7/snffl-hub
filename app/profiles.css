@@ -1,0 +1,221 @@
+/* Manager and player profiles, trades, odds rows.
+   Colors come from tokens and generated manager palettes only. */
+
+/* ---------- Profile hero ---------- */
+
+.snffl-profile-hero {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 16px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.snffl-profile-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  flex: 0 0 auto;
+}
+.snffl-profile-name { font-size: 22px; margin: 0; }
+.snffl-profile-sub { margin: 2px 0 0; font-size: 12px; font-weight: 700; opacity: 0.9; }
+
+.snffl-player-hero { min-height: 140px; }
+.snffl-player-cutout {
+  width: 92px;
+  height: 92px;
+  object-fit: cover;
+  object-position: top center;
+  flex: 0 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.snffl-player-watermark {
+  position: absolute;
+  right: -18px;
+  top: -10px;
+  width: 140px;
+  opacity: 0.18;
+  z-index: 0;
+}
+
+/* ---------- Stat tiles ---------- */
+
+.snffl-stat-tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.snffl-stat-tile {
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 10px 12px;
+  display: grid;
+  gap: 2px;
+}
+.snffl-stat-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+}
+.snffl-stat-value { font-size: 20px; }
+
+/* ---------- Trophy case ---------- */
+
+.snffl-trophy-case {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.snffl-trophy {
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 12px 8px;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  text-align: center;
+}
+/* Not --gold-on: that token is dark text for a gold fill and is never
+   redefined for dark theme, so it would read near black on a dark card. */
+.snffl-trophy-count { font-size: 22px; color: var(--ink); }
+.snffl-trophy-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ink-secondary);
+}
+
+/* ---------- Roster and player rows ---------- */
+
+.snffl-chart-card { padding: 12px; }
+
+.snffl-roster-row {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line);
+  color: inherit;
+  text-decoration: none;
+  min-height: var(--tap);
+}
+.snffl-roster-row:last-child { border-bottom: 0; }
+.snffl-roster-points { font-size: 14px; font-weight: 800; }
+.snffl-roster-tag {
+  transform: skewX(calc(-1 * var(--slant)));
+  background: var(--ink);
+  color: var(--bg);
+  padding: 2px 8px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+.snffl-roster-tag > span { display: inline-block; transform: skewX(var(--slant)); }
+.snffl-roster-tag-bench { background: var(--pending-chip); color: #fff; }
+
+/* ---------- Manager grid ---------- */
+
+.snffl-manager-grid { display: grid; gap: 10px; }
+.snffl-manager-card {
+  display: grid;
+  grid-template-columns: 4px 48px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px 10px 0;
+  color: inherit;
+  text-decoration: none;
+}
+.snffl-manager-card-bar { width: 4px; height: 48px; background: var(--mgr-primary, var(--muted)); }
+.snffl-manager-card-avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+.snffl-manager-card-body { display: grid; gap: 1px; }
+.snffl-manager-card-meta { font-size: 11px; color: var(--ink-secondary); }
+
+/* ---------- Playoff tracker ---------- */
+
+.snffl-playoff-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.snffl-playoff-title { font-size: 22px; }
+.snffl-playoff-caret { color: var(--marker-red); }
+.snffl-playoff-scribble {
+  font-family: var(--font-marker), cursive;
+  font-size: 18px;
+  color: var(--marker-red);
+  transform: rotate(-6deg);
+  display: inline-block;
+}
+
+.snffl-odds-row {
+  display: grid;
+  grid-template-columns: 4px minmax(0, 1fr) auto 56px;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line);
+  color: inherit;
+  text-decoration: none;
+}
+.snffl-odds-row:last-child { border-bottom: 0; }
+.snffl-odds-pct { font-size: 15px; text-align: right; }
+.snffl-odds-tag {
+  transform: skewX(calc(-1 * var(--slant)));
+  padding: 2px 8px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--pending-chip);
+}
+.snffl-odds-tag > span { display: inline-block; transform: skewX(var(--slant)); }
+.snffl-odds-tag-clinched { background: var(--good-chip); }
+.snffl-odds-tag-watch { background: var(--good-chip); }
+.snffl-odds-tag-bubble { background: var(--pending-chip); }
+.snffl-odds-tag-trouble { background: var(--bad-chip); }
+.snffl-odds-tag-out { background: var(--bad-chip); }
+
+/* ---------- Trades ---------- */
+
+.snffl-trades { display: grid; gap: 12px; }
+.snffl-trade { padding: 0; }
+.snffl-trade-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.snffl-trade-grade {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.snffl-trade-sides { display: grid; }
+.snffl-trade-side { padding: 10px 12px; border-bottom: 1px solid var(--line); }
+.snffl-trade-side:last-child { border-bottom: 0; }
+.snffl-trade-side-head { display: grid; grid-template-columns: 4px minmax(0, 1fr); gap: 10px; align-items: center; }
+.snffl-trade-side-bar { width: 4px; height: 30px; }
+.snffl-trade-team { font-size: 14px; font-weight: 800; color: inherit; text-decoration: none; }
+.snffl-trade-gets {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 4px;
+  font-size: 13px;
+}
+
+@media (min-width: 900px) {
+  .snffl-stat-tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .snffl-manager-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .snffl-trade-sides { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .snffl-trade-side { border-bottom: 0; border-right: 1px solid var(--line); }
+  .snffl-trade-side:last-child { border-right: 0; }
+  .snffl-profile-name { font-size: 28px; }
+}

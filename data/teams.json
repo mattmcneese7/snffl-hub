@@ -1,16 +1,18 @@
 [
  {
-  "rosterId": 1,
-  "userId": "1394334403378827264",
-  "teamName": "The Bhayshul Olympics",
-  "manager": "mattmcneese",
   "avatar": "51385ba57cd089261f6de9ce483b8716",
   "avatarUrl": "https://sleepercdn.com/avatars/thumbs/51385ba57cd089261f6de9ce483b8716",
-  "wins": 0,
+  "colors": {
+   "contrast": 4.83,
+   "onPrimary": "#FFFFFF",
+   "primary": "#c417cd",
+   "secondary": "#f3dde6"
+  },
   "losses": 1,
-  "ties": 0,
-  "pointsFor": 75.3,
+  "manager": "mattmcneese",
   "pointsAgainst": 116.22,
+  "pointsFor": 75.3,
+  "rosterId": 1,
   "starters": [
    "421",
    "12507",
@@ -22,25 +24,25 @@
    "4227",
    "BAL"
   ],
-  "colors": {
-   "primary": "#c417cd",
-   "secondary": "#f3dde6",
-   "onPrimary": "#FFFFFF",
-   "contrast": 4.83
-  }
+  "teamName": "The Bhayshul Olympics",
+  "ties": 0,
+  "userId": "1394334403378827264",
+  "wins": 0
  },
  {
-  "rosterId": 2,
-  "userId": "1395619896850669568",
-  "teamName": "nunnells",
-  "manager": "nunnells",
   "avatar": "d55d1f7075eda01948318de4af616075",
   "avatarUrl": "https://sleepercdn.com/avatars/thumbs/d55d1f7075eda01948318de4af616075",
-  "wins": 1,
+  "colors": {
+   "contrast": 4.78,
+   "onPrimary": "#FFFFFF",
+   "primary": "#117d95",
+   "secondary": "#230b04"
+  },
   "losses": 0,
-  "ties": 0,
-  "pointsFor": 169.86,
+  "manager": "nunnells",
   "pointsAgainst": 77.46,
+  "pointsFor": 169.86,
+  "rosterId": 2,
   "starters": [
    "6797",
    "12527",
@@ -52,25 +54,25 @@
    "11786",
    "GB"
   ],
-  "colors": {
-   "primary": "#117d95",
-   "secondary": "#230b04",
-   "onPrimary": "#FFFFFF",
-   "contrast": 4.78
-  }
+  "teamName": "nunnells",
+  "ties": 0,
+  "userId": "1395619896850669568",
+  "wins": 1
  },
  {
-  "rosterId": 3,
-  "userId": "1396214318718013440",
-  "teamName": "Hog tied and deep fried ",
-  "manager": "bearcat2789",
   "avatar": "d22e52781a5d7a94bcbf2aa70e748382",
   "avatarUrl": "https://sleepercdn.com/avatars/thumbs/d22e52781a5d7a94bcbf2aa70e748382",
-  "wins": 0,
+  "colors": {
+   "contrast": 4.59,
+   "onPrimary": "#FFFFFF",
+   "primary": "#da1899",
+   "secondary": "#eeebe0"
+  },
   "losses": 1,
-  "ties": 0,
-  "pointsFor": 122.96,
+  "manager": "bearcat2789",
   "pointsAgainst": 123.96,
+  "pointsFor": 122.96,
+  "rosterId": 3,
   "starters": [
    "4984",
    "4866",
@@ -82,25 +84,25 @@
    "12015",
    "PIT"
   ],
-  "colors": {
-   "primary": "#da1899",
-   "secondary": "#eeebe0",
-   "onPrimary": "#FFFFFF",
-   "contrast": 4.59
-  }
+  "teamName": "Hog tied and deep fried ",
+  "ties": 0,
+  "userId": "1396214318718013440",
+  "wins": 0
  },
  {
-  "rosterId": 4,
-  "userId": "1285350940102127616",
-  "teamName": "BedBathNBIJAN22",
-  "manager": "BedBathNBIJAN22",
   "avatar": "7572250c2fb084c434fed0e82229e183",
   "avatarUrl": "https://sleepercdn.com/avatars/thumbs/7572250c2fb084c434fed0e82229e183",
-  "wins": 0,
+  "colors": {
+   "contrast": 4.58,
+   "onPrimary": "#FFFFFF",
+   "primary": "#c65116",
+   "secondary": "#f0dbe4"
+  },
   "losses": 1,
-  "ties": 0,
-  "pointsFor": 142.9,
+  "manager": "BedBathNBIJAN22",
   "pointsAgainst": 162.8,
+  "pointsFor": 142.9,
+  "rosterId": 4,
   "starters": [
    "8183",
    "9509",
@@ -112,25 +114,25 @@
    "1945",
    "LV"
   ],
-  "colors": {
-   "primary": "#c65116",
-   "secondary": "#f0dbe4",
-   "onPrimary": "#FFFFFF",
-   "contrast": 4.58
-  }
+  "teamName": "BedBathNBIJAN22",
+  "ties": 0,
+  "userId": "1285350940102127616",
+  "wins": 0
  },
  {
-  "rosterId": 5,
-  "userId": "1004091692965580800",
-  "teamName": "ItsYaBoyJack",
-  "manager": "ItsYaBoyJack",
   "avatar": "4f4090e5e9c3941414db40a871e3e909",
   "avatarUrl": "https://sleepercdn.com/avatars/thumbs/4f4090e5e9c3941414db40a871e3e909",
-  "wins": 0,
+  "colors": {
+   "contrast": 5.06,
+   "onPrimary": "#FFFFFF",
+   "primary": "#0e7c73",
+   "secondary": "#d8deef"
+  },
   "losses": 1,
-  "ties": 0,
-  "pointsFor": 95.2,
+  "manager": "ItsYaBoyJack",
   "pointsAgainst": 118,
+  "pointsFor": 95.2,
+  "rosterId": 5,
   "starters": [
    "12508",
    "8138",
@@ -142,25 +144,25 @@
    "11539",
    "SEA"
   ],
-  "colors": {
-   "primary": "#0e7c73",
-   "secondary": "#d8deef",
-   "onPrimary": "#FFFFFF",
-   "contrast": 5.06
-  }
+  "teamName": "ItsYaBoyJack",
+  "ties": 0,
+  "userId": "1004091692965580800",
+  "wins": 0
  },
  {
-  "rosterId": 6,
-  "userId": "1394385750044217344",
-  "teamName": "Burrowed Alive",
-  "manager": "sebeatty",
   "avatar": "d55d1f7075eda01948318de4af616075",
   "avatarUrl": "https://sleepercdn.com/avatars/thumbs/d55d1f7075eda01948318de4af616075",
-  "wins": 0,
+  "colors": {
+   "contrast": 5.53,
+   "onPrimary": "#FFFFFF",
+   "primary": "#255de7",
+   "secondary": "#230b04"
+  },
   "losses": 1,
-  "ties": 0,
-  "pointsFor": 77.46,
+  "manager": "sebeatty",
   "pointsAgainst": 169.86,
+  "pointsFor": 77.46,
+  "rosterId": 6,
   "starters": [
    "6770",
    "9226",
@@ -172,25 +174,25 @@
    "3451",
    "PHI"
   ],
-  "colors": {
-   "primary": "#255de7",
-   "secondary": "#230b04",
-   "onPrimary": "#FFFFFF",
-   "contrast": 5.53
-  }
+  "teamName": "Burrowed Alive",
+  "ties": 0,
+  "userId": "1394385750044217344",
+  "wins": 0
  },
  {
-  "rosterId": 7,
-  "userId": "466701626346827776",
-  "teamName": "Romo911",
-  "manager": "DFWGilly",
   "avatar": "1fe089e517448d9fe207b8607ca8e81b",
   "avatarUrl": "https://sleepercdn.com/avatars/thumbs/1fe089e517448d9fe207b8607ca8e81b",
-  "wins": 1,
+  "colors": {
+   "contrast": 5.55,
+   "onPrimary": "#FFFFFF",
+   "primary": "#40743e",
+   "secondary": "#5980a6"
+  },
   "losses": 0,
-  "ties": 0,
-  "pointsFor": 153.92,
+  "manager": "DFWGilly",
   "pointsAgainst": 63.4,
+  "pointsFor": 153.92,
+  "rosterId": 7,
   "starters": [
    "11564",
    "8155",
@@ -202,25 +204,25 @@
    "5189",
    "MIN"
   ],
-  "colors": {
-   "primary": "#40743e",
-   "secondary": "#5980a6",
-   "onPrimary": "#FFFFFF",
-   "contrast": 5.55
-  }
+  "teamName": "Romo911",
+  "ties": 0,
+  "userId": "466701626346827776",
+  "wins": 1
  },
  {
-  "rosterId": 8,
-  "userId": "1394522372035330048",
-  "teamName": "Bibi’s Ballers 69",
-  "manager": "LoRdAcE1848",
   "avatar": "51385ba57cd089261f6de9ce483b8716",
   "avatarUrl": "https://sleepercdn.com/avatars/thumbs/51385ba57cd089261f6de9ce483b8716",
-  "wins": 0,
+  "colors": {
+   "contrast": 4.83,
+   "onPrimary": "#FFFFFF",
+   "primary": "#7f53ec",
+   "secondary": "#f3dde6"
+  },
   "losses": 1,
-  "ties": 0,
-  "pointsFor": 146.86,
+  "manager": "LoRdAcE1848",
   "pointsAgainst": 156.6,
+  "pointsFor": 146.86,
+  "rosterId": 8,
   "starters": [
    "11566",
    "9221",
@@ -232,25 +234,25 @@
    "2747",
    "DEN"
   ],
-  "colors": {
-   "primary": "#7f53ec",
-   "secondary": "#f3dde6",
-   "onPrimary": "#FFFFFF",
-   "contrast": 4.83
-  }
+  "teamName": "Bibi’s Ballers 69",
+  "ties": 0,
+  "userId": "1394522372035330048",
+  "wins": 0
  },
  {
-  "rosterId": 9,
-  "userId": "1262549737815429120",
-  "teamName": "Victorious Secrets",
-  "manager": "Tayodin",
   "avatar": "d55d1f7075eda01948318de4af616075",
   "avatarUrl": "https://sleepercdn.com/avatars/thumbs/d55d1f7075eda01948318de4af616075",
-  "wins": 0,
+  "colors": {
+   "contrast": 4.76,
+   "onPrimary": "#FFFFFF",
+   "primary": "#1676c3",
+   "secondary": "#230b04"
+  },
   "losses": 1,
-  "ties": 0,
-  "pointsFor": 63.4,
+  "manager": "Tayodin",
   "pointsAgainst": 153.92,
+  "pointsFor": 63.4,
+  "rosterId": 9,
   "starters": [
    "11563",
    "8150",
@@ -262,25 +264,25 @@
    "12713",
    "JAX"
   ],
-  "colors": {
-   "primary": "#1676c3",
-   "secondary": "#230b04",
-   "onPrimary": "#FFFFFF",
-   "contrast": 4.76
-  }
+  "teamName": "Victorious Secrets",
+  "ties": 0,
+  "userId": "1262549737815429120",
+  "wins": 0
  },
  {
-  "rosterId": 10,
-  "userId": "1395668568820953088",
-  "teamName": "First Down Syndrome",
-  "manager": "SexRobot69",
   "avatar": "5625fd66f4e745ab04641f51d6d81116",
   "avatarUrl": "https://sleepercdn.com/avatars/thumbs/5625fd66f4e745ab04641f51d6d81116",
-  "wins": 1,
+  "colors": {
+   "contrast": 9.19,
+   "onPrimary": "#FFFFFF",
+   "primary": "#424c20",
+   "secondary": "#7a5f42"
+  },
   "losses": 0,
-  "ties": 0,
-  "pointsFor": 156.6,
+  "manager": "SexRobot69",
   "pointsAgainst": 146.86,
+  "pointsFor": 156.6,
+  "rosterId": 10,
   "starters": [
    "11560",
    "3198",
@@ -292,25 +294,25 @@
    "8259",
    "HOU"
   ],
-  "colors": {
-   "primary": "#424c20",
-   "secondary": "#7a5f42",
-   "onPrimary": "#FFFFFF",
-   "contrast": 9.19
-  }
+  "teamName": "First Down Syndrome",
+  "ties": 0,
+  "userId": "1395668568820953088",
+  "wins": 1
  },
  {
-  "rosterId": 11,
-  "userId": "1395631787446636544",
-  "teamName": "Chase Browns with Downs",
-  "manager": "JPellett3",
   "avatar": "d55d1f7075eda01948318de4af616075",
   "avatarUrl": "https://sleepercdn.com/avatars/thumbs/d55d1f7075eda01948318de4af616075",
-  "wins": 1,
+  "colors": {
+   "contrast": 8.24,
+   "onPrimary": "#FFFFFF",
+   "primary": "#2529e7",
+   "secondary": "#230b04"
+  },
   "losses": 0,
-  "ties": 0,
-  "pointsFor": 118,
+  "manager": "JPellett3",
   "pointsAgainst": 95.2,
+  "pointsFor": 118,
+  "rosterId": 11,
   "starters": [
    "3294",
    "9224",
@@ -322,25 +324,25 @@
    "7839",
    "NE"
   ],
-  "colors": {
-   "primary": "#2529e7",
-   "secondary": "#230b04",
-   "onPrimary": "#FFFFFF",
-   "contrast": 8.24
-  }
+  "teamName": "Chase Browns with Downs",
+  "ties": 0,
+  "userId": "1395631787446636544",
+  "wins": 1
  },
  {
-  "rosterId": 12,
-  "userId": "1395473433927630848",
-  "teamName": "Zyn-bo Squisher",
-  "manager": "jwslaney",
   "avatar": "578c6b253dd7b4bab45382e1af102204",
   "avatarUrl": "https://sleepercdn.com/avatars/thumbs/578c6b253dd7b4bab45382e1af102204",
-  "wins": 1,
+  "colors": {
+   "contrast": 4.88,
+   "onPrimary": "#FFFFFF",
+   "primary": "#11832c",
+   "secondary": "#220913"
+  },
   "losses": 0,
-  "ties": 0,
-  "pointsFor": 116.22,
+  "manager": "jwslaney",
   "pointsAgainst": 75.3,
+  "pointsFor": 116.22,
+  "rosterId": 12,
   "starters": [
    "6904",
    "4034",
@@ -352,25 +354,25 @@
    "11533",
    "LAR"
   ],
-  "colors": {
-   "primary": "#11832c",
-   "secondary": "#220913",
-   "onPrimary": "#FFFFFF",
-   "contrast": 4.88
-  }
+  "teamName": "Zyn-bo Squisher",
+  "ties": 0,
+  "userId": "1395473433927630848",
+  "wins": 1
  },
  {
-  "rosterId": 13,
-  "userId": "1394399079663931392",
-  "teamName": "Jackson Off",
-  "manager": "Bheinzeyo",
   "avatar": "d22e52781a5d7a94bcbf2aa70e748382",
   "avatarUrl": "https://sleepercdn.com/avatars/thumbs/d22e52781a5d7a94bcbf2aa70e748382",
-  "wins": 1,
+  "colors": {
+   "contrast": 4.55,
+   "onPrimary": "#FFFFFF",
+   "primary": "#e3196a",
+   "secondary": "#eeebe0"
+  },
   "losses": 0,
-  "ties": 0,
-  "pointsFor": 123.96,
+  "manager": "Bheinzeyo",
   "pointsAgainst": 122.96,
+  "pointsFor": 123.96,
+  "rosterId": 13,
   "starters": [
    "4881",
    "6813",
@@ -382,25 +384,25 @@
    "11792",
    "DET"
   ],
-  "colors": {
-   "primary": "#e3196a",
-   "secondary": "#eeebe0",
-   "onPrimary": "#FFFFFF",
-   "contrast": 4.55
-  }
+  "teamName": "Jackson Off",
+  "ties": 0,
+  "userId": "1394399079663931392",
+  "wins": 1
  },
  {
-  "rosterId": 14,
-  "userId": "759861676316143616",
-  "teamName": "50 Shades of Zay",
-  "manager": "tripnistico",
   "avatar": "82aec8e811b839b8ec25d7b458afd57b",
   "avatarUrl": "https://sleepercdn.com/avatars/thumbs/82aec8e811b839b8ec25d7b458afd57b",
-  "wins": 1,
+  "colors": {
+   "contrast": 4.54,
+   "onPrimary": "#FFFFFF",
+   "primary": "#a346ea",
+   "secondary": "#e6f1f1"
+  },
   "losses": 0,
-  "ties": 0,
-  "pointsFor": 162.8,
+  "manager": "tripnistico",
   "pointsAgainst": 142.9,
+  "pointsFor": 162.8,
+  "rosterId": 14,
   "starters": [
    "7523",
    "8151",
@@ -412,11 +414,9 @@
    "12711",
    "LAC"
   ],
-  "colors": {
-   "primary": "#a346ea",
-   "secondary": "#e6f1f1",
-   "onPrimary": "#FFFFFF",
-   "contrast": 4.54
-  }
+  "teamName": "50 Shades of Zay",
+  "ties": 0,
+  "userId": "759861676316143616",
+  "wins": 1
  }
 ]

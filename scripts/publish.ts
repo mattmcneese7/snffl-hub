@@ -24,6 +24,7 @@ import { allowedNumbers, buildWeekFacts, properNouns, type WeekFacts } from '../
 import { countsFrom } from '../lib/validate.ts';
 import {
   readTimeOf,
+  signOffFrom,
   signOffHistory,
   slugFor,
   writeIssue,
@@ -251,7 +252,9 @@ for (const id of ARTICLE_ORDER) {
     fromTemplate = true;
   }
 
-  if (id === 'shart' && candidate.signOff) signOff = candidate.signOff;
+  // Not candidate.signOff directly: a writer can close the body with a real
+  // escalation and still return the bare seed in the field.
+  if (id === 'shart') signOff = signOffFrom(candidate) ?? signOff;
 
   articles.push({
     id,

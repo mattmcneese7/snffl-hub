@@ -5,7 +5,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import type { ArticleId } from '../config/style-guide.ts';
+import { SIGN_OFF_SEED, type ArticleId } from '../config/style-guide.ts';
 
 export type Article = {
   id: ArticleId;
@@ -103,6 +103,31 @@ export function publishedWeeks(): number[] {
   } catch {
     return [];
   }
+}
+
+/**
+ * The sign off worth storing for a Shart story.
+ *
+ * The field the writer returns cannot be trusted on its own. Week 1 closed its
+ * body with a real escalation, "grab every pitcher in the building, line them
+ * up", and still returned the bare seed in the signOff field. Storing the field
+ * meant the next week would be handed the seed and asked to top nothing, which
+ * breaks the escalation the brief asks for, permanently, from week one.
+ *
+ * The body is what actually published, so a closing paragraph that ends with
+ * the required words beats a thinner field.
+ */
+export function signOffFrom(candidate: { body: string[]; signOff?: string }): string | undefined {
+  const field = candidate.signOff?.trim();
+  const tail = candidate.body[candidate.body.length - 1]?.trim() ?? '';
+
+  if (tail.endsWith(SIGN_OFF_SEED) && tail.length > (field?.length ?? 0)) {
+    // Capped so a runaway closing paragraph does not become the line the next
+    // week has to beat. Trimmed to a word boundary rather than mid word.
+    return tail.length <= 400 ? tail : tail.slice(-400).replace(/^\S*\s+/, '');
+  }
+
+  return field || undefined;
 }
 
 /** Every sign off used so far, oldest first, fed back so the next one escalates. */

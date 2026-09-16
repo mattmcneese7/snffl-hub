@@ -24,7 +24,11 @@ export async function getWeekProjections(
   const url = `${PROJECTIONS}/${season}/${week}?season_type=regular&order_by=ppr&${query}`;
 
   try {
-    const res = await fetch(url, { next: { revalidate: 900 } } as RequestInit);
+    // No revalidate here on purpose. The response is about 2.8MB, over Next's
+    // 2MB data cache ceiling, so asking to cache it logged a failure on every
+    // build and cached nothing. The map this returns is a few hundred numbers,
+    // so callers cache the result instead of the payload.
+    const res = await fetch(url);
     if (!res.ok) return {};
     const rows: RawProjection[] = await res.json();
     if (!Array.isArray(rows)) return {};

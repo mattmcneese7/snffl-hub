@@ -40,6 +40,29 @@ export type PlayerLite = {
   espnId?: string;
 };
 
+/**
+ * One player's season stat line, stored exactly as Sleeper returns it.
+ *
+ * Not remapped into camelCase on purpose. Trimming the field list saved 1KB of
+ * 230KB, so a sixty field mapping layer would buy nothing and add sixty chances
+ * to put a mislabeled number on screen. Presentation picks and labels the
+ * fields instead, in lib/stats.ts, where the league's own scoring decides which
+ * ones matter.
+ */
+export type RawStats = Record<string, number>;
+
+/** A labeled stat ready to render, already formatted. */
+export type StatLine = {
+  label: string;
+  value: string;
+};
+
+/** A titled group of stat lines, such as Passing or Field Goals. */
+export type StatBlock = {
+  title: string;
+  lines: StatLine[];
+};
+
 export type LineupSlot = PlayerLite & {
   slot: string;
   points: number;

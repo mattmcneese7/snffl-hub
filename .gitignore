@@ -32,3 +32,6 @@ coverage/
 
 # Script caches, never commit the 5MB player database
 .cache/
+
+# Local typecheck artifact
+tsconfig.tsbuildinfo

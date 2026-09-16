@@ -1,7 +1,7 @@
 // Per player season lines, built from the same weekly games the rest of the
 // site reads, so a player page never disagrees with a matchup page.
 
-import { getWeekGames, playerOf, scoredWeek, teams } from './league.ts';
+import { allPlayers, getWeekGames, playerOf, scoredWeek, teams } from './league.ts';
 import { getRosters } from './sleeper.ts';
 import type { PlayerLite } from './types.ts';
 
@@ -77,6 +77,42 @@ export async function getPlayerSeason(playerId: string): Promise<PlayerSeason> {
     ),
     weeks,
   };
+}
+
+/**
+ * Every player we carry, owned and free agent alike, for the Players browser.
+ *
+ * Ownership comes from the live Sleeper rosters. When that call fails,
+ * getOwnership falls back to the nightly starters, which is 126 players rather
+ * than the full rosters, so bench players would read as free agents. The
+ * fallback is reported rather than hidden: the browser says when ownership is
+ * degraded instead of stating it as fact.
+ */
+export async function getPlayerDirectory(): Promise<{
+  players: PlayerSeason[];
+  ownershipComplete: boolean;
+}> {
+  const [lines, owned] = await Promise.all([seasonLines(), getOwnership()]);
+
+  // A full roster is about 15 per team. Anything near the starter count means
+  // the live call did not answer and the nightly starters are standing in.
+  const ownershipComplete = owned.size > teams.length * 10;
+
+  const out: PlayerSeason[] = allPlayers().map((player) => {
+    const weeks = (lines.get(player.id) ?? []).sort((a, b) => a.week - b.week);
+    return {
+      player,
+      ownerRosterId: owned.get(player.id) ?? null,
+      totalPoints: Number(weeks.reduce((sum, w) => sum + w.points, 0).toFixed(2)),
+      startedPoints: Number(
+        weeks.filter((w) => w.started).reduce((sum, w) => sum + w.points, 0).toFixed(2)
+      ),
+      weeks,
+    };
+  });
+
+  out.sort((a, b) => b.totalPoints - a.totalPoints);
+  return { players: out, ownershipComplete };
 }
 
 /** Rostered players only, best season first. All 876 would be a phone book. */

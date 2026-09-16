@@ -205,4 +205,39 @@ for (const [id, raw] of Object.entries(all) as [string, RawPlayer][]) {
 console.log(`  players: kept ${Object.keys(players).length}, skipped ${skipped}`);
 write('players.json', players);
 
+// Season stats for player research. Trimmed the same way as the player
+// database, by player rather than by field: curating the field list saved 1KB
+// of 230KB, so a mapping layer would only be a chance to mislabel a number.
+const statsUrl =
+  `https://api.sleeper.com/stats/nfl/${league.season}?season_type=regular&order_by=pts_ppr&` +
+  [...KEEP_POSITIONS].map((p) => `position[]=${p}`).join('&');
+
+let statLines: Record<string, Record<string, number>> = {};
+try {
+  const res = await fetch(statsUrl);
+  if (res.ok) {
+    const rows = (await res.json()) as { player_id?: string; stats?: Record<string, number> }[];
+    for (const row of Array.isArray(rows) ? rows : []) {
+      const id = row?.player_id;
+      if (!id || !players[id]) continue;
+      if (!row.stats || !Object.keys(row.stats).length) continue;
+      statLines[id] = row.stats;
+    }
+  } else {
+    console.warn(`  stats: endpoint returned ${res.status}`);
+  }
+} catch (error) {
+  console.warn(`  stats: fetch failed, ${(error as Error).message}`);
+}
+
+// An empty result means the endpoint broke, not that nobody has played. Writing
+// it would wipe a committed file that the player pages read, so the old one
+// stands until the next run succeeds.
+if (Object.keys(statLines).length) {
+  console.log(`  stats: ${Object.keys(statLines).length} players with a season line`);
+  write('player-stats.json', statLines);
+} else {
+  console.warn('  stats: nothing returned, keeping the existing file');
+}
+
 console.log('nightly refresh complete');

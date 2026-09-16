@@ -34,6 +34,16 @@ export function playerOf(id: string): PlayerLite {
   };
 }
 
+/**
+ * Every player in the nightly database.
+ *
+ * Reads the real keys rather than routing through playerOf, which fabricates an
+ * "Unknown Player" record for any id it does not recognize. That fallback is
+ * right for a lineup slot, where a gap would be worse, and wrong for a
+ * browsable list, where it would put an invented row in front of a reader.
+ */
+export const allPlayers = (): PlayerLite[] => Object.values(players);
+
 export const currentWeek = () => Math.max(1, league.state.display_week || league.state.week);
 
 /** The most recent week that actually has scores behind it. */

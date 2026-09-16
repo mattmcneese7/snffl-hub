@@ -1,10 +1,47 @@
-import Link from 'next/link';
 import Chrome from '@/components/Chrome';
-import { teamByRoster } from '@/lib/league';
-import { getRosteredPlayers } from '@/lib/players';
+import PlayersBrowser, { type PlayerRow } from '@/components/PlayersBrowser';
+import { league, teamByRoster, teams } from '@/lib/league';
+import { getPlayerDirectory } from '@/lib/players';
+import { getWeekProjections } from '@/lib/projections';
+import { positionRank, snapSharePct, totalTouchdowns, totalYards } from '@/lib/stats';
 
 export default async function PlayersPage() {
-  const players = await getRosteredPlayers();
+  // state.week is the week in progress. display_week lags it, so projecting
+  // off display_week would label last week as the one coming up.
+  const upcoming = league.state.week;
+
+  const [{ players, ownershipComplete }, projections] = await Promise.all([
+    getPlayerDirectory(),
+    getWeekProjections(league.season, upcoming),
+  ]);
+
+  // Sort keys are read here rather than in the browser component: lib/stats.ts
+  // static imports a 292KB file, and importing it client side would send all of
+  // it to the phone.
+  const rows: PlayerRow[] = players.map((entry) => {
+    const owner = entry.ownerRosterId ? teamByRoster(entry.ownerRosterId) : null;
+    return {
+      id: entry.player.id,
+      name: entry.player.name,
+      position: entry.player.position,
+      nflTeam: entry.player.team ?? '',
+      headshot: entry.player.headshot,
+      ownerRosterId: entry.ownerRosterId,
+      ownerManager: owner?.manager ?? null,
+      points: entry.totalPoints,
+      projected: projections[entry.player.id] ?? null,
+      posRank: positionRank(entry.player.id),
+      yards: totalYards(entry.player.id),
+      touchdowns: totalTouchdowns(entry.player.id),
+      snapPct: Math.round(snapSharePct(entry.player.id)),
+    };
+  });
+
+  const owners = teams
+    .map((team) => ({ rosterId: team.rosterId, manager: team.manager }))
+    .sort((a, b) => a.manager.localeCompare(b.manager));
+
+  const nflTeams = [...new Set(rows.map((row) => row.nflTeam).filter(Boolean))].sort();
 
   return (
     <>
@@ -13,39 +50,15 @@ export default async function PlayersPage() {
         <section>
           <div className="snffl-block-heading">
             <h2 className="snffl-headline">Players</h2>
-            <span className="snffl-block-heading-link">{players.length} rostered</span>
+            <span className="snffl-block-heading-link">{rows.length} in the database</span>
           </div>
-          <div className="snffl-card">
-            {players.map((entry) => {
-              const owner = entry.ownerRosterId ? teamByRoster(entry.ownerRosterId) : null;
-              return (
-                <Link
-                  className="snffl-roster-row"
-                  href={`/players/${entry.player.id}`}
-                  key={entry.player.id}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    className="snffl-lineup-headshot"
-                    src={entry.player.headshot}
-                    alt=""
-                    loading="lazy"
-                  />
-                  <span>
-                    <span className="snffl-lineup-name">{entry.player.name}</span>
-                    <span className="snffl-lineup-meta">
-                      {entry.player.position}
-                      {entry.player.team ? ` · ${entry.player.team}` : ''}
-                      {owner ? ` · ${owner.manager}` : ' · free agent'}
-                    </span>
-                  </span>
-                  <span className="snffl-roster-points snffl-numeric">
-                    {entry.totalPoints.toFixed(2)}
-                  </span>
-                </Link>
-              );
-            })}
-          </div>
+          <PlayersBrowser
+            rows={rows}
+            owners={owners}
+            nflTeams={nflTeams}
+            upcomingWeek={upcoming}
+            ownershipComplete={ownershipComplete}
+          />
         </section>
       </main>
     </>

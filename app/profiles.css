@@ -23,6 +23,29 @@
 .snffl-profile-name { font-size: 22px; margin: 0; }
 .snffl-profile-sub { margin: 2px 0 0; font-size: 12px; font-weight: 700; opacity: 0.9; }
 
+/* Position and NFL team, in its own box.
+   At 12px this line needs 4.5:1, and some real team colors cannot give that in
+   either direction: Chargers powder blue measures 4.28:1 against white and
+   4.36:1 against dark. Carrying its own background means the line is readable
+   on any team color, so the hero keeps the actual brand color behind it.
+   The border guarantees a visible edge on the near black teams, where the box
+   itself blends into the background. */
+.snffl-player-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 0 0;
+  padding: 3px 9px;
+  background: #141210;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 1;
+}
+
 .snffl-player-hero { min-height: 140px; }
 .snffl-player-cutout {
   width: 92px;
@@ -64,6 +87,61 @@
   color: var(--ink-secondary);
 }
 .snffl-stat-value { font-size: 20px; }
+
+/* ---------- Season stat blocks ---------- */
+
+/* Built from the same tokens as the stat tiles above, so no new color pair
+   enters the theme and the contrast gate keeps covering these. */
+.snffl-stat-blocks {
+  display: grid;
+  gap: 10px;
+}
+.snffl-stat-block {
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 10px 12px;
+}
+.snffl-stat-block-title {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  margin: 0 0 8px;
+}
+.snffl-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 12px;
+}
+.snffl-stat-pair {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 4px;
+  min-width: 0;
+}
+.snffl-stat-pair-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-secondary);
+  /* Long labels such as Fumbles Recovered wrap rather than shove the number
+     out of the row. */
+  min-width: 0;
+}
+.snffl-stat-pair-value {
+  font-size: 14px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.snffl-projection-note {
+  font-size: 12px;
+  color: var(--ink-secondary);
+  margin: 6px 0 0;
+}
 
 /* ---------- Trophy case ---------- */
 

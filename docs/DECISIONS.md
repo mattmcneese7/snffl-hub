@@ -47,6 +47,30 @@ within the uploads-only quota budget.
 Trades render from Sleeper transactions as soon as they complete. Letter grades
 come from the Trade Desk in Checkpoint 6, so a trade shows ungraded until then.
 
+## Player research, Checkpoint 5c
+
+Requested in conversation. The brief covers player pages with stat tiles and a
+game log, but it describes neither NFL season stats nor list controls, so this
+is scope beyond it.
+
+- **Season stats come from Sleeper's stats endpoint** and are committed nightly
+  as raw stat lines. Trimming is by player, not by field: only players already
+  in the trimmed database, and only those who have played. Curating the field
+  list saved 1KB of 230KB, so a field mapping layer would buy nothing and add
+  chances to mislabel a number on screen.
+- The committed file is **292KB**, against 234KB for the player database.
+- **An empty response never overwrites the file.** A broken endpoint would
+  otherwise wipe data the player pages read.
+- **Stat blocks answer to league scoring**, not Sleeper defaults: full PPR, 25
+  yards per passing point, field goals scored in distance bands from 3 up to 6,
+  and a defense scored on takeaways plus banded points and yards allowed. An
+  empty block is dropped rather than rendered blank.
+- **Upcoming week projections use the existing projections call at request
+  time** and are never committed. Only about 475 of 3,305 rows carry a
+  projection, so a player without one reads as unavailable, never as zero.
+- **The Players list gets sort and filter controls.** Free agents sit behind a
+  toggle, since showing all 876 at once would need virtualization.
+
 ## Presentation
 
 - All 14 managers appear on every surface. No truncated lists.

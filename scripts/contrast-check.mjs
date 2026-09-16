@@ -137,5 +137,21 @@ if (palettes) {
   }
 }
 
+// Pairs written as literal hex rather than tokens, checked once because they do
+// not change with the theme. The player hero keeps its NFL team color in both
+// themes, so the chip sitting on it cannot use var(--ink): that token inverts to
+// near white in dark and the line would disappear against its own fill.
+const LITERAL_PAIRS = [
+  ['#ffffff', '#141210', 4.5, 'position and team chip on the player hero'],
+];
+
+console.log('\ntheme independent literals');
+for (const [fg, bg, min, label] of LITERAL_PAIRS) {
+  const r = ratio(parse(fg), parse(bg));
+  const ok = r >= min;
+  if (!ok) failures++;
+  console.log(`  ${ok ? 'pass' : 'FAIL'}  ${r.toFixed(2)}:1  (min ${min})  ${label}`);
+}
+
 console.log(failures ? `\n${failures} failing pair(s)` : '\nall pairs pass in both themes');
 process.exit(failures ? 1 : 0);

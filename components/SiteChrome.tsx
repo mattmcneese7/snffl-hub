@@ -102,7 +102,14 @@ function Ticker({ tag, items, variant }: { tag: string; items: TickerItem[]; var
       <span className={`snffl-ticker-tag snffl-ticker-tag-${variant}`}>{tag}</span>
       <div className="snffl-ticker-track">
         {content.map((item, i) => (
-          <span className="snffl-ticker-entry" key={`${item.id}-${i}`}>
+          // The second pass exists only so the marquee can loop without a seam.
+          // Left readable, a screen reader announces the entire scoreboard and
+          // then announces all of it again.
+          <span
+            className="snffl-ticker-entry"
+            key={`${item.id}-${i}`}
+            aria-hidden={items.length > 0 && i >= items.length ? true : undefined}
+          >
             <span className="snffl-ticker-item">
               {item.parts.map((part, j) => (
                 <span className={`snffl-ticker-${part.kind}`} key={j}>

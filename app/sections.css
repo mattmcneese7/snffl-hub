@@ -184,3 +184,78 @@
   .snffl-chug-name { transform: none; height: auto; max-width: 78px; }
   .snffl-chug-column { flex: 1 0 60px; }
 }
+
+/* ---------- The Feed, Checkpoint 7 ---------- */
+
+/* Jump buttons stay reachable while the page scrolls. Offset sits below the
+   header, section strip and ticker stack, which is the same stack the section
+   strip already pins against. */
+.snffl-feed-jump {
+  position: sticky;
+  top: calc(var(--header-h) + var(--strip-h) + 56px + env(safe-area-inset-top, 0px));
+  z-index: 40;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 8px 0;
+  background: var(--bg);
+}
+.snffl-feed-jump::-webkit-scrollbar { display: none; }
+
+.snffl-feed-jump-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  min-height: var(--tap);
+  padding: 0 12px;
+  background: var(--card);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.snffl-feed-jump-active {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+.snffl-feed-jump-count {
+  font-size: 11px;
+  font-weight: 800;
+  opacity: 0.75;
+}
+
+.snffl-feed-section { display: grid; gap: 9px; }
+.snffl-feed-heading { font-size: 17px; scroll-margin-top: 180px; }
+
+.snffl-feed-post {
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.snffl-feed-post:last-child { border-bottom: 0; }
+.snffl-feed-post-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+.snffl-feed-post-title {
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+.snffl-feed-post-time {
+  font-size: 11px;
+  color: var(--ink-secondary);
+  white-space: nowrap;
+}
+.snffl-feed-post-body {
+  margin: 3px 0 0;
+  font-size: 13px;
+  color: var(--ink-secondary);
+}

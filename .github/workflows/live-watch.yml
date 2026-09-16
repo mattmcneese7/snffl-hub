@@ -1,0 +1,43 @@
+name: live watcher
+
+on:
+  schedule:
+    # Every 5 minutes across the game window, Brief Section 3. Cron is UTC, and
+    # Central is 5 or 6 hours behind, so a Thursday night kickoff and a Monday
+    # night finish both land on the following UTC day. Tuesday is included for
+    # the tail of Monday Night Football.
+    #
+    # The job exits in one ESPN call when nothing is in progress, which is what
+    # most of these firings do.
+    - cron: '*/5 * * * 0,1,2,4,5,6'
+  workflow_dispatch:
+
+# No contents: write on purpose. The watcher keeps no state in the repo: dedupe
+# and the hourly cap read feed_posts, so there is nothing to commit and no
+# hundreds of commits a weekend.
+permissions:
+  contents: read
+
+concurrency:
+  # A slow run must not overlap the next firing and double post.
+  group: live-watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+
+      - name: Look for live games and write feed posts
+        env:
+          SLEEPER_LEAGUE_ID: ${{ secrets.SLEEPER_LEAGUE_ID }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/live-watch.ts

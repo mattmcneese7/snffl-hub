@@ -83,8 +83,32 @@
    "job": "rag week 1 preview retry",
    "model": "claude-sonnet-5",
    "usd": 0.0214
+  },
+  {
+   "at": "2026-09-16T04:55:29.557Z",
+   "job": "highlight tagging",
+   "model": "claude-haiku-4-5",
+   "usd": 0.0231
+  },
+  {
+   "at": "2026-09-16T04:58:02.137Z",
+   "job": "highlight tagging",
+   "model": "claude-haiku-4-5",
+   "usd": 0.0688
+  },
+  {
+   "at": "2026-09-16T04:58:46.667Z",
+   "job": "highlight tagging",
+   "model": "claude-haiku-4-5",
+   "usd": 0.009
+  },
+  {
+   "at": "2026-09-16T05:00:40.672Z",
+   "job": "highlight tagging",
+   "model": "claude-haiku-4-5",
+   "usd": 0.0089
   }
  ],
  "limitUsd": 8.5,
- "spent": 0.6234
+ "spent": 0.7332
 }

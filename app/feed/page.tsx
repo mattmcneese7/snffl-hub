@@ -1,6 +1,8 @@
 import Chrome from '@/components/Chrome';
 import FeedStream from '@/components/FeedStream';
 import { getFeedPosts } from '@/lib/feed';
+import { getHighlights } from '@/lib/highlights';
+import { teams } from '@/lib/league';
 
 /**
  * The Feed, Checkpoint 7.
@@ -12,7 +14,11 @@ import { getFeedPosts } from '@/lib/feed';
 export const revalidate = 30;
 
 export default async function FeedPage() {
-  const posts = await getFeedPosts();
+  const [posts, highlights] = await Promise.all([getFeedPosts(), getHighlights()]);
+
+  // Keyed by text, because owner_team_id is a text column even though roster
+  // ids are numbers everywhere else in the project.
+  const managers = Object.fromEntries(teams.map((team) => [String(team.rosterId), team.manager]));
 
   return (
     <>
@@ -31,7 +37,7 @@ export default async function FeedPage() {
           </p>
         </section>
 
-        <FeedStream posts={posts} />
+        <FeedStream posts={posts} highlights={highlights} managers={managers} />
       </main>
     </>
   );

@@ -106,6 +106,31 @@ Decisions taken while building the watcher that the brief does not specify.
   animation duration, iteration count and transition duration across every
   element, so none carries a guard of its own.
 
+## Highlights, Checkpoint 8
+
+- **Uploads, never search.** `search.list` costs 100 units of the 10,000 unit
+  daily YouTube quota and `playlistItems.list` costs 1, so search would allow
+  about a hundred calls a day against roughly ten thousand. Resolving the NFL
+  uploads playlist and paging it is the whole read path.
+- **Haiku classifies, code attributes.** The NFL channel is a mixed feed: a real
+  page of 50 uploads held 27 social posts, 6 studio shows, 4 compilations, 2
+  full games and 11 actual play clips. A title regex passed 51% of a 150 upload
+  sample including "FULL GAME" replays and "Every Touchdown of Week 1", so
+  judgment goes to the model. Matching a name to a player id and deciding owned
+  versus free agent stays in code, where it can be checked.
+- **The video id is the primary key**, so a clip cannot be stored twice and the
+  stored ids tell the tagger what it has already seen.
+- **Only unseen uploads are classified.** Classifying a full page costs about
+  two cents; re-reading everything hourly would run to real money over a
+  weekend for no new information.
+- **Hourly rather than the brief's every 30 minutes**, Matt's call, to halve the
+  tagging spend.
+- **Name matching on titles runs near 60%**, lower than the 29 of 30 the same
+  normalisation achieves on ESPN play text, because titles often name nobody:
+  "WALKER WALKS IN THE ENDZONE", "The No. 6 overall pick gets the INT". An
+  unmatched clip still stores, without an owner, the same way an unattributed
+  touchdown still posts.
+
 ## Presentation
 
 - All 14 managers appear on every surface. No truncated lists.

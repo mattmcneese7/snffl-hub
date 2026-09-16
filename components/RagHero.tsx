@@ -10,9 +10,12 @@ import type { Article } from '@/lib/rag';
 export default function RagHero({
   week,
   articles,
+  stills = {},
 }: {
   week: number | null;
   articles: Article[];
+  /** Slug to highlight still. A missing slug keeps the gradient. */
+  stills?: Record<string, string>;
 }) {
   if (!week || !articles.length) {
     return (
@@ -37,7 +40,14 @@ export default function RagHero({
           href={`/rag/${week}/${article.slug}`}
           key={article.slug}
         >
-          <span className="snffl-rag-hero-art" aria-hidden />
+          <span className="snffl-rag-hero-art" aria-hidden>
+            {/* A still that fails to load leaves the gradient underneath it,
+                which is the fallback the brief asks of every image source. */}
+            {stills[article.slug] ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={stills[article.slug]} alt="" loading="lazy" />
+            ) : null}
+          </span>
           <span className="snffl-rag-hero-body">
             <span className="snffl-rag-category">{article.category}</span>
             <span className="snffl-rag-hero-headline">{article.headline}</span>

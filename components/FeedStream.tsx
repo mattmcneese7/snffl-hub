@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import HighlightCard from './HighlightCard';
 import type { FeedPost } from '@/lib/feed';
+import type { Highlight } from '@/lib/highlights';
 
 /**
  * The Feed, with jump buttons that follow scroll, per Brief Section 2.
@@ -35,9 +37,28 @@ function timeAgo(iso: string): string {
   return `${Math.floor(hours / 24)}d ago`;
 }
 
-export default function FeedStream({ posts }: { posts: FeedPost[] }) {
+export default function FeedStream({
+  posts,
+  highlights = [],
+  managers = {},
+}: {
+  posts: FeedPost[];
+  /** Clips live in their own table, so they arrive separately from posts. */
+  highlights?: Highlight[];
+  /** Roster id as text to manager name, matching the highlights column type. */
+  managers?: Record<string, string>;
+}) {
   const [active, setActive] = useState<TabKind>('live');
+  const [ownership, setOwnership] = useState<'owned' | 'free'>('owned');
   const headings = useRef<Record<string, HTMLElement | null>>({});
+
+  const clips = useMemo(
+    () => ({
+      owned: highlights.filter((clip) => clip.ownerTeamId),
+      free: highlights.filter((clip) => !clip.ownerTeamId),
+    }),
+    [highlights]
+  );
 
   const grouped = useMemo(() => {
     const out = {} as Record<TabKind, FeedPost[]>;
@@ -109,8 +130,10 @@ export default function FeedStream({ posts }: { posts: FeedPost[] }) {
             onClick={() => jumpTo(tab.kind)}
           >
             {tab.label}
-            {grouped[tab.kind].length ? (
-              <span className="snffl-feed-jump-count">{grouped[tab.kind].length}</span>
+            {(tab.kind === 'highlight' ? highlights.length : grouped[tab.kind].length) ? (
+              <span className="snffl-feed-jump-count">
+                {tab.kind === 'highlight' ? highlights.length : grouped[tab.kind].length}
+              </span>
             ) : null}
           </button>
         ))}
@@ -128,7 +151,46 @@ export default function FeedStream({ posts }: { posts: FeedPost[] }) {
             {tab.label}
           </h2>
 
-          {grouped[tab.kind].length ? (
+          {tab.kind === 'highlight' ? (
+            <>
+              {/* Owned and Free Agents, per Brief Section 2. */}
+              <div className="snffl-clip-tabs">
+                {(['owned', 'free'] as const).map((which) => (
+                  <button
+                    key={which}
+                    type="button"
+                    className={`snffl-clip-tab${ownership === which ? ' snffl-clip-tab-active' : ''}`}
+                    aria-pressed={ownership === which}
+                    onClick={() => setOwnership(which)}
+                  >
+                    {which === 'owned' ? 'Owned' : 'Free Agents'}
+                    {clips[which].length ? ` ${clips[which].length}` : ''}
+                  </button>
+                ))}
+              </div>
+
+              {clips[ownership].length ? (
+                <div className="snffl-card">
+                  {clips[ownership].map((clip) => (
+                    <HighlightCard
+                      key={clip.id}
+                      highlight={clip}
+                      managerName={clip.ownerTeamId ? managers[clip.ownerTeamId] : null}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="snffl-placeholder">
+                  <span className="snffl-placeholder-label">Nothing yet</span>
+                  <span className="snffl-placeholder-note">
+                    {ownership === 'owned'
+                      ? 'Clips of players on a roster in this league land here.'
+                      : 'Clips of players nobody has claimed land here.'}
+                  </span>
+                </div>
+              )}
+            </>
+          ) : grouped[tab.kind].length ? (
             <div className="snffl-card">
               {grouped[tab.kind].map((post) => (
                 <article className="snffl-feed-post" key={post.id}>

@@ -1,0 +1,48 @@
+name: highlights pull
+
+on:
+  schedule:
+    # Hourly across the game window. The brief says every 30 minutes; Matt chose
+    # hourly to halve the tagging spend, and the two changes compound: only
+    # unseen uploads reach the tagger, so a steady state run classifies a
+    # handful rather than a full page of 50.
+    #
+    # Cron is UTC and Central runs 5 or 6 hours behind, so Thursday night and
+    # Monday night both spill into the following UTC day. Tuesday covers the
+    # tail of Monday night football.
+    #
+    # The job is cheap when nothing is new: it reads one page of uploads and
+    # stops before calling the tagger at all.
+    - cron: '0 * * * 0,1,2,4,5,6'
+  workflow_dispatch:
+
+# No contents: write. State lives in Supabase, keyed on the YouTube video id,
+# so there is nothing to commit.
+permissions:
+  contents: read
+
+concurrency:
+  # A slow run must not overlap the next and classify the same uploads twice.
+  group: highlights-pull
+  cancel-in-progress: false
+
+jobs:
+  pull:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+
+      - name: Pull new uploads, tag the clips, store them
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SLEEPER_LEAGUE_ID: ${{ secrets.SLEEPER_LEAGUE_ID }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/highlights-pull.ts

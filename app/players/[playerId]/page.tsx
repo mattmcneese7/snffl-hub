@@ -4,6 +4,8 @@ import PointsByWeekChart from '@/components/PointsByWeekChart';
 import { ESPN_CUTOUT } from '@/lib/espn';
 import { league, teamByRoster } from '@/lib/league';
 import { getPlayerSeason } from '@/lib/players';
+import HighlightCard from '@/components/HighlightCard';
+import { getHighlightsForPlayer } from '@/lib/highlights';
 import { getWeekProjections } from '@/lib/projections';
 import { statBlocksFor, statsFor } from '@/lib/stats';
 import { teamPaint } from '@/config/nfl-colors';
@@ -17,9 +19,10 @@ export default async function PlayerPage({
   // state.week is the week actually in progress. display_week lags it, and
   // projecting off the lagging value would show last week as next week.
   const upcoming = league.state.week;
-  const [season, projections] = await Promise.all([
+  const [season, projections, clips] = await Promise.all([
     getPlayerSeason(playerId),
     getWeekProjections(league.season, upcoming),
+    getHighlightsForPlayer(playerId),
   ]);
   const { player } = season;
   const projected = projections[playerId];
@@ -121,6 +124,24 @@ export default async function PlayerPage({
             )}
           </div>
         </section>
+
+        {clips.length ? (
+          <section>
+            <div className="snffl-block-heading">
+              <h2 className="snffl-headline">Highlights</h2>
+              <span className="snffl-block-heading-link">{clips.length} clips</span>
+            </div>
+            <div className="snffl-card">
+              {clips.map((clip) => (
+                <HighlightCard
+                  key={clip.id}
+                  highlight={clip}
+                  managerName={owner?.manager ?? null}
+                />
+              ))}
+            </div>
+          </section>
+        ) : null}
 
         <section>
           <div className="snffl-block-heading">

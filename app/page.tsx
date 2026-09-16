@@ -14,6 +14,8 @@ import NflScores from '@/components/NflScores';
 import { anyGameLive, getNflScoreboard } from '@/lib/espn';
 import { toFeature } from '@/lib/feature';
 import { getFeedPosts } from '@/lib/feed';
+import { getHighlights } from '@/lib/highlights';
+import { stillsForArticles } from '@/lib/story-images';
 import {
   getPowerRankings,
   getStandings,
@@ -39,7 +41,7 @@ const QUICK_LINKS = [
 
 export default async function HomePage() {
   const week = await scoredWeek();
-  const [games, standings, performers, rankings, odds, chugs, trades, nfl, livePosts] =
+  const [games, standings, performers, rankings, odds, chugs, trades, nfl, livePosts, clips] =
     await Promise.all([
       getWeekGames(week),
       getStandings(),
@@ -50,6 +52,7 @@ export default async function HomePage() {
       getTrades(),
       getNflScoreboard(),
       getFeedPosts(8),
+      getHighlights(),
     ]);
 
   // ESPN rather than the game status, which is derived from week arithmetic and
@@ -97,7 +100,15 @@ export default async function HomePage() {
           href={latestRagWeek ? `/rag/${latestRagWeek}` : '/rag'}
           linkLabel={latestRagWeek ? `Week ${latestRagWeek} issue` : 'The section'}
         >
-          <RagHero week={latestRagWeek} articles={ragIssue?.articles ?? []} />
+          <RagHero
+            week={latestRagWeek}
+            articles={ragIssue?.articles ?? []}
+            stills={stillsForArticles(
+              ragIssue?.articles ?? [],
+              clips,
+              Object.fromEntries(teams.map((t) => [String(t.rosterId), t.manager]))
+            )}
+          />
         </HomeWidget>
 
         {feature ? (

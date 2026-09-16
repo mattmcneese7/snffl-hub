@@ -32,12 +32,29 @@ if (!FORCE && hour < 9) {
   process.exit(0);
 }
 
+/** Republish a week from its saved output: node scripts/publish.ts --week=1 */
+const WEEK_ARG = Number(
+  process.argv.find((arg) => /^--week=\d+$/.test(arg))?.split('=')[1] ?? 0
+);
+
 let pending: { week: number; batchId: string | null; allowed?: string[] };
 try {
   pending = JSON.parse(fs.readFileSync(PENDING, 'utf8'));
 } catch {
-  console.log('no pending issue. Nothing to publish.');
-  process.exit(0);
+  // Publish deletes pending.json once it succeeds, which used to make the saved
+  // batch output unreachable by the only script that reads it: the raw store
+  // kept the writing safe while the re-run path exited before ever looking at
+  // it. A week given on the command line republishes from disk, at no cost.
+  const savedWeek = WEEK_ARG;
+  const savedPath = path.join('data', 'rag', 'raw', `week-${savedWeek}.json`);
+  if (savedWeek && fs.existsSync(savedPath)) {
+    pending = { week: savedWeek, batchId: null };
+    console.log(`no pending issue, republishing week ${savedWeek} from ${savedPath}`);
+  } else {
+    console.log('no pending issue. Nothing to publish.');
+    if (!savedWeek) console.log('  pass --week=N to republish that week from its saved output.');
+    process.exit(0);
+  }
 }
 
 const { week, batchId } = pending;

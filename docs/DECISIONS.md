@@ -71,6 +71,41 @@ is scope beyond it.
 - **The Players list gets sort and filter controls.** Free agents sit behind a
   toggle, since showing all 876 at once would need virtualization.
 
+## Live layer, Checkpoint 7
+
+Decisions taken while building the watcher that the brief does not specify.
+
+- **Touchdowns come from ESPN scoring plays, not from fantasy point jumps.** A
+  six point jump is equally six receiving yards' worth of points in this league,
+  so inference would post wrong things confidently. Sleeper is used only to
+  attribute a play to a manager.
+- **Scorer names are matched after normalising suffixes.** ESPN writes "Deebo
+  Samuel Sr." where the player database has "Deebo Samuel", and no name in the
+  database carries a suffix, so the normalisation only runs one way. Measured on
+  real Week 1 plays it took matching from 28 of 30 to 29. The remaining miss is
+  a defensive player correctly absent from a fantasy database.
+- **An unmatched touchdown still posts**, without a manager attached. The Feed
+  is a football feed before it is a fantasy feed.
+- **The watcher keeps no state of its own.** Dedupe reads the play ids earlier
+  runs wrote into `feed_posts.payload`, and the hourly cap counts recent rows.
+  A snapshot file would mean hundreds of commits a weekend, and a missed run
+  cannot desynchronise anything this way.
+- **Ownership comes from the live Sleeper rosters**, not the nightly starters.
+  `teams.json` stores 126 starters rather than full rosters, and built from that
+  only 18 of 30 real touchdowns attributed to a manager.
+- **Only the service role writes.** The anon key ships in a public bundle, and
+  was checked against the live project: it reads `feed_posts` and is refused on
+  insert by row level security.
+- **Live polling is a dedicated component, not part of the chrome.** The chrome
+  renders on every route, so a timer there would poll all week. It also stops
+  while the tab is hidden.
+- **Motion inventory.** Six keyframes ship: the wordmark wave, drip and slosh,
+  the ticker scroll, the LIVE badge pulse, and the page transition. Checkpoint 7
+  adds the TOUCHDOWN wipe and the lead change banner. All of them are covered by
+  the single `prefers-reduced-motion` block in `globals.css`, which collapses
+  animation duration, iteration count and transition duration across every
+  element, so none carries a guard of its own.
+
 ## Presentation
 
 - All 14 managers appear on every surface. No truncated lists.

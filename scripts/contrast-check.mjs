@@ -88,6 +88,12 @@ const PAIRS = [
   ['ticker-good', 'ticker-band-a', 4.5, 'ticker winner on league band'],
   ['ticker-bad', 'ticker-band-a', 4.5, 'ticker loser on league band'],
   ['bg', 'ink', 4.5, 'primary button label on ink fill'],
+  // The TOUCHDOWN wipe is 30px at weight 900, so large text. In dark theme this
+  // measures 3.04:1, which clears 3:1 by a hair: if the size ever drops below
+  // the large text threshold the floor becomes 4.5 and it fails.
+  ['on-chip', 'marker-red', 3, 'TOUCHDOWN wipe label'],
+  ['live', 'surface', 3, 'lead change banner rule'],
+  ['ink', 'surface', 4.5, 'lead change banner text'],
 ];
 
 let failures = 0;

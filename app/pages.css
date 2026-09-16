@@ -79,6 +79,11 @@
 }
 
 /* Your Matchup, the team picked once and remembered on the device. */
+/* The TOUCHDOWN wipe's font size is load bearing for its contrast. White on
+   --marker-red measures 3.04:1 in dark theme, which clears the 3:1 floor only
+   because 30px at weight 900 is large text. Drop below the large text
+   threshold and the floor becomes 4.5:1 and this fails immediately. */
+
 /* ---------- Players browser ---------- */
 
 .snffl-browser-controls { display: grid; gap: 10px; margin-bottom: 10px; }

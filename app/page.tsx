@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Chrome from '@/components/Chrome';
 import FeatureMatchup from '@/components/FeatureMatchup';
 import HomeWidget from '@/components/HomeWidget';
+import LiveRefresh from '@/components/LiveRefresh';
 import Masthead from '@/components/Masthead';
 import PlayoffTitle from '@/components/PlayoffTitle';
 import RagHero from '@/components/RagHero';
@@ -9,6 +10,7 @@ import ResultBug from '@/components/ResultBug';
 import StandingsTable from '@/components/StandingsTable';
 import YourMatchup from '@/components/YourMatchup';
 import { getChugCounts } from '@/lib/awards';
+import { anyGameLive, getNflScoreboard } from '@/lib/espn';
 import { toFeature } from '@/lib/feature';
 import {
   getPowerRankings,
@@ -35,7 +37,7 @@ const QUICK_LINKS = [
 
 export default async function HomePage() {
   const week = await scoredWeek();
-  const [games, standings, performers, rankings, odds, chugs, trades] = await Promise.all([
+  const [games, standings, performers, rankings, odds, chugs, trades, nfl] = await Promise.all([
     getWeekGames(week),
     getStandings(),
     getTopPerformers(week),
@@ -43,7 +45,12 @@ export default async function HomePage() {
     getPlayoffOdds(),
     getChugCounts(),
     getTrades(),
+    getNflScoreboard(),
   ]);
+
+  // ESPN rather than the game status, which is derived from week arithmetic and
+  // can read live on a week that merely has points on the board.
+  const liveNow = anyGameLive(nfl);
 
   const ragWeeks = publishedWeeks();
   const latestRagWeek = ragWeeks.length ? ragWeeks[ragWeeks.length - 1] : null;
@@ -56,6 +63,7 @@ export default async function HomePage() {
   return (
     <>
       <Chrome section="Home" week={week} />
+      <LiveRefresh live={liveNow} />
       <main className="snffl-page">
         <section className="snffl-home-section">
           <div className="snffl-stories-rail">

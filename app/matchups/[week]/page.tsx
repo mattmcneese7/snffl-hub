@@ -1,16 +1,23 @@
 import Chrome from '@/components/Chrome';
+import LiveRefresh from '@/components/LiveRefresh';
 import ResultBug from '@/components/ResultBug';
 import WeekSelector from '@/components/WeekSelector';
+import { anyGameLive, getNflScoreboard } from '@/lib/espn';
 import { getWeekGames } from '@/lib/league';
 
 export default async function WeekPage({ params }: { params: Promise<{ week: string }> }) {
   const { week: raw } = await params;
   const week = Math.min(17, Math.max(1, Number(raw) || 1));
-  const games = await getWeekGames(week);
+  // ESPN rather than the game status: status is derived from week arithmetic,
+  // so it can read live on a week that simply has points on the board. Whether
+  // a ball is actually in play is the honest gate for a 30 second poll.
+  const [games, nfl] = await Promise.all([getWeekGames(week), getNflScoreboard()]);
+  const live = anyGameLive(nfl);
 
   return (
     <>
       <Chrome section="Matchups" week={week} />
+      <LiveRefresh live={live} />
       <main className="snffl-page">
         <section>
           <WeekSelector active={week} hrefFor={(w) => `/matchups/${w}`} />

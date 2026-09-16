@@ -94,10 +94,33 @@ for (const [name, tokens] of [['light', light], ['dark', dark]]) {
 }
 
 // Manager palettes carry white text, so they need the small-text threshold.
-if (fs.existsSync('design/style-frame/colors.json')) {
-  const colors = JSON.parse(fs.readFileSync('design/style-frame/colors.json', 'utf8'));
-  console.log('\nmanager palettes, white text on primary');
-  for (const c of Object.values(colors)) {
+// data/teams.json is what the nightly job regenerates and what the app renders,
+// so it is checked first. The Checkpoint 2 copy is the fallback until that file
+// exists, and neither being present is not a failure.
+function managerPalettes() {
+  if (fs.existsSync('data/teams.json')) {
+    const teams = JSON.parse(fs.readFileSync('data/teams.json', 'utf8'));
+    return {
+      source: 'data/teams.json',
+      list: teams.map((t) => ({ manager: t.manager, primary: t.colors?.primary })),
+    };
+  }
+  if (fs.existsSync('design/style-frame/colors.json')) {
+    const colors = JSON.parse(fs.readFileSync('design/style-frame/colors.json', 'utf8'));
+    return { source: 'design/style-frame/colors.json', list: Object.values(colors) };
+  }
+  return null;
+}
+
+const palettes = managerPalettes();
+if (palettes) {
+  console.log(`\nmanager palettes, white text on primary (${palettes.source})`);
+  for (const c of palettes.list) {
+    if (!c.primary) {
+      failures++;
+      console.log(`  FAIL  no primary color  ${c.manager}`);
+      continue;
+    }
     const r = ratio([255, 255, 255], parse(c.primary));
     const ok = r >= 4.5;
     if (!ok) failures++;

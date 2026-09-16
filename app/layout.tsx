@@ -2,6 +2,9 @@ import type { Metadata, Viewport } from 'next';
 import { Archivo, Source_Serif_4, Permanent_Marker } from 'next/font/google';
 import './globals.css';
 import './chrome.css';
+// Generated nightly from Sleeper avatars. Gives every manager a .mgr-<userId>
+// class exposing --mgr-primary and --mgr-secondary.
+import './manager-colors.css';
 
 // Self hosted through Next font loading, per Brief Section 3.
 const archivo = Archivo({

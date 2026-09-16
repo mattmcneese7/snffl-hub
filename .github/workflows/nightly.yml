@@ -1,0 +1,44 @@
+name: nightly refresh
+
+on:
+  schedule:
+    # 08:00 UTC is 3:00 AM Central during daylight saving. It becomes 2:00 AM
+    # after November 1, 2026, which is harmless for a cache refresh. The jobs
+    # that must hit an exact local time gate on it internally instead.
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+
+      - name: Pull Sleeper, nflverse and manager colors
+        env:
+          SLEEPER_LEAGUE_ID: ${{ secrets.SLEEPER_LEAGUE_ID }}
+        run: node scripts/nightly-refresh.ts
+
+      # Manager colors carry white text, so a palette that slipped below 4.5:1
+      # should fail the job rather than ship.
+      - run: npm run contrast
+
+      - name: Commit refreshed data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data app/manager-colors.css
+          if git diff --cached --quiet; then
+            echo "nothing changed"
+          else
+            git commit -m "Nightly data refresh"
+            git push
+          fi

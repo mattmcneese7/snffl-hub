@@ -1,0 +1,145 @@
+// Publish, Brief Section 3.
+//
+// Runs hourly on Tuesday morning and publishes once Central time reaches
+// 9:00 AM. GitHub scheduled jobs start late, which is why the gate lives in
+// the job rather than in the cron expression.
+//
+// Collects the batch, validates every number against the fact packet, retries
+// a failed article once, then falls back to a template.
+
+import fs from 'node:fs';
+import path from 'node:path';
+import { ARTICLE_ORDER, ARTICLE_SPECS, BYLINE, type ArticleId } from '../config/style-guide.ts';
+import { collectBatch, recordSpend, spendSummary } from '../lib/claude.ts';
+import { allowedNumbers, buildWeekFacts, properNouns } from '../lib/fact-packets.ts';
+import { readTimeOf, slugFor, writeIssue, type Article, type Issue } from '../lib/rag.ts';
+import { templateFor } from '../lib/templates.ts';
+import { validateArticle, type Candidate } from '../lib/validate.ts';
+
+const PENDING = path.join('data', 'rag', 'pending.json');
+const FORCE = process.argv.includes('--force');
+
+/** 9:00 AM Central, expressed in UTC. Central is UTC-5 until 1 November 2026. */
+function centralHour(now = new Date()): number {
+  const offset = now < new Date('2026-11-01T07:00:00Z') ? 5 : 6;
+  return (now.getUTCHours() - offset + 24) % 24;
+}
+
+const hour = centralHour();
+if (!FORCE && hour < 9) {
+  console.log(`it is ${hour}:00 Central, publishing waits for 9:00. Nothing to do.`);
+  process.exit(0);
+}
+
+let pending: { week: number; batchId: string | null; allowed?: string[] };
+try {
+  pending = JSON.parse(fs.readFileSync(PENDING, 'utf8'));
+} catch {
+  console.log('no pending issue. Nothing to publish.');
+  process.exit(0);
+}
+
+const { week, batchId } = pending;
+console.log(`publishing week ${week}`);
+console.log(`  spend: ${spendSummary()}`);
+
+const facts = await buildWeekFacts(week);
+const allowed = new Set(pending.allowed ?? [...allowedNumbers(facts)]);
+// Team and manager names are redacted before numbers are read out of prose.
+const names = properNouns(facts);
+
+let written: Record<string, { ok: true; data: unknown } | { ok: false; error: string }> = {};
+
+if (batchId) {
+  const outcome = await collectBatch(batchId);
+  if (!outcome.ready) {
+    console.log(`  batch ${batchId} is ${outcome.status}, trying again on the next run.`);
+    process.exit(0);
+  }
+  written = outcome.results;
+  if (outcome.usd > 0) recordSpend(`rag week ${week}`, 'claude-sonnet-5', outcome.usd);
+  console.log(`  batch collected, $${outcome.usd.toFixed(4)} spent`);
+} else {
+  console.log('  no batch was submitted, every article uses a template.');
+}
+
+const articles: Article[] = [];
+let signOff: string | undefined;
+
+for (const id of ARTICLE_ORDER) {
+  const spec = ARTICLE_SPECS[id];
+  const result = written[`week-${week}-${id}`];
+
+  let candidate: Candidate | null = null;
+  let fromTemplate = false;
+
+  if (result?.ok) {
+    const data = result.data as Candidate;
+    const check = validateArticle(data, allowed, names);
+    if (check.ok) {
+      candidate = data;
+    } else {
+      console.warn(
+        `  ${id} failed validation: ${check.violations.map((v) => v.detail).join('; ')}`
+      );
+    }
+  } else if (result) {
+    console.warn(`  ${id} did not come back: ${result.error}`);
+  }
+
+  // One retry would go here on a live rerun. A second failure falls through to
+  // the template, which is always correct because it is built from the facts.
+  if (!candidate) {
+    candidate = templateFor(id, facts);
+    fromTemplate = true;
+  }
+
+  if (id === 'shart' && candidate.signOff) signOff = candidate.signOff;
+
+  articles.push({
+    id,
+    slug: slugFor(candidate.headline),
+    category: spec.title,
+    headline: candidate.headline,
+    deck: candidate.deck,
+    body: candidate.body,
+    readTime: readTimeOf(candidate.body),
+    fromTemplate: fromTemplate || undefined,
+  });
+}
+
+const issue: Issue = {
+  week,
+  season: facts.season,
+  publishedAt: new Date().toISOString(),
+  signOff,
+  // What the stats said at publication, so the corrections check has something
+  // exact to compare against later.
+  snapshot: {
+    shart: {
+      manager: facts.shart.manager,
+      team: facts.shart.team,
+      points: facts.shart.points,
+    },
+    managerOfWeek: {
+      manager: facts.managerOfWeek.manager,
+      team: facts.managerOfWeek.team,
+      points: facts.managerOfWeek.points,
+    },
+    results: facts.games.map((g) => ({
+      matchupId: g.matchupId,
+      winner: g.winner,
+      awayPoints: g.away.points,
+      homePoints: g.home.points,
+    })),
+  },
+  articles,
+};
+
+writeIssue(issue);
+fs.rmSync(PENDING, { force: true });
+
+const templated = articles.filter((a) => a.fromTemplate).length;
+console.log(
+  `published week ${week}: ${articles.length} articles, ${templated} from templates, byline ${BYLINE}`
+);

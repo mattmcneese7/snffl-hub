@@ -2,7 +2,7 @@
 // schedule, per Brief Section 2. Projections drive the weekly score when they
 // are available, and season scoring averages take over when they are not.
 
-import type { PlayoffOdds } from './types';
+import type { PlayoffOdds } from './types.ts';
 
 export type ScheduleGame = { week: number; home: number; away: number };
 

@@ -1,0 +1,144 @@
+/* The SquirtRag. Masthead is an ink tabloid box with knocked out type and a
+   red THE tag, per Brief Section 4. No drips, no subheadline.
+   Article body is the serif face; everything else stays Archivo. */
+
+.snffl-masthead {
+  display: inline-flex;
+  align-items: stretch;
+  background: var(--ink);
+  padding: 0;
+}
+.snffl-masthead-the {
+  display: grid;
+  place-items: center;
+  background: var(--logo-red);
+  color: #fff;
+  font-weight: 900;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  padding: 0 8px;
+}
+.snffl-masthead-name {
+  font-family: var(--font-archivo);
+  font-weight: 900;
+  font-style: italic;
+  font-stretch: 62%;
+  font-size: 34px;
+  letter-spacing: -0.01em;
+  color: var(--bg);
+  padding: 6px 12px 6px 10px;
+}
+.snffl-masthead-note {
+  margin: 8px 0 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+}
+
+.snffl-rag-status {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-secondary);
+}
+
+.snffl-rag-category {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rag-category);
+  margin-bottom: 4px;
+}
+
+.snffl-rag-lead {
+  display: block;
+  padding: 16px;
+  color: inherit;
+  text-decoration: none;
+}
+.snffl-rag-lead-headline { font-size: 26px; margin: 0 0 6px; }
+.snffl-rag-deck {
+  margin: 0;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--ink-secondary);
+}
+.snffl-rag-meta {
+  display: block;
+  margin-top: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-secondary);
+}
+
+.snffl-rag-row {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  color: inherit;
+  text-decoration: none;
+}
+.snffl-rag-row:last-child { border-bottom: 0; }
+.snffl-rag-thumb {
+  width: 56px;
+  height: 46px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.snffl-rag-row-headline {
+  display: block;
+  font-family: var(--font-archivo);
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+.snffl-rag-article { display: grid; gap: 10px; }
+.snffl-rag-article-headline { font-size: 30px; margin: 0; }
+.snffl-rag-byline {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-secondary);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 10px;
+}
+.snffl-rag-body {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.snffl-rag-body p { margin: 0 0 14px; }
+.snffl-rag-note {
+  margin: 0;
+  font-size: 11px;
+  color: var(--ink-secondary);
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+
+.snffl-stamp-retracted {
+  justify-self: start;
+  border: 3px solid var(--marker-red);
+  color: var(--marker-red);
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: 0.14em;
+  padding: 4px 10px;
+  transform: rotate(-6deg);
+}
+
+@media (min-width: 900px) {
+  .snffl-rag-lead-headline { font-size: 38px; }
+  .snffl-rag-article-headline { font-size: 44px; }
+  .snffl-rag-article { max-width: 700px; }
+  .snffl-masthead-name { font-size: 46px; }
+}

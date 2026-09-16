@@ -1,8 +1,8 @@
 // Waiver and free agent activity per roster, from Sleeper transactions.
 // Same endpoint the Trade Tracker reads, counted rather than detailed.
 
-import { league, scoredWeek } from './league';
-import { getTransactions } from './sleeper';
+import { league, scoredWeek } from './league.ts';
+import { getTransactions } from './sleeper.ts';
 
 export type PickupCounts = {
   waiver: number;

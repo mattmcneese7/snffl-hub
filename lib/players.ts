@@ -1,9 +1,9 @@
 // Per player season lines, built from the same weekly games the rest of the
 // site reads, so a player page never disagrees with a matchup page.
 
-import { getWeekGames, playerOf, scoredWeek, teams } from './league';
-import { getRosters } from './sleeper';
-import type { PlayerLite } from './types';
+import { getWeekGames, playerOf, scoredWeek, teams } from './league.ts';
+import { getRosters } from './sleeper.ts';
+import type { PlayerLite } from './types.ts';
 
 export type PlayerWeek = {
   week: number;

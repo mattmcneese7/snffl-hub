@@ -3,9 +3,9 @@
 // Letter grades come from the Trade Desk in Checkpoint 6, so a trade renders
 // here ungraded until then.
 
-import { league, playerOf, scoredWeek, teamByRoster } from './league';
-import { getTransactions } from './sleeper';
-import type { PlayerLite } from './types';
+import { league, playerOf, scoredWeek, teamByRoster } from './league.ts';
+import { getTransactions } from './sleeper.ts';
+import type { PlayerLite } from './types.ts';
 
 export type TradeSide = {
   rosterId: number;

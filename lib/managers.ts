@@ -9,7 +9,7 @@
 
 import zlib from 'node:zlib';
 import jpeg from 'jpeg-js';
-import type { ManagerColors } from './types';
+import type { ManagerColors } from './types.ts';
 
 const RESERVED_HUES = [152, 354]; // good green, bad red
 const HUE_GAP = 18;

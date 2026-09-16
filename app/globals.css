@@ -15,6 +15,14 @@
   --shart: #7a4f31;
   --shart-on: #ffffff;
   --marker-red: #e3182d;
+  /* Logo red is a brand colour and identical in both themes, which puts it at
+     about 3.4:1 on a dark card. Category labels are 10px, so they need a
+     theme-aware red of their own.
+
+     Darkened from #e3182d: the brand red clears 4.5:1 on white cards but lands
+     at 4.41:1 on --bg (#f7f7f5), which is not white. Same trap that caught
+     --link in Checkpoint 2. */
+  --rag-category: #d31126;
   /* Water deep (#1f74c9) lands at 4.45:1 on --bg, just under the small-text
      floor, so links use a darkened step of the same blue. */
   --link: #1a6ab8;
@@ -70,6 +78,7 @@
   --shart: #c4946e;
   --shart-on: #141210;
   --marker-red: #ff5a66;
+  --rag-category: #ff5a66;
   --link: #5bb6f2;
 }
 
@@ -85,6 +94,7 @@
     --shart: #c4946e;
     --shart-on: #141210;
     --marker-red: #ff5a66;
+    --rag-category: #ff5a66;
     --link: #5bb6f2;
   }
 }

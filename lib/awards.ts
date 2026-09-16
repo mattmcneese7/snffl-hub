@@ -4,7 +4,7 @@
 // score each week, so none of them wait on the writing pipeline. The Chug Meter
 // counts lowest score finishes, not beers: submissions happen off site.
 
-import { getSeasonResults, scoredWeek } from './league';
+import { getSeasonResults, scoredWeek } from './league.ts';
 
 export type WeeklyExtreme = { week: number; rosterId: number; points: number };
 

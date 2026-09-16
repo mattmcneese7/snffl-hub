@@ -1,0 +1,50 @@
+name: publish the rag
+
+on:
+  schedule:
+    # Hourly through Tuesday morning Central. The job itself refuses to publish
+    # before 9:00 AM Central, because scheduled runs start late and the gate has
+    # to live in the job rather than the cron, per Brief Section 3.
+    - cron: '0 11-18 * * 2'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Publish regardless of the time gate
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+
+      - name: Collect the batch, validate, publish
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SLEEPER_LEAGUE_ID: ${{ secrets.SLEEPER_LEAGUE_ID }}
+        run: node scripts/publish.ts ${{ inputs.force && '--force' || '' }}
+
+      # A palette or a token that slipped below the floor should stop the issue,
+      # not ship with it.
+      - run: npm run contrast
+
+      - name: Commit the issue
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/rag data/spend.json
+          if git diff --cached --quiet; then
+            echo "nothing to publish"
+          else
+            git commit -m "Publish the Rag"
+            git push
+          fi

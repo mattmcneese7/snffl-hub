@@ -1,0 +1,61 @@
+name: week close
+
+on:
+  schedule:
+    # Monday night after the last game, 11:00 PM Central.
+    - cron: '0 4 * * 2'
+    # Retry at 3:00 AM Central Tuesday, per Brief Section 3.
+    - cron: '0 8 * * 2'
+  workflow_dispatch:
+    inputs:
+      week:
+        description: Week to close
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  close:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+
+      - name: Work out which week just finished
+        id: week
+        env:
+          SLEEPER_LEAGUE_ID: ${{ secrets.SLEEPER_LEAGUE_ID }}
+        run: |
+          if [ -n "${{ inputs.week }}" ]; then
+            echo "week=${{ inputs.week }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "week=$(node -e '
+              const j = require("./data/league.json");
+              console.log(Math.max(1, j.state.display_week || j.state.week));
+            ')" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Skips submitting if the spend guard says the credit is spent. Publish
+      # then falls back to templates rather than failing.
+      - name: Build fact packets and submit the batch
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SLEEPER_LEAGUE_ID: ${{ secrets.SLEEPER_LEAGUE_ID }}
+        run: node scripts/week-close.ts ${{ steps.week.outputs.week }}
+
+      - name: Commit the pending batch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/rag data/spend.json
+          if git diff --cached --quiet; then
+            echo "nothing changed"
+          else
+            git commit -m "Week close: submit the Rag batch"
+            git push
+          fi

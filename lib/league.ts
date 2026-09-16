@@ -2,11 +2,11 @@
 // Sleeper calls. Static data is imported rather than read with fs so Next
 // bundles it: an fs read works locally and then 404s on Vercel.
 
-import leagueData from '@/data/league.json';
-import playersData from '@/data/players.json';
-import teamsData from '@/data/teams.json';
-import { getMatchups, getRosters, getState, TEAM_LOGO } from './sleeper';
-import type { Game, GameSide, LeagueInfo, LineupSlot, PlayerLite, Standing, Team } from './types';
+import leagueData from '../data/league.json' with { type: 'json' };
+import playersData from '../data/players.json' with { type: 'json' };
+import teamsData from '../data/teams.json' with { type: 'json' };
+import { getMatchups, getRosters, getState, TEAM_LOGO } from './sleeper.ts';
+import type { Game, GameSide, LeagueInfo, LineupSlot, PlayerLite, Standing, Team } from './types.ts';
 
 export const league = leagueData as unknown as LeagueInfo & {
   state: { week: number; display_week: number; season: string };

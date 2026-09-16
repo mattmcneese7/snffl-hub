@@ -1,7 +1,7 @@
 // ESPN public JSON. Unofficial and can change without notice, so every reader
 // degrades to an empty list rather than throwing, per Brief Section 9.
 
-import type { NflGame } from './types';
+import type { NflGame } from './types.ts';
 
 const SCOREBOARD =
   'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard';

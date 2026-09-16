@@ -3,11 +3,11 @@
 // Projections drive expectations when they exist; season scoring averages take
 // over when they do not, per Brief Section 2.
 
-import { getSeasonResults, getStandings, league, scoredWeek } from './league';
-import { seasonAverages, seasonVariance } from './projections';
-import { remainingSchedule, simulatePlayoffOdds } from './odds';
-import { getMatchups } from './sleeper';
-import type { PlayoffOdds, Standing } from './types';
+import { getSeasonResults, getStandings, league, scoredWeek } from './league.ts';
+import { seasonAverages, seasonVariance } from './projections.ts';
+import { remainingSchedule, simulatePlayoffOdds } from './odds.ts';
+import { getMatchups } from './sleeper.ts';
+import type { PlayoffOdds, Standing } from './types.ts';
 
 export type OddsRow = PlayoffOdds & { team: Standing };
 

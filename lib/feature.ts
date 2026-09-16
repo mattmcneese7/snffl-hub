@@ -5,8 +5,8 @@
 // detail page needs this too.
 
 import type { FeatureData, FeatureSide } from '@/components/FeatureMatchup';
-import { teamByRoster } from './league';
-import type { Game, GameSide } from './types';
+import { teamByRoster } from './league.ts';
+import type { Game, GameSide } from './types.ts';
 
 function toSide(side: GameSide, status: Game['status']): FeatureSide {
   const team = teamByRoster(side.rosterId);

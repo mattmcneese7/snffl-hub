@@ -1,33 +1,61 @@
 import Link from 'next/link';
 import Chrome from '@/components/Chrome';
 import FeatureMatchup from '@/components/FeatureMatchup';
+import HomeWidget from '@/components/HomeWidget';
+import RagHero from '@/components/RagHero';
+import ResultBug from '@/components/ResultBug';
 import StandingsTable from '@/components/StandingsTable';
 import YourMatchup from '@/components/YourMatchup';
+import { getChugCounts } from '@/lib/awards';
 import { toFeature } from '@/lib/feature';
 import {
+  getPowerRankings,
   getStandings,
   getTopPerformers,
   getWeekGames,
   matchupOfTheWeek,
   scoredWeek,
+  teamByRoster,
   teams,
 } from '@/lib/league';
+import { getPlayoffOdds } from '@/lib/playoff-odds';
+import { publishedWeeks, readIssue } from '@/lib/rag';
+import { getTrades } from '@/lib/trades';
+
+const QUICK_LINKS = [
+  { href: '/managers', label: 'Managers', note: 'All 14 teams' },
+  { href: '/players', label: 'Players', note: 'Every rostered player' },
+  { href: '/trades', label: 'Trades', note: 'Every deal this season' },
+  { href: '/rules', label: 'Rules', note: 'Scoring and the chug rules' },
+  { href: '/feed', label: 'The Feed', note: 'Live alerts' },
+  { href: '/settings', label: 'Settings', note: 'Your team and theme' },
+];
 
 export default async function HomePage() {
   const week = await scoredWeek();
-  const [games, standings, performers] = await Promise.all([
+  const [games, standings, performers, rankings, odds, chugs, trades] = await Promise.all([
     getWeekGames(week),
     getStandings(),
     getTopPerformers(week),
+    getPowerRankings(),
+    getPlayoffOdds(),
+    getChugCounts(),
+    getTrades(),
   ]);
 
+  const ragWeeks = publishedWeeks();
+  const latestRagWeek = ragWeeks.length ? ragWeeks[ragWeeks.length - 1] : null;
+  const ragIssue = latestRagWeek ? readIssue(latestRagWeek) : null;
+
   const feature = matchupOfTheWeek(games);
+  const topChuggers = chugs.filter((c) => c.count > 0).slice(0, 5);
+  const latestTrade = trades[0];
 
   return (
     <>
       <Chrome section="Home" week={week} />
       <main className="snffl-page">
-        <section>
+        <section className="snffl-home-section">
           <div className="snffl-stories-rail">
             {teams.map((team, i) => (
               <div className="snffl-story-bubble" key={team.rosterId}>
@@ -36,7 +64,10 @@ export default async function HomePage() {
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={team.avatarUrl} alt="" loading="lazy" />
                   ) : (
-                    <span className="snffl-avatar-fallback" style={{ background: team.colors?.primary }}>
+                    <span
+                      className="snffl-avatar-fallback"
+                      style={{ background: team.colors?.primary }}
+                    >
                       {team.manager.slice(0, 2).toUpperCase()}
                     </span>
                   )}
@@ -47,21 +78,23 @@ export default async function HomePage() {
           </div>
         </section>
 
+        <HomeWidget
+          title="The SquirtRag"
+          href={latestRagWeek ? `/rag/${latestRagWeek}` : '/rag'}
+          linkLabel={latestRagWeek ? `Week ${latestRagWeek} issue` : 'The section'}
+        >
+          <RagHero week={latestRagWeek} articles={ragIssue?.articles ?? []} />
+        </HomeWidget>
+
         {feature ? (
-          <section>
-            <div className="snffl-block-heading">
-              <h2 className="snffl-headline">Matchup of the Week</h2>
-            </div>
+          <HomeWidget title="Matchup of the Week" href={`/matchups/${week}`} linkLabel="All matchups">
             <FeatureMatchup data={toFeature(feature, 'Closest Game')} />
-          </section>
+          </HomeWidget>
         ) : null}
 
         <div className="snffl-home-grid">
           <div>
-            <section>
-              <div className="snffl-block-heading">
-                <h2 className="snffl-headline">Your Matchup</h2>
-              </div>
+            <HomeWidget title="Your Matchup">
               <YourMatchup
                 options={games.map((g) => toFeature(g, 'Your Matchup'))}
                 teams={teams.map((t) => ({
@@ -70,68 +103,153 @@ export default async function HomePage() {
                   manager: t.manager,
                 }))}
               />
-            </section>
+            </HomeWidget>
 
-            <section>
-              <div className="snffl-block-heading">
-                <h2 className="snffl-headline">Top Performers</h2>
-              </div>
-              <div className="snffl-performers">
-                {performers.map((player) => (
-                  <div className="snffl-performer-card" key={player.id}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img className="snffl-performer-headshot" src={player.headshot} alt="" loading="lazy" />
-                    <div className="snffl-performer-name">{player.name}</div>
-                    <div className="snffl-performer-meta">
-                      {player.position}
-                      {player.team ? ` · ${player.team}` : ''}
-                    </div>
-                    <div className="snffl-performer-points snffl-numeric">
-                      {player.points.toFixed(2)}
-                    </div>
-                  </div>
+            <HomeWidget title={`Week ${week} Scoreboard`} href={`/matchups/${week}`}>
+              <div className="snffl-card">
+                {games.map((game) => (
+                  <ResultBug game={game} key={game.matchupId} />
                 ))}
               </div>
-            </section>
+            </HomeWidget>
+
+            <HomeWidget title="Top Performers" href={`/players`} linkLabel="All players">
+              <div className="snffl-performers">
+                {performers.map((player) => (
+                  <Link
+                    className="snffl-performer-card"
+                    href={`/players/${player.id}`}
+                    key={player.id}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      className="snffl-performer-headshot"
+                      src={player.headshot}
+                      alt=""
+                      loading="lazy"
+                    />
+                    <span className="snffl-performer-name">{player.name}</span>
+                    <span className="snffl-performer-meta">
+                      {player.position}
+                      {player.team ? ` · ${player.team}` : ''}
+                    </span>
+                    <span className="snffl-performer-points snffl-numeric">
+                      {player.points.toFixed(2)}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </HomeWidget>
           </div>
 
           <div>
-            <section>
-              <div className="snffl-block-heading">
-                <h2 className="snffl-headline">Latest From The Rag</h2>
+            <HomeWidget title="Power Rankings" href="/power-rankings">
+              <div className="snffl-card">
+                {rankings.slice(0, 3).map((entry) => (
+                  <Link
+                    className={`snffl-mini-row mgr-${entry.team.userId}`}
+                    href={`/managers/${entry.team.rosterId}`}
+                    key={entry.team.rosterId}
+                  >
+                    <span className="snffl-mini-rank snffl-numeric">{entry.rank}</span>
+                    <span className="snffl-standings-colorbar" />
+                    <span className="snffl-mini-body">
+                      <span className="snffl-standings-team-name">{entry.team.teamName}</span>
+                      <span className="snffl-standings-manager">{entry.team.manager}</span>
+                    </span>
+                  </Link>
+                ))}
               </div>
-              <div className="snffl-placeholder">
-                <span className="snffl-placeholder-label">Checkpoint 6</span>
-                <span className="snffl-placeholder-note">
-                  The SquirtRag publishes Tuesdays at 9:00 AM Central once the writing pipeline
-                  lands.
-                </span>
-              </div>
-            </section>
+            </HomeWidget>
 
-            <section>
-              <div className="snffl-block-heading">
-                <h2 className="snffl-headline">The Feed</h2>
+            <HomeWidget title="Playoff Odds" href="/playoffs" linkLabel="Full tracker">
+              <div className="snffl-card">
+                {odds.slice(0, 5).map((row) => (
+                  <Link
+                    className={`snffl-mini-row mgr-${row.team.userId}`}
+                    href={`/managers/${row.rosterId}`}
+                    key={row.rosterId}
+                  >
+                    <span className="snffl-standings-colorbar" />
+                    <span className="snffl-mini-body">
+                      <span className="snffl-standings-team-name">{row.team.teamName}</span>
+                      <span className="snffl-standings-manager">{row.tag}</span>
+                    </span>
+                    <span className="snffl-mini-value snffl-numeric">
+                      {row.makePlayoffs.toFixed(0)}%
+                    </span>
+                  </Link>
+                ))}
               </div>
-              <div className="snffl-placeholder">
-                <span className="snffl-placeholder-label">Checkpoint 7</span>
-                <span className="snffl-placeholder-note">
-                  Live alerts, C&apos;mon Man and Shart Watch arrive with the live layer.
-                </span>
-              </div>
-            </section>
+            </HomeWidget>
 
-            <section>
-              <div className="snffl-block-heading">
-                <h2 className="snffl-headline">Standings</h2>
-                <Link className="snffl-block-heading-link" href="/standings">
-                  Full Table
-                </Link>
-              </div>
+            <HomeWidget title="Chug Meter" href="/chug" linkLabel="Full meter">
+              {topChuggers.length ? (
+                <div className="snffl-card">
+                  {topChuggers.map((entry) => {
+                    const team = teamByRoster(entry.rosterId);
+                    return (
+                      <Link
+                        className={`snffl-mini-row mgr-${team?.userId}`}
+                        href={`/managers/${entry.rosterId}`}
+                        key={entry.rosterId}
+                      >
+                        <span className="snffl-standings-colorbar" />
+                        <span className="snffl-mini-body">
+                          <span className="snffl-standings-team-name">{team?.teamName}</span>
+                          <span className="snffl-standings-manager">{team?.manager}</span>
+                        </span>
+                        <span className="snffl-mini-value snffl-numeric">
+                          {entry.count} {entry.count === 1 ? 'beer' : 'beers'}
+                        </span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="snffl-placeholder">
+                  <span className="snffl-placeholder-label">Nobody owes yet</span>
+                  <span className="snffl-placeholder-note">
+                    Lowest score each week goes on the board.
+                  </span>
+                </div>
+              )}
+            </HomeWidget>
+
+            <HomeWidget title="Standings" href="/standings" linkLabel="Full table">
               <StandingsTable standings={standings} />
-            </section>
+            </HomeWidget>
+
+            <HomeWidget title="Trade Desk" href="/trades" linkLabel="All trades">
+              {latestTrade ? (
+                <div className="snffl-card snffl-mini-trade">
+                  <span className="snffl-week-tag">
+                    <span>WEEK {latestTrade.week}</span>
+                  </span>
+                  <span className="snffl-mini-trade-teams">
+                    {latestTrade.sides.map((side) => side.teamName).join(' and ')}
+                  </span>
+                </div>
+              ) : (
+                <div className="snffl-placeholder">
+                  <span className="snffl-placeholder-label">No trades yet</span>
+                  <span className="snffl-placeholder-note">Somebody make a move.</span>
+                </div>
+              )}
+            </HomeWidget>
           </div>
         </div>
+
+        <HomeWidget title="Everything Else">
+          <div className="snffl-quick-links">
+            {QUICK_LINKS.map((link) => (
+              <Link className="snffl-quick-link" href={link.href} key={link.href}>
+                <span className="snffl-menu-label">{link.label}</span>
+                <span className="snffl-menu-note">{link.note}</span>
+              </Link>
+            ))}
+          </div>
+        </HomeWidget>
       </main>
     </>
   );

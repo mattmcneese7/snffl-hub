@@ -62,12 +62,20 @@ function useTheme() {
 // The header shrinks on scroll: wordmark 160px down to about 92px.
 function useScrolled(threshold = 24) {
   const [scrolled, setScrolled] = useState(false);
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > threshold);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, [threshold]);
+
+  // The strip and ticker stack are pinned below the header and cannot read its
+  // height, so the state goes on <html> for their sticky offsets to follow.
+  useEffect(() => {
+    document.documentElement.classList.toggle('snffl-scrolled', scrolled);
+  }, [scrolled]);
+
   return scrolled;
 }
 
@@ -131,7 +139,8 @@ export default function SiteChrome({
         <button className="snffl-header-slot" aria-label="Alerts" type="button">
           <Siren weight="duotone" className="snffl-header-icon" />
         </button>
-        <SnfflWordmark className="snffl-wordmark-svg" compact={scrolled} />
+        {/* Cropped in the header so the drips do not overhang the section strip. */}
+        <SnfflWordmark className="snffl-wordmark-svg" compact={scrolled} crop />
         <button className="snffl-header-slot" aria-label="Switch theme" type="button" onClick={toggle}>
           <ThemeIcon weight="duotone" className="snffl-header-icon" />
         </button>

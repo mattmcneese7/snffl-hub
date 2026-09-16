@@ -12,6 +12,19 @@
    var(), which is why the first attempt at this did nothing on a real iPhone
    while looking correct in an emulator reporting a zero inset. */
 
+/* The header shrinks on scroll, and the strip and ticker stack are pinned
+   below it. CSS cannot read a sibling's height, so all three read one variable
+   instead: hardcoding the expanded height left a 10px dead band under the
+   compact header. Safe despite the Safari env() trap, because the variable
+   holds a plain length and env() stays inline in the calc. */
+:root {
+  --header-h: 56px;
+  --strip-h: 34px;
+}
+html.snffl-scrolled {
+  --header-h: 46px;
+}
+
 body { padding-bottom: 76px; }
 
 .snffl-numeric {
@@ -39,13 +52,12 @@ body { padding-bottom: 76px; }
   display: grid;
   grid-template-columns: 48px 1fr 48px;
   align-items: center;
-  height: calc(56px + env(safe-area-inset-top, 0px));
+  height: calc(var(--header-h) + env(safe-area-inset-top, 0px));
   padding: env(safe-area-inset-top, 0px) 10px 0;
   background: var(--card);
   border-bottom: 1px solid var(--line);
   transition: height 0.18s ease;
 }
-.snffl-header-compact { height: calc(46px + env(safe-area-inset-top, 0px)); }
 
 .snffl-header-slot {
   width: 48px;
@@ -69,6 +81,9 @@ body { padding-bottom: 76px; }
   overflow: visible;
   transition: width 0.18s ease;
 }
+/* The header instance is clipped to its cropped box so nothing paints over the
+   section strip below it. */
+.snffl-wordmark-crop { overflow: hidden; }
 .snffl-header-compact .snffl-wordmark-svg { width: 92px; }
 
 .snffl-wave { animation: snffl-wave 2.4s linear infinite; }
@@ -102,7 +117,8 @@ body { padding-bottom: 76px; }
 
 .snffl-section-strip {
   position: sticky;
-  top: calc(56px + env(safe-area-inset-top, 0px));
+  top: calc(var(--header-h) + env(safe-area-inset-top, 0px));
+  transition: top 0.18s ease;
   z-index: 55;
   display: flex;
   align-items: center;
@@ -136,7 +152,8 @@ body { padding-bottom: 76px; }
 
 .snffl-ticker-stack {
   position: sticky;
-  top: calc(90px + env(safe-area-inset-top, 0px));
+  top: calc(var(--header-h) + var(--strip-h) + env(safe-area-inset-top, 0px));
+  transition: top 0.18s ease;
   z-index: 50;
 }
 
@@ -154,13 +171,26 @@ body { padding-bottom: 76px; }
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.1em;
-  clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
   /* The animated track is later in DOM order and would paint over the tag. */
   position: relative;
   z-index: 1;
 }
-.snffl-ticker-tag-league { background: var(--ticker-league-bg); color: var(--ticker-league-ink); }
-.snffl-ticker-tag-nfl { background: var(--ticker-nfl-bg); color: var(--ticker-nfl-ink); }
+
+/* Brief Section 2: the tag block is ONE continuous slanted shape, not two
+   separately slanted tags stacked up. Each row carries half the 10px run, so
+   LEAGUE hands off at the same x where NFL picks up. Giving both rows the same
+   full-width clip produced a 10px step at the junction, which read as a
+   sawtooth rather than a single diagonal. */
+.snffl-ticker-tag-league {
+  background: var(--ticker-league-bg);
+  color: var(--ticker-league-ink);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
+}
+.snffl-ticker-tag-nfl {
+  background: var(--ticker-nfl-bg);
+  color: var(--ticker-nfl-ink);
+  clip-path: polygon(0 0, calc(100% - 5px) 0, calc(100% - 10px) 100%, 0 100%);
+}
 
 .snffl-ticker-track {
   display: flex;

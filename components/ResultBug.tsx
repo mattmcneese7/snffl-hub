@@ -3,15 +3,42 @@ import { teamByRoster } from '@/lib/league';
 import type { Game, GameSide } from '@/lib/types';
 import TeamAvatar from './TeamAvatar';
 
-/** W, L, live dot or pending clock, per Brief Section 2. */
-function flag(game: Game) {
+/**
+ * Status column.
+ *
+ * A finished head to head has a winner and a loser, so it gets a stacked W and
+ * L lined up with the two team rows rather than one letter spanning both.
+ * Live and pending are genuinely per matchup states, so those keep a single
+ * dot or clock.
+ */
+function StatusColumn({ game }: { game: Game }) {
   if (game.status === 'pending') {
-    return { className: 'snffl-bug-flag-pending', label: <span aria-hidden>&#9200;</span>, title: 'Not started' };
+    return (
+      <div className="snffl-bug-flag snffl-bug-flag-pending" title="Not started">
+        <span aria-hidden>&#9200;</span>
+      </div>
+    );
   }
+
   if (game.status === 'live') {
-    return { className: 'snffl-bug-flag-live', label: <span className="snffl-live-dot" aria-hidden />, title: 'In progress' };
+    return (
+      <div className="snffl-bug-flag snffl-bug-flag-live" title="In progress">
+        <span className="snffl-live-dot" aria-hidden />
+      </div>
+    );
   }
-  return { className: 'snffl-bug-flag-win', label: 'W', title: 'Final' };
+
+  const awayWon = game.winner === game.away.rosterId;
+  return (
+    <div className="snffl-bug-wl-stack">
+      <span className={`snffl-bug-wl ${awayWon ? 'snffl-bug-wl-win' : 'snffl-bug-wl-loss'}`}>
+        {awayWon ? 'W' : 'L'}
+      </span>
+      <span className={`snffl-bug-wl ${awayWon ? 'snffl-bug-wl-loss' : 'snffl-bug-wl-win'}`}>
+        {awayWon ? 'L' : 'W'}
+      </span>
+    </div>
+  );
 }
 
 function Side({ side, game }: { side: GameSide; game: Game }) {
@@ -29,15 +56,12 @@ function Side({ side, game }: { side: GameSide; game: Game }) {
 }
 
 export default function ResultBug({ game }: { game: Game }) {
-  const { className, label, title } = flag(game);
   const close = game.status !== 'pending' && game.margin < 10;
 
   return (
     <Link className="snffl-bug-link" href={`/matchups/${game.week}/${game.matchupId}`}>
       <div className="snffl-bug">
-        <div className={`snffl-bug-flag ${className}`} title={title}>
-          {label}
-        </div>
+        <StatusColumn game={game} />
         <div className="snffl-bug-body">
           <Side side={game.away} game={game} />
           <Side side={game.home} game={game} />

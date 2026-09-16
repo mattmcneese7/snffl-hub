@@ -6,6 +6,14 @@ type SnfflWordmarkProps = {
   className?: string;
   /** Hides the falling drop, for the shrunk header on scroll. */
   compact?: boolean;
+  /**
+   * Tightens the box to the letters, stripe and stem drips.
+   *
+   * The full artwork is 300x130, which at header width renders 66px tall and
+   * overhangs a 56px header by 10px, painting over the section strip. Cropping
+   * keeps the mark at full brand width instead of shrinking it to fit.
+   */
+  crop?: boolean;
   /** Change this value (for example, the latest score total) to trigger a slosh. */
   sloshKey?: string | number;
   title?: string;
@@ -25,6 +33,7 @@ const WAVE =
 export default function SnfflWordmark({
   className,
   compact = false,
+  crop = false,
   sloshKey,
   title = 'SNFFL',
 }: SnfflWordmarkProps) {
@@ -50,11 +59,13 @@ export default function SnfflWordmark({
 
   return (
     <svg
-      viewBox="0 0 300 130"
+      viewBox={crop ? '0 0 300 96' : '0 0 300 130'}
       role="img"
       aria-labelledby={titleId}
-      overflow="visible"
-      className={[className, compact ? 'snffl-compact' : ''].filter(Boolean).join(' ')}
+      overflow={crop ? 'hidden' : 'visible'}
+      className={[className, compact ? 'snffl-compact' : '', crop ? 'snffl-wordmark-crop' : '']
+        .filter(Boolean)
+        .join(' ')}
     >
       <title id={titleId}>{title}</title>
       <defs>

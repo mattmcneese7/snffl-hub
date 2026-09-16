@@ -7,6 +7,7 @@ import './pages.css';
 import './sections.css';
 import './profiles.css';
 import './rag.css';
+import './home.css';
 // Generated nightly from Sleeper avatars. Gives every manager a .mgr-<userId>
 // class exposing --mgr-primary and --mgr-secondary.
 import './manager-colors.css';

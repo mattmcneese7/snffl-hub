@@ -46,6 +46,88 @@ export function numbersIn(text: string): string[] {
   return matches ?? [];
 }
 
+/** Spelled numerals, so a count written as a word can still be checked. */
+const NUMBER_WORDS: Record<string, number> = {
+  zero: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7,
+  eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12, thirteen: 13,
+  fourteen: 14, fifteen: 15, sixteen: 16, seventeen: 17, eighteen: 18,
+  nineteen: 19, twenty: 20,
+};
+
+/**
+ * Nouns whose count is a league fact rather than a turn of phrase.
+ *
+ * "points" is deliberately absent. A point total is a score, already checked
+ * exactly by checkNumbers against the full packet, and including it here put
+ * the two checkers in conflict over the same words.
+ */
+const COUNTED_NOUNS = 'weeks?|teams?|games?|matchups?|managers?';
+
+/**
+ * Catches a count that is wrong, whether it is spelled or written as digits.
+ *
+ * This deliberately does not use the general allowed set. That pool contains
+ * every seed and every power ranking position, which for 14 rosters is every
+ * integer from 0 to 14, so a count in that range could never be rejected:
+ * "Twelve more weeks" passed only because somebody finished twelfth. The same
+ * hole let a digit claim like "11 teams" through.
+ *
+ * Counts are checked against the handful of facts that can actually produce
+ * one. Only league nouns are covered, because a blanket rule would reject
+ * "explain this one to you" and other ordinary English.
+ */
+export function checkCounts(text: string, counts: Set<number>): Violation[] {
+  const out: Violation[] = [];
+  const words = Object.keys(NUMBER_WORDS).join('|');
+  // The digit form must be a whole number standing on its own. Written as
+  // \b\d{1,3}\b it matched the fractional half of "63.04 points", because a
+  // word boundary sits happily after a decimal point, so an exactly correct
+  // score was reported as an invented count.
+  const pattern = new RegExp(
+    `(?<![\\w.])(${words}|\\d{1,3})(?![\\w.])\\s+(?:more\\s+|other\\s+|further\\s+)?(?:${COUNTED_NOUNS})\\b`,
+    'gi'
+  );
+  for (const match of text.matchAll(pattern)) {
+    const token = match[1].toLowerCase();
+    const value = token in NUMBER_WORDS ? NUMBER_WORDS[token] : Number(token);
+    if (!Number.isFinite(value) || counts.has(value)) continue;
+    out.push({
+      kind: 'count',
+      detail: `"${match[0].trim()}" is a count the facts do not support`,
+    });
+  }
+  return out;
+}
+
+/**
+ * Every count a writer can legitimately state, built from the packet rather
+ * than from the permissive number pool.
+ */
+export function countsFrom(facts: {
+  week: number;
+  teamCount: number;
+  playoffTeams: number;
+  weeksRemaining?: number;
+  games: unknown[];
+  nextWeek: unknown[];
+  topPerformers: unknown[];
+}): Set<number> {
+  const out = new Set<number>([
+    facts.week,
+    facts.teamCount,
+    facts.playoffTeams,
+    facts.games.length,
+    facts.nextWeek.length,
+    facts.topPerformers.length,
+    // Two teams to a matchup. Structural, not a claim: the Preview describes
+    // matchups for a living, and "two teams collide" failed three regenerations
+    // in a row before it was clear the rule was wrong rather than the writing.
+    2,
+  ]);
+  if (facts.weeksRemaining != null) out.add(facts.weeksRemaining);
+  return out;
+}
+
 export function checkNumbers(text: string, allowed: Set<string>, names: string[] = []): Violation[] {
   const out: Violation[] = [];
   for (const raw of numbersIn(redactNames(text, names))) {
@@ -147,7 +229,9 @@ export type Candidate = {
 export function validateArticle(
   candidate: Candidate,
   allowed: Set<string>,
-  names: string[] = []
+  names: string[] = [],
+  /** Legitimate counts, from countsFrom. Omitted means counts go unchecked. */
+  counts?: Set<number>
 ): { ok: boolean; violations: Violation[] } {
   const prose = [candidate.headline, candidate.deck, ...candidate.body, candidate.signOff ?? '']
     .filter(Boolean)
@@ -155,6 +239,9 @@ export function validateArticle(
 
   const violations = [
     ...checkNumbers(prose, allowed, names),
+    // Names are redacted first so a team called "Bibi's Ballers 69" cannot be
+    // read as a count, the same trap that rejected five Week 1 articles.
+    ...(counts ? checkCounts(redactNames(prose, names), counts) : []),
     ...checkDashes(prose),
     ...checkHeadline(candidate.headline, names),
   ];

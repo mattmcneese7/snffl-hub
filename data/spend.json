@@ -23,8 +23,68 @@
    "job": "rag week 1 shart retry",
    "model": "claude-sonnet-5",
    "usd": 0.0313
+  },
+  {
+   "at": "2026-09-16T03:47:37.132Z",
+   "job": "rag week 1 shart retry",
+   "model": "claude-sonnet-5",
+   "usd": 0.0274
+  },
+  {
+   "at": "2026-09-16T03:48:00.284Z",
+   "job": "rag week 1 shart retry",
+   "model": "claude-sonnet-5",
+   "usd": 0.0321
+  },
+  {
+   "at": "2026-09-16T03:48:11.796Z",
+   "job": "rag week 1 manager retry",
+   "model": "claude-sonnet-5",
+   "usd": 0.0218
+  },
+  {
+   "at": "2026-09-16T03:48:23.182Z",
+   "job": "rag week 1 preview retry",
+   "model": "claude-sonnet-5",
+   "usd": 0.0216
+  },
+  {
+   "at": "2026-09-16T03:48:42.431Z",
+   "job": "rag week 1 preview retry",
+   "model": "claude-sonnet-5",
+   "usd": 0.0296
+  },
+  {
+   "at": "2026-09-16T03:48:52.776Z",
+   "job": "rag week 1 preview retry",
+   "model": "claude-sonnet-5",
+   "usd": 0.0208
+  },
+  {
+   "at": "2026-09-16T03:49:03.122Z",
+   "job": "rag week 1 performances retry",
+   "model": "claude-sonnet-5",
+   "usd": 0.0205
+  },
+  {
+   "at": "2026-09-16T03:49:13.259Z",
+   "job": "rag week 1 performances retry",
+   "model": "claude-sonnet-5",
+   "usd": 0.0205
+  },
+  {
+   "at": "2026-09-16T03:49:24.814Z",
+   "job": "rag week 1 performances retry",
+   "model": "claude-sonnet-5",
+   "usd": 0.0216
+  },
+  {
+   "at": "2026-09-16T03:50:16.339Z",
+   "job": "rag week 1 preview retry",
+   "model": "claude-sonnet-5",
+   "usd": 0.0214
   }
  ],
  "limitUsd": 8.5,
- "spent": 0.3861
+ "spent": 0.6234
 }

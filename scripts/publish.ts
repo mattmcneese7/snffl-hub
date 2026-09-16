@@ -12,6 +12,7 @@ import path from 'node:path';
 import { ARTICLE_ORDER, ARTICLE_SPECS, BYLINE, type ArticleId } from '../config/style-guide.ts';
 import { collectBatch, recordSpend, spendSummary } from '../lib/claude.ts';
 import { allowedNumbers, buildWeekFacts, properNouns } from '../lib/fact-packets.ts';
+import { countsFrom } from '../lib/validate.ts';
 import { readTimeOf, slugFor, writeIssue, type Article, type Issue } from '../lib/rag.ts';
 import { templateFor } from '../lib/templates.ts';
 import { validateArticle, type Candidate } from '../lib/validate.ts';
@@ -47,6 +48,10 @@ const facts = await buildWeekFacts(week);
 const allowed = new Set(pending.allowed ?? [...allowedNumbers(facts)]);
 // Team and manager names are redacted before numbers are read out of prose.
 const names = properNouns(facts);
+// Counts get their own small set. The general pool holds every seed and every
+// power ranking position, which for 14 rosters is every integer from 0 to 14,
+// so a claim like "twelve more weeks" could never be rejected against it.
+const counts = countsFrom(facts);
 
 let written: Record<string, { ok: true; data: unknown } | { ok: false; error: string }> = {};
 
@@ -91,7 +96,7 @@ for (const id of ARTICLE_ORDER) {
 
   if (result?.ok) {
     const data = result.data as Candidate;
-    const check = validateArticle(data, allowed, names);
+    const check = validateArticle(data, allowed, names, counts);
     if (check.ok) {
       candidate = data;
     } else {

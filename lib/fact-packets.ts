@@ -40,6 +40,15 @@ export type WeekFacts = {
   leagueName: string;
   teamCount: number;
   playoffTeams: number;
+  /**
+   * Regular season weeks still to play after this one.
+   *
+   * The packet used to stop at playoffTeams, so a writer asked to preview what
+   * was coming had no way to know how much season was left. Week 1 duly
+   * published "Twelve more weeks", which was wrong, and nothing could have
+   * caught it because the correct figure was not in the packet either.
+   */
+  weeksRemaining: number;
   games: GameFact[];
   shart: TeamFact & { beatenBy: string | null };
   managerOfWeek: TeamFact;
@@ -115,6 +124,7 @@ export async function buildWeekFacts(week: number): Promise<WeekFacts> {
     leagueName: league.name,
     teamCount: league.teamCount,
     playoffTeams: league.playoffTeams,
+    weeksRemaining: Math.max(0, league.playoffWeekStart - week),
     games: gameFacts,
 
     shart: {

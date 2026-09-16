@@ -35,3 +35,6 @@ coverage/
 
 # Local typecheck artifact
 tsconfig.tsbuildinfo
+
+# Local preview tooling, created by the dev harness rather than the project
+.claude/

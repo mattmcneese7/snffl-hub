@@ -1120,6 +1120,16 @@
   "short": "C. Sutton",
   "team": "DEN"
  },
+ "5086": {
+  "espnId": "3051738",
+  "headshot": "https://sleepercdn.com/content/nfl/players/5086.jpg",
+  "id": "5086",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/lac.png",
+  "name": "Marquez Valdes-Scantling",
+  "position": "WR",
+  "short": "M. Valdes-Scantling",
+  "team": "LAC"
+ },
  "5095": {
   "espnId": "3051909",
   "headshot": "https://sleepercdn.com/content/nfl/players/5095.jpg",
@@ -1366,6 +1376,16 @@
   "position": "WR",
   "short": "T. McLaurin",
   "team": "WAS"
+ },
+ "5938": {
+  "espnId": "4039057",
+  "headshot": "https://sleepercdn.com/content/nfl/players/5938.jpg",
+  "id": "5938",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/den.png",
+  "name": "Lil'Jordan Humphrey",
+  "position": "WR",
+  "short": "L. Humphrey",
+  "team": "DEN"
  },
  "5947": {
   "espnId": "3916433",
@@ -2654,6 +2674,16 @@
   "position": "K",
   "short": "A. Kessman",
   "team": "CAR"
+ },
+ "7946": {
+  "espnId": "4034862",
+  "headshot": "https://sleepercdn.com/content/nfl/players/7946.jpg",
+  "id": "7946",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/sf.png",
+  "name": "Jack Stoll",
+  "position": "TE",
+  "short": "J. Stoll",
+  "team": "SF"
  },
  "8002": {
   "espnId": "4039034",

@@ -3,30 +3,27 @@
    Article body is the serif face; everything else stays Archivo. */
 
 .snffl-masthead {
-  display: inline-flex;
-  align-items: stretch;
-  background: var(--ink);
-  padding: 0;
+  display: inline-block;
+  line-height: 0;
 }
-.snffl-masthead-the {
-  display: grid;
-  place-items: center;
-  background: var(--logo-red);
-  color: #fff;
-  font-weight: 900;
-  font-size: 13px;
-  letter-spacing: 0.1em;
-  padding: 0 8px;
+/* Both variants stay class level. A descendant selector like
+   `.snffl-masthead img` outscores a bare class and would pin one variant
+   visible in both themes. */
+.snffl-masthead-art {
+  display: block;
+  height: 60px;
+  width: auto;
+  max-width: 100%;
 }
-.snffl-masthead-name {
-  font-family: var(--font-archivo);
-  font-weight: 900;
-  font-style: italic;
-  font-stretch: 62%;
-  font-size: 34px;
-  letter-spacing: -0.01em;
-  color: var(--bg);
-  padding: 6px 12px 6px 10px;
+.snffl-masthead-art-dark { display: none; }
+
+/* The theme toggle wins, and the system preference only decides when the
+   reader has not chosen, which is the same order the color tokens use. */
+:root[data-theme='dark'] .snffl-masthead-art-light { display: none; }
+:root[data-theme='dark'] .snffl-masthead-art-dark { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .snffl-masthead-art-light { display: none; }
+  :root:not([data-theme='light']) .snffl-masthead-art-dark { display: block; }
 }
 .snffl-masthead-note {
   margin: 8px 0 0;
@@ -140,5 +137,5 @@
   .snffl-rag-lead-headline { font-size: 38px; }
   .snffl-rag-article-headline { font-size: 44px; }
   .snffl-rag-article { max-width: 700px; }
-  .snffl-masthead-name { font-size: 46px; }
+  .snffl-masthead-art { height: 80px; }
 }

@@ -131,11 +131,12 @@ body { padding-bottom: 76px; }
 .snffl-ticker-row-nfl { background: var(--ticker-band-b); }
 
 .snffl-ticker-tag {
-  flex: 0 0 auto;
+  /* Both tags share a fixed width so their slanted edges stack into one
+     continuous shape, per Brief Section 2. Sizing to content misaligned them. */
+  flex: 0 0 96px;
   display: grid;
   place-items: center;
-  min-width: 86px;
-  padding: 0 16px 0 10px;
+  padding: 0 14px 0 8px;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.1em;

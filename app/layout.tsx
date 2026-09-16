@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Archivo, Source_Serif_4, Permanent_Marker } from 'next/font/google';
 import './globals.css';
 import './chrome.css';
+import './pages.css';
 // Generated nightly from Sleeper avatars. Gives every manager a .mgr-<userId>
 // class exposing --mgr-primary and --mgr-secondary.
 import './manager-colors.css';

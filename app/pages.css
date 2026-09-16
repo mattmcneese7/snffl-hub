@@ -1,0 +1,451 @@
+/* Page components, ported from the approved Checkpoint 2 style frame.
+   Colors come only from the tokens in globals.css and the generated
+   manager-colors.css. Class names stay long and specific on purpose. */
+
+.snffl-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.snffl-block-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 9px;
+  gap: 10px;
+}
+.snffl-block-heading h2 { font-size: 17px; }
+.snffl-block-heading-link {
+  color: var(--link);
+  font-weight: 700;
+  font-size: 12px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* ---------- Horizontal rails ---------- */
+
+.snffl-stories-rail,
+.snffl-performers,
+.snffl-week-selector {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+.snffl-stories-rail::-webkit-scrollbar,
+.snffl-performers::-webkit-scrollbar,
+.snffl-week-selector::-webkit-scrollbar { display: none; }
+
+.snffl-stories-rail { gap: 12px; }
+.snffl-story-bubble { flex: 0 0 auto; width: 66px; text-align: center; }
+.snffl-story-ring {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  padding: 3px;
+  background: var(--surface);
+  border: 2px solid var(--line);
+}
+.snffl-story-ring-unwatched { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+.snffl-story-ring img,
+.snffl-story-ring .snffl-avatar-fallback {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+.snffl-story-label {
+  font-size: 10px;
+  font-weight: 700;
+  margin-top: 5px;
+  color: var(--ink-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.snffl-avatar-fallback {
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 800;
+  font-size: 11px;
+}
+
+/* Your Matchup, the team picked once and remembered on the device. */
+.snffl-team-picker {
+  margin-top: 6px;
+  min-height: var(--tap);
+  padding: 0 10px;
+  background: var(--card);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  font: inherit;
+  font-weight: 700;
+}
+.snffl-change-team {
+  justify-self: start;
+  min-height: var(--tap);
+  padding: 0 14px;
+  background: none;
+  border: 0;
+  color: var(--link);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ---------- Matchup of the week ---------- */
+
+/* The card is a link, and an anchor is inline by default: without display
+   block the card border leaks and the global link styling underlines the
+   scores. */
+.snffl-feature-matchup {
+  display: block;
+  position: relative;
+  color: #fff;
+  text-decoration: none;
+}
+.snffl-feature-matchup:hover { text-decoration: none; }
+.snffl-feature-matchup-split {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    var(--snffl-away-primary) 0 48%,
+    var(--snffl-home-primary) 52% 100%
+  );
+}
+.snffl-feature-matchup-split::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.34));
+}
+.snffl-feature-matchup-body { position: relative; padding: 16px; display: grid; gap: 14px; }
+
+.snffl-feature-matchup-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.92;
+}
+
+/* minmax(0, ...) matters: a plain 1fr floors at the min-content width of long
+   team names and pushes the far side off a phone screen. */
+.snffl-feature-matchup-teams {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+}
+.snffl-feature-side { display: grid; gap: 7px; justify-items: center; text-align: center; }
+.snffl-feature-side-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  object-fit: cover;
+  background: rgba(0, 0, 0, 0.25);
+}
+.snffl-feature-side-team {
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+.snffl-feature-side-manager { font-size: 10px; opacity: 0.85; font-weight: 600; }
+.snffl-feature-side-score { font-size: 34px; line-height: 1; }
+.snffl-feature-versus { font-size: 11px; font-weight: 800; opacity: 0.8; }
+
+.snffl-winprob { display: grid; gap: 5px; }
+.snffl-winprob-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.28);
+  overflow: hidden;
+  transform: skewX(calc(-1 * var(--slant)));
+}
+.snffl-winprob-fill { height: 100%; background: #fff; }
+.snffl-winprob-legend {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  font-weight: 800;
+}
+.snffl-players-left {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+/* ---------- Result bugs ---------- */
+
+.snffl-bug { display: grid; grid-template-columns: 34px minmax(0, 1fr); }
+.snffl-bug-link { display: block; color: inherit; text-decoration: none; }
+.snffl-bug-link + .snffl-bug-link { border-top: 1px solid var(--line); }
+
+.snffl-bug-flag {
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 900;
+  color: #fff;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 7px) 100%, 0 100%);
+}
+.snffl-bug-flag-win { background: var(--good-chip); }
+.snffl-bug-flag-loss { background: var(--bad-chip); }
+.snffl-bug-flag-live { background: var(--live-chip); }
+.snffl-bug-flag-pending { background: var(--pending-chip); }
+
+.snffl-bug-body { padding: 9px 12px; display: grid; gap: 6px; }
+.snffl-bug-side {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+}
+.snffl-bug-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--surface);
+}
+.snffl-bug-team {
+  font-weight: 700;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.snffl-bug-side-loser .snffl-bug-team,
+.snffl-bug-side-loser .snffl-bug-score { color: var(--ink-secondary); }
+.snffl-bug-score { font-size: 16px; }
+.snffl-bug-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--ink-secondary);
+}
+
+.snffl-margin-chip {
+  transform: skewX(calc(-1 * var(--slant)));
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: 800;
+  color: #fff;
+  background: var(--pending-chip);
+}
+.snffl-margin-chip > span { display: inline-block; transform: skewX(var(--slant)); }
+
+.snffl-live-line { height: 3px; background: var(--surface); overflow: hidden; }
+.snffl-live-line-fill { height: 100%; background: var(--live); }
+.snffl-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--live);
+  animation: snffl-live-pulse 1.8s ease-in-out infinite;
+}
+@keyframes snffl-live-pulse { 50% { opacity: 0.35; } }
+
+/* ---------- Standings ---------- */
+
+.snffl-standings-row {
+  display: grid;
+  grid-template-columns: 22px 4px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  color: inherit;
+  text-decoration: none;
+}
+.snffl-standings-row:last-child { border-bottom: 0; }
+.snffl-standings-seed { font-size: 12px; color: var(--ink-secondary); font-weight: 800; }
+.snffl-standings-colorbar { width: 4px; height: 26px; background: var(--mgr-primary, var(--muted)); }
+.snffl-standings-team { overflow: hidden; }
+.snffl-standings-team-name {
+  display: block;
+  font-weight: 700;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.snffl-standings-manager {
+  display: block;
+  font-size: 10px;
+  color: var(--ink-secondary);
+  font-weight: 600;
+}
+.snffl-standings-record { font-size: 13px; }
+.snffl-standings-streak { font-size: 10px; color: var(--ink-secondary); font-weight: 700; }
+.snffl-standings-points { font-size: 12px; color: var(--ink-secondary); min-width: 58px; text-align: right; }
+.snffl-standings-playoff-line { border-bottom: 2px dashed var(--muted); }
+.snffl-standings-playoff-caption {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 5px 12px 0;
+}
+
+/* ---------- Top performers ---------- */
+
+.snffl-performer-card {
+  flex: 0 0 116px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 10px;
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  text-align: center;
+}
+.snffl-performer-headshot {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--surface);
+}
+.snffl-performer-name { font-size: 11px; font-weight: 800; }
+.snffl-performer-meta { font-size: 10px; color: var(--ink-secondary); font-weight: 600; }
+.snffl-performer-points { font-size: 19px; color: var(--good); }
+
+/* ---------- Week selector ---------- */
+
+.snffl-week-pill {
+  flex: 0 0 auto;
+  min-width: 44px;
+  height: var(--tap);
+  display: grid;
+  place-items: center;
+  padding: 0 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-weight: 800;
+  font-size: 12px;
+  text-decoration: none;
+  transform: skewX(calc(-1 * var(--slant)));
+}
+.snffl-week-pill > span { display: inline-block; transform: skewX(var(--slant)); }
+.snffl-week-pill-active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+/* ---------- Power rankings ---------- */
+
+.snffl-rank-row {
+  display: grid;
+  grid-template-columns: 34px 4px minmax(0, 1fr) 54px;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.snffl-rank-row:last-child { border-bottom: 0; }
+.snffl-rank-number {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  font-size: 14px;
+  font-weight: 900;
+  transform: skewX(calc(-1 * var(--slant)));
+  border: 2px solid var(--ink);
+  color: var(--ink);
+}
+.snffl-rank-number > span { display: inline-block; transform: skewX(var(--slant)); }
+.snffl-rank-number-top { background: var(--ink); color: var(--bg); }
+.snffl-rank-blurb { font-size: 11px; color: var(--ink-secondary); margin-top: 2px; }
+.snffl-rank-movement {
+  font-size: 11px;
+  font-weight: 800;
+  text-align: right;
+  color: var(--ink-secondary);
+}
+.snffl-rank-movement-up { color: var(--good); }
+.snffl-rank-movement-down { color: var(--bad); }
+
+/* ---------- Lineups, matchup detail ---------- */
+
+.snffl-lineup-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 54px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--line);
+}
+.snffl-lineup-row:last-child { border-bottom: 0; }
+.snffl-lineup-slot {
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--ink-secondary);
+  background: var(--surface);
+  padding: 3px 0;
+  transform: skewX(calc(-1 * var(--slant)));
+}
+.snffl-lineup-slot > span { display: inline-block; transform: skewX(var(--slant)); }
+.snffl-lineup-player { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 8px; align-items: center; }
+.snffl-lineup-player-right { direction: rtl; }
+.snffl-lineup-player-right > * { direction: ltr; }
+.snffl-lineup-headshot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--surface);
+}
+.snffl-lineup-name {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.snffl-lineup-meta { display: block; font-size: 10px; color: var(--ink-secondary); }
+.snffl-lineup-points { font-size: 13px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.snffl-lineup-totals {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 54px minmax(0, 1fr);
+  gap: 8px;
+  padding: 10px;
+  background: var(--surface);
+  font-size: 16px;
+}
+.snffl-lineup-bench summary {
+  padding: 10px 12px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  color: var(--ink-secondary);
+}
+
+@media (min-width: 900px) {
+  .snffl-home-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+    gap: 22px;
+    align-items: start;
+  }
+  .snffl-home-grid > * { min-width: 0; display: grid; gap: 18px; align-content: start; }
+  .snffl-feature-side-score { font-size: 46px; }
+  .snffl-matchups-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+}

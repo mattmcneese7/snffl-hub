@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Chrome from '@/components/Chrome';
+import Masthead from '@/components/Masthead';
 import WeekSelector from '@/components/WeekSelector';
 import { publishDateFor, publishedWeeks, readIssue } from '@/lib/rag';
 
@@ -25,10 +26,7 @@ export default async function RagWeek({ params }: { params: Promise<{ week: stri
       <Chrome section="The Rag" sub={`Week ${week}`} week={week} />
       <main className="snffl-page">
         <section>
-          <div className="snffl-masthead">
-            <span className="snffl-masthead-the">THE</span>
-            <span className="snffl-masthead-name">SQUIRTRAG</span>
-          </div>
+          <Masthead />
           <p className="snffl-masthead-note">New stories every Tuesday at 9:00 AM Central</p>
         </section>
 

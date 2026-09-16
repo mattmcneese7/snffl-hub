@@ -19,7 +19,7 @@
    holds a plain length and env() stays inline in the calc. */
 :root {
   --header-h: 56px;
-  --strip-h: 34px;
+  --strip-h: 28px;
 }
 html.snffl-scrolled {
   --header-h: 46px;
@@ -124,15 +124,17 @@ body { padding-bottom: 76px; }
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  height: 34px;
+  /* The ticker stack offsets from --strip-h. A second copy of this number here
+     would let the two drift apart and slide the ticker under the strip. */
+  height: var(--strip-h);
   padding: 0 14px;
   background: var(--surface);
   border-bottom: 1px solid var(--line);
 }
 .snffl-section-strip-name {
   font-weight: 800;
-  font-size: 12px;
-  letter-spacing: 0.08em;
+  font-size: 11px;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 .snffl-section-strip-sub { color: var(--ink-secondary); font-weight: 600; }
@@ -141,10 +143,10 @@ body { padding-bottom: 76px; }
   transform: skewX(calc(-1 * var(--slant)));
   background: var(--ink);
   color: var(--bg);
-  padding: 3px 10px;
-  font-size: 11px;
+  padding: 2px 8px;
+  font-size: 10px;
   font-weight: 800;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
 }
 .snffl-week-tag > span { display: inline-block; transform: skewX(var(--slant)); }
 

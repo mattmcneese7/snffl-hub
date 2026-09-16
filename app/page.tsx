@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Chrome from '@/components/Chrome';
 import FeatureMatchup from '@/components/FeatureMatchup';
 import HomeWidget from '@/components/HomeWidget';
+import Masthead from '@/components/Masthead';
 import RagHero from '@/components/RagHero';
 import ResultBug from '@/components/ResultBug';
 import StandingsTable from '@/components/StandingsTable';
@@ -79,7 +80,7 @@ export default async function HomePage() {
         </section>
 
         <HomeWidget
-          title="The SquirtRag"
+          title={<Masthead />}
           href={latestRagWeek ? `/rag/${latestRagWeek}` : '/rag'}
           linkLabel={latestRagWeek ? `Week ${latestRagWeek} issue` : 'The section'}
         >

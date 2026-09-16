@@ -22,6 +22,21 @@ function Outcome({ game, side }: { game: Game; side: GameSide }) {
   );
 }
 
+/**
+ * Live state, pinned to the upper right of the box.
+ *
+ * Red rather than the brief's blue --live token: a red dot is the broadcast
+ * convention and Matt asked for it explicitly.
+ */
+function LiveBadge() {
+  return (
+    <span className="snffl-live-badge">
+      <span className="snffl-live-badge-dot" aria-hidden />
+      LIVE
+    </span>
+  );
+}
+
 function Side({ side, game }: { side: GameSide; game: Game }) {
   const team = teamByRoster(side.rosterId);
   const decided = game.winner != null;
@@ -42,7 +57,8 @@ export default function ResultBug({ game }: { game: Game }) {
 
   return (
     <Link className="snffl-bug-link" href={`/matchups/${game.week}/${game.matchupId}`}>
-      <div className="snffl-bug">
+      <div className={`snffl-bug${game.status === 'live' ? ' snffl-bug-live' : ''}`}>
+        {game.status === 'live' ? <LiveBadge /> : null}
         <div className="snffl-bug-body">
           <Side side={game.away} game={game} />
           <Side side={game.home} game={game} />

@@ -11,7 +11,8 @@ export default function HomeWidget({
   linkLabel = 'See all',
   children,
 }: {
-  title: string;
+  /** A node rather than a string, so a section can lead with its own logo. */
+  title: React.ReactNode;
   href?: string;
   linkLabel?: string;
   children: React.ReactNode;

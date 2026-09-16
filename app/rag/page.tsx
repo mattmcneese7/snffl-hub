@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import Chrome from '@/components/Chrome';
+import Masthead from '@/components/Masthead';
 import { publishedWeeks } from '@/lib/rag';
 
 export default function RagIndex() {
@@ -11,10 +12,7 @@ export default function RagIndex() {
       <Chrome section="The Rag" />
       <main className="snffl-page">
         <section>
-          <div className="snffl-masthead">
-            <span className="snffl-masthead-the">THE</span>
-            <span className="snffl-masthead-name">SQUIRTRAG</span>
-          </div>
+          <Masthead />
           <p className="snffl-masthead-note">New stories every Tuesday at 9:00 AM Central</p>
         </section>
         <section>

@@ -82,6 +82,11 @@
 .snffl-team-picker {
   margin-top: 6px;
   min-height: var(--tap);
+  /* A select sizes to its widest option, which is the longest team name. Left
+     unconstrained it pushed its card past the column and gave the whole page a
+     couple of pixels of horizontal scroll on a phone. */
+  width: 100%;
+  min-width: 0;
   padding: 0 10px;
   background: var(--card);
   color: var(--ink);
@@ -189,18 +194,39 @@
 
 /* ---------- Result bugs ---------- */
 
-.snffl-bug { display: block; }
+.snffl-bug { display: block; position: relative; }
+
+/* LIVE sits in the upper right of the box, matching the WIN and LOSE weight.
+   Red is a deliberate departure from the brief's blue --live token: a red dot
+   is the broadcast convention. The blanket reduced-motion rule in globals.css
+   stops the pulse for anyone who asks for that. */
+.snffl-live-badge {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--marker-red);
+}
+.snffl-live-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--marker-red);
+  animation: snffl-live-pulse 1.4s ease-in-out infinite;
+}
+
+/* The badge would otherwise land on top of the away team's score, which share
+   the same corner. Live games reserve a row for it; finished ones do not, so
+   the slimmer box is kept everywhere it matters. */
+.snffl-bug-live .snffl-bug-body { padding-top: 22px; }
 .snffl-bug-link { display: block; color: inherit; text-decoration: none; }
 .snffl-bug-link + .snffl-bug-link { border-top: 1px solid var(--line); }
 
-.snffl-bug-flag {
-  display: grid;
-  place-items: center;
-  font-size: 12px;
-  font-weight: 900;
-  color: #fff;
-  clip-path: polygon(0 0, 100% 0, calc(100% - 7px) 100%, 0 100%);
-}
 /* WIN and LOSE sit inline ahead of each team's avatar. A plain rectangle
    rather than the house slant: the clipped shape read as sloppy at this size.
    Only rendered when a result exists, so the empty variant holds the column. */
@@ -218,11 +244,6 @@
 .snffl-outcome-win { background: var(--good-chip); }
 .snffl-outcome-lose { background: var(--bad-chip); }
 .snffl-outcome-none { background: none; }
-
-.snffl-bug-flag-win { background: var(--good-chip); }
-.snffl-bug-flag-loss { background: var(--bad-chip); }
-.snffl-bug-flag-live { background: var(--live-chip); }
-.snffl-bug-flag-pending { background: var(--pending-chip); }
 
 /* Kept deliberately tight: seven of these stack on Matchups and Home, so a few
    pixels each is a screenful. */

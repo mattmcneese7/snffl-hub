@@ -61,6 +61,8 @@ const PAIRS = [
   ['bad', 'bg', 3, 'bad score on background'],
   ['marker-red', 'bg', 3, 'marker scribble on background'],
   ['marker-red', 'card', 3, 'marker scribble on card'],
+  // The LIVE label is 9px, so it is small text and needs the higher floor.
+  ['marker-red', 'card', 4.5, 'LIVE badge on card'],
   ['rag-category', 'card', 4.5, 'Rag category label on card'],
   ['rag-category', 'bg', 4.5, 'Rag category label on background'],
   ['on-chip', 'logo-red', 4.5, 'THE tag on the masthead'],

@@ -90,7 +90,11 @@ const requests: BatchRequest[] = ids.map((id) => ({
   system: VOICE,
   prompt: promptFor(id, facts),
   schema: ARTICLE_SCHEMA as unknown as Record<string, unknown>,
-  maxTokens: 2000,
+  // Week 1 truncated three articles at exactly 2000: Power Rankings needs 14
+  // blurbs, Around the League recaps 7 games, and Waiver Wire spent the whole
+  // cap without emitting usable JSON. A truncated article is a total loss, so
+  // the cap sits well clear of the longest specs rather than close to them.
+  maxTokens: 6000,
 }));
 
 const batchId = await submitBatch(requests);

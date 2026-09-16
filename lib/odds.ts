@@ -23,16 +23,61 @@ export type OddsInput = {
   /** Seeds that get a first round bye. 7 playoff teams means the top seed. */
   byeSeeds: number;
   runs?: number;
+  /** Overrides the seed derived from the inputs. Tests use it. */
+  seed?: number;
 };
 
+/**
+ * Seeded generator, so the same inputs always produce the same odds.
+ *
+ * This used to call Math.random directly. Three consecutive runs over identical
+ * Week 1 data returned 77.5, 77.2 and 77.2 for the same team, drifting up to
+ * 1.3 percentage points, which meant two readers could load the playoff page at
+ * the same moment and see different numbers, and a refresh would change them.
+ * It also broke the writing pipeline: the fact packet handed to a writer on
+ * Monday no longer matched the packet rebuilt at publish time, so a correctly
+ * copied percentage was rejected as invented.
+ *
+ * mulberry32: small, fast, and good enough for a scoring simulation.
+ */
+function mulberry32(seed: number): () => number {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
 /** Box-Muller, so scores vary the way real weekly scores do. */
-function gaussian(mean: number, sd: number): number {
+function gaussian(random: () => number, mean: number, sd: number): number {
   let u = 0;
   let v = 0;
-  while (u === 0) u = Math.random();
-  while (v === 0) v = Math.random();
+  while (u === 0) u = random();
+  while (v === 0) v = random();
   const z = Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
   return mean + z * sd;
+}
+
+/**
+ * A seed derived from the inputs themselves, so it changes when the season
+ * changes and never when it does not. Callers may pass their own.
+ */
+function seedFrom(input: OddsInput): number {
+  let hash = 2166136261;
+  const parts = [
+    input.rosters.join(','),
+    input.remaining.map((g) => `${g.week}:${g.home}:${g.away}`).join(','),
+    Object.entries(input.wins).sort().map(([k, v]) => `${k}=${v}`).join(','),
+    Object.entries(input.pointsFor).sort().map(([k, v]) => `${k}=${v.toFixed(2)}`).join(','),
+    Object.entries(input.expected).sort().map(([k, v]) => `${k}=${v.toFixed(4)}`).join(','),
+  ].join('|');
+  for (let i = 0; i < parts.length; i++) {
+    hash ^= parts.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
 }
 
 export function simulatePlayoffOdds(input: OddsInput): PlayoffOdds[] {
@@ -48,6 +93,8 @@ export function simulatePlayoffOdds(input: OddsInput): PlayoffOdds[] {
     runs = 10000,
   } = input;
 
+  const random = mulberry32(input.seed ?? seedFrom(input));
+
   const madeCount: Record<number, number> = {};
   const byeCount: Record<number, number> = {};
   const topCount: Record<number, number> = {};
@@ -62,8 +109,14 @@ export function simulatePlayoffOdds(input: OddsInput): PlayoffOdds[] {
     const pf: Record<number, number> = { ...pointsFor };
 
     for (const game of remaining) {
-      const homeScore = Math.max(0, gaussian(expected[game.home] ?? 100, spread[game.home] ?? 25));
-      const awayScore = Math.max(0, gaussian(expected[game.away] ?? 100, spread[game.away] ?? 25));
+      const homeScore = Math.max(
+        0,
+        gaussian(random, expected[game.home] ?? 100, spread[game.home] ?? 25)
+      );
+      const awayScore = Math.max(
+        0,
+        gaussian(random, expected[game.away] ?? 100, spread[game.away] ?? 25)
+      );
       pf[game.home] += homeScore;
       pf[game.away] += awayScore;
       if (homeScore > awayScore) w[game.home] += 1;

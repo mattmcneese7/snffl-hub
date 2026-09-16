@@ -16,12 +16,23 @@ const ALWAYS_ALLOWED = new Set(['1', '2', '3', '0', '100']);
 
 const isYear = (value: string) => /^(19|20)\d{2}$/.test(value);
 
+/**
+ * Smart punctuation folded to plain ASCII before matching.
+ *
+ * Sleeper stores one team as "Bibi’s Ballers 69" with a curly apostrophe, and a
+ * writer naturally types a straight one. Exact matching then never redacts that
+ * name, and the 69 inside it reads as a statistic: five Week 1 articles were
+ * rejected for "69 is not in the fact packet", all from that single character.
+ */
+const fold = (value: string) =>
+  value.replace(/[‘’]/g, "'").replace(/[“”]/g, '"');
+
 /** Replaces each known name with a marker so it cannot be parsed as content. */
 export function redactNames(text: string, names: string[]): string {
-  let out = text;
+  let out = fold(text);
   for (const name of names) {
     if (!name) continue;
-    out = out.split(name).join('');
+    out = out.split(fold(name)).join('');
   }
   return out;
 }

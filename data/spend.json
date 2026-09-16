@@ -1,0 +1,18 @@
+{
+ "entries": [
+  {
+   "at": "2026-09-16T03:02:37.770Z",
+   "job": "rag week 1",
+   "model": "claude-sonnet-5",
+   "usd": 0.1181
+  },
+  {
+   "at": "2026-09-16T03:15:53.075Z",
+   "job": "rag week 1",
+   "model": "claude-sonnet-5",
+   "usd": 0.1121
+  }
+ ],
+ "limitUsd": 8.5,
+ "spent": 0.2302
+}

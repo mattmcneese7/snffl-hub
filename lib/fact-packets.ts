@@ -249,11 +249,23 @@ export function properNouns(facts: WeekFacts): string[] {
  */
 export function allowedNumbers(facts: WeekFacts): Set<string> {
   const out = new Set<string>();
+  /**
+   * Exact forms only.
+   *
+   * This used to add String(Math.round(value)) and toFixed(1), which
+   * whitelisted the rounded form of every score. That admitted "63" for a 63.04
+   * Shart and "170" for a 169.86 high, the exact truncation the brief forbids,
+   * and it made enforcement depend on whether a decimal happened to round up or
+   * down: "Hangs 169" was rejected while "A 63" sailed through into a headline.
+   *
+   * String(value) and toFixed(2) together cover every honest spelling, 118 and
+   * 118.00, 95.2 and 95.20, and checkNumbers normalizes trailing zeros on the
+   * way in. Whole number facts such as the week, the team count and a seed are
+   * integral already, so they need no rounding to pass.
+   */
   const add = (value: number) => {
-    out.add(value.toFixed(2));
-    out.add(value.toFixed(1));
-    out.add(String(Math.round(value)));
     out.add(String(value));
+    out.add(value.toFixed(2));
   };
 
   add(facts.week);

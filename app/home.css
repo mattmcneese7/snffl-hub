@@ -112,10 +112,32 @@
   min-height: var(--tap);
 }
 
+/* Each column stacks its widgets, so the column itself carries the rhythm.
+   This used to read `.snffl-home-grid > * { gap: 22px }`, which set a gap on
+   plain block children where it does nothing, so the widgets inside a column
+   had no spacing at all. */
+/* On a phone this is one column of two stacked groups. Without a gap here the
+   last widget of the first group sits flush against the first of the second,
+   which measured as a single 0px seam between two 30px ones. The desktop rule
+   below replaces this with its own columns and gap. */
+.snffl-home-grid {
+  display: grid;
+  gap: 30px;
+}
+
+.snffl-home-grid > * {
+  /* min-width: 0 is load bearing. Without it a grid child sizes to its widest
+     content, which is how the performers rail once gave the whole phone layout
+     horizontal scroll. */
+  min-width: 0;
+  display: grid;
+  align-content: start;
+  gap: 30px;
+}
+
 @media (min-width: 900px) {
   .snffl-rag-hero-card { flex-basis: 42%; }
   .snffl-rag-hero-lead { flex-basis: 48%; }
   .snffl-rag-hero-headline { font-size: 22px; }
   .snffl-quick-links { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .snffl-home-grid > * { gap: 22px; }
 }

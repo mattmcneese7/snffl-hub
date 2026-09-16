@@ -3,6 +3,7 @@ import Chrome from '@/components/Chrome';
 import FeatureMatchup from '@/components/FeatureMatchup';
 import HomeWidget from '@/components/HomeWidget';
 import Masthead from '@/components/Masthead';
+import PlayoffTitle from '@/components/PlayoffTitle';
 import RagHero from '@/components/RagHero';
 import ResultBug from '@/components/ResultBug';
 import StandingsTable from '@/components/StandingsTable';
@@ -163,7 +164,15 @@ export default async function HomePage() {
               </div>
             </HomeWidget>
 
-            <HomeWidget title="Playoff Odds" href="/playoffs" linkLabel="Full tracker">
+            <HomeWidget
+              title={
+                <span className="snffl-playoff-title snffl-playoff-title-compact">
+                  <PlayoffTitle week={week} />
+                </span>
+              }
+              href="/playoffs"
+              linkLabel="Full tracker"
+            >
               <div className="snffl-card">
                 {odds.slice(0, 5).map((row) => (
                   <Link

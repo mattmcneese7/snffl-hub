@@ -59,8 +59,12 @@ const PAIRS = [
   ['muted', 'card', 3, 'muted bar on card'],
   ['good', 'bg', 3, 'good score on background'],
   ['bad', 'bg', 3, 'bad score on background'],
-  ['marker-red', 'bg', 3, 'marker scribble on background'],
-  ['marker-red', 'card', 3, 'marker scribble on card'],
+  // --marker-red carries the caret at 22px bold and marker shapes, so 3:1.
+  ['marker-red', 'bg', 3, 'marker caret on background'],
+  ['marker-red', 'card', 3, 'marker caret on card'],
+  // The scribble is 18px at normal weight, which is small text, not large.
+  ['marker-ink', 'bg', 4.5, 'marker scribble on background'],
+  ['marker-ink', 'card', 4.5, 'marker scribble on card'],
   // The LIVE label is 9px, so it is small text and needs the higher floor.
   ['marker-red', 'card', 4.5, 'LIVE badge on card'],
   ['rag-category', 'card', 4.5, 'Rag category label on card'],

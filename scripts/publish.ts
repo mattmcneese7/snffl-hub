@@ -50,13 +50,29 @@ const names = properNouns(facts);
 
 let written: Record<string, { ok: true; data: unknown } | { ok: false; error: string }> = {};
 
-if (batchId) {
+// Raw model output is kept, not just the published issue.
+//
+// Batch results expire, and publish deletes pending.json once it succeeds, so
+// for a while the only durable copy of the writing was whatever survived
+// validation. Every fix to the validator then meant paying to generate the same
+// articles again. The raw file is written before validation and read first, so
+// a re-publish costs nothing.
+const RAW_DIR = path.join('data', 'rag', 'raw');
+const RAW = path.join(RAW_DIR, `week-${week}.json`);
+
+if (fs.existsSync(RAW)) {
+  written = JSON.parse(fs.readFileSync(RAW, 'utf8'));
+  console.log(`  using saved batch output from ${RAW}, nothing to collect`);
+} else if (batchId) {
   const outcome = await collectBatch(batchId);
   if (!outcome.ready) {
     console.log(`  batch ${batchId} is ${outcome.status}, trying again on the next run.`);
     process.exit(0);
   }
   written = outcome.results;
+  fs.mkdirSync(RAW_DIR, { recursive: true });
+  fs.writeFileSync(RAW, JSON.stringify(written, null, 1));
+  console.log(`  batch collected and saved to ${RAW}`);
   if (outcome.usd > 0) recordSpend(`rag week ${week}`, 'claude-sonnet-5', outcome.usd);
   console.log(`  batch collected, $${outcome.usd.toFixed(4)} spent`);
 } else {

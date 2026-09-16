@@ -667,7 +667,9 @@
     gap: 22px;
     align-items: start;
   }
-  .snffl-home-grid > * { min-width: 0; display: grid; gap: 18px; align-content: start; }
+  /* The column rule lives in home.css, unmediated, so the widgets inside a
+     column are spaced on a phone too. Declaring it again here only fought with
+     that one at equal specificity. */
   .snffl-feature-side-score { font-size: 46px; }
   .snffl-matchups-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
 }

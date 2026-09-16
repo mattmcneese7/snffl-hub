@@ -283,13 +283,32 @@ body { padding-bottom: 76px; }
 
 /* ---------- Page shell ---------- */
 
+/* The gap between sections has to beat the 9px under a block heading, or a
+   title sits closer to the section above it than to its own content and reads
+   as belonging to the wrong one. */
 .snffl-page {
   padding: 14px;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 18px;
+  gap: 30px;
   max-width: 760px;
   margin: 0 auto;
+  /* Route change remounts main, so this runs on every navigation without a
+     router hook or any JS. Short and small on purpose: enough movement to read
+     as a transition, not enough to make the site feel slow. The global
+     prefers-reduced-motion block collapses it to nothing. */
+  animation: snffl-page-in 0.2s ease-out both;
+}
+
+@keyframes snffl-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 .snffl-page > * { min-width: 0; }
 

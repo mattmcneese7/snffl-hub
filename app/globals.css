@@ -23,6 +23,11 @@
      at 4.41:1 on --bg (#f7f7f5), which is not white. Same trap that caught
      --link in Checkpoint 2. */
   --rag-category: #d31126;
+  /* Marker red for small text. --marker-red is the brand marker and is right
+     for the caret at 22px bold and for shapes, where 3:1 applies, but it
+     measures 4.41:1 on --bg and the scribble is 18px at normal weight, which
+     needs 4.5:1. Same darkening, and the same trap, as --rag-category. */
+  --marker-ink: #d31126;
   /* Water deep (#1f74c9) lands at 4.45:1 on --bg, just under the small-text
      floor, so links use a darkened step of the same blue. */
   --link: #1a6ab8;
@@ -79,6 +84,7 @@
   --shart-on: #141210;
   --marker-red: #ff5a66;
   --rag-category: #ff5a66;
+  --marker-ink: #ff5a66;
   --link: #5bb6f2;
 }
 
@@ -95,6 +101,7 @@
     --shart-on: #141210;
     --marker-red: #ff5a66;
     --rag-category: #ff5a66;
+    --marker-ink: #ff5a66;
     --link: #5bb6f2;
   }
 }

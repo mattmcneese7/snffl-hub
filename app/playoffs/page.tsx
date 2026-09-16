@@ -1,16 +1,8 @@
 import Link from 'next/link';
 import Chrome from '@/components/Chrome';
+import PlayoffTitle from '@/components/PlayoffTitle';
 import { league, scoredWeek } from '@/lib/league';
 import { getPlayoffOdds } from '@/lib/playoff-odds';
-
-/** Brief Section 2: the scribble changes with the week, then the page becomes
- *  the Postseason Breakdown from Week 15. Write on animation lands with the
- *  motion inventory in Checkpoint 7. */
-function scribbleFor(week: number): string | null {
-  if (week <= 7) return 'way too early';
-  if (week <= 11) return 'just in time';
-  return null;
-}
 
 const TAG_CLASS: Record<string, string> = {
   Clinched: 'snffl-odds-tag-clinched',
@@ -22,7 +14,6 @@ const TAG_CLASS: Record<string, string> = {
 
 export default async function PlayoffsPage() {
   const week = await scoredWeek();
-  const scribble = scribbleFor(week);
   const postseason = week >= league.playoffWeekStart;
   const odds = await getPlayoffOdds();
 
@@ -33,9 +24,8 @@ export default async function PlayoffsPage() {
         <section>
           <div className="snffl-playoff-head">
             <h2 className="snffl-headline snffl-playoff-title">
-              THE <span className="snffl-playoff-caret">^</span> PLAYOFF TRACKER
+              <PlayoffTitle week={week} />
             </h2>
-            {scribble ? <span className="snffl-playoff-scribble">{scribble}</span> : null}
           </div>
           <p className="snffl-menu-note">
             SNFFL odds, from our own simulation of the rest of the season. Not Sleeper&apos;s

@@ -104,6 +104,39 @@ export function checkHeadline(headline: string, names: string[] = []): Violation
   return out;
 }
 
+/** Field names from the article schema, which must never appear as prose. */
+const SCHEMA_KEYS = new Set(['headline', 'deck', 'body', 'signOff']);
+
+/**
+ * Rejects a body that is not prose.
+ *
+ * Week 1 published a Shart whose body was ["real", "real", "real", ", ", "] ,",
+ * "signOff", "", " ", " ", " ", " "]. The structured output malformed itself in
+ * a way that still parsed as valid JSON, so nothing upstream noticed and the
+ * lead story went out with eight junk paragraphs. Numbers, dashes and Title
+ * Case were all fine, because none of those checks ask whether a paragraph is
+ * a sentence.
+ */
+export function checkBody(body: string[]): Violation[] {
+  const out: Violation[] = [];
+  body.forEach((paragraph, index) => {
+    const text = paragraph.trim();
+    if (!text) {
+      out.push({ kind: 'body', detail: `paragraph ${index + 1} is empty` });
+      return;
+    }
+    if (SCHEMA_KEYS.has(text)) {
+      out.push({ kind: 'body', detail: `paragraph ${index + 1} is the field name "${text}"` });
+      return;
+    }
+    // Punctuation only, such as a stray "] ," from a malformed array.
+    if (!/[A-Za-z]/.test(text)) {
+      out.push({ kind: 'body', detail: `paragraph ${index + 1} has no words: ${JSON.stringify(text)}` });
+    }
+  });
+  return out;
+}
+
 export type Candidate = {
   headline: string;
   deck: string;
@@ -128,6 +161,7 @@ export function validateArticle(
 
   if (!candidate.headline.trim()) violations.push({ kind: 'empty', detail: 'no headline' });
   if (!candidate.body.length) violations.push({ kind: 'empty', detail: 'no body' });
+  violations.push(...checkBody(candidate.body));
 
   return { ok: violations.length === 0, violations };
 }

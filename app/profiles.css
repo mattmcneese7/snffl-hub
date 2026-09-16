@@ -216,15 +216,50 @@
 
 /* ---------- Playoff tracker ---------- */
 
-.snffl-playoff-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+/* Headroom for the scribble, which sits above the caret and would otherwise be
+   clipped by the sticky chrome above it. */
+.snffl-playoff-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-top: 20px;
+}
 .snffl-playoff-title { font-size: 22px; }
+/* The same treatment inside a Home widget heading, which runs at 17px. The
+   scribble scales with it, and the heading reserves headroom because the
+   scribble is positioned above the line it sits on. */
+.snffl-playoff-title-compact { font-size: 17px; }
+.snffl-playoff-title-compact .snffl-playoff-scribble { font-size: 14px; }
+.snffl-block-heading:has(.snffl-playoff-title-compact) { padding-top: 16px; }
+/* 22px at weight 900 is large text, so the caret answers to the 3:1 floor. */
 .snffl-playoff-caret { color: var(--marker-red); }
+
+/* Anchors the scribble to the caret itself. It used to be a sibling of the
+   title inside a flex row, which is exactly why it landed to the right of
+   "PLAYOFF TRACKER" instead of above the caret. */
+.snffl-playoff-mark {
+  position: relative;
+  display: inline-block;
+}
 .snffl-playoff-scribble {
+  position: absolute;
+  /* Clears the caret. Rotating about the centre dropped the bottom left corner
+     onto the title, which measured as a 3px overlap. */
+  bottom: calc(100% + 3px);
+  /* Left aligned to the caret rather than centred on it. The caret sits about
+     50px from the edge of a phone, and half of "way too early" is wider than
+     that, so centring pushed the first word off the screen. */
+  left: 0;
+  transform: rotate(-6deg);
+  transform-origin: left bottom;
+  white-space: nowrap;
+  line-height: 1;
   font-family: var(--font-marker), cursive;
   font-size: 18px;
-  color: var(--marker-red);
-  transform: rotate(-6deg);
-  display: inline-block;
+  /* Not --marker-red: at 18px and normal weight this is small text needing
+     4.5:1, and that token measures 4.41:1 on the light background. */
+  color: var(--marker-ink);
 }
 
 .snffl-odds-row {

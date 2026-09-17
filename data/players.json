@@ -2315,16 +2315,6 @@
   "short": "K. Pitts",
   "team": "ATL"
  },
- "7559": {
-  "espnId": "4240573",
-  "headshot": "https://sleepercdn.com/content/nfl/players/7559.jpg",
-  "id": "7559",
-  "logo": "https://sleepercdn.com/images/team_logos/nfl/ari.png",
-  "name": "Ihmir Smith-Marsette",
-  "position": "WR",
-  "short": "I. Smith-Marsette",
-  "team": "ARI"
- },
  "7562": {
   "espnId": "4360797",
   "headshot": "https://sleepercdn.com/content/nfl/players/7562.jpg",
@@ -2504,6 +2494,16 @@
   "position": "RB",
   "short": "M. Carter",
   "team": "TEN"
+ },
+ "7608": {
+  "espnId": "4035886",
+  "headshot": "https://sleepercdn.com/content/nfl/players/7608.jpg",
+  "id": "7608",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/atl.png",
+  "name": "Khalil Herbert",
+  "position": "RB",
+  "short": "K. Herbert",
+  "team": "ATL"
  },
  "7610": {
   "espnId": "4383351",
@@ -2704,16 +2704,6 @@
   "position": "WR",
   "short": "T. Jones",
   "team": "JAX"
- },
- "8041": {
-  "espnId": "4608362",
-  "headshot": "https://sleepercdn.com/content/nfl/players/8041.jpg",
-  "id": "8041",
-  "logo": "https://sleepercdn.com/images/team_logos/nfl/ne.png",
-  "name": "Shane Zylstra",
-  "position": "TE",
-  "short": "S. Zylstra",
-  "team": "NE"
  },
  "8076": {
   "espnId": "4034704",
@@ -2963,6 +2953,16 @@
   "position": "WR",
   "short": "A. Pierce",
   "team": "IND"
+ },
+ "8143": {
+  "espnId": "4372019",
+  "headshot": "https://sleepercdn.com/content/nfl/players/8143.jpg",
+  "id": "8143",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/min.png",
+  "name": "Jerome Ford",
+  "position": "RB",
+  "short": "J. Ford",
+  "team": "MIN"
  },
  "8144": {
   "espnId": "4361370",
@@ -3623,16 +3623,6 @@
   "short": "D. Achane",
   "team": "MIA"
  },
- "9227": {
-  "espnId": "4429202",
-  "headshot": "https://sleepercdn.com/content/nfl/players/9227.jpg",
-  "id": "9227",
-  "logo": "https://sleepercdn.com/images/team_logos/nfl/dal.png",
-  "name": "Israel Abanikanda",
-  "position": "RB",
-  "short": "I. Abanikanda",
-  "team": "DAL"
- },
  "9228": {
   "espnId": "4685720",
   "headshot": "https://sleepercdn.com/content/nfl/players/9228.jpg",
@@ -4232,16 +4222,6 @@
   "position": "TE",
   "short": "L. Schoonmaker",
   "team": "DAL"
- },
- "10937": {
-  "espnId": "4372066",
-  "headshot": "https://sleepercdn.com/content/nfl/players/10937.jpg",
-  "id": "10937",
-  "logo": "https://sleepercdn.com/images/team_logos/nfl/bal.png",
-  "name": "Jake Moody",
-  "position": "K",
-  "short": "J. Moody",
-  "team": "BAL"
  },
  "10955": {
   "espnId": "4363538",
@@ -6063,16 +6043,6 @@
   "short": "C. Ward",
   "team": "TEN"
  },
- "12523": {
-  "espnId": "4708486",
-  "headshot": "https://sleepercdn.com/content/nfl/players/12523.jpg",
-  "id": "12523",
-  "logo": "https://sleepercdn.com/images/team_logos/nfl/car.png",
-  "name": "Jimmy Horn",
-  "position": "WR",
-  "short": "J. Horn",
-  "team": "CAR"
- },
  "12524": {
   "espnId": "4432762",
   "headshot": "https://sleepercdn.com/content/nfl/players/12524.jpg",
@@ -6548,6 +6518,25 @@
   "position": "WR",
   "short": "A. Armstrong",
   "team": "KC"
+ },
+ "12884": {
+  "espnId": "4572380",
+  "headshot": "https://sleepercdn.com/content/nfl/players/12884.jpg",
+  "id": "12884",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/gb.png",
+  "name": "Quincy Skinner",
+  "position": "WR",
+  "short": "Q. Skinner",
+  "team": "GB"
+ },
+ "12888": {
+  "headshot": "https://sleepercdn.com/content/nfl/players/12888.jpg",
+  "id": "12888",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/nyg.png",
+  "name": "Dalen Cambre",
+  "position": "WR",
+  "short": "D. Cambre",
+  "team": "NYG"
  },
  "12889": {
   "espnId": "4431210",
@@ -8096,16 +8085,6 @@
   "position": "WR",
   "short": "H. Wallace",
   "team": "ARI"
- },
- "13674": {
-  "espnId": "4431334",
-  "headshot": "https://sleepercdn.com/content/nfl/players/13674.jpg",
-  "id": "13674",
-  "logo": "https://sleepercdn.com/images/team_logos/nfl/gb.png",
-  "name": "Chris Hilton",
-  "position": "WR",
-  "short": "C. Hilton",
-  "team": "GB"
  },
  "13696": {
   "espnId": "4430270",

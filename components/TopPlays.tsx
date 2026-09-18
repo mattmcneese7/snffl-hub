@@ -26,7 +26,7 @@ export default function TopPlays({ clips, week }: { clips: ReelClip[]; week: num
           >
             <span className="snffl-top-play-art">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`https://i.ytimg.com/vi/${clip.id}/hqdefault.jpg`} alt="" loading="lazy" />
+              {clip.still ? <img src={clip.still} alt="" loading="lazy" /> : null}
               <span className="snffl-top-play-button" aria-hidden>
                 ▶
               </span>

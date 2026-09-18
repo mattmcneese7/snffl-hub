@@ -1103,3 +1103,25 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   color: var(--ink-secondary);
 }
 @media (min-width: 900px) { .snffl-top-play { flex-basis: 300px; } }
+.snffl-reel-frame { position: relative; }
+.snffl-reel-external {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #ffffff;
+  font: 800 14px/1 var(--font-archivo);
+  text-decoration: none;
+}
+.snffl-reel-external-play {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 46px;
+  border-radius: 12px;
+  background: #ff0000;
+  font-size: 20px;
+}

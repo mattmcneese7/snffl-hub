@@ -11,7 +11,7 @@ import { createPortal } from 'react-dom';
  * and never played. Clips now open over the whole screen: one clip per page,
  * swipe or scroll up for the next, like every reels feed people already know.
  *
- * Only the clip on screen mounts a YouTube player. Its neighbours show their
+ * Only the clip on screen mounts a player. Its neighbours show their
  * still, so a reel of forty clips costs one player, not forty. playsinline
  * keeps iPhone from throwing the video into its own full screen player, which
  * would break the swipe. Back closes the reel, because on a phone that is what
@@ -21,9 +21,6 @@ import { createPortal } from 'react-dom';
 import type { ReelClip } from '@/lib/reel-clips';
 export type { ReelClip };
 
-const still = (id: string) => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
-const embed = (id: string) =>
-  `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&playsinline=1&rel=0&modestbranding=1`;
 
 export default function ReelPlayer({
   clips,
@@ -162,7 +159,7 @@ export default function ReelPlayer({
           >
             {variant === 'story' ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img className="snffl-story-backdrop" src={still(clip.id)} alt="" aria-hidden />
+              <img className="snffl-story-backdrop" src={clip.still ?? ''} alt="" aria-hidden />
             ) : null}
             {variant === 'story' ? (
               <>
@@ -181,17 +178,31 @@ export default function ReelPlayer({
               </>
             ) : null}
             <div className="snffl-reel-frame">
-              {index === active ? (
+              {index === active && clip.embed ? (
                 <iframe
-                  src={embed(clip.id)}
+                  src={clip.embed}
                   title={clip.title}
-                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                  allowFullScreen
+                  allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
                 />
-              ) : (
+              ) : clip.still ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={still(clip.id)} alt="" loading="lazy" />
-              )}
+                <img src={clip.still} alt="" loading="lazy" />
+              ) : null}
+              {/* The NFL blocks its YouTube clips on outside sites, so those
+                  open in YouTube, which on a phone is the YouTube app. */}
+              {!clip.embed ? (
+                <a
+                  className="snffl-reel-external"
+                  href={clip.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span className="snffl-reel-external-play" aria-hidden>
+                    ▶
+                  </span>
+                  Watch on YouTube
+                </a>
+              ) : null}
             </div>
 
             <div className="snffl-reel-info">
@@ -205,15 +216,10 @@ export default function ReelPlayer({
                   ))}
                 </div>
               ) : null}
-              <a
-                className="snffl-reel-source"
-                href={`https://www.youtube.com/watch?v=${clip.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a className="snffl-reel-source" href={clip.sourceUrl} target="_blank" rel="noopener noreferrer">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/sources/youtube.svg" alt="" />
-                Video via NFL on YouTube
+                <img src={clip.source === 'espn' ? '/sources/espn.png' : '/sources/youtube.svg'} alt="" />
+                {clip.source === 'espn' ? 'Video via ESPN' : 'Video via NFL on YouTube'}
               </a>
             </div>
           </section>

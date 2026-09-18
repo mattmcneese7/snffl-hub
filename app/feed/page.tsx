@@ -1,3 +1,4 @@
+import { firstNameOf } from '@/config/managers';
 import { SourceStrip } from '@/components/SourceMark';
 import Chrome from '@/components/Chrome';
 import FeedStream from '@/components/FeedStream';
@@ -19,7 +20,9 @@ export default async function FeedPage() {
 
   // Keyed by text, because owner_team_id is a text column even though roster
   // ids are numbers everywhere else in the project.
-  const managers = Object.fromEntries(teams.map((team) => [String(team.rosterId), team.manager]));
+  const managers = Object.fromEntries(
+    teams.map((team) => [String(team.rosterId), firstNameOf(team.rosterId) ?? team.manager])
+  );
 
   return (
     <>

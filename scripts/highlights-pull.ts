@@ -1,4 +1,6 @@
-// Highlights pull, Brief Section 3.
+// YouTube highlights pull, Brief Section 3. Unscheduled since Checkpoint 12b:
+// the NFL blocks its YouTube clips on outside sites, so the hourly job runs
+// scripts/espn-highlights-pull.ts instead. Kept for --reclassify and history.
 //
 // Every 30 minutes during game windows and once after the last game. Reads new
 // NFL uploads, asks Haiku which are actually clips of a play, matches the named

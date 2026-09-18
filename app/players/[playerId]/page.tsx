@@ -1,3 +1,4 @@
+import { firstNameOf } from '@/config/managers';
 import Link from 'next/link';
 import Chrome from '@/components/Chrome';
 import PointsByWeekChart from '@/components/PointsByWeekChart';
@@ -258,7 +259,7 @@ export default async function PlayerPage({
             </div>
             <HighlightList
               clips={clips}
-              managers={owner ? { [String(owner.rosterId)]: owner.manager } : {}}
+              managers={owner ? { [String(owner.rosterId)]: firstNameOf(owner.rosterId) ?? owner.manager } : {}}
               title={`${player.name} Highlights`}
             />
             <SourceStrip items={[{ source: 'youtube', label: 'Highlights' }]} />

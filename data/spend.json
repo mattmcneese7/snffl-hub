@@ -125,8 +125,14 @@
    "job": "highlight tagging",
    "model": "claude-haiku-4-5",
    "usd": 0.0365
+  },
+  {
+   "at": "2026-09-18T10:30:27.452Z",
+   "job": "highlight tagging",
+   "model": "claude-haiku-4-5",
+   "usd": 0.0063
   }
  ],
  "limitUsd": 8.5,
- "spent": 0.8335
+ "spent": 0.8398
 }

@@ -37,12 +37,14 @@ jobs:
           cache: npm
       - run: npm ci
 
-      - name: Pull new uploads, tag the clips, store them
+      # ESPN since Checkpoint 12b: the NFL blocks its YouTube clips on outside
+      # sites, while ESPN's syndicatable clips play in ESPN's own embed. The
+      # YouTube pull stays in the repo, unscheduled.
+      - name: Pull ESPN clips, tag them, store them
         env:
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           SLEEPER_LEAGUE_ID: ${{ secrets.SLEEPER_LEAGUE_ID }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-        run: node scripts/highlights-pull.ts
+        run: node scripts/espn-highlights-pull.ts

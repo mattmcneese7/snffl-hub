@@ -27,7 +27,15 @@ export type Highlight = {
   isCmonMan: boolean;
   /** offense, defense or special_teams, from the tagger. Null on older rows. */
   side: string | null;
+  /** Stored still for ESPN clips; YouTube stills are derived from the id. */
+  thumbnail: string | null;
 };
+
+/** ESPN clips are stored as espn:<id>; everything else is a YouTube id. */
+export const isEspnClip = (id: string) => id.startsWith('espn:');
+export const espnClipId = (id: string) => id.slice('espn:'.length);
+export const stillFor = (clip: Pick<Highlight, 'id' | 'thumbnail'>) =>
+  clip.thumbnail ?? (isEspnClip(clip.id) ? null : `https://i.ytimg.com/vi/${clip.id}/hqdefault.jpg`);
 
 type Row = {
   id: string;
@@ -41,6 +49,7 @@ type Row = {
   fantasy_points: number | null;
   is_cmon_man: boolean | null;
   side?: string | null;
+  thumbnail?: string | null;
 };
 
 const toHighlight = (row: Row): Highlight => ({
@@ -55,6 +64,7 @@ const toHighlight = (row: Row): Highlight => ({
   fantasyPoints: row.fantasy_points,
   isCmonMan: row.is_cmon_man ?? false,
   side: row.side ?? null,
+  thumbnail: row.thumbnail ?? null,
 });
 
 /**
@@ -102,10 +112,12 @@ export const isDefensivePlay = (clip: Highlight) =>
  * Fantasy points break ties within a tier, then recency.
  */
 export function clipWeight(clip: Highlight): number {
+  // A clip that plays inside the site beats one that has to open YouTube.
+  const playable = isEspnClip(clip.id) ? 20 : 0;
   const owned = clip.ownerTeamId ? 10 : 0;
   const defensive = isDefensivePlay(clip);
   const tier = defensive ? 2 : clip.playType && TOUCHDOWN.test(clip.playType) ? 6 : 4;
-  return owned + tier + Math.min(clip.fantasyPoints ?? 0, 40) / 40;
+  return playable + owned + tier + Math.min(clip.fantasyPoints ?? 0, 40) / 40;
 }
 
 export const rankClips = (clips: Highlight[]) =>
@@ -183,8 +195,9 @@ export type NewHighlight = {
   started: boolean | null;
   fantasy_points: number | null;
   is_cmon_man: boolean;
-  /** Needs the column from docs/sql/12b-watcher.sql; dropped on write without it. */
+  /** Needs the columns from docs/sql/12b-watcher.sql; dropped on write without them. */
   side?: string | null;
+  thumbnail?: string | null;
 };
 
 /** Upsert on the video id, so a re-run cannot duplicate a clip. */
@@ -198,11 +211,11 @@ export async function saveHighlights(rows: NewHighlight[]): Promise<number> {
     .upsert(rows, { onConflict: 'id' })
     .select('id');
 
-  // Before the side column exists, write everything else rather than nothing.
-  if (error && /side/.test(error.message)) {
+  // Before the new columns exist, write everything else rather than nothing.
+  if (error && /side|thumbnail/.test(error.message)) {
     ({ error, data } = await client
       .from('highlights')
-      .upsert(rows.map(({ side: _side, ...rest }) => rest), { onConflict: 'id' })
+      .upsert(rows.map(({ side: _side, thumbnail: _thumbnail, ...rest }) => rest), { onConflict: 'id' })
       .select('id'));
   }
 

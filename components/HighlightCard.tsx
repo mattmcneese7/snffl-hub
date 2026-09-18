@@ -16,7 +16,9 @@ import SleeperActionButton from './SleeperAction';
  * The still is derived from the video id rather than stored, so the highlights
  * table needed no thumbnail column.
  */
-const thumbnail = (id: string) => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+const thumbnail = (highlight: Highlight) =>
+  highlight.thumbnail ??
+  (highlight.id.startsWith('espn:') ? null : `https://i.ytimg.com/vi/${highlight.id}/hqdefault.jpg`);
 
 export default function HighlightCard({
   highlight,
@@ -40,7 +42,7 @@ export default function HighlightCard({
         aria-label={`Play: ${highlight.title}`}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={thumbnail(highlight.id)} alt="" loading="lazy" />
+        {thumbnail(highlight) ? <img src={thumbnail(highlight)!} alt="" loading="lazy" /> : null}
         <span className="snffl-clip-play" aria-hidden>
           ▶
         </span>

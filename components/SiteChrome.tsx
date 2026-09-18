@@ -9,9 +9,6 @@ import {
   MonitorPlay,
   NewspaperClipping,
   Strategy,
-  Siren,
-  Moon,
-  Sun,
 } from '@phosphor-icons/react';
 import SnfflWordmark from './SnfflWordmark';
 
@@ -34,30 +31,6 @@ const TABS = [
   { label: 'The Rag', href: '/rag', Icon: NewspaperClipping },
   { label: 'More', href: '/more', Icon: Strategy },
 ];
-
-function useTheme() {
-  const [dark, setDark] = useState(false);
-
-  useEffect(() => {
-    const root = document.documentElement;
-    const saved = root.dataset.theme;
-    setDark(saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches);
-  }, []);
-
-  const toggle = () => {
-    const root = document.documentElement;
-    const next = dark ? 'light' : 'dark';
-    root.dataset.theme = next;
-    try {
-      localStorage.setItem('snffl.theme', next);
-    } catch {
-      // Private browsing can refuse storage. The toggle still works for this visit.
-    }
-    setDark(!dark);
-  };
-
-  return { dark, toggle };
-}
 
 // The header shrinks on scroll: wordmark 160px down to about 92px.
 function useScrolled(threshold = 24) {
@@ -135,22 +108,15 @@ export default function SiteChrome({
   leagueTicker = [],
   nflTicker = [],
 }: SiteChromeProps) {
-  const { dark, toggle } = useTheme();
   const scrolled = useScrolled();
   const pathname = usePathname();
-  const ThemeIcon = dark ? Sun : Moon;
 
   return (
     <>
       <header className={`snffl-header${scrolled ? ' snffl-header-compact' : ''}`}>
-        <button className="snffl-header-slot" aria-label="Alerts" type="button">
-          <Siren weight="duotone" className="snffl-header-icon" />
-        </button>
-        {/* Cropped in the header so the drips do not overhang the section strip. */}
+        {/* Theme and alerts live in Settings, so the header carries only the
+            wordmark. Cropped in the header so the drips do not overhang the section strip. */}
         <SnfflWordmark className="snffl-wordmark-svg" compact={scrolled} crop />
-        <button className="snffl-header-slot" aria-label="Switch theme" type="button" onClick={toggle}>
-          <ThemeIcon weight="duotone" className="snffl-header-icon" />
-        </button>
       </header>
 
       <nav className="snffl-desktop-nav">
@@ -168,14 +134,6 @@ export default function SiteChrome({
               </Link>
             );
           })}
-        </div>
-        <div className="snffl-desktop-nav-actions">
-          <button className="snffl-header-slot" aria-label="Alerts" type="button">
-            <Siren weight="duotone" className="snffl-header-icon" />
-          </button>
-          <button className="snffl-header-slot" aria-label="Switch theme" type="button" onClick={toggle}>
-            <ThemeIcon weight="duotone" className="snffl-header-icon" />
-          </button>
         </div>
       </nav>
 

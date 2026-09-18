@@ -50,7 +50,7 @@ body { padding-bottom: 76px; }
   top: 0;
   z-index: 60;
   display: grid;
-  grid-template-columns: 48px 1fr 48px;
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
   height: calc(var(--header-h) + env(safe-area-inset-top, 0px));
   padding: env(safe-area-inset-top, 0px) 10px 0;
@@ -58,18 +58,6 @@ body { padding-bottom: 76px; }
   border-bottom: 1px solid var(--line);
   transition: height 0.18s ease;
 }
-
-.snffl-header-slot {
-  width: 48px;
-  height: 48px;
-  display: grid;
-  place-items: center;
-  background: none;
-  border: 0;
-  color: var(--ink);
-  cursor: pointer;
-}
-.snffl-header-icon { font-size: 24px; width: 24px; height: 24px; }
 
 /* The artwork is 300x130, but the letters only occupy roughly y=13 to 66.
    The rest is drips hanging below, which may overhang the header edge. */
@@ -361,7 +349,6 @@ body { padding-bottom: 76px; }
     padding: 6px 0;
   }
   .snffl-desktop-nav-link-active { color: var(--ink); border-bottom: 3px solid var(--logo-red); }
-  .snffl-desktop-nav-actions { margin-left: auto; display: flex; gap: 4px; }
 
   .snffl-section-strip { top: 62px; }
   .snffl-ticker-stack { top: 96px; }

@@ -5,6 +5,7 @@ import HomeWidget from '@/components/HomeWidget';
 import LiveRefresh from '@/components/LiveRefresh';
 import Masthead from '@/components/Masthead';
 import StoriesRail from '@/components/StoriesRail';
+import TopPlays from '@/components/TopPlays';
 import { firstNameOf } from '@/config/managers';
 import { toReelClip } from '@/lib/reel-clips';
 import PlayoffTitle from '@/components/PlayoffTitle';
@@ -122,6 +123,20 @@ export default async function HomePage() {
             )}
           />
         </HomeWidget>
+
+        {storyClips.length ? (
+          <HomeWidget title="Top Plays" href="/feed" linkLabel="All highlights">
+            <TopPlays
+              week={storyWeek}
+              clips={storyClips.slice(0, 12).map((clip) =>
+                toReelClip(
+                  clip,
+                  clip.ownerTeamId ? (firstNameOf(Number(clip.ownerTeamId)) ?? null) : 'Free agent'
+                )
+              )}
+            />
+          </HomeWidget>
+        ) : null}
 
         {feature ? (
           <HomeWidget title="Matchup of the Week" href={`/matchups/${week}`} linkLabel="All matchups">

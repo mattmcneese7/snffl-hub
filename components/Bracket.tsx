@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import ManagerLink from './ManagerLink';
 import type { BracketRound } from '@/lib/postseason';
 
 /**
@@ -79,13 +80,19 @@ export default function Bracket({
                   {side.seed ?? '–'}
                 </span>
                 <span className="snffl-bracket-team">
-                  {side.rosterId != null ? side.team : (side.from ?? 'To be decided')}
+                  {side.rosterId != null ? (
+                    <ManagerLink rosterId={side.rosterId}>{side.team}</ManagerLink>
+                  ) : (
+                    (side.from ?? 'To be decided')
+                  )}
                   {side.rosterId != null && byeRosterIds.includes(side.rosterId) ? (
                     <span className="snffl-bracket-bye">BYE</span>
                   ) : null}
                 </span>
                 {side.manager ? (
-                  <span className="snffl-bracket-manager">{side.manager}</span>
+                  <ManagerLink rosterId={side.rosterId} className="snffl-bracket-manager">
+                    {side.manager}
+                  </ManagerLink>
                 ) : null}
               </div>
             ))}

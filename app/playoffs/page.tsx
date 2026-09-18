@@ -1,3 +1,4 @@
+import ManagerLink from '@/components/ManagerLink';
 import { SourceStrip } from '@/components/SourceMark';
 import Link from 'next/link';
 import Bracket from '@/components/Bracket';
@@ -48,8 +49,12 @@ export default async function PlayoffsPage() {
               <section>
                 <div className="snffl-champion">
                   <span className="snffl-champion-label">Champion</span>
-                  <span className="snffl-headline snffl-champion-name">{champion.teamName}</span>
-                  <span className="snffl-standings-manager">{champion.manager}</span>
+                  <ManagerLink rosterId={champion.rosterId} className="snffl-headline snffl-champion-name">
+                    {champion.teamName}
+                  </ManagerLink>
+                  <ManagerLink rosterId={champion.rosterId} className="snffl-standings-manager">
+                    {champion.manager}
+                  </ManagerLink>
                 </div>
               </section>
             ) : null}
@@ -70,7 +75,9 @@ export default async function PlayoffsPage() {
               <div className="snffl-block-heading">
                 <h2 className="snffl-headline">The Shart Bowl</h2>
                 {shartTeam ? (
-                  <span className="snffl-block-heading-link">{shartTeam.manager} chugs</span>
+                  <ManagerLink rosterId={shartTeam.rosterId} className="snffl-block-heading-link">
+                    {shartTeam.manager} chugs
+                  </ManagerLink>
                 ) : null}
               </div>
               <p className="snffl-menu-note">

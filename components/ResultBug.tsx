@@ -10,6 +10,7 @@ export type BugOutlook = {
   homeProjected: number;
 };
 import { LiveTeamPoints } from './LiveScores';
+import ManagerLink from './ManagerLink';
 import TeamAvatar from './TeamAvatar';
 
 /**
@@ -59,7 +60,9 @@ function Side({ side, game, projected }: { side: GameSide; game: Game; projected
     >
       {game.status === 'final' ? <Outcome game={game} side={side} /> : null}
       <TeamAvatar rosterId={side.rosterId} className="snffl-bug-avatar" />
-      <span className="snffl-bug-team">{team?.teamName ?? side.team}</span>
+      <ManagerLink rosterId={side.rosterId} className="snffl-bug-team">
+        {team?.teamName ?? side.team}
+      </ManagerLink>
       <span className="snffl-bug-score-wrap">
         {projected != null && game.status !== 'final' ? (
           <span className="snffl-bug-proj">P {projected.toFixed(1)}</span>
@@ -79,7 +82,12 @@ export default function ResultBug({ game, outlook }: { game: Game; outlook?: Bug
   const close = game.status !== 'pending' && game.margin < 10;
 
   return (
-    <Link className="snffl-bug-link" href={`/matchups/${game.week}/${game.matchupId}`}>
+    <div className="snffl-bug-link snffl-card-link">
+      <Link
+        className="snffl-card-link-cover"
+        href={`/matchups/${game.week}/${game.matchupId}`}
+        aria-label={`Open ${game.away.team} against ${game.home.team}`}
+      />
       <div className={`snffl-bug${game.status === 'live' ? ' snffl-bug-live' : ''}`}>
         {game.status === 'live' ? <LiveBadge /> : null}
         <div className="snffl-bug-body">
@@ -117,6 +125,6 @@ export default function ResultBug({ game, outlook }: { game: Game; outlook?: Bug
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }

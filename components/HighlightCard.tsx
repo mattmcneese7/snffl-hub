@@ -1,6 +1,7 @@
 'use client';
 
 import type { Highlight } from '@/lib/highlights';
+import ManagerLink from './ManagerLink';
 import SleeperActionButton from './SleeperAction';
 
 /**
@@ -65,7 +66,11 @@ export default function HighlightCard({
               {highlight.fantasyPoints.toFixed(2)}
             </span>
           ) : null}
-          {managerName ? <span className="snffl-clip-tag">{managerName}</span> : null}
+          {managerName ? (
+            <ManagerLink rosterId={highlight.ownerTeamId} className="snffl-clip-tag">
+              {managerName}
+            </ManagerLink>
+          ) : null}
         </div>
 
         {free ? (

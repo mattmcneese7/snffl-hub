@@ -1,3 +1,4 @@
+import ManagerLink from '@/components/ManagerLink';
 import Link from 'next/link';
 import Chrome from '@/components/Chrome';
 import { getTrades } from '@/lib/trades';
@@ -48,7 +49,9 @@ export default async function TradesPage() {
                             <Link className="snffl-trade-team" href={`/managers/${side.rosterId}`}>
                               {side.teamName}
                             </Link>
-                            <span className="snffl-menu-note">{side.manager} receives</span>
+                            <span className="snffl-menu-note">
+                              <ManagerLink rosterId={side.rosterId}>{side.manager}</ManagerLink> receives
+                            </span>
                           </span>
                         </div>
 

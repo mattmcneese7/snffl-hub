@@ -1,3 +1,5 @@
+import { LinkedText } from '@/components/ManagerLink';
+import { managerNames } from '@/lib/manager-names';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Chrome from '@/components/Chrome';
@@ -49,7 +51,9 @@ export default async function RagArticle({
 
           <div className="snffl-rag-body">
             {article.body.map((paragraph, i) => (
-              <p key={i}>{paragraph}</p>
+              <p key={i}>
+                <LinkedText text={paragraph} names={managerNames()} />
+              </p>
             ))}
           </div>
 

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { formatMoneyline } from '@/lib/gameday';
 import type { LiveMatchup, LivePlayer, LiveSide } from '@/lib/matchup-live';
 import { LivePlayerPoints, LiveTeamPoints } from './LiveScores';
+import ManagerLink from './ManagerLink';
 
 /**
  * Starters head to head, the way a fantasy app's matchup screen reads.
@@ -235,7 +236,9 @@ function Rows({
 function Total({ side, align, week }: { side: LiveSide; align: 'left' | 'right'; week: number }) {
   return (
     <div className={`snffl-mu-total snffl-mu-total-${align}`}>
-      <span className="snffl-label">{side.team}</span>
+      <ManagerLink rosterId={side.rosterId} className="snffl-label">
+        {side.team}
+      </ManagerLink>
       <LiveTeamPoints
         rosterId={side.rosterId}
         week={week}

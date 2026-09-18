@@ -1,4 +1,5 @@
 import type { PowerRank } from '@/lib/league';
+import ManagerLink from './ManagerLink';
 
 /** Top 3 solid, the rest outlined, movement in a fixed right column. */
 export default function PowerRankRow({ entry }: { entry: PowerRank }) {
@@ -23,8 +24,12 @@ export default function PowerRankRow({ entry }: { entry: PowerRank }) {
       </span>
       <span className="snffl-standings-colorbar" />
       <span>
-        <span className="snffl-standings-team-name">{team.teamName}</span>
-        <span className="snffl-standings-manager">{team.manager}</span>
+        <ManagerLink rosterId={team.rosterId} className="snffl-standings-team-name">
+          {team.teamName}
+        </ManagerLink>
+        <ManagerLink rosterId={team.rosterId} className="snffl-standings-manager">
+          {team.manager}
+        </ManagerLink>
         <span className="snffl-rank-blurb">{blurb}</span>
       </span>
       <span className={`snffl-rank-movement${movementClass}`}>{movementLabel}</span>

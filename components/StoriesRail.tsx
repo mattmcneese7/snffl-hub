@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { ReelClip } from '@/lib/reel-clips';
+import ManagerLink from './ManagerLink';
 import ReelPlayer from './ReelPlayer';
 
 /**
@@ -53,11 +54,14 @@ export default function StoriesRail({ managers, week }: { managers: StoryManager
                     </span>
                   )}
                 </div>
-                <div className="snffl-story-label">{manager.firstName}</div>
-                <span className="snffl-story-count">
-                  {has ? `${manager.clips.length} ${manager.clips.length === 1 ? 'CLIP' : 'CLIPS'}` : 'NO CLIPS'}
-                </span>
               </button>
+              {/* The ring plays the story; the name goes to his page. */}
+              <ManagerLink rosterId={manager.rosterId} className="snffl-story-label">
+                {manager.firstName}
+              </ManagerLink>
+              <span className="snffl-story-count">
+                {has ? `${manager.clips.length} ${manager.clips.length === 1 ? 'CLIP' : 'CLIPS'}` : 'NO CLIPS'}
+              </span>
             </div>
           );
         })}

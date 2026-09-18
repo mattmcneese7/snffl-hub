@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { LiveTeamPoints } from './LiveScores';
+import ManagerLink from './ManagerLink';
 import SourceMark from './SourceMark';
 import WinTube from './WinTube';
 
@@ -81,9 +82,11 @@ function Side({
       <div className="snffl-board-id">
         <Avatar side={side} size="lg" />
         <div className="snffl-board-names">
-          <span className="snffl-board-team">{side.teamName}</span>
+          <ManagerLink rosterId={side.rosterId} className="snffl-board-team">
+            {side.teamName}
+          </ManagerLink>
           <span className="snffl-board-manager">
-            {side.manager}
+            <ManagerLink rosterId={side.rosterId}>{side.manager}</ManagerLink>
             {side.record ? <span className="snffl-nowrap"> · {side.record}</span> : null}
           </span>
         </div>
@@ -184,9 +187,14 @@ export default function FeatureMatchup({
 
   const className = `snffl-card snffl-board snffl-board-${size}`;
   return link ? (
-    <Link className={className} href={`/matchups/${week}/${matchupId}`}>
+    <div className={`${className} snffl-card-link`}>
+      <Link
+        className="snffl-card-link-cover"
+        href={`/matchups/${week}/${matchupId}`}
+        aria-label={`Open ${away.teamName} against ${home.teamName}`}
+      />
       {body}
-    </Link>
+    </div>
   ) : (
     <div className={className}>{body}</div>
   );

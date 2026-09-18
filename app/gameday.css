@@ -1193,3 +1193,25 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   0%, 30% { background: rgba(255, 90, 106, 0.24); }
   100% { background: transparent; }
 }
+
+/* ---------- Manager links ---------- */
+
+.snffl-manager-link { color: inherit; text-decoration: none; }
+.snffl-manager-link:hover { text-decoration: underline; text-underline-offset: 2px; }
+/* Inside prose, a link has to look like one. */
+.snffl-rag-body .snffl-manager-link,
+.snffl-feed-post .snffl-manager-link {
+  text-decoration: underline;
+  text-decoration-color: var(--water-mid);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+/* Cards that open a matchup lay an invisible link under everything, so the
+   manager names on top can be links of their own without nesting one link
+   inside another. */
+.snffl-card-link { position: relative; }
+.snffl-card-link-cover { position: absolute; inset: 0; z-index: 1; border-radius: inherit; }
+.snffl-card-link .snffl-manager-link,
+.snffl-card-link a:not(.snffl-card-link-cover) { position: relative; z-index: 2; }
+.snffl-card-link-cover:focus-visible { outline: 2px solid var(--water-mid); outline-offset: -2px; }
+.snffl-story-bubble .snffl-story-label { display: block; }

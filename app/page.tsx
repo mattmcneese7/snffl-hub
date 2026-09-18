@@ -4,6 +4,7 @@ import FeatureMatchup from '@/components/FeatureMatchup';
 import HomeWidget from '@/components/HomeWidget';
 import LiveRefresh from '@/components/LiveRefresh';
 import Masthead from '@/components/Masthead';
+import ManagerLink from '@/components/ManagerLink';
 import StoriesRail from '@/components/StoriesRail';
 import TopPlays from '@/components/TopPlays';
 import { firstNameOf } from '@/config/managers';
@@ -19,9 +20,10 @@ import { SourceStrip } from '@/components/SourceMark';
 import { anyGameLive, ESPN_TEAM_LOGO, getNflScoreboard } from '@/lib/espn';
 import { toFeature } from '@/lib/feature';
 import { getFeedPosts } from '@/lib/feed';
-import { getHighlights, isEspnClip } from '@/lib/highlights';
+import { getHighlights, isEspnClip, isRelevantClip } from '@/lib/highlights';
 import { artForArticles, featuredPlayers } from '@/lib/story-images';
 import {
+  allPlayers,
   getPowerRankings,
   getStandings,
   getTopPerformers,
@@ -73,8 +75,15 @@ export default async function HomePage() {
   // in the Feed. The week in progress leads as soon as it has playable clips,
   // which makes the stories live game highlights on a Sunday; otherwise the
   // week before.
+  const fantasyIds = new Set(
+    allPlayers()
+      .filter((player) => ['QB', 'RB', 'WR', 'TE', 'K'].includes(player.position))
+      .map((player) => player.id)
+  );
   const playableIn = async (w: number) =>
-    (await getHighlights(w, 200)).filter((clip) => isEspnClip(clip.id));
+    (await getHighlights(w, 200)).filter(
+      (clip) => isEspnClip(clip.id) && isRelevantClip(clip, (id) => fantasyIds.has(id))
+    );
   const thisWeekClips = await playableIn(week);
   const storyWeek = thisWeekClips.length || week === 1 ? week : week - 1;
   const storyClips = storyWeek === week ? thisWeekClips : await playableIn(storyWeek);
@@ -334,7 +343,12 @@ export default async function HomePage() {
                     <span>WEEK {latestTrade.week}</span>
                   </span>
                   <span className="snffl-mini-trade-teams">
-                    {latestTrade.sides.map((side) => side.teamName).join(' and ')}
+                    {latestTrade.sides.map((side, index) => (
+                      <span key={side.rosterId}>
+                        {index ? ' and ' : ''}
+                        <ManagerLink rosterId={side.rosterId}>{side.teamName}</ManagerLink>
+                      </span>
+                    ))}
                   </span>
                 </div>
               ) : (

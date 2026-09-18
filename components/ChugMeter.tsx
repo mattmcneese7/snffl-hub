@@ -1,3 +1,5 @@
+import ManagerLink from './ManagerLink';
+
 /**
  * Stacked beer bar graph, Brief Section 2.
  *
@@ -46,9 +48,9 @@ export default function ChugMeter({ columns }: { columns: ChugColumn[] }) {
               )}
             </div>
             <span className="snffl-chug-count snffl-numeric">{column.count}</span>
-            <span className="snffl-chug-name" title={column.teamName}>
+            <ManagerLink rosterId={column.rosterId} className="snffl-chug-name">
               {column.manager}
-            </span>
+            </ManagerLink>
           </div>
         ))}
       </div>

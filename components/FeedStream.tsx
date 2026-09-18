@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import HighlightList from './HighlightList';
+import { LinkedText, type NameEntry } from './ManagerLink';
 import type { FeedPost } from '@/lib/feed';
 import type { Highlight } from '@/lib/highlights';
 
@@ -37,28 +38,49 @@ function timeAgo(iso: string): string {
   return `${Math.floor(hours / 24)}d ago`;
 }
 
+type ClipGroup = 'owned' | 'waiver' | 'free';
+const GROUP_LABELS: Record<ClipGroup, string> = {
+  owned: 'Owned',
+  waiver: 'Waiver Adds',
+  free: 'Free Agents',
+};
+const GROUP_EMPTY: Record<ClipGroup, string> = {
+  owned: 'Clips of players on a roster in this league land here.',
+  waiver: 'Clips of players picked up in the last week land here.',
+  free: 'Big plays by QBs, RBs, WRs, TEs and kickers nobody has claimed land here.',
+};
+
 export default function FeedStream({
   posts,
   highlights = [],
   managers = {},
+  names = [],
+  waiverIds = [],
 }: {
   posts: FeedPost[];
   /** Clips live in their own table, so they arrive separately from posts. */
   highlights?: Highlight[];
+  /** Manager and team names to link in post copy. */
+  names?: NameEntry[];
+  /** Players picked up in the last week, for the Waiver Adds tab. */
+  waiverIds?: string[];
   /** Roster id as text to manager name, matching the highlights column type. */
   managers?: Record<string, string>;
 }) {
   const [active, setActive] = useState<TabKind>('live');
-  const [ownership, setOwnership] = useState<'owned' | 'free'>('owned');
+  const [ownership, setOwnership] = useState<ClipGroup>('owned');
   const headings = useRef<Record<string, HTMLElement | null>>({});
 
-  const clips = useMemo(
-    () => ({
+  const clips = useMemo(() => {
+    const added = new Set(waiverIds);
+    return {
       owned: highlights.filter((clip) => clip.ownerTeamId),
+      // Players picked up in the last week: the clip the league wants to see
+      // is the one that explains why somebody burned a claim on him.
+      waiver: highlights.filter((clip) => clip.playerIds.some((id) => added.has(id))),
       free: highlights.filter((clip) => !clip.ownerTeamId),
-    }),
-    [highlights]
-  );
+    };
+  }, [highlights, waiverIds]);
 
   const grouped = useMemo(() => {
     const out = {} as Record<TabKind, FeedPost[]>;
@@ -153,9 +175,10 @@ export default function FeedStream({
 
           {tab.kind === 'highlight' ? (
             <>
-              {/* Owned and Free Agents, per Brief Section 2. */}
+              {/* Owned and Free Agents, per Brief Section 2, plus the week's
+                  waiver adds. */}
               <div className="snffl-clip-tabs">
-                {(['owned', 'free'] as const).map((which) => (
+                {(['owned', 'waiver', 'free'] as const).map((which) => (
                   <button
                     key={which}
                     type="button"
@@ -163,7 +186,7 @@ export default function FeedStream({
                     aria-pressed={ownership === which}
                     onClick={() => setOwnership(which)}
                   >
-                    {which === 'owned' ? 'Owned' : 'Free Agents'}
+                    {GROUP_LABELS[which]}
                     {clips[which].length ? ` ${clips[which].length}` : ''}
                   </button>
                 ))}
@@ -173,15 +196,13 @@ export default function FeedStream({
                 <HighlightList
                   clips={clips[ownership]}
                   managers={managers}
-                  title={ownership === 'owned' ? 'Owned Highlights' : 'Free Agent Highlights'}
+                  title={`${GROUP_LABELS[ownership]} Highlights`}
                 />
               ) : (
                 <div className="snffl-placeholder">
                   <span className="snffl-placeholder-label">Nothing yet</span>
                   <span className="snffl-placeholder-note">
-                    {ownership === 'owned'
-                      ? 'Clips of players on a roster in this league land here.'
-                      : 'Clips of players nobody has claimed land here.'}
+                    {GROUP_EMPTY[ownership]}
                   </span>
                 </div>
               )}
@@ -191,12 +212,18 @@ export default function FeedStream({
               {grouped[tab.kind].map((post) => (
                 <article className="snffl-feed-post" key={post.id}>
                   <div className="snffl-feed-post-head">
-                    <span className="snffl-feed-post-title">{post.title}</span>
+                    <span className="snffl-feed-post-title">
+                      <LinkedText text={post.title} names={names} />
+                    </span>
                     <time className="snffl-feed-post-time" dateTime={post.createdAt}>
                       {timeAgo(post.createdAt)}
                     </time>
                   </div>
-                  {post.body ? <p className="snffl-feed-post-body">{post.body}</p> : null}
+                  {post.body ? (
+                    <p className="snffl-feed-post-body">
+                      <LinkedText text={post.body} names={names} />
+                    </p>
+                  ) : null}
                 </article>
               ))}
             </div>

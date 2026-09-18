@@ -145,6 +145,21 @@ export function clipWeight(clip: Highlight): number {
   return playable + owned + tier + Math.min(clip.fantasyPoints ?? 0, 40) / 40;
 }
 
+/**
+ * Whether a clip is worth showing to this league.
+ *
+ * Owned clips always are, including an owned D/ST's plays. An unowned clip
+ * only when it features a player someone could actually pick up: a QB, RB,
+ * WR, TE or kicker. A cornerback's interception is not that, and neither is
+ * a defense nobody wants, so those drop out rather than offering a waiver
+ * button for a player the league does not roster.
+ */
+export function isRelevantClip(clip: Highlight, fantasyPlayer: (id: string) => boolean): boolean {
+  if (clip.ownerTeamId) return true;
+  if (isDefensivePlay(clip)) return false;
+  return clip.playerIds.some((id) => /^\d+$/.test(id) && fantasyPlayer(id));
+}
+
 export const rankClips = (clips: Highlight[]) =>
   [...clips].sort(
     (a, b) => clipWeight(b) - clipWeight(a) || b.publishedAt.localeCompare(a.publishedAt)

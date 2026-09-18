@@ -186,6 +186,29 @@ matchup redo, lines), 12b (speed), 12c (Squirtfucius Says rankings), 12d (Rag
   with beforeInteractive in body was the source of the production hydration
   error (React 418).
 
+## The Roast Pit, scoped September 2026, built after 12b
+
+Matt's call on each point.
+
+- **Name: The Roast Pit.** A casual roasting section beside the Rag, in the
+  same house voice, on Home and in the Rag.
+- **Two parts.** A weekly feature that roasts one manager and then hands him a
+  real way out, and a Roast Board of 14 one line jabs refreshed each Tuesday.
+- **Profanity allowed in the Roast Pit only.** The Rag stays clean.
+- **Who gets featured: the managers who did not do well.** Not simply the low
+  score. A rough week is ranked from the lowest score, the points left on the
+  bench, and starters who were ruled out or inactive before their game and
+  still started. The worst of it gets the feature; everyone else is fair game
+  on the board.
+- **Facts, not vibes.** The writer gets a dossier: roster with DraftSharks rest
+  of season ranks, Sleeper injury status and notes, counted bench construction,
+  draft slots against current value, and trade logic computed in code (where a
+  team is thin, what it has spare, who has the opposite). Every number and
+  player must come from the dossier, same validation as the Rag.
+- **League lore lives in `config/lore.md`**, written by Matt in plain
+  sentences. The writer may use what is in it and nothing it would have to
+  invent, such as history from other leagues.
+
 ## Presentation
 
 - All 14 managers appear on every surface. No truncated lists.

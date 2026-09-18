@@ -144,10 +144,6 @@ export default async function HomePage() {
           />
         </section>
 
-        {/* Featured right under the stories: the wall of shame is the second
-            thing anyone opens the site for. */}
-        <ShartZone current={sharts[0] ?? null} wall={sharts} />
-
         <HomeWidget
           title={<Masthead />}
           href={latestRagWeek ? `/rag/${latestRagWeek}` : '/rag'}
@@ -179,11 +175,6 @@ export default async function HomePage() {
           </HomeWidget>
         ) : null}
 
-        {trophies.latest.length ? (
-          <HomeWidget title={`Week ${trophies.latestWeek} Hardware`} href="/managers" linkLabel="Trophy cases">
-            <HardwareStrip awards={trophies.latest} names={firstNames} />
-          </HomeWidget>
-        ) : null}
 
         {feature ? (
           <HomeWidget title="Matchup of the Week" href={`/matchups/${week}`} linkLabel="All matchups">
@@ -192,6 +183,15 @@ export default async function HomePage() {
             />
           </HomeWidget>
         ) : null}
+
+        {trophies.latest.length ? (
+          <HomeWidget title={`Week ${trophies.latestWeek} Hardware`} href="/managers" linkLabel="Trophy cases">
+            <HardwareStrip awards={trophies.latest} names={firstNames} />
+          </HomeWidget>
+        ) : null}
+
+        {/* The wall of shame, right under the week's hardware. */}
+        <ShartZone current={sharts[0] ?? null} wall={sharts} />
 
         {/* Brief Section 40: during a live window Home carries a third column,
             the live Feed and NFL scores, alongside the matchups the left column

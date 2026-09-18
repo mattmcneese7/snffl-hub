@@ -5,6 +5,9 @@ import HomeWidget from '@/components/HomeWidget';
 import LiveRefresh from '@/components/LiveRefresh';
 import Masthead from '@/components/Masthead';
 import ManagerLink from '@/components/ManagerLink';
+import ShartZone from '@/components/ShartZone';
+import { HardwareStrip } from '@/components/TrophyBits';
+import { getTrophyBoard } from '@/lib/trophies';
 import StoriesRail from '@/components/StoriesRail';
 import TopPlays from '@/components/TopPlays';
 import { firstNameOf } from '@/config/managers';
@@ -54,7 +57,7 @@ const QUICK_LINKS = [
 
 export default async function HomePage() {
   const week = await scoredWeek();
-  const [games, standings, performers, rankings, odds, chugs, trades, nfl, livePosts, clips, ctx] =
+  const [games, standings, performers, rankings, odds, chugs, trades, nfl, livePosts, clips, ctx, trophies] =
     await Promise.all([
       getWeekGames(week),
       getStandings(),
@@ -67,8 +70,23 @@ export default async function HomePage() {
       getFeedPosts(8),
       getHighlights(),
       getMatchupContext(week),
+      getTrophyBoard(),
     ]);
   const models = winProbabilities(games, ctx);
+
+  // The Shartzone: every week's Shart, newest first, the latest one chugging.
+  const nameOf = (rosterId: number) => firstNameOf(rosterId) ?? teamByRoster(rosterId)?.manager ?? '';
+  const sharts = trophies.all
+    .filter((award) => award.kind === 'shart' && award.week != null)
+    .map((award) => ({
+      week: award.week!,
+      rosterId: award.rosterId,
+      firstName: nameOf(award.rosterId),
+      teamName: teamByRoster(award.rosterId)?.teamName ?? '',
+      avatarUrl: teamByRoster(award.rosterId)?.avatarUrl ?? null,
+      points: award.value,
+    }));
+  const firstNames = Object.fromEntries(teams.map((t) => [t.rosterId, nameOf(t.rosterId)]));
 
   // Stories and Top Plays show only clips that play inside the site, ESPN's
   // syndicated ones. The NFL's YouTube clips can only link out, so they stay
@@ -157,6 +175,12 @@ export default async function HomePage() {
           </HomeWidget>
         ) : null}
 
+        {trophies.latest.length ? (
+          <HomeWidget title={`Week ${trophies.latestWeek} Hardware`} href="/managers" linkLabel="Trophy cases">
+            <HardwareStrip awards={trophies.latest} names={firstNames} />
+          </HomeWidget>
+        ) : null}
+
         {feature ? (
           <HomeWidget title="Matchup of the Week" href={`/matchups/${week}`} linkLabel="All matchups">
             <FeatureMatchup
@@ -240,6 +264,8 @@ export default async function HomePage() {
           </div>
 
           <div>
+            <ShartZone current={sharts[0] ?? null} wall={sharts} />
+
             <HomeWidget title="Power Rankings" href="/power-rankings">
               <div className="snffl-card">
                 {rankings.slice(0, 3).map((entry) => (
@@ -333,7 +359,7 @@ export default async function HomePage() {
             )}
 
             <HomeWidget title="Standings" href="/standings" linkLabel="Full table">
-              <StandingsTable standings={standings} />
+              <StandingsTable standings={standings} holders={trophies.holders} />
             </HomeWidget>
 
             <HomeWidget title="Trade Desk" href="/trades" linkLabel="All trades">

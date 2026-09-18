@@ -3,7 +3,9 @@ import { notFound } from 'next/navigation';
 import Chrome from '@/components/Chrome';
 import PointsByWeekChart from '@/components/PointsByWeekChart';
 import TeamAvatar from '@/components/TeamAvatar';
-import { getChugCounts, getManagerOfTheWeekCounts, getPointsByWeek } from '@/lib/awards';
+import { TrophyCase } from '@/components/TrophyBits';
+import { getPointsByWeek } from '@/lib/awards';
+import { getTrophyBoard } from '@/lib/trophies';
 import { getStandings, league, playerOf, teamByRoster } from '@/lib/league';
 import { getOddsFor } from '@/lib/playoff-odds';
 import { getRosters } from '@/lib/sleeper';
@@ -18,18 +20,15 @@ export default async function ManagerPage({
   const team = teamByRoster(rosterId);
   if (!team) notFound();
 
-  const [standings, byWeek, chugs, motw, odds] = await Promise.all([
+  const [standings, byWeek, odds, trophies] = await Promise.all([
     getStandings(),
     getPointsByWeek(rosterId),
-    getChugCounts(),
-    getManagerOfTheWeekCounts(),
     getOddsFor(rosterId),
+    getTrophyBoard(),
   ]);
+  const myAwards = trophies.all.filter((award) => award.rosterId === rosterId);
 
   const standing = standings.find((s) => s.rosterId === rosterId);
-  const bestWeek = byWeek.reduce((max, w) => (w.points > max ? w.points : max), 0);
-  const chugCount = chugs.find((c) => c.rosterId === rosterId)?.count ?? 0;
-  const motwCount = motw.find((c) => c.rosterId === rosterId)?.count ?? 0;
 
   let starters: string[] = team.starters;
   let bench: string[] = [];
@@ -87,22 +86,7 @@ export default async function ManagerPage({
           <div className="snffl-block-heading">
             <h2 className="snffl-headline">Trophy Case</h2>
           </div>
-          <div className="snffl-trophy-case">
-            <div className="snffl-trophy">
-              <span className="snffl-trophy-count snffl-numeric">{motwCount}</span>
-              <span className="snffl-trophy-label">Manager of the Week</span>
-            </div>
-            {/* Sharts and chugs are the same event under our model: the week's
-                lowest score. Showing one number twice reads as a bug. */}
-            <div className="snffl-trophy">
-              <span className="snffl-trophy-count snffl-numeric">{chugCount}</span>
-              <span className="snffl-trophy-label">Sharts and Chugs</span>
-            </div>
-            <div className="snffl-trophy">
-              <span className="snffl-trophy-count snffl-numeric">{bestWeek.toFixed(1)}</span>
-              <span className="snffl-trophy-label">Best Week</span>
-            </div>
-          </div>
+          <TrophyCase awards={myAwards} />
         </section>
 
         <section>

@@ -3,9 +3,14 @@ import Chrome from '@/components/Chrome';
 import StandingsTable from '@/components/StandingsTable';
 import { getStandings, league } from '@/lib/league';
 import { getPickupCounts } from '@/lib/transactions';
+import { getTrophyBoard } from '@/lib/trophies';
 
 export default async function StandingsPage() {
-  const [standings, pickups] = await Promise.all([getStandings(), getPickupCounts()]);
+  const [standings, pickups, trophies] = await Promise.all([
+    getStandings(),
+    getPickupCounts(),
+    getTrophyBoard(),
+  ]);
 
   const totalAdds = Object.values(pickups).reduce((sum, p) => sum + p.total, 0);
 
@@ -20,7 +25,7 @@ export default async function StandingsPage() {
               Top {league.playoffTeams} make the playoffs
             </span>
           </div>
-          <StandingsTable standings={standings} pickups={pickups} />
+          <StandingsTable standings={standings} pickups={pickups} holders={trophies.holders} />
           <p className="snffl-chug-axis-note">
             PF is points for, PA is points against. Adds counts waiver claims and free agent
             pickups, {totalAdds} across the league so far.

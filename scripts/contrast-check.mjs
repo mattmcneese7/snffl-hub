@@ -210,6 +210,14 @@ const LITERAL_PAIRS = [
   ['#ffffff', '#0b1a2e', 4.5, 'DraftSharks badge label'],
   ['#ffffff', '#1f74c9', 4.5, 'SNFFL model badge letter'],
   ['#ffffff', '#c8323f', 4.5, 'injury tag on a lineup row'],
+  // The Shartzone is brown in both themes.
+  ['#fff3d6', '#3b2412', 4.5, 'Shartzone name and wall text'],
+  ['#e8d3a8', '#3b2412', 4.5, 'Shartzone labels'],
+  ['#ffb4a2', '#3b2412', 4.5, 'Shartzone score'],
+  ['#f7c04a', '#3b2412', 3, 'Shartzone title, large'],
+  ['#f7c04a', '#5a3519', 4.5, 'Shartzone link at the light end'],
+  ['#1c1108', '#f7c04a', 4.5, 'Chugging this week pill'],
+  ['#e8d3a8', '#5a3519', 4.5, 'Shartzone labels at the light end'],
   // Highlight reels are always dark.
   ['#ffffff', '#000000', 4.5, 'reel title on the black stage'],
   ['#c9d1de', '#000000', 4.5, 'reel count and source line'],

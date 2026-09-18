@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import { league } from '@/lib/league';
 import type { PickupCounts } from '@/lib/transactions';
+import type { TrophyKey } from '@/lib/trophies';
 import type { Standing } from '@/lib/types';
+import { TrophyBadges } from './TrophyBits';
 
 /**
  * Seven columns will not fit legibly at 375px, so the table keeps a minimum
@@ -11,10 +13,13 @@ export default function StandingsTable({
   standings,
   limit,
   pickups,
+  holders,
 }: {
   standings: Standing[];
   limit?: number;
   pickups?: Record<number, PickupCounts>;
+  /** Roster id to the trophies it holds from the latest week. */
+  holders?: Record<number, TrophyKey[]>;
 }) {
   const rows = limit ? standings.slice(0, limit) : standings;
   const lineAfter = league.playoffTeams;
@@ -47,7 +52,10 @@ export default function StandingsTable({
                 <span className="snffl-standings-seed snffl-numeric">{team.seed}</span>
                 <span className="snffl-standings-colorbar" />
                 <span className="snffl-standings-team">
-                  <span className="snffl-standings-team-name">{team.teamName}</span>
+                  <span className="snffl-standings-team-name">
+                    {team.teamName}
+                    <TrophyBadges kinds={holders?.[team.rosterId]} size={16} />
+                  </span>
                   <span className="snffl-standings-manager">{team.manager}</span>
                 </span>
                 <span className="snffl-standings-num snffl-numeric">

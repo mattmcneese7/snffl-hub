@@ -1,3 +1,4 @@
+import { SourceStrip } from '@/components/SourceMark';
 import Chrome from '@/components/Chrome';
 import PowerRankRow from '@/components/PowerRankRow';
 import { getPowerRankings } from '@/lib/league';
@@ -19,6 +20,12 @@ export default async function PowerRankingsPage() {
               <PowerRankRow key={entry.team.rosterId} entry={entry} />
             ))}
           </div>
+          <SourceStrip
+            items={[
+              { source: 'snffl', label: 'Rankings' },
+              { source: 'sleeper', label: 'Scores' },
+            ]}
+          />
         </section>
       </main>
     </>

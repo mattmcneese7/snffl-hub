@@ -23,6 +23,7 @@ import {
   type NewPost,
   type PlayerLookup,
 } from '../lib/live.ts';
+import { firstNameOf } from '../config/managers.ts';
 import { pushConfigured, sendAlert } from '../lib/push.ts';
 import { getRosters } from '../lib/sleeper.ts';
 import { writeClient, writerConfigured } from '../lib/supabase.ts';
@@ -67,7 +68,8 @@ async function buildLookup(): Promise<PlayerLookup> {
 
   const ownerOf = new Map<string, number>();
   const managerOf = new Map<number, string>();
-  for (const team of teams) managerOf.set(team.rosterId, team.manager);
+  // First names in the post copy: "TOUCHDOWN, Adam", not SexRobot69.
+  for (const team of teams) managerOf.set(team.rosterId, firstNameOf(team.rosterId) ?? team.manager);
 
   try {
     const rosters = await getRosters();

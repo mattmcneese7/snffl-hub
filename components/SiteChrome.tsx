@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -13,7 +13,7 @@ import {
 import SnfflWordmark from './SnfflWordmark';
 
 /** Parts rather than one string, so scores can read differently to names. */
-export type TickerPart = { text: string; kind: 'team' | 'score' | 'link' };
+export type TickerPart = { text: string; kind: 'team' | 'score' | 'link' | 'logo'; src?: string };
 type TickerItem = { id: string; parts: TickerPart[]; detail?: string };
 
 type SiteChromeProps = {
@@ -52,7 +52,32 @@ function useScrolled(threshold = 24) {
   return scrolled;
 }
 
+/**
+ * Pixels per second for the crawl. A fixed duration made the speed depend on
+ * how much was in the rail: sixteen NFL games with logos ran several times
+ * faster than the idea of a crawl allows. Measuring the rail and deriving the
+ * duration keeps every ticker at the same readable pace.
+ */
+const CRAWL_SPEED = 32;
+
 function Ticker({ tag, items, variant }: { tag: string; items: TickerItem[]; variant: 'league' | 'nfl' }) {
+  const track = useRef<HTMLDivElement>(null);
+  const [duration, setDuration] = useState<number | null>(null);
+
+  useEffect(() => {
+    const el = track.current;
+    if (!el) return;
+    const measure = () => {
+      // The content is doubled for a seamless loop, so one pass is half.
+      const distance = el.scrollWidth / 2;
+      if (distance > 0) setDuration(Math.max(20, distance / CRAWL_SPEED));
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [items.length]);
+
   const content: TickerItem[] = items.length
     ? [...items, ...items]
     : [
@@ -73,29 +98,44 @@ function Ticker({ tag, items, variant }: { tag: string; items: TickerItem[]; var
   return (
     <div className={`snffl-ticker-row snffl-ticker-row-${variant}`}>
       <span className={`snffl-ticker-tag snffl-ticker-tag-${variant}`}>{tag}</span>
-      <div className="snffl-ticker-track">
-        {content.map((item, i) => (
-          // The second pass exists only so the marquee can loop without a seam.
-          // Left readable, a screen reader announces the entire scoreboard and
-          // then announces all of it again.
-          <span
-            className="snffl-ticker-entry"
-            key={`${item.id}-${i}`}
-            aria-hidden={items.length > 0 && i >= items.length ? true : undefined}
-          >
-            <span className="snffl-ticker-item">
-              {item.parts.map((part, j) => (
-                <span className={`snffl-ticker-${part.kind}`} key={j}>
-                  {part.text}
-                </span>
-              ))}
-              {item.detail ? <span className="snffl-ticker-item-status">{item.detail}</span> : null}
+      {/* The crawl runs inside its own clipped window, so text passing under
+          the tag stops at the tag's edge instead of showing beside it. */}
+      <div className="snffl-ticker-window">
+        <div
+          className="snffl-ticker-track"
+          ref={track}
+          style={duration ? { animationDuration: `${duration.toFixed(1)}s` } : undefined}
+        >
+          {content.map((item, i) => (
+            // The second pass exists only so the marquee can loop without a seam.
+            // Left readable, a screen reader announces the entire scoreboard and
+            // then announces all of it again.
+            <span
+              className="snffl-ticker-entry"
+              key={`${item.id}-${i}`}
+              aria-hidden={items.length > 0 && i >= items.length ? true : undefined}
+            >
+              <span className="snffl-ticker-item">
+                {item.parts.map((part, j) =>
+                  part.kind === 'logo' ? (
+                    part.src ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img className="snffl-ticker-logo" src={part.src} alt="" key={j} loading="lazy" />
+                    ) : null
+                  ) : (
+                    <span className={`snffl-ticker-${part.kind}`} key={j}>
+                      {part.text}
+                    </span>
+                  )
+                )}
+                {item.detail ? <span className="snffl-ticker-item-status">{item.detail}</span> : null}
+              </span>
+              <span className="snffl-ticker-divider" aria-hidden>
+                |
+              </span>
             </span>
-            <span className="snffl-ticker-divider" aria-hidden>
-              |
-            </span>
-          </span>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -113,10 +153,22 @@ export default function SiteChrome({
 
   return (
     <>
+      {/* One pinned bar: where you are on the left, the wordmark in the middle,
+          the week on the right. It replaced a separate section strip, which
+          spent a whole band of the screen on two words. Theme and alerts live
+          in Settings. */}
       <header className={`snffl-header${scrolled ? ' snffl-header-compact' : ''}`}>
-        {/* Theme and alerts live in Settings, so the header carries only the
-            wordmark. Cropped in the header so the drips do not overhang the section strip. */}
+        <span className="snffl-header-section">
+          <span className="snffl-header-section-name">{section}</span>
+          {sub ? <span className="snffl-header-section-sub">{sub}</span> : null}
+        </span>
+        {/* Cropped so the drips do not overhang the tickers below. */}
         <SnfflWordmark className="snffl-wordmark-svg" compact={scrolled} crop />
+        <span className="snffl-header-week">
+          <span className="snffl-week-tag">
+            <span>WEEK {week}</span>
+          </span>
+        </span>
       </header>
 
       <nav className="snffl-desktop-nav">
@@ -135,17 +187,13 @@ export default function SiteChrome({
             );
           })}
         </div>
-      </nav>
-
-      <div className="snffl-section-strip">
-        <div>
-          <span className="snffl-section-strip-name">{section}</span>
-          {sub ? <span className="snffl-section-strip-sub"> {sub}</span> : null}
-        </div>
-        <span className="snffl-week-tag">
-          <span>WEEK {week}</span>
+        <span className="snffl-desktop-nav-week">
+          {sub ? <span className="snffl-header-section-sub">{sub}</span> : null}
+          <span className="snffl-week-tag">
+            <span>WEEK {week}</span>
+          </span>
         </span>
-      </div>
+      </nav>
 
       <div className="snffl-ticker-stack">
         <Ticker tag="LEAGUE" items={leagueTicker} variant="league" />

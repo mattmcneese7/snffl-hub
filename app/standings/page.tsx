@@ -1,3 +1,4 @@
+import { SourceStrip } from '@/components/SourceMark';
 import Chrome from '@/components/Chrome';
 import StandingsTable from '@/components/StandingsTable';
 import { getStandings, league } from '@/lib/league';
@@ -24,6 +25,7 @@ export default async function StandingsPage() {
             PF is points for, PA is points against. Adds counts waiver claims and free agent
             pickups, {totalAdds} across the league so far.
           </p>
+          <SourceStrip items={[{ source: 'sleeper', label: 'Records and points' }]} />
         </section>
       </main>
     </>

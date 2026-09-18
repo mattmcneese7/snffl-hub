@@ -13,8 +13,12 @@
 // Each clip is used once, so the hero slider is not four copies of the same
 // frame.
 
+import { firstNameOf } from '../config/managers.ts';
 import type { Highlight } from './highlights.ts';
 import type { Article } from './rag.ts';
+
+const mentions = (haystack: string, name: string) =>
+  new RegExp(`\\b${name.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`).test(haystack);
 
 export const stillUrl = (videoId: string) =>
   `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
@@ -45,7 +49,10 @@ export function stillsForArticles(
       if (used.has(clip.id)) return false;
       if (!clip.ownerTeamId) return false;
       const manager = managerByRoster[clip.ownerTeamId];
-      return Boolean(manager) && haystack.includes(manager.toLowerCase());
+      // The Rag now calls managers by first name, so either name counts.
+      // Whole words only: Jack must not match inside Jackson.
+      const first = firstNameOf(Number(clip.ownerTeamId));
+      return [manager, first].some((name) => Boolean(name) && mentions(haystack, name!));
     });
 
     if (match) {

@@ -131,6 +131,61 @@ Decisions taken while building the watcher that the brief does not specify.
   unmatched clip still stores, without an owner, the same way an unattributed
   touchdown still posts.
 
+## Night Glass and the live board, Checkpoint 12a
+
+Scope beyond the brief, approved by Matt in order 12a (Night Glass site wide,
+matchup redo, lines), 12b (speed), 12c (Squirtfucius Says rankings), 12d (Rag
+2.0).
+
+- **Night Glass replaces the Checkpoint 2 frame.** Token names are unchanged, so
+  every page took the new palette without being rewritten; structure lives in
+  `app/glass.css` and the new components in `app/gameday.css`. Day Game is the
+  light theme, Night Game the dark one, and both pass the contrast gate.
+- **The contrast gate composites over the glows.** Panels are frosted glass over
+  three stadium glows, so every pair is measured over the plain ground and over
+  each glow at its peak, cards composited onto that ground and inner fills onto
+  the card, and the worst reading must pass. The small reds and the link color
+  were deepened for Day Game and lightened for Night Game to hold 4.5:1.
+- **Chrome is one pinned, full width bar plus two ticker bands.** Floating
+  capsules were built and rejected as reading like bubbles; the separate
+  section strip was folded into the header (section left, wordmark center,
+  week right), which shrinks on scroll. The ticker tags are pills now rather
+  than the brief's single slanted shape, and the crawl runs in its own clipped
+  window so no score shows beside a tag.
+- **The ticker crawls at a fixed 32 pixels a second.** The old fixed 42 second
+  loop meant speed scaled with content; sixteen NFL games ran several times too
+  fast. The rail is measured and the duration derived from it.
+- **Win probability is our own model**, credited as "SNFFL model". Each starter
+  finishes on points so far plus his projection scaled by the share of his
+  game left; uncertainty comes from DraftSharks' weekly floor and ceiling
+  (read as 20th and 80th percentiles) or 45 percent of the projection, shrinking
+  with the square root of game time left. Team totals are independent normals.
+- **Lines come from ESPN's game summaries**, which carry DraftKings' spread,
+  total and moneylines and ESPN's live win probability, for free. Pregame win
+  probability is the moneyline with the vig removed. DraftKings is credited,
+  never linked: a link into a sportsbook is an ad nobody asked to run. Player
+  props need The Odds API and a key Matt has to create; not built until then.
+- **Sources carry their own marks, worded "via", not "powered by".** The league
+  uses ESPN, Sleeper, DraftSharks, DraftKings and YouTube; it is not partnered
+  with them. Marks are each source's published asset, stored in
+  `public/sources` so no visitor hotlinks a third party.
+- **DraftSharks, pulled not copied.** Their public rankings pages load every row
+  from a plain HTML endpoint with no login, and the PPR board matches this
+  league's scoring exactly (checked row for row against Matt's custom export).
+  `scripts/draftsharks-pull.ts` takes rest of season and the current week from
+  GitHub Actions four times a week with a named user agent, matches every row
+  to a Sleeper id (240 of 240 and 248 of 248 on the first run, nicknames
+  matched on surname, team and position), and refuses to overwrite the last
+  good file if a pull comes back short. Their interface and brand are not
+  reproduced; their numbers are credited and linked wherever they appear.
+- **Final means final.** Season results, streaks, awards and the Chug Meter
+  now count only final games. Counting live ones gave a manager trailing on a
+  Thursday night an L1 streak, and WIN and LOSE badges on games still in
+  progress. Playoff odds simulate the week in progress instead of dropping it.
+- **The theme script moved into head** as a plain inline script. next/script
+  with beforeInteractive in body was the source of the production hydration
+  error (React 418).
+
 ## Presentation
 
 - All 14 managers appear on every surface. No truncated lists.

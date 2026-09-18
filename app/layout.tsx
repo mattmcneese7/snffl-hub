@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import Script from 'next/script';
-import { Archivo, Source_Serif_4, Permanent_Marker } from 'next/font/google';
+import { Archivo, Martian_Mono, Source_Serif_4, Permanent_Marker } from 'next/font/google';
 import './globals.css';
 import './chrome.css';
 import './pages.css';
@@ -8,6 +7,10 @@ import './sections.css';
 import './profiles.css';
 import './rag.css';
 import './home.css';
+// Night Glass structure and the game day components, Checkpoint 12a. Last, so
+// they refine the frame above rather than being undone by it.
+import './glass.css';
+import './gameday.css';
 // Generated nightly from Sleeper avatars. Gives every manager a .mgr-<userId>
 // class exposing --mgr-primary and --mgr-secondary.
 import './manager-colors.css';
@@ -18,6 +21,14 @@ const archivo = Archivo({
   style: ['normal', 'italic'],
   axes: ['wdth'],
   variable: '--font-archivo',
+  display: 'swap',
+});
+
+// Labels, eyebrows and numbers in tables: the broadcast graphics voice.
+const martianMono = Martian_Mono({
+  subsets: ['latin'],
+  axes: ['wdth'],
+  variable: '--font-mono',
   display: 'swap',
 });
 
@@ -57,8 +68,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: 'cover',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f7f7f5' },
-    { media: '(prefers-color-scheme: dark)', color: '#121110' },
+    { media: '(prefers-color-scheme: light)', color: '#e6ecf4' },
+    { media: '(prefers-color-scheme: dark)', color: '#060a13' },
   ],
 };
 
@@ -73,15 +84,22 @@ try {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${archivo.variable} ${sourceSerif.variable} ${permanentMarker.variable}`}>
-        {/* next/script rather than a raw <script>: rendered as a React child it
-            was re-inserted on every client navigation, three copies deep after
-            two, which is what broke hydration. */}
-        <Script
-          id="snffl-theme"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: themeScript }}
-        />
+      <head>
+        {/* In head, as a plain inline script: it runs before first paint so a
+            saved theme never flashes, and head is outside the tree React
+            re-renders on navigation. next/script with beforeInteractive in
+            body was the source of the hydration mismatch in production
+            (React error 418). */}
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body
+        className={`${archivo.variable} ${martianMono.variable} ${sourceSerif.variable} ${permanentMarker.variable}`}
+      >
+        {/* The stadium-light field every glass panel floats over. Fixed and
+            painted once as gradients rather than blurred shapes, which a phone
+            GPU would otherwise recomposite on every scroll frame. After the
+            theme script, which has to stay the first thing in body. */}
+        <div className="snffl-field" aria-hidden />
         {children}
       </body>
     </html>

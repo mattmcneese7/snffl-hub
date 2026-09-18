@@ -137,7 +137,9 @@ export async function getSeasonResults(throughWeek: number): Promise<WeeklyResul
 
   for (const games of perWeek) {
     for (const game of games) {
-      if (game.status === 'pending') continue;
+      // Final only. A live game has a leader, not a result: counting it gave a
+      // manager trailing on Thursday night an L1 streak in the standings.
+      if (game.status !== 'final') continue;
       for (const side of [game.home, game.away]) {
         out.push({
           week: game.week,

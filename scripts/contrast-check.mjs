@@ -98,21 +98,64 @@ const PAIRS = [
   // --surface while the rest sit on --card, so both backgrounds are checked.
   ['marker-ink', 'surface', 4.5, 'NFL live label on a live row'],
   ['marker-ink', 'card', 4.5, 'NFL live label on a card row'],
+  // Night Glass, Checkpoint 12a.
+  ['ink', 'card-strong', 4.5, 'text on the strong glass of the chrome'],
+  ['ink-secondary', 'card-strong', 4.5, 'secondary text on the chrome'],
+  ['win', 'card', 4.5, 'winning score and win probability on glass'],
+  ['win', 'surface', 4.5, 'winning score on an inner fill'],
+  ['link', 'surface', 4.5, 'link on an inner fill'],
+  ['muted', 'bg', 3, 'muted rule on the ground'],
+  ['bad-chip', 'card', 3, 'loss chip edge on glass'],
+  ['good-chip', 'card', 3, 'win chip edge on glass'],
+  ['marker-ink', 'card-strong', 4.5, 'LIVE pill label'],
+  ['ink-secondary', 'surface', 4.5, 'projection under a player score'],
 ];
 
 let failures = 0;
+
+// Night Glass: the ground is not one colour. Three stadium glows sit under the
+// panels, so every pair is measured over the plain ground and over each glow at
+// its peak, and the worst of the four is the one that has to pass. Cards are
+// composited onto that ground, and inner fills (--surface) onto the card, which
+// is the order they actually stack in on the page.
+const LAYERED_ON_CARD = new Set(['surface']);
+function groundsFor(tokens) {
+  const base = parse(tokens.bg);
+  const out = [{ name: 'ground', rgb: base.slice(0, 3) }];
+  for (const glow of ['glow-a', 'glow-b', 'glow-c']) {
+    if (tokens[glow]) out.push({ name: glow, rgb: over(parse(tokens[glow]), base) });
+  }
+  return out;
+}
+function flatten(tokens, key, ground) {
+  const raw = parse(tokens[key]);
+  if (key === 'bg') return ground;
+  if (LAYERED_ON_CARD.has(key)) {
+    const card = flatten(tokens, 'card', ground);
+    return raw[3] < 1 ? over(raw, card) : raw.slice(0, 3);
+  }
+  return raw[3] < 1 ? over(raw, ground) : raw.slice(0, 3);
+}
+
 for (const [name, tokens] of [['light', light], ['dark', dark]]) {
   console.log(`\n${name} theme`);
-  const bg = parse(tokens.bg);
+  const grounds = groundsFor(tokens);
   for (const [fgKey, bgKey, min, label] of PAIRS) {
-    const rawBg = parse(tokens[bgKey]);
-    const flatBg = rawBg[3] < 1 ? over(rawBg, bg) : rawBg;
-    const rawFg = parse(tokens[fgKey]);
-    const flatFg = rawFg[3] < 1 ? over(rawFg, flatBg) : rawFg;
-    const r = ratio(flatFg, flatBg);
-    const ok = r >= min;
+    let worst = Infinity;
+    let where = '';
+    for (const ground of grounds) {
+      const flatBg = flatten(tokens, bgKey, ground.rgb);
+      const rawFg = parse(tokens[fgKey]);
+      const flatFg = rawFg[3] < 1 ? over(rawFg, flatBg) : rawFg;
+      const r = ratio(flatFg, flatBg);
+      if (r < worst) {
+        worst = r;
+        where = ground.name;
+      }
+    }
+    const ok = worst >= min;
     if (!ok) failures++;
-    console.log(`  ${ok ? 'pass' : 'FAIL'}  ${r.toFixed(2)}:1  (min ${min})  ${label}`);
+    console.log(`  ${ok ? 'pass' : 'FAIL'}  ${worst.toFixed(2)}:1  (min ${min})  ${label}${where !== 'ground' ? `, worst over ${where}` : ''}`);
   }
 }
 
@@ -157,6 +200,16 @@ if (palettes) {
 // near white in dark and the line would disappear against its own fill.
 const LITERAL_PAIRS = [
   ['#ffffff', '#141210', 4.5, 'position and team chip on the player hero'],
+  // Win probability liquid. The percentage sits low in the tube, on the
+  // deepest part of each gradient, and is 22px at weight 800, large text.
+  ['#ffffff', '#16539a', 4.5, 'win probability label on water'],
+  ['#ffffff', '#9f0e1f', 4.5, 'win probability label on red'],
+  ['#ffffff', '#1f74c9', 3, 'win probability label at the water surface'],
+  ['#ffffff', '#c8142a', 3, 'win probability label at the red surface'],
+  // Source badges keep each brand's own tile, in both themes.
+  ['#ffffff', '#0b1a2e', 4.5, 'DraftSharks badge label'],
+  ['#ffffff', '#1f74c9', 4.5, 'SNFFL model badge letter'],
+  ['#ffffff', '#c8323f', 4.5, 'injury tag on a lineup row'],
 ];
 
 console.log('\ntheme independent literals');

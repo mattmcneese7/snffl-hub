@@ -10,8 +10,9 @@ import ResultBug from '@/components/ResultBug';
 import StandingsTable from '@/components/StandingsTable';
 import YourMatchup from '@/components/YourMatchup';
 import { getChugCounts } from '@/lib/awards';
-import NflScores from '@/components/NflScores';
-import { anyGameLive, getNflScoreboard } from '@/lib/espn';
+import NflSlate from '@/components/NflSlate';
+import { SourceStrip } from '@/components/SourceMark';
+import { anyGameLive, ESPN_TEAM_LOGO, getNflScoreboard } from '@/lib/espn';
 import { toFeature } from '@/lib/feature';
 import { getFeedPosts } from '@/lib/feed';
 import { getHighlights } from '@/lib/highlights';
@@ -26,6 +27,12 @@ import {
   teamByRoster,
   teams,
 } from '@/lib/league';
+import {
+  getMatchupContext,
+  outlookOf,
+  startersByNflTeam,
+  winProbabilities,
+} from '@/lib/matchup-live';
 import { getPlayoffOdds } from '@/lib/playoff-odds';
 import { publishedWeeks, readIssue } from '@/lib/rag';
 import { getTrades } from '@/lib/trades';
@@ -41,7 +48,7 @@ const QUICK_LINKS = [
 
 export default async function HomePage() {
   const week = await scoredWeek();
-  const [games, standings, performers, rankings, odds, chugs, trades, nfl, livePosts, clips] =
+  const [games, standings, performers, rankings, odds, chugs, trades, nfl, livePosts, clips, ctx] =
     await Promise.all([
       getWeekGames(week),
       getStandings(),
@@ -53,7 +60,9 @@ export default async function HomePage() {
       getNflScoreboard(),
       getFeedPosts(8),
       getHighlights(),
+      getMatchupContext(week),
     ]);
+  const models = winProbabilities(games, ctx);
 
   // ESPN rather than the game status, which is derived from week arithmetic and
   // can read live on a week that merely has points on the board.
@@ -113,7 +122,9 @@ export default async function HomePage() {
 
         {feature ? (
           <HomeWidget title="Matchup of the Week" href={`/matchups/${week}`} linkLabel="All matchups">
-            <FeatureMatchup data={toFeature(feature, 'Closest Game')} />
+            <FeatureMatchup
+              data={toFeature(feature, 'Closest Game', models.get(feature.matchupId))}
+            />
           </HomeWidget>
         ) : null}
 
@@ -124,7 +135,7 @@ export default async function HomePage() {
           <div>
             <HomeWidget title="Your Matchup">
               <YourMatchup
-                options={games.map((g) => toFeature(g, 'Your Matchup'))}
+                options={games.map((g) => toFeature(g, 'Your Matchup', models.get(g.matchupId)))}
                 teams={teams.map((t) => ({
                   rosterId: t.rosterId,
                   teamName: t.teamName,
@@ -136,9 +147,19 @@ export default async function HomePage() {
             <HomeWidget title={`Week ${week} Scoreboard`} href={`/matchups/${week}`}>
               <div className="snffl-card">
                 {games.map((game) => (
-                  <ResultBug game={game} key={game.matchupId} />
+                  <ResultBug
+                    game={game}
+                    key={game.matchupId}
+                    outlook={outlookOf(models.get(game.matchupId))}
+                  />
                 ))}
               </div>
+              <SourceStrip
+                items={[
+                  { source: 'snffl', label: 'Win probability' },
+                  { source: 'sleeper', label: 'Projections' },
+                ]}
+              />
             </HomeWidget>
 
             <HomeWidget title="Top Performers" href={`/players`} linkLabel="All players">
@@ -149,13 +170,24 @@ export default async function HomePage() {
                     href={`/players/${player.id}`}
                     key={player.id}
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      className="snffl-performer-headshot"
-                      src={player.headshot}
-                      alt=""
-                      loading="lazy"
-                    />
+                    <span className="snffl-performer-face">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        className="snffl-performer-headshot"
+                        src={player.headshot}
+                        alt=""
+                        loading="lazy"
+                      />
+                      {player.team && player.position !== 'DEF' ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          className="snffl-performer-logo"
+                          src={ESPN_TEAM_LOGO(player.team)}
+                          alt=""
+                          loading="lazy"
+                        />
+                      ) : null}
+                    </span>
                     <span className="snffl-performer-name">{player.name}</span>
                     <span className="snffl-performer-meta">
                       {player.position}
@@ -252,6 +284,17 @@ export default async function HomePage() {
               )}
             </HomeWidget>
 
+            {liveNow ? null : (
+              <HomeWidget title="The Lines" href={`/matchups/${week}`} linkLabel="Full slate">
+                <NflSlate
+                  games={ctx.nfl}
+                  lines={ctx.lines}
+                  startersByTeam={startersByNflTeam(games)}
+                  compact
+                />
+              </HomeWidget>
+            )}
+
             <HomeWidget title="Standings" href="/standings" linkLabel="Full table">
               <StandingsTable standings={standings} />
             </HomeWidget>
@@ -302,8 +345,13 @@ export default async function HomePage() {
                 )}
               </HomeWidget>
 
-              <HomeWidget title="NFL Scores">
-                <NflScores games={nfl} />
+              <HomeWidget title="NFL Scores" href={`/matchups/${week}`} linkLabel="Full slate">
+                <NflSlate
+                  games={ctx.nfl}
+                  lines={ctx.lines}
+                  startersByTeam={startersByNflTeam(games)}
+                  compact
+                />
               </HomeWidget>
             </div>
           ) : null}

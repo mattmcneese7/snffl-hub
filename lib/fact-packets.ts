@@ -14,6 +14,7 @@ import {
   matchupOfTheWeek,
   teamByRoster,
 } from './league.ts';
+import { firstNameOf, MANAGERS } from '../config/managers.ts';
 import { getPlayoffOdds } from './playoff-odds.ts';
 import { getTrades } from './trades.ts';
 import type { Game } from './types.ts';
@@ -60,6 +61,11 @@ export type WeekFacts = {
   trades: { week: number; sides: { team: string; manager: string; gets: string[] }[] }[];
   awards: { manager: string; managerOfWeekCount: number; shartCount: number }[];
   nextWeek: { away: string; home: string; awayManager: string; homeManager: string }[];
+  /**
+   * Who each manager is: the Sleeper handle every other list uses, and the
+   * first name the writers call him by. All he and him.
+   */
+  managers: { team: string; manager: string; firstName: string; pronouns: string }[];
 };
 
 const fact = (game: Game, side: 'home' | 'away'): TeamFact => {
@@ -198,6 +204,13 @@ export async function buildWeekFacts(week: number): Promise<WeekFacts> {
       shartCount: chugs.find((c) => c.rosterId === s.rosterId)?.count ?? 0,
     })),
 
+    managers: standings.map((s) => ({
+      team: s.teamName,
+      manager: s.manager,
+      firstName: firstNameOf(s.rosterId) ?? s.manager,
+      pronouns: MANAGERS[s.rosterId]?.pronouns ?? 'he/him',
+    })),
+
     nextWeek: nextGames.map((g) => {
       const away = fact(g, 'away');
       const home = fact(g, 'home');
@@ -248,6 +261,7 @@ export function properNouns(facts: WeekFacts): string[] {
   add(facts.managerOfWeek.team);
   add(facts.managerOfWeek.manager);
   add(facts.leagueName);
+  for (const m of facts.managers ?? []) add(m.firstName);
 
   // Longest first so a long name is redacted before a shorter name inside it.
   return [...out].sort((a, b) => b.length - a.length);

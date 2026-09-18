@@ -26,7 +26,8 @@ Rules that are not negotiable:
 - Write counts as digits taken from the packet. Never spell a count as a word: not "twelve more weeks", not "seven teams". If the packet does not give you that count, do not state it.
 - Headlines are Title Case. Capitalize every word except short connecting words such as the, in, of, and, a, to, at.
 - Write in plain sentences. Never use an em dash or a double hyphen anywhere.
-- Refer to managers by their manager name and teams by their team name, exactly as spelled in the facts.
+- Call managers by their first name from the managers list in the facts: Matt, not mattmcneese. The Sleeper handle may appear once in a piece where it lands a joke, spelled exactly. Teams go by their team name, exactly as spelled in the facts.
+- Every manager in this league is a man. Use he and him, never they.
 - No hedging, no throat clearing, no "in what can only be described as".`;
 
 export const ARTICLE_SPECS: Record<

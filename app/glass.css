@@ -1,0 +1,372 @@
+/* Night Glass structure, Checkpoint 12a.
+   Loaded after every other sheet, so it refines the original frame rather than
+   rewriting it. Colors still come only from the tokens in globals.css.
+
+   Every panel is real glass: a frosted fill between 76 and 90 percent opaque,
+   a backdrop blur with saturation so the stadium glows bleed through in color,
+   a lit top edge and a soft shadow. The field behind is static, so the blur
+   has nothing to recompute but the scroll itself. */
+
+/* ---------- The stadium-light field ---------- */
+
+.snffl-field {
+  position: fixed;
+  inset: -10vmax;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(55vmax 55vmax at 8% 4%, var(--glow-c), transparent 70%),
+    radial-gradient(42vmax 42vmax at 96% 38%, var(--glow-b), transparent 70%),
+    radial-gradient(48vmax 48vmax at 38% 104%, var(--glow-a), transparent 70%);
+}
+
+/* ---------- Panels ---------- */
+
+.snffl-card,
+.snffl-rag-hero-card,
+.snffl-performer-card,
+.snffl-quick-link,
+.snffl-stat-tile,
+.snffl-stat-block,
+.snffl-trophy,
+.snffl-champion,
+.snffl-placeholder,
+.snffl-slate-game {
+  border-radius: var(--radius);
+  border: 1px solid var(--glass-edge);
+  background: var(--card);
+  -webkit-backdrop-filter: blur(24px) saturate(170%);
+  backdrop-filter: blur(24px) saturate(170%);
+  box-shadow: inset 0 1px 0 var(--glass-shine), var(--shadow);
+}
+.snffl-placeholder { border-style: dashed; box-shadow: none; background: var(--card); }
+
+.snffl-profile-hero {
+  border-radius: calc(var(--radius) + 4px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), var(--shadow);
+}
+
+/* ---------- Type ---------- */
+
+/* Scores read like a broadcast graphic: tabular, heavy, a touch wide. */
+.snffl-numeric {
+  font-family: var(--font-archivo);
+  font-variant-numeric: tabular-nums;
+  font-stretch: 100%;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.snffl-score-xl {
+  font-family: var(--font-archivo);
+  font-variant-numeric: tabular-nums;
+  font-stretch: 125%;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* Labels and eyebrows move to the mono, the voice of the data. */
+.snffl-label,
+.snffl-standings-head,
+.snffl-browser-label,
+.snffl-stat-label,
+.snffl-stat-block-title,
+.snffl-placeholder-label,
+.snffl-bracket-label,
+.snffl-champion-label,
+.snffl-section-strip-name,
+.snffl-rules-subhead,
+.snffl-standings-playoff-caption,
+.snffl-trade-grade {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.snffl-label { color: var(--ink-secondary); }
+
+.snffl-block-heading h2 { font-size: 20px; }
+
+/* ---------- Pinned chrome ----------
+   Full width, pinned to the top, frosted: the header and the two ticker bands
+   stack edge to edge and the page scrolls under them. The header carries the
+   section on the left, the wordmark in the middle and the week on the right,
+   and shrinks on scroll: SiteChrome sets .snffl-scrolled on <html>, which drops
+   --header-h, and the ticker offset reads that variable, so the stack closes
+   up with it. env() stays inline for the Safari reason in chrome.css. */
+
+:root { --strip-h: 0px; --ticker-h: 30px; }
+
+.snffl-header {
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 8px;
+  padding: env(safe-area-inset-top, 0px) 12px 0;
+  background: var(--card-strong);
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  backdrop-filter: blur(28px) saturate(170%);
+  border-bottom: 1px solid var(--line);
+  box-shadow: inset 0 -1px 0 var(--glass-shine);
+}
+.snffl-header-section { display: grid; gap: 1px; min-width: 0; justify-self: start; }
+.snffl-header-section-name {
+  font-family: var(--font-archivo);
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  font-size: 18px;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.snffl-header-section-sub {
+  font: 700 9px/1.2 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.snffl-header-week { justify-self: end; }
+.snffl-header-compact .snffl-header-section-name { font-size: 15px; }
+.snffl-header-compact .snffl-header-section-sub { display: none; }
+
+/* The old section strip is gone; its height token is zero so every offset
+   that still adds it stays correct. */
+.snffl-section-strip { display: none; }
+
+.snffl-week-tag {
+  transform: none;
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: var(--ink);
+  color: var(--bg);
+  font: 700 9.5px/1 var(--mono);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+.snffl-week-tag > span { transform: none; }
+.snffl-header-compact .snffl-week-tag { padding: 5px 9px; font-size: 9px; }
+
+/* ---------- Ticker bands ---------- */
+
+.snffl-ticker-stack {
+  top: calc(var(--header-h) + var(--strip-h) + env(safe-area-inset-top, 0px));
+}
+.snffl-ticker-row {
+  height: var(--ticker-h);
+  align-items: center;
+  background: var(--card-strong);
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  backdrop-filter: blur(28px) saturate(170%);
+  border-bottom: 1px solid var(--line);
+}
+.snffl-ticker-row-league,
+.snffl-ticker-row-nfl { background: var(--card-strong); }
+.snffl-ticker-tag,
+.snffl-ticker-tag-league,
+.snffl-ticker-tag-nfl {
+  flex: 0 0 auto;
+  height: 22px;
+  margin: 0 0 0 8px;
+  padding: 0 10px;
+  border-radius: 999px;
+  clip-path: none;
+  font: 700 9.5px/22px var(--mono);
+  letter-spacing: 0.12em;
+}
+.snffl-ticker-tag-league { background: var(--ticker-league-bg); color: var(--ticker-league-ink); }
+.snffl-ticker-tag-nfl { background: var(--ticker-nfl-bg); color: var(--ticker-nfl-ink); }
+.snffl-ticker-track { color: var(--ink); padding-left: 12px; }
+.snffl-ticker-team,
+.snffl-ticker-link,
+.snffl-ticker-divider,
+.snffl-ticker-item-status { color: var(--ink-secondary); }
+.snffl-ticker-item-status { font-family: var(--mono); font-size: 9px; }
+.snffl-ticker-score {
+  color: var(--ink);
+  font-stretch: 112%;
+  font-weight: 800;
+}
+.snffl-ticker-logo {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+/* ---------- Floating tab bar ---------- */
+
+body { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
+
+.snffl-tabbar {
+  left: 10px;
+  right: 10px;
+  bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: 0;
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  background: var(--card-strong);
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  backdrop-filter: blur(28px) saturate(170%);
+  box-shadow: inset 0 1px 0 var(--glass-shine), var(--shadow);
+}
+.snffl-tab { padding: 10px 0 9px; }
+.snffl-tab-active::before {
+  top: auto;
+  bottom: 3px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--logo-red);
+  transform: none;
+}
+
+@media (min-width: 900px) {
+  body { padding-bottom: 0; }
+}
+
+/* ---------- Capsule controls ---------- */
+
+/* The house slant stays on brand marks: the week tag, the rank numbers, the
+   ticker tags. Controls a thumb presses become capsules. */
+.snffl-week-pill,
+.snffl-theme-choice {
+  transform: none;
+  border-radius: 999px;
+  background: var(--card);
+  border: 1px solid var(--line);
+}
+.snffl-week-pill > span,
+.snffl-theme-choice > span { transform: none; }
+.snffl-week-pill-active,
+.snffl-theme-choice-active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+.snffl-clip-tab,
+.snffl-bracket-tab,
+.snffl-feed-jump-button,
+.snffl-browser-more,
+.snffl-change-team {
+  border-radius: 999px;
+}
+.snffl-clip-tab,
+.snffl-bracket-tab,
+.snffl-feed-jump-button { background: var(--card); }
+/* The glass fill above outranks the active states declared in the earlier
+   sheets, which left dark text on dark glass. Restated here, after it. */
+.snffl-clip-tab-active,
+.snffl-bracket-tab-active,
+.snffl-feed-jump-active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.snffl-feed-jump { background: transparent; }
+
+.snffl-browser-select,
+.snffl-browser-input,
+.snffl-team-picker {
+  border-radius: 12px;
+  background: var(--card-strong);
+}
+
+.snffl-week-tag { border-radius: 3px; }
+
+/* Small tags across the site round off to match. */
+.snffl-clip-tag,
+.snffl-clip-waiver,
+.snffl-bracket-bye,
+.snffl-outcome,
+.snffl-box-flag { border-radius: 6px; }
+.snffl-box-flag { transform: none; }
+
+.snffl-clip-art,
+.snffl-rag-thumb,
+.snffl-rag-lead-art { border-radius: var(--radius-sm); }
+.snffl-rag-hero-art { border-bottom: 0; }
+
+/* ---------- Avatars ---------- */
+
+.snffl-story-ring {
+  background: var(--card);
+  border-color: var(--line);
+}
+
+/* ---------- Tables inside glass ---------- */
+
+.snffl-standings-head { background: var(--surface); }
+.snffl-box-head,
+.snffl-box-total { background: var(--surface); }
+.snffl-box-score { border-radius: 8px; }
+
+/* ---------- Desktop ---------- */
+
+@media (min-width: 900px) {
+  .snffl-desktop-nav {
+    height: 64px;
+    background: var(--card-strong);
+    -webkit-backdrop-filter: blur(28px) saturate(170%);
+    backdrop-filter: blur(28px) saturate(170%);
+    border-bottom: 1px solid var(--line);
+  }
+  .snffl-ticker-stack { top: 64px; grid-template-columns: 1fr 1fr; display: grid; }
+  .snffl-desktop-nav-week { margin-left: auto; display: inline-flex; align-items: center; gap: 12px; }
+  .snffl-desktop-nav-link-active {
+    border-bottom: 0;
+    color: var(--ink);
+    position: relative;
+  }
+  .snffl-desktop-nav-link-active::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -4px;
+    width: 5px;
+    height: 5px;
+    margin-left: -2.5px;
+    border-radius: 50%;
+    background: var(--logo-red);
+  }
+}
+/* Manager avatars in the league ticker are round; NFL logos stay square. */
+.snffl-ticker-row-league .snffl-ticker-logo { border-radius: 50%; object-fit: cover; }
+/* A slow default until SiteChrome has measured the rail and set its own. */
+.snffl-ticker-track { animation-duration: 120s; }
+.snffl-ticker-window {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  /* Text fades in from the tag rather than being cut at a hard edge. */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px);
+  mask-image: linear-gradient(90deg, transparent 0, #000 14px);
+}
+
+/* ---------- No hanging singles ----------
+   A lone word on the last line of a block reads as a mistake. Running text
+   avoids it with pretty; short multi-line labels (names, stat lines, legends,
+   notes) balance their lines instead, so a two line label splits evenly. */
+body { text-wrap: pretty; }
+h1,
+h2,
+h3,
+.snffl-headline,
+.snffl-rag-hero-headline,
+.snffl-rag-row-headline,
+.snffl-board-team,
+.snffl-board-manager,
+.snffl-mu-name,
+.snffl-mu-stats,
+.snffl-mu-odds,
+.snffl-mu-legend-key,
+.snffl-placeholder-note,
+.snffl-week-card-note,
+.snffl-slate-name,
+.snffl-standings-team-name,
+.snffl-performer-name,
+.snffl-menu-note,
+.snffl-chug-axis-note,
+.snffl-feed-post-body,
+.snffl-clip-title { text-wrap: balance; }
+.snffl-nowrap { white-space: nowrap; }

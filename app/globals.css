@@ -1,41 +1,50 @@
-/* Design tokens, Brief Section 4. Single source of truth for both themes.
-   Ported from design/style-frame/tokens.css after the contrast suite passed.
-   Rule 6: never reference these variables inside SVG presentation attributes. */
+/* Design tokens, Brief Section 4, relit as Night Glass (Checkpoint 12a).
+   Single source of truth for both themes. Token names are unchanged from the
+   original frame, so every existing rule picked up the new palette without
+   being rewritten; the glass structure lives in glass.css.
+
+   Day Game is the light theme on bare :root, Night Game the dark one. Rule 6:
+   never reference these variables inside SVG presentation attributes. */
 
 :root {
-  /* Surfaces, light */
-  --bg: #f7f7f5;
-  --card: #ffffff;
-  --surface: #ececE8;
-  --ink: #141210;
-  --ink-secondary: rgba(20, 18, 16, 0.64);
-  --line: rgba(20, 18, 16, 0.12);
+  /* Ground and glass, light. Panels are frosted, never see-through: 74 to 90
+     percent opaque, which is what keeps every text pair at 4.5:1 over the
+     brightest stadium glow behind them. scripts/contrast-check.mjs composites
+     each pair over the glows at their peak to prove it. */
+  --bg: #e6ecf4;
+  --card: rgba(255, 255, 255, 0.76);
+  --card-strong: rgba(255, 255, 255, 0.9);
+  /* Inner fills: score boxes, table heads. Laid over a card, not the ground. */
+  --surface: rgba(11, 18, 32, 0.05);
+  --ink: #0b1220;
+  --ink-secondary: #3f4a5c;
+  --line: rgba(11, 18, 32, 0.1);
+  --glass-edge: rgba(255, 255, 255, 0.95);
+  --glass-shine: rgba(255, 255, 255, 0.9);
+  --shadow: 0 18px 48px rgba(15, 30, 60, 0.12);
+  --glow-a: rgba(91, 182, 242, 0.55);
+  --glow-b: rgba(227, 24, 45, 0.18);
+  --glow-c: rgba(31, 116, 201, 0.3);
 
   /* Theme-aware exceptions */
   --shart: #7a4f31;
   --shart-on: #ffffff;
-  --marker-red: #e3182d;
-  /* Logo red is a brand colour and identical in both themes, which puts it at
-     about 3.4:1 on a dark card. Category labels are 10px, so they need a
-     theme-aware red of their own.
+  --marker-red: #d31126;
+  /* Logo red is a brand colour and identical in both themes, so small labels
+     take a theme-aware red of their own. Darkened again for Night Glass: the
+     cool ground is darker than the old off-white, and #d31126 fell to 4.3:1 on
+     it at label size. */
+  --rag-category: #940a19;
+  --marker-ink: #940a19;
+  --link: #0f4a85;
+  --win: #0a6e48;
 
-     Darkened from #e3182d: the brand red clears 4.5:1 on white cards but lands
-     at 4.41:1 on --bg (#f7f7f5), which is not white. Same trap that caught
-     --link in Checkpoint 2. */
-  --rag-category: #d31126;
-  /* Marker red for small text. --marker-red is the brand marker and is right
-     for the caret at 22px bold and for shapes, where 3:1 applies, but it
-     measures 4.41:1 on --bg and the scribble is 18px at normal weight, which
-     needs 4.5:1. Same darkening, and the same trap, as --rag-category. */
-  --marker-ink: #d31126;
-  /* Water deep (#1f74c9) lands at 4.45:1 on --bg, just under the small-text
-     floor, so links use a darkened step of the same blue. */
-  --link: #1a6ab8;
-
-  /* Status, identical hex in both themes */
-  --good: #1f9460;
+  /* Status. Chips keep one hex in both themes. The bare status colors are
+     used on the ground for chart bars and arrows, and the cooler, darker Day
+     Game ground needed a deeper step of each to hold 3:1 over the red glow. */
+  --good: #137a4c;
   --good-chip: #157a4e;
-  --bad: #e54b5a;
+  --bad: #c22f3d;
   --bad-chip: #c8323f;
   --live: #3584d2;
   --live-chip: #2b6cb0;
@@ -43,7 +52,7 @@
   --pending-chip: #5e6573;
   --gold: #e3b341;
   --gold-on: #141210;
-  --muted: #72809f;
+  --muted: #5d6a86;
   --on-chip: #ffffff;
 
   /* Brand, never used for status */
@@ -51,58 +60,83 @@
   --water-light: #c9eeff;
   --water-mid: #5bb6f2;
   --water-deep: #1f74c9;
+  --water-abyss: #16539a;
+  --red-deep: #9f0e1f;
   --beer-light: #f7c04a;
   --beer-dark: #b85f10;
   --beer-foam: #fff3d6;
-  --ticker-band-a: #1c1a18;
-  --ticker-band-b: #141210;
-  /* Ticker bands stay dark in both themes, so their text is fixed, not themed. */
-  --ticker-ink: #f3efe6;
-  --ticker-ink-secondary: rgba(243, 239, 230, 0.66);
+  /* Ticker capsules stay dark in both themes, so their text is fixed. */
+  --ticker-band-a: #0c1322;
+  --ticker-band-b: #080d18;
+  --ticker-ink: #f2f5fa;
+  --ticker-ink-secondary: #aab4c6;
   --ticker-good: #4cd08a;
   --ticker-bad: #ff8a95;
-  --ticker-league-bg: #5bb6f2;
-  --ticker-league-ink: #141210;
+  --ticker-league-bg: #1f74c9;
+  --ticker-league-ink: #ffffff;
   --ticker-nfl-bg: #e3182d;
   --ticker-nfl-ink: #ffffff;
 
   /* Shape */
   --slant: 12deg;
   --tap: 44px;
-  --radius: 2px;
+  --radius: 18px;
+  --radius-sm: 10px;
 }
 
 :root[data-theme='dark'] {
-  --bg: #121110;
-  --card: #1c1a18;
-  --surface: #2a2724;
-  --ink: #f3efe6;
-  --ink-secondary: rgba(243, 239, 230, 0.64);
-  --line: rgba(243, 239, 230, 0.14);
+  --bg: #060a13;
+  --card: rgba(16, 22, 36, 0.76);
+  --card-strong: rgba(20, 28, 46, 0.9);
+  --surface: rgba(255, 255, 255, 0.06);
+  --ink: #f2f5fa;
+  --ink-secondary: #a9b3c4;
+  --line: rgba(255, 255, 255, 0.09);
+  --glass-edge: rgba(255, 255, 255, 0.14);
+  --glass-shine: rgba(255, 255, 255, 0.18);
+  --shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+  --glow-a: rgba(91, 182, 242, 0.28);
+  --glow-b: rgba(227, 24, 45, 0.26);
+  --glow-c: rgba(31, 116, 201, 0.42);
 
   --shart: #c4946e;
   --shart-on: #141210;
-  --marker-red: #ff5a66;
-  --rag-category: #ff5a66;
-  --marker-ink: #ff5a66;
-  --link: #5bb6f2;
+  --marker-red: #ff5a6a;
+  --rag-category: #ff8a95;
+  --marker-ink: #ff8a95;
+  --link: #7cc6f7;
+  --win: #3ddc97;
+  --muted: #8a97b0;
+  --good: #1f9460;
+  --bad: #e54b5a;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --bg: #121110;
-    --card: #1c1a18;
-    --surface: #2a2724;
-    --ink: #f3efe6;
-    --ink-secondary: rgba(243, 239, 230, 0.64);
-    --line: rgba(243, 239, 230, 0.14);
+    --bg: #060a13;
+    --card: rgba(16, 22, 36, 0.76);
+    --card-strong: rgba(20, 28, 46, 0.9);
+    --surface: rgba(255, 255, 255, 0.06);
+    --ink: #f2f5fa;
+    --ink-secondary: #a9b3c4;
+    --line: rgba(255, 255, 255, 0.09);
+    --glass-edge: rgba(255, 255, 255, 0.14);
+    --glass-shine: rgba(255, 255, 255, 0.18);
+    --shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+    --glow-a: rgba(91, 182, 242, 0.28);
+    --glow-b: rgba(227, 24, 45, 0.26);
+    --glow-c: rgba(31, 116, 201, 0.42);
 
     --shart: #c4946e;
     --shart-on: #141210;
-    --marker-red: #ff5a66;
-    --rag-category: #ff5a66;
-    --marker-ink: #ff5a66;
-    --link: #5bb6f2;
+    --marker-red: #ff5a6a;
+    --rag-category: #ff8a95;
+    --marker-ink: #ff8a95;
+    --link: #7cc6f7;
+    --win: #3ddc97;
+    --muted: #8a97b0;
+    --good: #1f9460;
+    --bad: #e54b5a;
   }
 }
 
@@ -114,20 +148,36 @@
 
 html {
   color-scheme: light dark;
+  background: var(--bg);
 }
 
 body {
+  /* Declared here, not on :root: next/font puts the face variables on body,
+     and a custom property that reads var() resolves where it is declared, so
+     on :root these came out empty and the page fell back to the system serif. */
+  --display: var(--font-archivo), 'Arial Narrow', system-ui, sans-serif;
+  --mono: var(--font-mono), ui-monospace, 'SF Mono', Menlo, monospace;
   margin: 0;
-  background: var(--bg);
+  /* The ground is painted on html. A body background would sit on top of the
+     stadium field, which is a negative z-index layer, and hide it entirely. */
+  background: transparent;
   color: var(--ink);
-  font-family: var(--font-archivo), system-ui, sans-serif;
+  font-family: var(--display);
   font-size: 15px;
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;
+  /* The stadium field is fixed and oversized; nothing should scroll sideways
+     because of it. */
+  overflow-x: clip;
 }
 
 a {
   color: var(--link);
+}
+
+:focus-visible {
+  outline: 2px solid var(--water-mid);
+  outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {

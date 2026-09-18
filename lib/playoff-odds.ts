@@ -51,8 +51,12 @@ export async function getPlayoffOdds(): Promise<OddsRow[]> {
 
   // Remaining regular season fixtures, read from Sleeper rather than assumed.
   const matchupsByWeek: Record<number, { matchup_id: number; roster_id: number }[]> = {};
+  // The week in progress is still to be decided until it is final: Sleeper
+  // only adds it to the win column then, and season results now skip it too,
+  // so it is simulated like any other remaining week rather than dropped.
+  const currentDecided = results.some((row) => row.week === week);
   const upcoming = [];
-  for (let w = week + 1; w < league.playoffWeekStart; w++) upcoming.push(w);
+  for (let w = currentDecided ? week + 1 : week; w < league.playoffWeekStart; w++) upcoming.push(w);
 
   const fetched = await Promise.all(
     upcoming.map(async (w) => {
@@ -65,7 +69,7 @@ export async function getPlayoffOdds(): Promise<OddsRow[]> {
   );
   for (const { week: w, rows } of fetched) matchupsByWeek[w] = rows;
 
-  const remaining = remainingSchedule(matchupsByWeek, week + 1, league.playoffWeekStart);
+  const remaining = remainingSchedule(matchupsByWeek, upcoming[0] ?? week + 1, league.playoffWeekStart);
 
   const wins: Record<number, number> = {};
   const pointsFor: Record<number, number> = {};

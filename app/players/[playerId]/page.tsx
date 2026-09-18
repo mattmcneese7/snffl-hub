@@ -6,7 +6,16 @@ import { league, teamByRoster } from '@/lib/league';
 import { getPlayerSeason } from '@/lib/players';
 import HighlightCard from '@/components/HighlightCard';
 import { getHighlightsForPlayer } from '@/lib/highlights';
-import { getWeekProjections } from '@/lib/projections';
+import SourceMark, { SourceStrip } from '@/components/SourceMark';
+import { dsRos, dsWeekly } from '@/lib/draftsharks';
+import {
+  formatMoneyline,
+  gamesByTeam,
+  getGameLines,
+  getNflGames,
+  impliedTeamTotal,
+} from '@/lib/gameday';
+import { formatStatLine, getWeekProjectionLines, getWeekStatLines } from '@/lib/sleeper-live';
 import { statBlocksFor, statsFor } from '@/lib/stats';
 import { teamPaint } from '@/config/nfl-colors';
 
@@ -19,13 +28,25 @@ export default async function PlayerPage({
   // state.week is the week actually in progress. display_week lags it, and
   // projecting off the lagging value would show last week as next week.
   const upcoming = league.state.week;
-  const [season, projections, clips] = await Promise.all([
+  const [season, projections, statLines, nflWeek, clips] = await Promise.all([
     getPlayerSeason(playerId),
-    getWeekProjections(league.season, upcoming),
+    getWeekProjectionLines(league.season, upcoming),
+    getWeekStatLines(league.season, upcoming),
+    getNflGames(upcoming, league.season),
     getHighlightsForPlayer(playerId),
   ]);
   const { player } = season;
-  const projected = projections[playerId];
+  const projection = projections[playerId];
+  const projected = projection?.stats.pts_ppr ?? null;
+  const matchup = player.team ? gamesByTeam(nflWeek).get(player.team) : undefined;
+  const lines = matchup ? await getGameLines(matchup.game.id, matchup.game.state === 'in') : null;
+  const teamTotal = matchup ? impliedTeamTotal(lines ?? undefined, matchup.home) : null;
+  const book = matchup && lines ? (matchup.home ? lines.home : lines.away) : null;
+  const weekly = dsWeekly(playerId);
+  const ros = dsRos(playerId);
+  const actualLine = formatStatLine(player.position, statLines[playerId]?.stats);
+  const projectedLine = formatStatLine(player.position, projection?.stats, true);
+  const injury = projection?.injury ?? null;
   const blocks = statBlocksFor(player.position, statsFor(playerId));
   const paint = teamPaint(player.team);
   const owner = season.ownerRosterId ? teamByRoster(season.ownerRosterId) : null;
@@ -98,32 +119,135 @@ export default async function PlayerPage({
                 </div>
               ))}
             </div>
+            <SourceStrip items={[{ source: 'sleeper', label: 'Season stats' }]} />
           </section>
         ) : null}
 
         <section>
           <div className="snffl-block-heading">
-            <h2 className="snffl-headline">Week {upcoming} Projection</h2>
+            <h2 className="snffl-headline">Week {upcoming}</h2>
+            {injury ? <span className="snffl-mu-injury">{injury}</span> : null}
           </div>
-          <div className="snffl-stat-block">
-            {projected != null ? (
-              <div className="snffl-stat-grid">
-                <div className="snffl-stat-pair">
-                  <span className="snffl-stat-pair-label">Projected Points</span>
-                  <span className="snffl-stat-pair-value snffl-numeric">
-                    {projected.toFixed(2)}
+          <div className="snffl-card snffl-week-card">
+            {matchup ? (
+              <div className="snffl-week-card-head">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img className="snffl-week-card-opp" src={matchup.opponent.logo} alt="" />
+                <div className="snffl-week-card-title">
+                  <strong>
+                    {matchup.home ? 'vs' : 'at'} {matchup.opponent.name}
+                  </strong>
+                  <span>
+                    {matchup.game.state === 'pre'
+                      ? new Intl.DateTimeFormat('en-US', {
+                          weekday: 'long',
+                          hour: 'numeric',
+                          minute: '2-digit',
+                          timeZone: 'America/Chicago',
+                        }).format(new Date(matchup.game.kickoff))
+                      : `${matchup.game.status}, ${matchup.team.abbr} ${matchup.team.score ?? 0} ${matchup.opponent.abbr} ${matchup.opponent.score ?? 0}`}
+                    {matchup.game.broadcast ? `, ${matchup.game.broadcast}` : ''}
                   </span>
                 </div>
               </div>
             ) : (
-              // Roughly 475 of 3305 rows carry a projection, so most bench
-              // players have none. Saying so beats printing a confident 0.00.
-              <p className="snffl-projection-note">
-                No projection published for Week {upcoming}.
-              </p>
+              <p className="snffl-week-card-note">No game this week.</p>
             )}
+
+            <div className="snffl-week-card-grid">
+              <div className="snffl-week-card-cell">
+                <span className="snffl-label">Projected</span>
+                <span className="snffl-numeric">{projected != null ? projected.toFixed(1) : 'None'}</span>
+              </div>
+              <div className="snffl-week-card-cell">
+                <span className="snffl-label">DS range</span>
+                <span className="snffl-numeric">
+                  {weekly?.floor != null && weekly?.ceiling != null
+                    ? `${weekly.floor.toFixed(1)} to ${weekly.ceiling.toFixed(1)}`
+                    : 'None'}
+                </span>
+              </div>
+              <div className="snffl-week-card-cell">
+                <span className="snffl-label">DS week rank</span>
+                <span className="snffl-numeric">
+                  {weekly ? `${weekly.position}${weekly.posRank}` : 'Unranked'}
+                </span>
+              </div>
+              <div className="snffl-week-card-cell">
+                <span className="snffl-label">Team total</span>
+                <span className="snffl-numeric">{teamTotal != null ? teamTotal : 'None'}</span>
+              </div>
+            </div>
+
+            {lines && matchup && matchup.game.state !== 'post' ? (
+              <p className="snffl-week-card-note">
+                {lines.details ? `${lines.details}, ` : ''}
+                {lines.overUnder != null ? `O/U ${lines.overUnder}` : ''}
+                {book?.moneyline != null ? `, ${player.team} ML ${formatMoneyline(book.moneyline)}` : ''}
+                {book?.implied != null ? `, ${Math.round(book.implied * 100)}% to win` : ''}
+              </p>
+            ) : null}
+            {actualLine ? (
+              <p className="snffl-week-card-note">
+                <strong>So far:</strong> {actualLine}
+              </p>
+            ) : projectedLine ? (
+              <p className="snffl-week-card-note">
+                <strong>Projected line:</strong> {projectedLine}
+              </p>
+            ) : null}
+
+            <div className="snffl-source-strip">
+              <SourceMark source="sleeper" label="Projection" />
+              <SourceMark source="draftsharks" label="Range" />
+              {lines ? <SourceMark source="draftkings" label="Line" /> : null}
+            </div>
           </div>
         </section>
+
+        {ros ? (
+          <section>
+            <div className="snffl-block-heading">
+              <h2 className="snffl-headline">Rest of Season</h2>
+              <span className="snffl-block-heading-link">DraftSharks</span>
+            </div>
+            <div className="snffl-card snffl-week-card">
+              <div className="snffl-week-card-grid">
+                <div className="snffl-week-card-cell">
+                  <span className="snffl-label">Overall</span>
+                  <span className="snffl-numeric">#{ros.rank}</span>
+                </div>
+                <div className="snffl-week-card-cell">
+                  <span className="snffl-label">Position</span>
+                  <span className="snffl-numeric">
+                    {ros.position}
+                    {ros.posRank}
+                  </span>
+                </div>
+                <div className="snffl-week-card-cell">
+                  <span className="snffl-label">Per game</span>
+                  <span className="snffl-numeric">{ros.projection?.toFixed(1) ?? 'None'}</span>
+                </div>
+                <div className="snffl-week-card-cell">
+                  <span className="snffl-label">3D Value</span>
+                  <span className="snffl-numeric">{ros.value ?? 'None'}</span>
+                </div>
+              </div>
+              <p className="snffl-week-card-note">
+                {ros.floor != null && ros.ceiling != null
+                  ? `Weekly range ${ros.floor.toFixed(1)} to ${ros.ceiling.toFixed(1)}. `
+                  : ''}
+                {ros.injuryRisk != null ? `Injury risk ${Math.round(ros.injuryRisk * 100)}%. ` : ''}
+                {ros.sos != null
+                  ? `Schedule factor ${ros.sos >= 0 ? '+' : ''}${(ros.sos * 100).toFixed(1)}%.`
+                  : ''}
+              </p>
+              <div className="snffl-source-strip">
+                <SourceMark source="draftsharks" label="Rankings" />
+              </div>
+            </div>
+          </section>
+        ) : null}
 
         {clips.length ? (
           <section>
@@ -140,6 +264,7 @@ export default async function PlayerPage({
                 />
               ))}
             </div>
+            <SourceStrip items={[{ source: 'youtube', label: 'Highlights' }]} />
           </section>
         ) : null}
 

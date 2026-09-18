@@ -1,5 +1,5 @@
 import SiteChrome from './SiteChrome';
-import { getNflScoreboard } from '@/lib/espn';
+import { ESPN_TEAM_LOGO, getNflScoreboard } from '@/lib/espn';
 import { getWeekGames, scoredWeek, teamByRoster } from '@/lib/league';
 
 /**
@@ -29,9 +29,11 @@ export default async function Chrome({
     return {
       id: `league-${game.matchupId}`,
       parts: [
+        { text: '', kind: 'logo' as const, src: away?.avatarUrl ?? undefined },
         { text: away?.teamName ?? game.away.team, kind: 'team' as const },
         { text: game.away.points.toFixed(2), kind: 'score' as const },
         { text: 'at', kind: 'link' as const },
+        { text: '', kind: 'logo' as const, src: home?.avatarUrl ?? undefined },
         { text: home?.teamName ?? game.home.team, kind: 'team' as const },
         { text: game.home.points.toFixed(2), kind: 'score' as const },
       ],
@@ -43,9 +45,11 @@ export default async function Chrome({
   const nflTicker = nfl.slice(0, 14).map((game) => ({
     id: `nfl-${game.id}`,
     parts: [
+      { text: '', kind: 'logo' as const, src: ESPN_TEAM_LOGO(game.away.abbr) },
       { text: game.away.abbr, kind: 'team' as const },
       { text: game.away.score != null ? String(game.away.score) : '', kind: 'score' as const },
       { text: 'at', kind: 'link' as const },
+      { text: '', kind: 'logo' as const, src: ESPN_TEAM_LOGO(game.home.abbr) },
       { text: game.home.abbr, kind: 'team' as const },
       { text: game.home.score != null ? String(game.home.score) : '', kind: 'score' as const },
     ],

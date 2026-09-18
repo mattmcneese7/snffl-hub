@@ -192,7 +192,9 @@
    strip already pins against. */
 .snffl-feed-jump {
   position: sticky;
-  top: calc(var(--header-h) + var(--strip-h) + 56px + env(safe-area-inset-top, 0px));
+  /* Below the pinned chrome: the header and two 30px ticker bands, per
+     glass.css. */
+  top: calc(var(--header-h) + 60px + env(safe-area-inset-top, 0px));
   z-index: 40;
   display: flex;
   gap: 6px;

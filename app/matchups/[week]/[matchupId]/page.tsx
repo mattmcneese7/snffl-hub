@@ -2,11 +2,13 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Chrome from '@/components/Chrome';
 import FeatureMatchup from '@/components/FeatureMatchup';
-import LineupTable from '@/components/LineupTable';
 import LiveRefresh from '@/components/LiveRefresh';
-import { anyGameLive, getNflScoreboard } from '@/lib/espn';
+import MatchupLineup from '@/components/MatchupLineup';
+import NflSlate from '@/components/NflSlate';
+import { SourceStrip } from '@/components/SourceMark';
 import { toFeature } from '@/lib/feature';
 import { getWeekGames } from '@/lib/league';
+import { buildLiveMatchup, getMatchupContext } from '@/lib/matchup-live';
 
 export default async function MatchupDetail({
   params,
@@ -17,14 +19,27 @@ export default async function MatchupDetail({
   const week = Math.min(17, Math.max(1, Number(rawWeek) || 1));
   const matchupId = Number(rawId);
 
-  const [games, nfl] = await Promise.all([getWeekGames(week), getNflScoreboard()]);
+  const [games, ctx] = await Promise.all([getWeekGames(week), getMatchupContext(week)]);
   const game = games.find((g) => g.matchupId === matchupId);
   if (!game) notFound();
+
+  const live = buildLiveMatchup(game, ctx);
+
+  // Only the NFL games this matchup has a starter in, so the side panel is
+  // the set of windows these two managers are actually sweating.
+  const teamsInPlay = new Set(
+    [...live.away.lineup, ...live.home.lineup].map((p) => p.nfl?.game.id).filter(Boolean)
+  );
+  const relevant = ctx.nfl.filter((g) => teamsInPlay.has(g.id));
+  const startersInGame: Record<string, number> = {};
+  for (const p of [...live.away.lineup, ...live.home.lineup]) {
+    if (p.team) startersInGame[p.team] = (startersInGame[p.team] ?? 0) + 1;
+  }
 
   return (
     <>
       <Chrome section="Matchups" sub={`Week ${week}`} week={week} />
-      <LiveRefresh live={anyGameLive(nfl)} />
+      <LiveRefresh live={ctx.nfl.some((g) => g.state === 'in')} />
       <main className="snffl-page">
         <section>
           <Link className="snffl-block-heading-link" href={`/matchups/${week}`}>
@@ -32,16 +47,38 @@ export default async function MatchupDetail({
           </Link>
         </section>
 
-        <section>
-          <FeatureMatchup data={toFeature(game, `Week ${week}`)} />
-        </section>
+        <div className="snffl-matchup-detail">
+          <div className="snffl-matchup-detail-main">
+            <FeatureMatchup data={toFeature(game, `Week ${week}`, live)} size="lg" link={false} />
 
-        <section>
-          <div className="snffl-block-heading">
-            <h2 className="snffl-headline">Lineups</h2>
+            <section style={{ marginTop: 18 }}>
+              <div className="snffl-block-heading">
+                <h2 className="snffl-headline">Lineups</h2>
+              </div>
+              <MatchupLineup matchup={live} />
+              <SourceStrip
+                items={[
+                  { source: 'sleeper', label: 'Stats and projections' },
+                  { source: 'draftsharks', label: 'Floor and ceiling' },
+                  { source: 'espn', label: 'Game status' },
+                  { source: 'draftkings', label: 'Lines' },
+                ]}
+              />
+            </section>
           </div>
-          <LineupTable away={game.away} home={game.home} winner={game.winner} />
-        </section>
+
+          <aside className="snffl-matchup-detail-side">
+            <section>
+              <div className="snffl-block-heading">
+                <h2 className="snffl-headline">Their Games</h2>
+                <span className="snffl-block-heading-link">
+                  {relevant.length} {relevant.length === 1 ? 'game' : 'games'}
+                </span>
+              </div>
+              <NflSlate games={relevant} lines={ctx.lines} startersByTeam={startersInGame} />
+            </section>
+          </aside>
+        </div>
       </main>
     </>
   );

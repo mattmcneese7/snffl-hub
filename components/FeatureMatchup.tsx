@@ -1,8 +1,14 @@
-import type { CSSProperties } from 'react';
 import Link from 'next/link';
+import SourceMark from './SourceMark';
+import WinTube from './WinTube';
 
 /**
- * Diagonal split card in both managers' colors.
+ * The matchup scoreboard: both managers, the broadcast score, projections and
+ * win probability as two tubes of water.
+ *
+ * Replaced the diagonal split in both managers' colors, which read amateurish
+ * once real color pairs landed on it. Manager color now lives where it cannot
+ * fight the text: a ring on the avatar.
  *
  * Deliberately free of lib/league imports so it can render on the client too:
  * Your Matchup is client side, and reaching into lib/league from there would
@@ -14,8 +20,17 @@ export type FeatureSide = {
   manager: string;
   avatarUrl: string | null;
   primary: string;
+  record: string;
   points: number;
-  toPlay: number;
+  /** Sum of the starters' projections for the week. */
+  projected: number | null;
+  /** Where the model expects the side to finish, given what is left. */
+  expected: number | null;
+  /** 0 to 1, null when no model ran. */
+  winProb: number | null;
+  yetToPlay: number;
+  inPlay: number;
+  done: number;
 };
 
 export type FeatureData = {
@@ -28,77 +43,145 @@ export type FeatureData = {
   home: FeatureSide;
 };
 
-function Side({ side }: { side: FeatureSide }) {
+function Avatar({ side, size }: { side: FeatureSide; size: 'lg' | 'md' }) {
   const initials = (side.teamName || side.manager).slice(0, 2).toUpperCase();
   return (
-    <div className="snffl-feature-side">
+    <span
+      className={`snffl-board-avatar snffl-board-avatar-${size}`}
+      style={{ ['--ring' as string]: side.primary }}
+    >
       {side.avatarUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img className="snffl-feature-side-avatar" src={side.avatarUrl} alt="" loading="lazy" />
+        <img src={side.avatarUrl} alt="" loading="lazy" />
       ) : (
-        <span
-          className="snffl-feature-side-avatar snffl-avatar-fallback"
-          style={{ background: side.primary }}
-        >
+        <span className="snffl-avatar-fallback" style={{ background: side.primary }}>
           {initials}
         </span>
       )}
-      <div className="snffl-feature-side-team">{side.teamName}</div>
-      <div className="snffl-feature-side-manager">{side.manager}</div>
-      <div className="snffl-feature-side-score snffl-numeric">{side.points.toFixed(2)}</div>
+    </span>
+  );
+}
+
+function Side({
+  side,
+  align,
+  leading,
+  status,
+}: {
+  side: FeatureSide;
+  align: 'left' | 'right';
+  leading: boolean;
+  status: FeatureData['status'];
+}) {
+  return (
+    <div className={`snffl-board-side snffl-board-side-${align}`}>
+      <div className="snffl-board-id">
+        <Avatar side={side} size="lg" />
+        <div className="snffl-board-names">
+          <span className="snffl-board-team">{side.teamName}</span>
+          <span className="snffl-board-manager">
+            {side.manager}
+            {side.record ? <span className="snffl-nowrap"> · {side.record}</span> : null}
+          </span>
+        </div>
+      </div>
+      <span className={`snffl-score-xl snffl-board-score${leading ? ' snffl-board-score-lead' : ''}`}>
+        {side.points.toFixed(2)}
+      </span>
+      {status !== 'final' && side.projected != null ? (
+        <span className="snffl-board-proj">
+          <span className="snffl-label">Proj</span> {side.projected.toFixed(1)}
+          {status === 'live' && side.expected != null ? (
+            <>
+              {' '}
+              <span className="snffl-label">Pace</span> {side.expected.toFixed(1)}
+            </>
+          ) : null}
+        </span>
+      ) : null}
     </div>
   );
 }
 
-export default function FeatureMatchup({ data }: { data: FeatureData }) {
+export default function FeatureMatchup({
+  data,
+  size = 'md',
+  link = true,
+}: {
+  data: FeatureData;
+  size?: 'md' | 'lg';
+  link?: boolean;
+}) {
   const { away, home, label, status, margin, week, matchupId } = data;
-  const total = away.points + home.points;
-  // Final games show share of points. Real win probability needs live
-  // projections, which arrive with the live layer in Checkpoint 7.
-  const awayShare = total > 0 ? Math.round((away.points / total) * 100) : 50;
+  const statusText = status === 'pending' ? 'Not started' : status === 'live' ? 'Live' : 'Final';
+  const awayLead = status !== 'pending' && away.points > home.points;
+  const homeLead = status !== 'pending' && home.points > away.points;
+  const hasModel = away.winProb != null && home.winProb != null;
 
-  const statusText =
-    status === 'pending' ? 'Not started' : status === 'live' ? 'Live' : 'Final';
-
-  return (
-    <Link
-      className="snffl-card snffl-feature-matchup"
-      href={`/matchups/${week}/${matchupId}`}
-      style={
-        {
-          '--snffl-home-primary': home.primary,
-          '--snffl-away-primary': away.primary,
-        } as CSSProperties
-      }
-    >
-      <div className="snffl-feature-matchup-split" />
-      <div className="snffl-feature-matchup-body">
-        <div className="snffl-feature-matchup-label">
-          {label} &middot; {statusText}
+  const body = (
+    <>
+      <div className="snffl-board-top">
+        <span className="snffl-label">
+          {label}
+          {status === 'live' ? null : ` · ${statusText}`}
           {status === 'pending' ? '' : ` · Margin ${margin.toFixed(2)}`}
-        </div>
-
-        <div className="snffl-feature-matchup-teams">
-          <Side side={away} />
-          <div className="snffl-feature-versus">VS</div>
-          <Side side={home} />
-        </div>
-
-        <div className="snffl-winprob">
-          <div className="snffl-winprob-bar">
-            <div className="snffl-winprob-fill" style={{ width: `${awayShare}%` }} />
-          </div>
-          <div className="snffl-winprob-legend">
-            <span>{awayShare}% OF POINTS</span>
-            <span>{100 - awayShare}%</span>
-          </div>
-        </div>
-
-        <div className="snffl-players-left">
-          <span>{away.toPlay} to play</span>
-          <span>{home.toPlay} to play</span>
-        </div>
+        </span>
+        {status === 'live' ? (
+          <span className="snffl-live-pill">
+            <span className="snffl-live-pill-dot" aria-hidden />
+            LIVE
+          </span>
+        ) : null}
       </div>
+
+      <div className="snffl-board-sides">
+        <Side side={away} align="left" leading={awayLead} status={status} />
+        <Side side={home} align="right" leading={homeLead} status={status} />
+      </div>
+
+      {/* A decided game has nothing left to predict; 100 and 0 would be noise. */}
+      {hasModel && status !== 'final' ? (
+        <div className="snffl-board-tubes">
+          <WinTube
+            pct={away.winProb!}
+            tone="water"
+            label={`${away.teamName} win probability ${Math.round(away.winProb! * 100)} percent`}
+            caption="WIN PROB"
+          />
+          <WinTube
+            pct={home.winProb!}
+            tone="red"
+            label={`${home.teamName} win probability ${Math.round(home.winProb! * 100)} percent`}
+            caption="WIN PROB"
+          />
+        </div>
+      ) : null}
+
+      {status === 'final' ? null : (
+        <div className="snffl-board-counts">
+          <span>
+            <strong>{away.yetToPlay}</strong> to play · <strong>{away.inPlay}</strong> playing
+          </span>
+          <span>
+            <strong>{home.inPlay}</strong> playing · <strong>{home.yetToPlay}</strong> to play
+          </span>
+        </div>
+      )}
+
+      {hasModel && status !== 'final' ? (
+        <div className="snffl-board-credit">
+          <SourceMark source="snffl" label="Win probability" />
+        </div>
+      ) : null}
+    </>
+  );
+
+  const className = `snffl-card snffl-board snffl-board-${size}`;
+  return link ? (
+    <Link className={className} href={`/matchups/${week}/${matchupId}`}>
+      {body}
     </Link>
+  ) : (
+    <div className={className}>{body}</div>
   );
 }

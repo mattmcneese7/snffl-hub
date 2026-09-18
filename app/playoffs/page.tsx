@@ -1,3 +1,4 @@
+import { SourceStrip } from '@/components/SourceMark';
 import Link from 'next/link';
 import Bracket from '@/components/Bracket';
 import Chrome from '@/components/Chrome';
@@ -115,6 +116,12 @@ export default async function PlayoffsPage() {
           <p className="snffl-chug-axis-note">
             Ten thousand simulated seasons, using scoring averages and week to week swing.
           </p>
+          <SourceStrip
+            items={[
+              { source: 'snffl', label: 'Playoff odds' },
+              { source: 'sleeper', label: 'Schedule and results' },
+            ]}
+          />
         </section>
 
         {/* Before the playoffs the bracket is still worth a look: Sleeper seeds

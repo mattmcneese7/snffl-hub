@@ -1,3 +1,4 @@
+import { SourceStrip } from '@/components/SourceMark';
 import Chrome from '@/components/Chrome';
 import FeedStream from '@/components/FeedStream';
 import { getFeedPosts } from '@/lib/feed';
@@ -38,6 +39,12 @@ export default async function FeedPage() {
         </section>
 
         <FeedStream posts={posts} highlights={highlights} managers={managers} />
+        <SourceStrip
+          items={[
+            { source: 'espn', label: 'Plays' },
+            { source: 'youtube', label: 'Highlights' },
+          ]}
+        />
       </main>
     </>
   );

@@ -128,3 +128,34 @@ export async function recentUploads(
 
   return out;
 }
+
+/**
+ * Title, description and publish time for specific videos, 50 per call at one
+ * quota unit each. For re-tagging stored clips with the same text the tagger
+ * saw the first time: titles alone lose too much, "Mahomes' best plays" reads
+ * as a show without the description saying which game.
+ */
+export async function videoDetails(ids: string[]): Promise<Upload[]> {
+  if (!youtubeConfigured() || !ids.length) return [];
+  const out: Upload[] = [];
+  for (let i = 0; i < ids.length; i += 50) {
+    const params = new URLSearchParams({ part: 'snippet', id: ids.slice(i, i + 50).join(','), key: key() });
+    try {
+      const res = await fetch(`${API}/videos?${params}`);
+      if (!res.ok) continue;
+      const json = await res.json();
+      for (const item of Array.isArray(json?.items) ? json.items : []) {
+        out.push({
+          id: String(item.id),
+          title: String(item?.snippet?.title ?? ''),
+          publishedAt: String(item?.snippet?.publishedAt ?? ''),
+          thumbnail: bestThumbnail(item?.snippet?.thumbnails),
+          description: String(item?.snippet?.description ?? '').slice(0, 600),
+        });
+      }
+    } catch {
+      // A failed batch leaves those ids out; the rest still re-tag.
+    }
+  }
+  return out;
+}

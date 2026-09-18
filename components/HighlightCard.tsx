@@ -28,6 +28,8 @@ export default function HighlightCard({
   onPlay: () => void;
 }) {
   const free = !highlight.ownerTeamId;
+  // Team defenses are keyed by their code, KC or SF, never a numeric id.
+  const unit = highlight.playerIds[0] ? !/^\d+$/.test(highlight.playerIds[0]) : false;
 
   return (
     <article className="snffl-clip">
@@ -65,7 +67,13 @@ export default function HighlightCard({
         </div>
 
         {free ? (
-          <SleeperActionButton action="players" label="Grab Him on Waivers" compact />
+          <SleeperActionButton
+            action="players"
+            // A defensive clip is credited to the team defense, so what is on
+            // the wire is the D/ST, not the player who made the play.
+            label={unit ? 'Add this D/ST' : 'Grab Him on Waivers'}
+            compact
+          />
         ) : null}
       </div>
     </article>

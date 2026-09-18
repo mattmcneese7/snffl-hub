@@ -24,6 +24,10 @@ create table if not exists public.lineup_alerts (
 );
 alter table public.lineup_alerts enable row level security;
 
+-- 2b. Which unit made a highlight play: offense, defense or special_teams.
+--     Defensive and special teams clips are credited to the D/ST that owns them.
+alter table public.highlights add column if not exists side text;
+
 -- 3. The secret the site checks, kept in Supabase Vault rather than in the
 --    job text, where anyone reading cron.job would see it.
 select vault.create_secret('REPLACE_WITH_WATCH_SECRET', 'snffl_watch_secret');

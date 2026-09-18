@@ -31,6 +31,13 @@ export type Classified = {
   playType: string;
   /** Player names as written in the title, for code to match against rosters. */
   players: string[];
+  /**
+   * Which unit made the play. A defensive or special teams play belongs to a
+   * D/ST in fantasy, not to the cornerback, who nobody rosters.
+   */
+  side: 'offense' | 'defense' | 'special_teams' | '';
+  /** The NFL team whose unit made the play, as a standard abbreviation. */
+  team: string;
 };
 
 const SCHEMA = {
@@ -43,7 +50,7 @@ const SCHEMA = {
       items: {
         type: 'object',
         additionalProperties: false,
-        required: ['id', 'kind', 'play_type', 'players'],
+        required: ['id', 'kind', 'play_type', 'players', 'side', 'team'],
         properties: {
           id: { type: 'string' },
           kind: {
@@ -52,6 +59,8 @@ const SCHEMA = {
           },
           play_type: { type: 'string' },
           players: { type: 'array', items: { type: 'string' } },
+          side: { type: 'string', enum: ['offense', 'defense', 'special_teams', ''] },
+          team: { type: 'string' },
         },
       },
     },
@@ -70,6 +79,17 @@ For each video decide what it is:
 Then:
 - play_type: for a play, describe it plainly, such as "rushing touchdown", "receiving touchdown", "interception", "sack", "field goal". Empty string for anything else.
 - players: every NFL player named, spelled as the title spells them. Empty when none.
+- side: for a play, which unit made it. offense for touchdowns, catches, runs, throws, field goals and extra points (kickers are rostered players); defense for interceptions, sacks, forced fumbles, fumble recoveries, pick sixes and big hits; special_teams for kick and punt returns and blocked kicks. Empty string for anything else.
+- team: for a play, the NFL team whose unit made it, as a standard abbreviation such as KC, SF, WAS, LAR, JAX, LV. Use the title and description; when a named player is well known, his current team is fine. Empty string when you cannot tell.
+
+Examples of the line between kinds:
+- "Patrick Mahomes' best plays from 3-TD game | Week 1" is a play: one player, one game.
+- "Christian Watson's best catches from 147-yard, 2-TD game | Week 1" is a play: one player, one game.
+- "KENNETH WALKER RUSHES 60 YARDS FOR A TD" is a play.
+- "Every Touchdown from Week 1" is a compilation: many players, many games.
+- "Top 10 plays of the week" is a compilation.
+- "Chiefs vs. Broncos Game Highlights | Week 1" is full_game.
+- "Week 2 Power Rankings" is a show.
 
 Judge only from the title and description given. Do not guess at players who are not named.`;
 
@@ -123,6 +143,8 @@ export async function classifyUploads(uploads: Upload[]): Promise<Classified[]> 
           kind: (row.kind as VideoKind) ?? 'social',
           playType: typeof row.play_type === 'string' ? row.play_type : '',
           players: Array.isArray(row.players) ? row.players.map(String) : [],
+          side: (['offense', 'defense', 'special_teams'].includes(String(row.side)) ? row.side : '') as Classified['side'],
+          team: typeof row.team === 'string' ? row.team.toUpperCase().trim() : '',
         },
       ];
     });

@@ -1,7 +1,8 @@
 'use client';
 
+import SleeperActionButton from './SleeperAction';
+
 import { useState } from 'react';
-import { LEAGUE_ID } from '@/lib/sleeper';
 import type { Highlight } from '@/lib/highlights';
 
 /**
@@ -86,14 +87,7 @@ export default function HighlightCard({
             and handing it an external URL makes it prefetch and route against
             something it does not own. */}
         {free ? (
-          <a
-            className="snffl-clip-waiver"
-            href={`https://sleeper.com/leagues/${LEAGUE_ID}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Grab Him on Waivers
-          </a>
+          <SleeperActionButton action="players" label="Grab Him on Waivers" compact />
         ) : null}
       </div>
     </article>

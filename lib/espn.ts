@@ -20,7 +20,7 @@ type EspnCompetitor = {
 
 export async function getNflScoreboard(): Promise<NflGame[]> {
   try {
-    const res = await fetch(SCOREBOARD, { next: { revalidate: 30 } } as RequestInit);
+    const res = await fetch(SCOREBOARD, { next: { revalidate: 15 } } as RequestInit);
     if (!res.ok) return [];
     const json = await res.json();
     const events = Array.isArray(json?.events) ? json.events : [];

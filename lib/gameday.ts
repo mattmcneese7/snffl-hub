@@ -65,7 +65,7 @@ export async function getNflGames(week?: number, season?: string): Promise<NflGa
   const query =
     week != null ? `?seasontype=2&week=${week}${season ? `&dates=${season}` : ''}` : '';
   try {
-    const res = await fetch(`${SITE}/scoreboard${query}`, { next: { revalidate: 30 } } as RequestInit);
+    const res = await fetch(`${SITE}/scoreboard${query}`, { next: { revalidate: 15 } } as RequestInit);
     if (!res.ok) return [];
     const json = await res.json();
     const events: Json[] = Array.isArray(json?.events) ? json.events : [];
@@ -164,7 +164,7 @@ const rawImplied = (ml: number | null) =>
 export async function getGameLines(eventId: string, live = false): Promise<GameLines | null> {
   try {
     const res = await fetch(`${SITE}/summary?event=${eventId}`, {
-      next: { revalidate: live ? 30 : 300 },
+      next: { revalidate: live ? 15 : 300 },
     } as RequestInit);
     if (!res.ok) return null;
     const json = await res.json();

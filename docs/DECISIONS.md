@@ -186,6 +186,38 @@ matchup redo, lines), 12b (speed), 12c (Squirtfucius Says rankings), 12d (Rag
   with beforeInteractive in body was the source of the production hydration
   error (React 418).
 
+## Speed, lineup alerts and Sleeper links, Checkpoint 12b
+
+- **The watcher runs every minute, triggered by Supabase.** pg_cron and pg_net
+  call `/api/watch` on the site each minute Thursday through Tuesday, UTC. The
+  route is guarded by `WATCH_SECRET`, held in Vercel and in Supabase Vault.
+  An idle minute costs one cached ESPN request and returns in about 15ms. The
+  five minute GitHub job stays on as a backup running the same code.
+- **Every post carries a dedupe key** with a unique index behind it
+  (`td:<play>`, `lead:<week>:<matchup>:<n>`, `shart:<week>:<roster>:<n>`), and
+  the insert skips an existing key. Two runners mean two runs can overlap;
+  without the key, both could read the feed before either wrote and post the
+  same touchdown twice. Pushes go only for rows the insert actually wrote.
+- **Scores refresh every 15 seconds while a game is live**, down from 30, and
+  the Sleeper matchups, Sleeper stats and ESPN scoreboard caches match it so
+  each refresh can bring something new. Idle pages do not poll at all.
+- **Lineup alerts push to one manager only**, for a starter who is Out,
+  Doubtful, on IR, suspended, PUP, not active, on bye, or an empty slot, while
+  his game has not locked. Once when it first appears, and once as a final
+  call inside 100 minutes of kickoff. Questionable does not alert: most of them
+  play, and a Friday of Questionable pings would train people to ignore it.
+  Each alert is claimed in `lineup_alerts` before it is sent, so it goes out
+  once however many runs see it. Sleeper's injury status comes from the
+  projections feed, which carries it even for players it no longer projects.
+- **Lineup changes in the app are not possible, so the site links to them.**
+  Sleeper's public API is read only, and acting on a manager's behalf would
+  mean holding his Sleeper login. Buttons open the right Sleeper screen
+  instead, from routes read out of Sleeper's own web app: `/team` (lineup),
+  `/matchup`, `/players` (add or drop), `/trades`. On Android sleeper.com
+  opens the app; on iPhone the app claims only its chat paths, so these open
+  Sleeper's site in Safari until a link is confirmed on a real phone from the
+  unlisted `/sleeper-links` test page and added to `APP_LINKS`.
+
 ## The Roast Pit, scoped September 2026, built after 12b
 
 Matt's call on each point.

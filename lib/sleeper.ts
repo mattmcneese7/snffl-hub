@@ -82,8 +82,10 @@ export const getLeague = () => get<SleeperLeague>(`league/${LEAGUE_ID}`, 3600);
 export const getUsers = () => get<SleeperUser[]>(`league/${LEAGUE_ID}/users`, 3600);
 export const getRosters = () => get<SleeperRoster[]>(`league/${LEAGUE_ID}/rosters`, 60);
 export const getState = () => get<SleeperState>('state/nfl', 300);
+// 15 seconds, matching the live poll: this is the call every score on the
+// site comes from, and a longer cache would make the faster poll pointless.
 export const getMatchups = (week: number) =>
-  get<SleeperMatchup[]>(`league/${LEAGUE_ID}/matchups/${week}`, 30);
+  get<SleeperMatchup[]>(`league/${LEAGUE_ID}/matchups/${week}`, 15);
 export const getWinnersBracket = () =>
   get<BracketMatch[]>(`league/${LEAGUE_ID}/winners_bracket`, 300);
 export const getLosersBracket = () =>

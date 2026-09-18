@@ -5,6 +5,7 @@ import FeatureMatchup from '@/components/FeatureMatchup';
 import LiveRefresh from '@/components/LiveRefresh';
 import MatchupLineup from '@/components/MatchupLineup';
 import NflSlate from '@/components/NflSlate';
+import { SleeperActions } from '@/components/SleeperAction';
 import { SourceStrip } from '@/components/SourceMark';
 import { toFeature } from '@/lib/feature';
 import { getWeekGames } from '@/lib/league';
@@ -50,6 +51,9 @@ export default async function MatchupDetail({
         <div className="snffl-matchup-detail">
           <div className="snffl-matchup-detail-main">
             <FeatureMatchup data={toFeature(game, `Week ${week}`, live)} size="lg" link={false} />
+            {/* Opens whoever taps it on their own team in Sleeper: Sleeper
+                knows who is logged in, the site does not need to. */}
+            {game.status !== 'final' ? <SleeperActions actions={['lineup', 'matchup']} /> : null}
 
             <section style={{ marginTop: 18 }}>
               <div className="snffl-block-heading">

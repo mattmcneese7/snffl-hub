@@ -6,6 +6,7 @@ import { league, teamByRoster } from '@/lib/league';
 import { getPlayerSeason } from '@/lib/players';
 import HighlightCard from '@/components/HighlightCard';
 import { getHighlightsForPlayer } from '@/lib/highlights';
+import SleeperActionButton from '@/components/SleeperAction';
 import SourceMark, { SourceStrip } from '@/components/SourceMark';
 import { dsRos, dsWeekly } from '@/lib/draftsharks';
 import {
@@ -289,6 +290,13 @@ export default async function PlayerPage({
               <span className="snffl-placeholder-note">Nobody has claimed this one.</span>
             </div>
           )}
+          <div className="snffl-sleeper-actions">
+            {owner ? (
+              <SleeperActionButton action="trades" label="Trade for him in Sleeper" />
+            ) : (
+              <SleeperActionButton action="players" label="Add him in Sleeper" />
+            )}
+          </div>
         </section>
 
         <section>

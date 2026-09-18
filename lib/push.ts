@@ -11,6 +11,7 @@
 //   lead changes only to the two managers in that matchup, because a lead
 //                change in somebody else's game is not news to you
 //   chug         only to the manager who owes one
+//   lineup       only to the manager whose starter is out, on bye or missing
 //
 // A subscription the push service reports as gone, 404 or 410, is deleted so
 // dead devices stop costing a request every five minutes.
@@ -59,7 +60,8 @@ type Subscription = {
 export type Audience =
   | { kind: 'touchdown' }
   | { kind: 'lead_change'; teamIds: string[] }
-  | { kind: 'chug'; teamId: string };
+  | { kind: 'chug'; teamId: string }
+  | { kind: 'lineup'; teamId: string };
 
 async function subscribersFor(audience: Audience): Promise<Subscription[]> {
   const client = writeClient();
@@ -70,7 +72,9 @@ async function subscribersFor(audience: Audience): Promise<Subscription[]> {
   if (audience.kind === 'lead_change') {
     query = query.eq('alert_lead_changes', true).in('team_id', audience.teamIds);
   }
-  if (audience.kind === 'chug') query = query.eq('team_id', audience.teamId);
+  if (audience.kind === 'chug' || audience.kind === 'lineup') {
+    query = query.eq('team_id', audience.teamId);
+  }
 
   const { data } = await query;
   return (data ?? []) as Subscription[];

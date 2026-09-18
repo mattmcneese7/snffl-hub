@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import FeatureMatchup, { type FeatureData } from './FeatureMatchup';
+import { SleeperActions } from './SleeperAction';
 
 const STORAGE_KEY = 'snffl.myTeam';
 
@@ -74,6 +75,7 @@ export default function YourMatchup({
   return (
     <>
       <FeatureMatchup data={mine} />
+      {mine.status !== 'final' ? <SleeperActions actions={['lineup', 'players']} /> : null}
       <button className="snffl-change-team" type="button" onClick={() => choose(null)}>
         Change team
       </button>

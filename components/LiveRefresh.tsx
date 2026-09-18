@@ -15,7 +15,9 @@ import { useRouter } from 'next/navigation';
  */
 export default function LiveRefresh({
   live,
-  intervalMs = 30000,
+  // 15 seconds while anything is live, Checkpoint 12b. Sleeper's matchups
+  // call is cached for the same 15, so each refresh can bring a new score.
+  intervalMs = 15000,
 }: {
   /** Whether anything on this page is actually in progress. */
   live: boolean;

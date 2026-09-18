@@ -84,10 +84,14 @@ async function pull(
         for (const row of rows) {
           if (!row?.player_id) continue;
           const stats = trim(row.stats);
-          if (!Object.keys(stats).length) continue;
+          // A player ruled out often has no projection at all, and his injury
+          // status is the whole point of reading him, so an injury alone
+          // keeps the row.
+          const injury = row.player?.injury_status || null;
+          if (!Object.keys(stats).length && !injury) continue;
           out[row.player_id] = {
             stats,
-            injury: row.player?.injury_status ?? null,
+            injury,
             opponent: row.opponent ?? null,
           };
         }
@@ -101,7 +105,7 @@ async function pull(
 
 /** What each player has actually done this week. 60 seconds while games run. */
 export const getWeekStatLines = (season: string, week: number, live = false) =>
-  pull('stats', season, week, live ? 30 : 600);
+  pull('stats', season, week, live ? 15 : 600);
 
 /** What each player is projected to do this week. */
 export const getWeekProjectionLines = (season: string, week: number) =>

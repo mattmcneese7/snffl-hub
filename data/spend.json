@@ -131,8 +131,14 @@
    "job": "highlight tagging",
    "model": "claude-haiku-4-5",
    "usd": 0.0063
+  },
+  {
+   "at": "2026-09-18T10:59:41.800Z",
+   "job": "rag retry hardware",
+   "model": "claude-sonnet-5",
+   "usd": 0.0265
   }
  ],
  "limitUsd": 8.5,
- "spent": 0.8398
+ "spent": 0.8663
 }

@@ -16,6 +16,7 @@ import {
 } from './league.ts';
 import { firstNameOf, MANAGERS } from '../config/managers.ts';
 import { getPlayoffOdds } from './playoff-odds.ts';
+import { awardsForWeek, TROPHY_NAMES } from './trophies.ts';
 import { getTrades } from './trades.ts';
 import type { Game } from './types.ts';
 
@@ -66,6 +67,8 @@ export type WeekFacts = {
    * first name the writers call him by. All he and him.
    */
   managers: { team: string; manager: string; firstName: string; pronouns: string }[];
+  /** The week's hardware, in the order The Hardware hands it out. */
+  trophies: { award: string; about: string; team: string; manager: string; firstName: string; detail: string }[];
 };
 
 const fact = (game: Game, side: 'home' | 'away'): TeamFact => {
@@ -204,6 +207,18 @@ export async function buildWeekFacts(week: number): Promise<WeekFacts> {
       shartCount: chugs.find((c) => c.rosterId === s.rosterId)?.count ?? 0,
     })),
 
+    trophies: (await awardsForWeek(week)).map((award) => {
+      const team = teamByRoster(award.rosterId);
+      return {
+        award: TROPHY_NAMES[award.kind].name,
+        about: TROPHY_NAMES[award.kind].blurb,
+        team: team?.teamName ?? '',
+        manager: team?.manager ?? '',
+        firstName: firstNameOf(award.rosterId) ?? team?.manager ?? '',
+        detail: award.detail,
+      };
+    }),
+
     managers: standings.map((s) => ({
       team: s.teamName,
       manager: s.manager,
@@ -297,6 +312,11 @@ export function allowedNumbers(facts: WeekFacts): Set<string> {
   add(facts.playoffTeams);
   add(facts.shart.points);
   add(facts.managerOfWeek.points);
+  // The Hardware quotes each award's winning number, margins and bench points
+  // included, and those are not in any other list.
+  for (const trophy of facts.trophies ?? []) {
+    for (const n of trophy.detail.match(/\d+(?:\.\d+)?/g) ?? []) add(Number(n));
+  }
 
   for (const game of facts.games) {
     add(game.away.points);

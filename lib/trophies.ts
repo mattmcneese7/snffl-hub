@@ -3,18 +3,9 @@
 
 import { getWeekGames, scoredWeek } from './league.ts';
 import { getPostseason } from './postseason.ts';
+import { TROPHY_NAMES, type TrophyKey } from './trophy-names.ts';
 
-/** Every award the league hands out. The art lives in components/Trophy.tsx. */
-export type TrophyKey =
-  | 'motw'
-  | 'shart'
-  | 'blowout'
-  | 'squeaker'
-  | 'heartbreaker'
-  | 'lucky'
-  | 'bench'
-  | 'champion'
-  | 'plunger';
+export { TROPHY_NAMES, type TrophyKey };
 
 export type Award = {
   kind: TrophyKey;

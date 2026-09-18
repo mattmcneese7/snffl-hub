@@ -32,6 +32,15 @@ export function templateFor(id: ArticleId, facts: WeekFacts): Candidate {
         signOff: 'Chug, bitch.',
       };
 
+    case 'hardware':
+      return {
+        headline: `The ${week} Hardware`,
+        deck: `${facts.trophies.length} trophies handed out.`,
+        body: facts.trophies.length
+          ? facts.trophies.map((t) => `${t.award}: ${t.firstName}, ${t.team}, ${t.detail}.`)
+          : [`No hardware this week. Every game has to be final first.`],
+      };
+
     case 'manager':
       return {
         headline: `${facts.managerOfWeek.manager} Is Manager of the Week`,

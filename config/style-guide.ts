@@ -40,6 +40,12 @@ export const ARTICLE_SPECS: Record<
       'The lead story. The lowest score of the week and the manager who owns it. Be merciless. This is the one everybody reads. It must end with the sign off, escalated past every previous one.',
     words: [320, 450],
   },
+  hardware: {
+    title: 'The Hardware',
+    brief:
+      'The weekly awards ceremony. Hand out every trophy in the trophies list, one short paragraph each, in the order given: the award, who won it, and the number that won it. Treat it like a sarcastic banquet. The Shart gets a line, but the lead story already has him, so keep it brief and move on.',
+    words: [220, 340],
+  },
   manager: {
     title: 'Manager of the Week',
     brief: 'The highest score of the week. Give credit, then undercut it slightly.',
@@ -93,6 +99,7 @@ export const ARTICLE_SPECS: Record<
 /** Ordered as the section renders: the Shart leads. */
 export const ARTICLE_ORDER = [
   'shart',
+  'hardware',
   'manager',
   'game',
   'around',

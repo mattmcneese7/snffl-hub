@@ -3623,6 +3623,16 @@
   "short": "D. Achane",
   "team": "MIA"
  },
+ "9227": {
+  "espnId": "4429202",
+  "headshot": "https://sleepercdn.com/content/nfl/players/9227.jpg",
+  "id": "9227",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/dal.png",
+  "name": "Israel Abanikanda",
+  "position": "RB",
+  "short": "I. Abanikanda",
+  "team": "DAL"
+ },
  "9228": {
   "espnId": "4685720",
   "headshot": "https://sleepercdn.com/content/nfl/players/9228.jpg",
@@ -5359,6 +5369,16 @@
   "short": "C. Yankoff",
   "team": "WAS"
  },
+ "11959": {
+  "espnId": "4362617",
+  "headshot": "https://sleepercdn.com/content/nfl/players/11959.jpg",
+  "id": "11959",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/hou.png",
+  "name": "Bryce Oliver",
+  "position": "WR",
+  "short": "B. Oliver",
+  "team": "HOU"
+ },
  "11963": {
   "espnId": "4698191",
   "headshot": "https://sleepercdn.com/content/nfl/players/11963.jpg",
@@ -6042,6 +6062,16 @@
   "position": "QB",
   "short": "C. Ward",
   "team": "TEN"
+ },
+ "12523": {
+  "espnId": "4708486",
+  "headshot": "https://sleepercdn.com/content/nfl/players/12523.jpg",
+  "id": "12523",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/cle.png",
+  "name": "Jimmy Horn",
+  "position": "WR",
+  "short": "J. Horn",
+  "team": "CLE"
  },
  "12524": {
   "espnId": "4432762",
@@ -8170,6 +8200,15 @@
   "short": "K. Matsuzawa",
   "team": "LV"
  },
+ "13805": {
+  "headshot": "https://sleepercdn.com/content/nfl/players/13805.jpg",
+  "id": "13805",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/car.png",
+  "name": "E.J. Williams",
+  "position": "WR",
+  "short": "E. Williams",
+  "team": "CAR"
+ },
  "13816": {
   "espnId": "4695400",
   "headshot": "https://sleepercdn.com/content/nfl/players/13816.jpg",
@@ -8280,6 +8319,7 @@
   "team": "LV"
  },
  "13949": {
+  "espnId": "4876378",
   "headshot": "https://sleepercdn.com/content/nfl/players/13949.jpg",
   "id": "13949",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/gb.png",

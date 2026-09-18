@@ -90,10 +90,35 @@ export async function getHighlights(week?: number, limit = 60): Promise<Highligh
 
     const { data, error } = await query;
     if (error || !data) return [];
-    return (data as Row[]).map(toHighlight);
+    return rankClips(await withStills((data as Row[]).map(toHighlight)));
   } catch {
     return [];
   }
+}
+
+/**
+ * ESPN clips carry their still on ESPN, not in our table, so a clip without a
+ * stored thumbnail gets it from ESPN's clip record, cached for a day. That
+ * keeps stills working whether or not the thumbnail column exists.
+ */
+async function withStills(clips: Highlight[]): Promise<Highlight[]> {
+  return Promise.all(
+    clips.map(async (clip) => {
+      if (clip.thumbnail || !isEspnClip(clip.id)) return clip;
+      try {
+        const res = await fetch(`https://content.core.api.espn.com/v1/video/clips/${espnClipId(clip.id)}`, {
+          next: { revalidate: 86400 },
+        } as RequestInit);
+        if (!res.ok) return clip;
+        const json = await res.json();
+        const raw = (json?.videos ?? [json])[0];
+        const thumbnail: string | null = raw?.thumbnail ?? raw?.posterImages?.default?.href ?? null;
+        return thumbnail ? { ...clip, thumbnail } : clip;
+      } catch {
+        return clip;
+      }
+    })
+  );
 }
 
 /** Plays made by a defense or special teams, from the play type. */
@@ -139,7 +164,7 @@ export async function getHighlightsForPlayer(playerId: string, limit = 6): Promi
       .order('published_at', { ascending: false })
       .limit(limit);
     if (error || !data) return [];
-    return (data as Row[]).map(toHighlight);
+    return rankClips(await withStills((data as Row[]).map(toHighlight)));
   } catch {
     return [];
   }

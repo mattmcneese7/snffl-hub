@@ -80,13 +80,42 @@ export function readIssue(week: number): Issue | null {
   }
 }
 
+/**
+ * What the stats said when an issue went out, so the corrections check has
+ * something exact to compare against later.
+ */
+export function snapshotFrom(facts: {
+  shart: { manager: string; team: string; points: number };
+  managerOfWeek: { manager: string; team: string; points: number };
+  games: { matchupId: number; winner: string; away: { points: number }; home: { points: number } }[];
+}): IssueSnapshot {
+  return {
+    shart: { manager: facts.shart.manager, team: facts.shart.team, points: facts.shart.points },
+    managerOfWeek: {
+      manager: facts.managerOfWeek.manager,
+      team: facts.managerOfWeek.team,
+      points: facts.managerOfWeek.points,
+    },
+    results: facts.games.map((g) => ({
+      matchupId: g.matchupId,
+      winner: g.winner,
+      awayPoints: g.away.points,
+      homePoints: g.home.points,
+    })),
+  };
+}
+
 export function writeIssue(issue: Issue) {
   fs.mkdirSync(DIR, { recursive: true });
+  // Keys in a fixed order so a rewrite of the same issue produces the same
+  // file. snapshot belongs here: it used to be left out, so every issue went
+  // to disk without one and the corrections check skipped every week.
   const sorted = {
     articles: issue.articles,
     publishedAt: issue.publishedAt,
     season: issue.season,
     signOff: issue.signOff,
+    snapshot: issue.snapshot,
     updatedAt: issue.updatedAt,
     week: issue.week,
   };

@@ -176,6 +176,62 @@
  "publishedAt": "2026-09-16T03:54:17.078Z",
  "season": "2026",
  "signOff": "So here it is, the whole disgusting ceremony. Grab the pitcher, no wait, grab every pitcher in the building, line them up, and work your way down the row like you're trying to apologize to each one individually for what Victorious Secrets did on Sunday. Chug, bitch.",
+ "snapshot": {
+  "shart": {
+   "manager": "Tayodin",
+   "team": "Victorious Secrets",
+   "points": 63.04
+  },
+  "managerOfWeek": {
+   "manager": "nunnells",
+   "team": "Ha Ha Ha, Now Heres A Guy",
+   "points": 169.86
+  },
+  "results": [
+   {
+    "matchupId": 1,
+    "winner": "Bheinzeyo",
+    "awayPoints": 123.96,
+    "homePoints": 122.96
+   },
+   {
+    "matchupId": 2,
+    "winner": "JPellett3",
+    "awayPoints": 118,
+    "homePoints": 95.2
+   },
+   {
+    "matchupId": 3,
+    "winner": "DFWGilly",
+    "awayPoints": 63.04,
+    "homePoints": 153.92
+   },
+   {
+    "matchupId": 4,
+    "winner": "nunnells",
+    "awayPoints": 77.46,
+    "homePoints": 169.86
+   },
+   {
+    "matchupId": 5,
+    "winner": "tripnistico",
+    "awayPoints": 162.8,
+    "homePoints": 142.9
+   },
+   {
+    "matchupId": 6,
+    "winner": "SexRobot69",
+    "awayPoints": 156.06,
+    "homePoints": 146.86
+   },
+   {
+    "matchupId": 7,
+    "winner": "jwslaney",
+    "awayPoints": 116.22,
+    "homePoints": 75.3
+   }
+  ]
+ },
  "updatedAt": "2026-09-18T10:59:41.803Z",
  "week": 1
 }

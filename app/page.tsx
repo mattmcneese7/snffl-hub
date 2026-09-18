@@ -144,6 +144,10 @@ export default async function HomePage() {
           />
         </section>
 
+        {/* Featured right under the stories: the wall of shame is the second
+            thing anyone opens the site for. */}
+        <ShartZone current={sharts[0] ?? null} wall={sharts} />
+
         <HomeWidget
           title={<Masthead />}
           href={latestRagWeek ? `/rag/${latestRagWeek}` : '/rag'}
@@ -264,8 +268,6 @@ export default async function HomePage() {
           </div>
 
           <div>
-            <ShartZone current={sharts[0] ?? null} wall={sharts} />
-
             <HomeWidget title="Power Rankings" href="/power-rankings">
               <div className="snffl-card">
                 {rankings.slice(0, 3).map((entry) => (

@@ -17,6 +17,7 @@ import {
   readTimeOf,
   signOffFrom,
   slugFor,
+  snapshotFrom,
   writeIssue,
   type Article,
   type Issue,
@@ -180,26 +181,8 @@ const issue: Issue = {
   season: facts.season,
   publishedAt: new Date().toISOString(),
   signOff,
-  // What the stats said at publication, so the corrections check has something
-  // exact to compare against later.
-  snapshot: {
-    shart: {
-      manager: facts.shart.manager,
-      team: facts.shart.team,
-      points: facts.shart.points,
-    },
-    managerOfWeek: {
-      manager: facts.managerOfWeek.manager,
-      team: facts.managerOfWeek.team,
-      points: facts.managerOfWeek.points,
-    },
-    results: facts.games.map((g) => ({
-      matchupId: g.matchupId,
-      winner: g.winner,
-      awayPoints: g.away.points,
-      homePoints: g.home.points,
-    })),
-  },
+  // What the stats said at publication, for the corrections check.
+  snapshot: snapshotFrom(facts),
   articles,
 };
 

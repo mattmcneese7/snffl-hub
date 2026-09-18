@@ -1,8 +1,10 @@
 import Link from 'next/link';
+import Bracket from '@/components/Bracket';
 import Chrome from '@/components/Chrome';
 import PlayoffTitle from '@/components/PlayoffTitle';
-import { league, scoredWeek } from '@/lib/league';
+import { league, scoredWeek, teamByRoster } from '@/lib/league';
 import { getPlayoffOdds } from '@/lib/playoff-odds';
+import { getPostseason } from '@/lib/postseason';
 
 const TAG_CLASS: Record<string, string> = {
   Clinched: 'snffl-odds-tag-clinched',
@@ -15,7 +17,10 @@ const TAG_CLASS: Record<string, string> = {
 export default async function PlayoffsPage() {
   const week = await scoredWeek();
   const postseason = week >= league.playoffWeekStart;
-  const odds = await getPlayoffOdds();
+  const [odds, bracket] = await Promise.all([getPlayoffOdds(), getPostseason()]);
+
+  const champion = bracket.championRosterId ? teamByRoster(bracket.championRosterId) : null;
+  const shartTeam = bracket.shartRosterId ? teamByRoster(bracket.shartRosterId) : null;
 
   return (
     <>
@@ -33,16 +38,50 @@ export default async function PlayoffsPage() {
           </p>
         </section>
 
+        {/* From Week 15 this page leads with the bracket, per Brief Section 2.
+            Before then the odds stay on top and the bracket sits underneath,
+            because Sleeper seeds it early and it is worth looking at. */}
         {postseason ? (
-          <section>
-            <div className="snffl-placeholder">
-              <span className="snffl-placeholder-label">Checkpoint 9</span>
-              <span className="snffl-placeholder-note">
-                From Week {league.playoffWeekStart} this page becomes the Postseason Breakdown with
-                the bracket and the Shart Bowl.
-              </span>
-            </div>
-          </section>
+          <>
+            {champion ? (
+              <section>
+                <div className="snffl-champion">
+                  <span className="snffl-champion-label">Champion</span>
+                  <span className="snffl-headline snffl-champion-name">{champion.teamName}</span>
+                  <span className="snffl-standings-manager">{champion.manager}</span>
+                </div>
+              </section>
+            ) : null}
+
+            <section>
+              <div className="snffl-block-heading">
+                <h2 className="snffl-headline">Postseason Breakdown</h2>
+                <span className="snffl-block-heading-link">Top {league.playoffTeams}</span>
+              </div>
+              <Bracket
+                rounds={bracket.rounds}
+                byeRosterIds={bracket.byeRosterIds}
+                emptyNote="Sleeper publishes the bracket once the playoff field is set."
+              />
+            </section>
+
+            <section>
+              <div className="snffl-block-heading">
+                <h2 className="snffl-headline">The Shart Bowl</h2>
+                {shartTeam ? (
+                  <span className="snffl-block-heading-link">{shartTeam.manager} chugs</span>
+                ) : null}
+              </div>
+              <p className="snffl-menu-note">
+                The losers bracket. Whoever loses it finishes last and owes the season&apos;s final
+                chug.
+              </p>
+              <Bracket
+                rounds={bracket.shartBowl}
+                emptyNote="The losers bracket fills in once the regular season ends."
+              />
+            </section>
+          </>
         ) : null}
 
         <section>
@@ -77,6 +116,22 @@ export default async function PlayoffsPage() {
             Ten thousand simulated seasons, using scoring averages and week to week swing.
           </p>
         </section>
+
+        {/* Before the playoffs the bracket is still worth a look: Sleeper seeds
+            it from the current standings, so it shows who would play whom. */}
+        {!postseason ? (
+          <section>
+            <div className="snffl-block-heading">
+              <h2 className="snffl-headline">If The Season Ended Today</h2>
+              <span className="snffl-block-heading-link">Week {league.playoffWeekStart} start</span>
+            </div>
+            <Bracket
+              rounds={bracket.rounds}
+              byeRosterIds={bracket.byeRosterIds}
+              emptyNote="Sleeper publishes the bracket once the playoff field is set."
+            />
+          </section>
+        ) : null}
       </main>
     </>
   );

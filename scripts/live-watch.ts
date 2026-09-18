@@ -23,6 +23,7 @@ import {
   type NewPost,
   type PlayerLookup,
 } from '../lib/live.ts';
+import { pushConfigured, sendAlert } from '../lib/push.ts';
 import { getRosters } from '../lib/sleeper.ts';
 import { writeClient, writerConfigured } from '../lib/supabase.ts';
 
@@ -178,4 +179,30 @@ if (error) {
 }
 
 for (const post of toWrite) console.log(`  posted [${post.kind}] ${post.title}`);
+
+/**
+ * Push, after the write rather than before it, so an alert never points at a
+ * post that failed to save. Only what cleared the hourly cap is announced: the
+ * cap exists to stop the Feed flooding, and a phone buzzing for every candidate
+ * that was trimmed would defeat it.
+ */
+if (pushConfigured()) {
+  let delivered = 0;
+  for (const post of toWrite) {
+    const payload = post.payload ?? {};
+    if (payload.play_id) {
+      delivered += await sendAlert(
+        { kind: 'touchdown' },
+        { title: post.title, body: post.body ?? '', url: '/feed', tag: `td-${payload.play_id}` }
+      );
+    } else if (payload.matchup_id != null && post.team_ids?.length) {
+      delivered += await sendAlert(
+        { kind: 'lead_change', teamIds: post.team_ids.map(String) },
+        { title: post.title, body: post.body ?? '', url: '/matchups', tag: `lead-${payload.matchup_id}` }
+      );
+    }
+  }
+  console.log(`  push alerts delivered to ${delivered} devices`);
+}
+
 console.log(`live watcher wrote ${toWrite.length} of ${candidates.length} candidates.`);

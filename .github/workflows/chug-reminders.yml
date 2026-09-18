@@ -1,0 +1,38 @@
+name: chug reminders
+
+on:
+  schedule:
+    # Central time, per docs/DECISIONS.md. These are UTC and written for
+    # daylight time (UTC-5), so from 1 November each lands an hour earlier in
+    # Central. The script picks its reminder from the Central day, so the
+    # right message still goes out either way.
+    - cron: '0 14 * * 2'   # Tuesday 9:00 AM
+    - cron: '0 0 * * 5'    # Thursday 7:00 PM
+    - cron: '0 0 * * 0'    # Saturday 7:00 PM
+    - cron: '0 14 * * 0'   # Sunday 9:00 AM, before the first noon kickoff
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+
+      - name: Remind whoever owes a chug
+        env:
+          SLEEPER_LEAGUE_ID: ${{ secrets.SLEEPER_LEAGUE_ID }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          NEXT_PUBLIC_VAPID_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_VAPID_PUBLIC_KEY }}
+          VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
+          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+        run: node scripts/chug-reminders.ts

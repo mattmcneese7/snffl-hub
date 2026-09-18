@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import AlertsToggle from './AlertsToggle';
 
 const TEAM_KEY = 'snffl.myTeam';
 const THEME_KEY = 'snffl.theme';
@@ -95,15 +96,7 @@ export default function SettingsPanel({
       </div>
 
       <div className="snffl-card snffl-settings-group">
-        <div className="snffl-settings-row">
-          <span>
-            <span className="snffl-menu-label">Alerts</span>
-            <span className="snffl-menu-note">
-              Touchdowns, lead changes and chug reminders. Arriving in a later build.
-            </span>
-          </span>
-          <span className="snffl-settings-pending">Not yet</span>
-        </div>
+        <AlertsToggle />
       </div>
     </div>
   );

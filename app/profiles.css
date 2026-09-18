@@ -332,3 +332,96 @@
   .snffl-trade-side:last-child { border-right: 0; }
   .snffl-profile-name { font-size: 28px; }
 }
+
+/* ---------- Postseason bracket, Checkpoint 9 ---------- */
+
+.snffl-bracket-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin-bottom: 9px; }
+.snffl-bracket-tabs::-webkit-scrollbar { display: none; }
+.snffl-bracket-tab {
+  flex: 0 0 auto;
+  min-height: var(--tap);
+  padding: 0 12px;
+  background: var(--card);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.snffl-bracket-tab-active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+.snffl-bracket-game { padding: 10px 12px; border-bottom: 1px solid var(--line); }
+.snffl-bracket-game:last-child { border-bottom: 0; }
+
+.snffl-bracket-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.snffl-bracket-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+}
+.snffl-bracket-status { font-size: 11px; color: var(--ink-secondary); }
+.snffl-bracket-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--marker-ink);
+}
+.snffl-bracket-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--marker-ink);
+  animation: snffl-live-pulse 1.8s ease-in-out infinite;
+}
+
+.snffl-bracket-side {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 0;
+  color: var(--ink-secondary);
+}
+/* The winner is the only row at full ink, so a decided game reads at a glance. */
+.snffl-bracket-side-won { color: var(--ink); font-weight: 800; }
+.snffl-bracket-seed { font-size: 12px; text-align: center; }
+.snffl-bracket-team { font-size: 13px; display: flex; align-items: center; gap: 6px; min-width: 0; }
+.snffl-bracket-manager { font-size: 11px; white-space: nowrap; }
+.snffl-bracket-bye {
+  padding: 1px 5px;
+  background: var(--gold);
+  color: var(--gold-on);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.snffl-champion {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 18px 14px;
+  background: var(--card);
+  border: 1px solid var(--gold);
+  text-align: center;
+}
+.snffl-champion-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+}
+.snffl-champion-name { font-size: 22px; }

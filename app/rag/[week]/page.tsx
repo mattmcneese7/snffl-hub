@@ -4,7 +4,8 @@ import Masthead from '@/components/Masthead';
 import WeekSelector from '@/components/WeekSelector';
 import { getHighlights } from '@/lib/highlights';
 import { teams } from '@/lib/league';
-import { stillsForArticles } from '@/lib/story-images';
+import StoryArtView from '@/components/StoryArtView';
+import { artForArticles, featuredPlayers } from '@/lib/story-images';
 import { publishDateFor, publishedWeeks, readIssue } from '@/lib/rag';
 
 const dateLabel = (iso: string) =>
@@ -24,13 +25,14 @@ export default async function RagWeek({ params }: { params: Promise<{ week: stri
   const lead = issue?.articles[0];
   const rest = issue?.articles.slice(1) ?? [];
 
-  // Real highlight stills as lead images, per Brief Section 2. A story with no
-  // matching clip keeps its gradient rather than borrowing somebody else's.
-  const clips = await getHighlights(week);
-  const stills = stillsForArticles(
+  // Lead art per Brief Section 2: a real highlight still where the story's
+  // manager has a clip, else his top scorer drawn from the week's data.
+  const [clips, featured] = await Promise.all([getHighlights(week, 200), featuredPlayers(week)]);
+  const stills = artForArticles(
     issue?.articles ?? [],
     clips,
-    Object.fromEntries(teams.map((team) => [String(team.rosterId), team.manager]))
+    Object.fromEntries(teams.map((team) => [String(team.rosterId), team.manager])),
+    featured
   );
 
   return (
@@ -60,8 +62,7 @@ export default async function RagWeek({ params }: { params: Promise<{ week: stri
                 <Link className="snffl-card snffl-rag-lead" href={`/rag/${week}/${lead.slug}`}>
                   {stills[lead.slug] ? (
                     <span className="snffl-rag-lead-art" aria-hidden>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={stills[lead.slug]} alt="" />
+                      <StoryArtView art={stills[lead.slug]} size="lg" />
                     </span>
                   ) : null}
                   <span className="snffl-rag-category">{lead.category}</span>
@@ -88,10 +89,7 @@ export default async function RagWeek({ params }: { params: Promise<{ week: stri
                     key={article.slug}
                   >
                     <span className="snffl-rag-thumb" aria-hidden>
-                      {stills[article.slug] ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={stills[article.slug]} alt="" loading="lazy" />
-                      ) : null}
+                      <StoryArtView art={stills[article.slug]} size="sm" />
                     </span>
                     <span>
                       <span className="snffl-rag-category">{article.category}</span>

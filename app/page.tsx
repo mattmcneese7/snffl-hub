@@ -19,8 +19,8 @@ import { SourceStrip } from '@/components/SourceMark';
 import { anyGameLive, ESPN_TEAM_LOGO, getNflScoreboard } from '@/lib/espn';
 import { toFeature } from '@/lib/feature';
 import { getFeedPosts } from '@/lib/feed';
-import { getHighlights } from '@/lib/highlights';
-import { stillsForArticles } from '@/lib/story-images';
+import { getHighlights, isEspnClip } from '@/lib/highlights';
+import { artForArticles, featuredPlayers } from '@/lib/story-images';
 import {
   getPowerRankings,
   getStandings,
@@ -68,11 +68,16 @@ export default async function HomePage() {
     ]);
   const models = winProbabilities(games, ctx);
 
-  // Stories show the last finished week: while this week is still being
-  // played its clips are partial, so the stories stay on the week before.
-  const weekDone = games.length > 0 && games.every((game) => game.status === 'final');
-  const storyWeek = weekDone ? week : Math.max(1, week - 1);
-  const storyClips = await getHighlights(storyWeek, 200);
+  // Stories and Top Plays show only clips that play inside the site, ESPN's
+  // syndicated ones. The NFL's YouTube clips can only link out, so they stay
+  // in the Feed. The week in progress leads as soon as it has playable clips,
+  // which makes the stories live game highlights on a Sunday; otherwise the
+  // week before.
+  const playableIn = async (w: number) =>
+    (await getHighlights(w, 200)).filter((clip) => isEspnClip(clip.id));
+  const thisWeekClips = await playableIn(week);
+  const storyWeek = thisWeekClips.length || week === 1 ? week : week - 1;
+  const storyClips = storyWeek === week ? thisWeekClips : await playableIn(storyWeek);
 
   // ESPN rather than the game status, which is derived from week arithmetic and
   // can read live on a week that merely has points on the board.
@@ -81,6 +86,10 @@ export default async function HomePage() {
   const ragWeeks = publishedWeeks();
   const latestRagWeek = ragWeeks.length ? ragWeeks[ragWeeks.length - 1] : null;
   const ragIssue = latestRagWeek ? readIssue(latestRagWeek) : null;
+  // The Rag's art comes from its own week: its clips, else its top scorers.
+  const [ragClips, ragFeatured] = latestRagWeek
+    ? await Promise.all([getHighlights(latestRagWeek, 200), featuredPlayers(latestRagWeek)])
+    : [[], []];
 
   const feature = matchupOfTheWeek(games);
   const topChuggers = chugs.filter((c) => c.count > 0).slice(0, 5);
@@ -89,7 +98,7 @@ export default async function HomePage() {
   return (
     <>
       <Chrome section="Home" week={week} />
-      <LiveRefresh live={liveNow} />
+      <LiveRefresh live={liveNow} week={week} />
       <main className="snffl-page">
         {/* Manager stories: each manager's clips from the last finished week,
             played as a vertical story. */}
@@ -116,10 +125,11 @@ export default async function HomePage() {
           <RagHero
             week={latestRagWeek}
             articles={ragIssue?.articles ?? []}
-            stills={stillsForArticles(
+            stills={artForArticles(
               ragIssue?.articles ?? [],
-              clips,
-              Object.fromEntries(teams.map((t) => [String(t.rosterId), t.manager]))
+              ragClips,
+              Object.fromEntries(teams.map((t) => [String(t.rosterId), t.manager])),
+              ragFeatured
             )}
           />
         </HomeWidget>

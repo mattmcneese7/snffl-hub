@@ -1125,3 +1125,71 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   background: #ff0000;
   font-size: 20px;
 }
+
+/* ---------- Story art ---------- */
+
+.snffl-story-art-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+.snffl-story-art-player {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 80% 10%, rgba(255, 255, 255, 0.22), transparent 60%),
+    linear-gradient(150deg, var(--team), #05070d 130%);
+}
+.snffl-story-art-logo {
+  position: absolute;
+  left: -8%;
+  top: 50%;
+  width: 62%;
+  transform: translateY(-50%);
+  opacity: 0.22;
+  filter: saturate(1.2);
+}
+.snffl-story-art-cutout {
+  position: absolute;
+  right: 4%;
+  bottom: 0;
+  height: 108%;
+  width: auto;
+  max-width: 70%;
+  object-fit: contain;
+  object-position: bottom right;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.45));
+}
+.snffl-story-art-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  gap: 1px;
+  padding: 26px 12px 10px;
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.78));
+  color: #ffffff;
+}
+.snffl-story-art-caption strong {
+  font-family: var(--font-archivo);
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  font-size: 18px;
+  line-height: 1;
+}
+.snffl-story-art-caption span { font: 700 10px/1.2 var(--mono); letter-spacing: 0.08em; }
+.snffl-story-art-lg .snffl-story-art-caption strong { font-size: 26px; }
+
+/* A score that just changed lights up for a moment, green up, red down. */
+.snffl-tick { transition: color 0.2s ease; animation: snffl-tick-pulse 1.6s ease-out; border-radius: 6px; }
+.snffl-tick-up { animation-name: snffl-tick-up; }
+.snffl-tick-down { animation-name: snffl-tick-down; }
+@keyframes snffl-tick-up {
+  0%, 30% { background: rgba(61, 220, 151, 0.28); }
+  100% { background: transparent; }
+}
+@keyframes snffl-tick-down {
+  0%, 30% { background: rgba(255, 90, 106, 0.24); }
+  100% { background: transparent; }
+}

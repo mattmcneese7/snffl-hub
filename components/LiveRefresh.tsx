@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { runLiveScores } from './LiveScores';
 
 /**
  * Pulls fresh scores while games are running, Brief Section 2.
@@ -15,15 +16,27 @@ import { useRouter } from 'next/navigation';
  */
 export default function LiveRefresh({
   live,
+  week,
   // 15 seconds while anything is live, Checkpoint 12b. Sleeper's matchups
   // call is cached for the same 15, so each refresh can bring a new score.
   intervalMs = 15000,
 }: {
   /** Whether anything on this page is actually in progress. */
   live: boolean;
+  /**
+   * The fantasy week on screen. With it, scores also update every 10 seconds
+   * straight from Sleeper in the browser, between the full refreshes.
+   */
+  week?: number;
   intervalMs?: number;
 }) {
   const router = useRouter();
+
+  useEffect(() => {
+    if (!live || week == null) return;
+    runLiveScores(week);
+    return () => runLiveScores(null);
+  }, [live, week]);
 
   useEffect(() => {
     if (!live) return;

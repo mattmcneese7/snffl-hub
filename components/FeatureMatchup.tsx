@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { LiveTeamPoints } from './LiveScores';
 import SourceMark from './SourceMark';
 import WinTube from './WinTube';
 
@@ -67,11 +68,13 @@ function Side({
   align,
   leading,
   status,
+  week,
 }: {
   side: FeatureSide;
   align: 'left' | 'right';
   leading: boolean;
   status: FeatureData['status'];
+  week: number;
 }) {
   return (
     <div className={`snffl-board-side snffl-board-side-${align}`}>
@@ -85,9 +88,12 @@ function Side({
           </span>
         </div>
       </div>
-      <span className={`snffl-score-xl snffl-board-score${leading ? ' snffl-board-score-lead' : ''}`}>
-        {side.points.toFixed(2)}
-      </span>
+      <LiveTeamPoints
+        rosterId={side.rosterId}
+        week={week}
+        fallback={side.points}
+        className={`snffl-score-xl snffl-board-score${leading ? ' snffl-board-score-lead' : ''}`}
+      />
       {status !== 'final' && side.projected != null ? (
         <span className="snffl-board-proj">
           <span className="snffl-label">Proj</span> {side.projected.toFixed(1)}
@@ -135,8 +141,8 @@ export default function FeatureMatchup({
       </div>
 
       <div className="snffl-board-sides">
-        <Side side={away} align="left" leading={awayLead} status={status} />
-        <Side side={home} align="right" leading={homeLead} status={status} />
+        <Side side={away} align="left" leading={awayLead} status={status} week={week} />
+        <Side side={home} align="right" leading={homeLead} status={status} week={week} />
       </div>
 
       {/* A decided game has nothing left to predict; 100 and 0 would be noise. */}

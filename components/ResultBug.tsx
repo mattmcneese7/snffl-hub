@@ -9,6 +9,7 @@ export type BugOutlook = {
   awayProjected: number;
   homeProjected: number;
 };
+import { LiveTeamPoints } from './LiveScores';
 import TeamAvatar from './TeamAvatar';
 
 /**
@@ -63,7 +64,12 @@ function Side({ side, game, projected }: { side: GameSide; game: Game; projected
         {projected != null && game.status !== 'final' ? (
           <span className="snffl-bug-proj">P {projected.toFixed(1)}</span>
         ) : null}
-        <span className="snffl-bug-score snffl-numeric">{side.points.toFixed(2)}</span>
+        <LiveTeamPoints
+          rosterId={side.rosterId}
+          week={game.week}
+          fallback={side.points}
+          className="snffl-bug-score snffl-numeric"
+        />
       </span>
     </div>
   );

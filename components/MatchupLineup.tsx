@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { formatMoneyline } from '@/lib/gameday';
 import type { LiveMatchup, LivePlayer, LiveSide } from '@/lib/matchup-live';
+import { LivePlayerPoints, LiveTeamPoints } from './LiveScores';
 
 /**
  * Starters head to head, the way a fantasy app's matchup screen reads.
@@ -161,19 +162,24 @@ function Points({
   player,
   winning,
   side,
+  week,
 }: {
   player?: LivePlayer;
   winning: boolean;
   side: 'away' | 'home';
+  week: number;
 }) {
   if (!player) {
     return <span className={`snffl-mu-points snffl-mu-points-${side} snffl-mu-points-empty`}>&ndash;</span>;
   }
   return (
     <span className={`snffl-mu-points snffl-mu-points-${side}${winning ? ' snffl-mu-points-win' : ''}`}>
-      <span className="snffl-numeric snffl-mu-points-value">
-        {player.gameState === 'pre' ? '0.00' : player.points.toFixed(2)}
-      </span>
+      <LivePlayerPoints
+        playerId={player.id}
+        week={week}
+        fallback={player.points}
+        className="snffl-numeric snffl-mu-points-value"
+      />
       {player.projected != null ? (
         <span className="snffl-mu-points-proj">{player.projected.toFixed(1)}</span>
       ) : null}
@@ -181,7 +187,17 @@ function Points({
   );
 }
 
-function Rows({ away, home, bench }: { away: LivePlayer[]; home: LivePlayer[]; bench?: boolean }) {
+function Rows({
+  away,
+  home,
+  bench,
+  week,
+}: {
+  away: LivePlayer[];
+  home: LivePlayer[];
+  bench?: boolean;
+  week: number;
+}) {
   const rows = Math.max(away.length, home.length);
   return (
     <>
@@ -197,12 +213,12 @@ function Rows({ away, home, bench }: { away: LivePlayer[]; home: LivePlayer[]; b
           <details className="snffl-mu-row" key={`${bench ? 'b' : 's'}-${i}`}>
             <summary className="snffl-mu-main">
               <PlayerId player={a} align="left" />
-              <Points player={a} winning={aWin} side="away" />
+              <Points player={a} winning={aWin} side="away" week={week} />
               <span className="snffl-mu-slot">
                 {bench ? 'BN' : (a?.slot ?? h?.slot ?? '')}
                 <span className="snffl-mu-caret" aria-hidden />
               </span>
-              <Points player={h} winning={hWin} side="home" />
+              <Points player={h} winning={hWin} side="home" week={week} />
               <PlayerId player={h} align="right" />
             </summary>
             <div className="snffl-mu-more">
@@ -216,11 +232,16 @@ function Rows({ away, home, bench }: { away: LivePlayer[]; home: LivePlayer[]; b
   );
 }
 
-function Total({ side, align }: { side: LiveSide; align: 'left' | 'right' }) {
+function Total({ side, align, week }: { side: LiveSide; align: 'left' | 'right'; week: number }) {
   return (
     <div className={`snffl-mu-total snffl-mu-total-${align}`}>
       <span className="snffl-label">{side.team}</span>
-      <span className="snffl-score-xl snffl-mu-total-score">{side.points.toFixed(2)}</span>
+      <LiveTeamPoints
+        rosterId={side.rosterId}
+        week={week}
+        fallback={side.points}
+        className="snffl-score-xl snffl-mu-total-score"
+      />
       <span className="snffl-mu-total-proj">
         Proj {side.projectedTotal.toFixed(1)}
       </span>
@@ -245,12 +266,12 @@ export default function MatchupLineup({ matchup }: { matchup: LiveMatchup }) {
         </span>
       </div>
 
-      <Rows away={away.lineup} home={home.lineup} />
+      <Rows away={away.lineup} home={home.lineup} week={matchup.game.week} />
 
       <div className="snffl-mu-totals">
-        <Total side={away} align="left" />
+        <Total side={away} align="left" week={matchup.game.week} />
         <span className="snffl-mu-slot">TOT</span>
-        <Total side={home} align="right" />
+        <Total side={home} align="right" week={matchup.game.week} />
       </div>
 
       {away.bench.length || home.bench.length ? (
@@ -261,7 +282,7 @@ export default function MatchupLineup({ matchup }: { matchup: LiveMatchup }) {
               {benchPoints(away).toFixed(2)} and {benchPoints(home).toFixed(2)}
             </span>
           </summary>
-          <Rows away={away.bench} home={home.bench} bench />
+          <Rows away={away.bench} home={home.bench} bench week={matchup.game.week} />
         </details>
       ) : null}
     </div>

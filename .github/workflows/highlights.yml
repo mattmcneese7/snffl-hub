@@ -13,7 +13,15 @@ on:
     #
     # The job is cheap when nothing is new: it reads one page of uploads and
     # stops before calling the tagger at all.
-    - cron: '0 * * * 0,1,2,4,5,6'
+    #
+    # Every 10 minutes on game days since Checkpoint 12b. ESPN's clip feed
+    # keeps only its latest 100 clips across every sport, a few hours on a
+    # Sunday, so an hourly run could miss clips entirely. Only new clips reach
+    # the tagger, so the extra runs cost almost nothing. Game days in UTC:
+    # Sunday, Monday (Sunday night and Monday night), Tuesday (Monday night's
+    # tail) and Friday (Thursday night).
+    - cron: '*/10 * * * 0,1,2,5'
+    - cron: '0 * * * 4,6'
   workflow_dispatch:
 
 # No contents: write. State lives in Supabase, keyed on the YouTube video id,

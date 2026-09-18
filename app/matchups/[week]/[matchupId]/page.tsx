@@ -40,7 +40,7 @@ export default async function MatchupDetail({
   return (
     <>
       <Chrome section="Matchups" sub={`Week ${week}`} week={week} />
-      <LiveRefresh live={ctx.nfl.some((g) => g.state === 'in')} />
+      <LiveRefresh live={ctx.nfl.some((g) => g.state === 'in')} week={week} />
       <main className="snffl-page">
         <section>
           <Link className="snffl-block-heading-link" href={`/matchups/${week}`}>

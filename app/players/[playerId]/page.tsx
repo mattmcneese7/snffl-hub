@@ -4,7 +4,7 @@ import PointsByWeekChart from '@/components/PointsByWeekChart';
 import { ESPN_CUTOUT } from '@/lib/espn';
 import { league, teamByRoster } from '@/lib/league';
 import { getPlayerSeason } from '@/lib/players';
-import HighlightCard from '@/components/HighlightCard';
+import HighlightList from '@/components/HighlightList';
 import { getHighlightsForPlayer } from '@/lib/highlights';
 import SleeperActionButton from '@/components/SleeperAction';
 import SourceMark, { SourceStrip } from '@/components/SourceMark';
@@ -256,15 +256,11 @@ export default async function PlayerPage({
               <h2 className="snffl-headline">Highlights</h2>
               <span className="snffl-block-heading-link">{clips.length} clips</span>
             </div>
-            <div className="snffl-card">
-              {clips.map((clip) => (
-                <HighlightCard
-                  key={clip.id}
-                  highlight={clip}
-                  managerName={owner?.manager ?? null}
-                />
-              ))}
-            </div>
+            <HighlightList
+              clips={clips}
+              managers={owner ? { [String(owner.rosterId)]: owner.manager } : {}}
+              title={`${player.name} Highlights`}
+            />
             <SourceStrip items={[{ source: 'youtube', label: 'Highlights' }]} />
           </section>
         ) : null}

@@ -789,3 +789,253 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
 .snffl-sleeper-action-compact { min-height: 34px; padding: 0 11px 0 4px; font-size: 12px; }
 .snffl-sleeper-action-compact img { width: 24px; height: 24px; border-radius: 7px; }
 .snffl-sleeper-action:focus-visible { outline: 2px solid var(--water-mid); outline-offset: 2px; }
+
+/* ---------- Highlight reels ----------
+   Always dark, whatever the theme: it is a video viewer, and a light frame
+   around a playing clip reads as a bug. Colors here are fixed and carry their
+   own contrast entries. */
+
+.snffl-reel {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #000000;
+  color: #ffffff;
+  animation: snffl-reel-in 0.18s ease-out both;
+}
+@keyframes snffl-reel-in {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+.snffl-reel-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: calc(10px + env(safe-area-inset-top, 0px)) 14px 10px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.75), transparent);
+  pointer-events: none;
+}
+.snffl-reel-top > * { pointer-events: auto; }
+.snffl-reel-title { display: grid; gap: 2px; }
+.snffl-reel-title strong {
+  font-family: var(--font-archivo);
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  font-size: 20px;
+  line-height: 1;
+}
+.snffl-reel-count { font: 700 10px/1 var(--mono); letter-spacing: 0.12em; color: #c9d1de; }
+.snffl-reel-close {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.snffl-reel-scroller {
+  height: 100%;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.snffl-reel-scroller::-webkit-scrollbar { display: none; }
+
+.snffl-reel-slide {
+  height: 100dvh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: grid;
+  align-content: center;
+  gap: 14px;
+  padding: 64px 0 calc(24px + env(safe-area-inset-bottom, 0px));
+}
+.snffl-reel-frame {
+  width: 100%;
+  max-width: min(1100px, calc((100dvh - 260px) * 16 / 9));
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  background: #0b0f18;
+  overflow: hidden;
+}
+.snffl-reel-frame iframe,
+.snffl-reel-frame img {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  object-fit: cover;
+}
+
+.snffl-reel-info {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: grid;
+  gap: 8px;
+}
+.snffl-reel-clip-title {
+  margin: 0;
+  font-family: var(--font-archivo);
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  font-size: 24px;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+.snffl-reel-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.snffl-reel-tag {
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  font: 700 10px/1.2 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.snffl-reel-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  width: max-content;
+  color: #c9d1de;
+  font: 700 10px/1 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.snffl-reel-source img { height: 14px; width: auto; }
+
+.snffl-reel-nav {
+  position: absolute;
+  right: 14px;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  z-index: 3;
+  display: grid;
+  gap: 8px;
+}
+.snffl-reel-nav button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-size: 18px;
+  cursor: pointer;
+}
+.snffl-reel-nav button:disabled { opacity: 0.3; cursor: default; }
+
+@media (min-width: 900px) {
+  .snffl-reel-clip-title { font-size: 32px; }
+  .snffl-reel-nav { right: 28px; top: 50%; bottom: auto; transform: translateY(-50%); }
+}
+
+/* ---------- Manager stories ---------- */
+
+.snffl-reel-story .snffl-reel-slide {
+  position: relative;
+  overflow: hidden;
+  align-content: center;
+}
+/* The clip's own frame, blurred to fill the phone around a landscape video. */
+.snffl-story-backdrop {
+  position: absolute;
+  inset: -40px;
+  width: calc(100% + 80px);
+  height: calc(100% + 80px);
+  object-fit: cover;
+  filter: blur(28px) brightness(0.45) saturate(1.3);
+  z-index: 0;
+}
+.snffl-reel-story .snffl-reel-frame,
+.snffl-reel-story .snffl-reel-info { position: relative; z-index: 2; }
+.snffl-reel-story .snffl-reel-frame { box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6); }
+/* Tap zones on the outer thirds, clear of the video itself so a tap on the
+   clip still reaches the YouTube player. */
+.snffl-story-tap {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 28%;
+  z-index: 1;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.snffl-story-tap-back { left: 0; }
+.snffl-story-tap-next { right: 0; }
+
+.snffl-story-progress {
+  position: absolute;
+  top: calc(6px + env(safe-area-inset-top, 0px));
+  left: 10px;
+  right: 10px;
+  z-index: 4;
+  display: flex;
+  gap: 4px;
+}
+.snffl-story-progress i {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.3);
+}
+.snffl-story-progress i.done,
+.snffl-story-progress i.now { background: #ffffff; }
+.snffl-reel-story .snffl-reel-top { padding-top: calc(18px + env(safe-area-inset-top, 0px)); }
+.snffl-reel-story .snffl-reel-title { grid-template-columns: auto 1fr; column-gap: 10px; align-items: center; }
+.snffl-reel-story .snffl-reel-title .snffl-reel-count { grid-column: 2; }
+.snffl-story-avatar {
+  grid-row: span 2;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  object-fit: cover;
+}
+.snffl-reel-story .snffl-reel-nav { display: none; }
+
+/* The rail on Home. */
+.snffl-story-button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.snffl-story-button:disabled { cursor: default; }
+.snffl-story-button:disabled .snffl-story-ring { opacity: 0.55; }
+.snffl-story-ring-live {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--card), var(--card)) padding-box,
+    conic-gradient(from 200deg, var(--water-mid), var(--logo-red), var(--beer-light), var(--water-mid)) border-box;
+  border: 3px solid transparent;
+}
+.snffl-story-count {
+  display: block;
+  font: 700 9px/1 var(--mono);
+  letter-spacing: 0.08em;
+  color: var(--ink-secondary);
+  margin-top: 3px;
+}

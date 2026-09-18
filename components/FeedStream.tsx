@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import HighlightCard from './HighlightCard';
+import HighlightList from './HighlightList';
 import type { FeedPost } from '@/lib/feed';
 import type { Highlight } from '@/lib/highlights';
 
@@ -170,15 +170,11 @@ export default function FeedStream({
               </div>
 
               {clips[ownership].length ? (
-                <div className="snffl-card">
-                  {clips[ownership].map((clip) => (
-                    <HighlightCard
-                      key={clip.id}
-                      highlight={clip}
-                      managerName={clip.ownerTeamId ? managers[clip.ownerTeamId] : null}
-                    />
-                  ))}
-                </div>
+                <HighlightList
+                  clips={clips[ownership]}
+                  managers={managers}
+                  title={ownership === 'owned' ? 'Owned Highlights' : 'Free Agent Highlights'}
+                />
               ) : (
                 <div className="snffl-placeholder">
                   <span className="snffl-placeholder-label">Nothing yet</span>

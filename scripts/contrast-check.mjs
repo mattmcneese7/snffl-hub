@@ -210,6 +210,10 @@ const LITERAL_PAIRS = [
   ['#ffffff', '#0b1a2e', 4.5, 'DraftSharks badge label'],
   ['#ffffff', '#1f74c9', 4.5, 'SNFFL model badge letter'],
   ['#ffffff', '#c8323f', 4.5, 'injury tag on a lineup row'],
+  // Highlight reels are always dark.
+  ['#ffffff', '#000000', 4.5, 'reel title on the black stage'],
+  ['#c9d1de', '#000000', 4.5, 'reel count and source line'],
+  ['#ffffff', '#242424', 4.5, 'reel tag text on its 14% white pill'],
 ];
 
 console.log('\ntheme independent literals');

@@ -1,67 +1,48 @@
 'use client';
 
-import SleeperActionButton from './SleeperAction';
-
-import { useState } from 'react';
 import type { Highlight } from '@/lib/highlights';
+import SleeperActionButton from './SleeperAction';
 
 /**
  * One clip, Brief Section 2: real YouTube clips with tags for play type,
  * started or benched, and fantasy points. Free agent clips carry a waiver
- * button.
+ * button into Sleeper.
  *
- * Plays inline, but the player is only built on click. The Feed can carry
- * dozens of clips at once, and mounting that many iframes up front would load
- * a YouTube player for every one of them before anybody pressed play. The
- * still stands in until then, which is the same facade YouTube recommends.
+ * The card is a still and a play button. Pressing it opens the full screen
+ * reel on this clip (ReelPlayer, through HighlightList), where the video gets
+ * the whole screen. Playing inside the card was tried first and failed: at
+ * 116px the embed is under YouTube's 200px minimum and draws a bare link.
  *
  * The still is derived from the video id rather than stored, so the highlights
- * table needed no thumbnail column. A frame that fails to load leaves the card
- * on its background, which is the fallback the brief asks of every image.
+ * table needed no thumbnail column.
  */
-const thumbnail = (id: string) => `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`;
-
-/** nocookie host, so a card nobody plays sets no tracking cookie. */
-const embed = (id: string) =>
-  `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
+const thumbnail = (id: string) => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
 
 export default function HighlightCard({
   highlight,
   managerName,
+  onPlay,
 }: {
   highlight: Highlight;
   managerName?: string | null;
+  onPlay: () => void;
 }) {
-  const [playing, setPlaying] = useState(false);
   const free = !highlight.ownerTeamId;
 
   return (
     <article className="snffl-clip">
-      {playing ? (
-        <span className="snffl-clip-art">
-          <iframe
-            className="snffl-clip-frame"
-            src={embed(highlight.id)}
-            title={highlight.title}
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            loading="lazy"
-          />
+      <button
+        type="button"
+        className="snffl-clip-art snffl-clip-art-button"
+        onClick={onPlay}
+        aria-label={`Play: ${highlight.title}`}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={thumbnail(highlight.id)} alt="" loading="lazy" />
+        <span className="snffl-clip-play" aria-hidden>
+          ▶
         </span>
-      ) : (
-        <button
-          type="button"
-          className="snffl-clip-art snffl-clip-art-button"
-          onClick={() => setPlaying(true)}
-          aria-label={`Play: ${highlight.title}`}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={thumbnail(highlight.id)} alt="" loading="lazy" />
-          <span className="snffl-clip-play" aria-hidden>
-            ▶
-          </span>
-        </button>
-      )}
+      </button>
 
       <div className="snffl-clip-body">
         <span className="snffl-clip-title">{highlight.title}</span>
@@ -83,9 +64,6 @@ export default function HighlightCard({
           {managerName ? <span className="snffl-clip-tag">{managerName}</span> : null}
         </div>
 
-        {/* A plain anchor, not next/link: Link is for routes inside this app,
-            and handing it an external URL makes it prefetch and route against
-            something it does not own. */}
         {free ? (
           <SleeperActionButton action="players" label="Grab Him on Waivers" compact />
         ) : null}

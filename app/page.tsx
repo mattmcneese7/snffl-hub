@@ -4,6 +4,9 @@ import FeatureMatchup from '@/components/FeatureMatchup';
 import HomeWidget from '@/components/HomeWidget';
 import LiveRefresh from '@/components/LiveRefresh';
 import Masthead from '@/components/Masthead';
+import StoriesRail from '@/components/StoriesRail';
+import { firstNameOf } from '@/config/managers';
+import { toReelClip } from '@/lib/reel-clips';
 import PlayoffTitle from '@/components/PlayoffTitle';
 import RagHero from '@/components/RagHero';
 import ResultBug from '@/components/ResultBug';
@@ -64,6 +67,12 @@ export default async function HomePage() {
     ]);
   const models = winProbabilities(games, ctx);
 
+  // Stories show the last finished week: while this week is still being
+  // played its clips are partial, so the stories stay on the week before.
+  const weekDone = games.length > 0 && games.every((game) => game.status === 'final');
+  const storyWeek = weekDone ? week : Math.max(1, week - 1);
+  const storyClips = await getHighlights(storyWeek, 200);
+
   // ESPN rather than the game status, which is derived from week arithmetic and
   // can read live on a week that merely has points on the board.
   const liveNow = anyGameLive(nfl);
@@ -81,27 +90,21 @@ export default async function HomePage() {
       <Chrome section="Home" week={week} />
       <LiveRefresh live={liveNow} />
       <main className="snffl-page">
+        {/* Manager stories: each manager's clips from the last finished week,
+            played as a vertical story. */}
         <section className="snffl-home-section">
-          <div className="snffl-stories-rail">
-            {teams.map((team, i) => (
-              <div className="snffl-story-bubble" key={team.rosterId}>
-                <div className={`snffl-story-ring${i < 3 ? ' snffl-story-ring-unwatched' : ''}`}>
-                  {team.avatarUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={team.avatarUrl} alt="" loading="lazy" />
-                  ) : (
-                    <span
-                      className="snffl-avatar-fallback"
-                      style={{ background: team.colors?.primary }}
-                    >
-                      {team.manager.slice(0, 2).toUpperCase()}
-                    </span>
-                  )}
-                </div>
-                <div className="snffl-story-label">{team.manager}</div>
-              </div>
-            ))}
-          </div>
+          <StoriesRail
+            week={storyWeek}
+            managers={teams.map((team) => ({
+              rosterId: team.rosterId,
+              firstName: firstNameOf(team.rosterId) ?? team.manager,
+              avatarUrl: team.avatarUrl,
+              color: team.colors?.primary ?? '#5d6a86',
+              clips: storyClips
+                .filter((clip) => clip.ownerTeamId === String(team.rosterId))
+                .map((clip) => toReelClip(clip, firstNameOf(team.rosterId) ?? team.manager)),
+            }))}
+          />
         </section>
 
         <HomeWidget

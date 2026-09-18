@@ -25,6 +25,8 @@ export type Highlight = {
   started: boolean | null;
   fantasyPoints: number | null;
   isCmonMan: boolean;
+  /** offense, defense or special_teams, from the tagger. Null on older rows. */
+  side: string | null;
 };
 
 type Row = {
@@ -38,6 +40,7 @@ type Row = {
   started: boolean | null;
   fantasy_points: number | null;
   is_cmon_man: boolean | null;
+  side?: string | null;
 };
 
 const toHighlight = (row: Row): Highlight => ({
@@ -51,6 +54,7 @@ const toHighlight = (row: Row): Highlight => ({
   started: row.started,
   fantasyPoints: row.fantasy_points,
   isCmonMan: row.is_cmon_man ?? false,
+  side: row.side ?? null,
 });
 
 /**
@@ -81,6 +85,33 @@ export async function getHighlights(week?: number, limit = 60): Promise<Highligh
     return [];
   }
 }
+
+/** Plays made by a defense or special teams, from the play type. */
+const DEFENSIVE = /interception|pick|sack|fumble|safety|block|punt|kick(off)? return|return|defens|tackle|strip/i;
+const TOUCHDOWN = /touchdown|\btd\b/i;
+
+export const isDefensivePlay = (clip: Highlight) =>
+  clip.side ? clip.side !== 'offense' : Boolean(clip.playType && DEFENSIVE.test(clip.playType) && !/receiving|rushing|passing/i.test(clip.playType));
+
+/**
+ * How much a clip matters to this league, for ordering.
+ *
+ * An offensive touchdown by a rostered player is the clip people want; a
+ * cornerback's interception belongs to a D/ST and counts for less, since
+ * nobody rosters the cornerback. Unrostered players come after rostered ones.
+ * Fantasy points break ties within a tier, then recency.
+ */
+export function clipWeight(clip: Highlight): number {
+  const owned = clip.ownerTeamId ? 10 : 0;
+  const defensive = isDefensivePlay(clip);
+  const tier = defensive ? 2 : clip.playType && TOUCHDOWN.test(clip.playType) ? 6 : 4;
+  return owned + tier + Math.min(clip.fantasyPoints ?? 0, 40) / 40;
+}
+
+export const rankClips = (clips: Highlight[]) =>
+  [...clips].sort(
+    (a, b) => clipWeight(b) - clipWeight(a) || b.publishedAt.localeCompare(a.publishedAt)
+  );
 
 /** Clips naming a player, for the player page's real highlight clips. */
 export async function getHighlightsForPlayer(playerId: string, limit = 6): Promise<Highlight[]> {
@@ -152,6 +183,8 @@ export type NewHighlight = {
   started: boolean | null;
   fantasy_points: number | null;
   is_cmon_man: boolean;
+  /** Needs the column from docs/sql/12b-watcher.sql; dropped on write without it. */
+  side?: string | null;
 };
 
 /** Upsert on the video id, so a re-run cannot duplicate a clip. */
@@ -160,10 +193,18 @@ export async function saveHighlights(rows: NewHighlight[]): Promise<number> {
   const client = writeClient();
   if (!client) return 0;
 
-  const { error, data } = await client
+  let { error, data } = await client
     .from('highlights')
     .upsert(rows, { onConflict: 'id' })
     .select('id');
+
+  // Before the side column exists, write everything else rather than nothing.
+  if (error && /side/.test(error.message)) {
+    ({ error, data } = await client
+      .from('highlights')
+      .upsert(rows.map(({ side: _side, ...rest }) => rest), { onConflict: 'id' })
+      .select('id'));
+  }
 
   if (error) {
     console.warn(`  highlights write failed: ${error.message}`);

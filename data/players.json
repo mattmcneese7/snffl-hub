@@ -99,6 +99,16 @@
   "short": "K. Cousins",
   "team": "LV"
  },
+ "1339": {
+  "espnId": "15835",
+  "headshot": "https://sleepercdn.com/content/nfl/players/1339.jpg",
+  "id": "1339",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/phi.png",
+  "name": "Zach Ertz",
+  "position": "TE",
+  "short": "Z. Ertz",
+  "team": "PHI"
+ },
  "1373": {
   "espnId": "15864",
   "headshot": "https://sleepercdn.com/content/nfl/players/1373.jpg",
@@ -1556,6 +1566,16 @@
   "position": "QB",
   "short": "C. Thorson",
   "team": "NYG"
+ },
+ "6149": {
+  "espnId": "3916945",
+  "headshot": "https://sleepercdn.com/content/nfl/players/6149.jpg",
+  "id": "6149",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/ind.png",
+  "name": "Darius Slayton",
+  "position": "WR",
+  "short": "D. Slayton",
+  "team": "IND"
  },
  "6154": {
   "espnId": "3871102",

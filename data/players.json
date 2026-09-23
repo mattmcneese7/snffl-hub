@@ -259,6 +259,16 @@
   "short": "D. Adams",
   "team": "LAR"
  },
+ "2197": {
+  "espnId": "16731",
+  "headshot": "https://sleepercdn.com/content/nfl/players/2197.jpg",
+  "id": "2197",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/sf.png",
+  "name": "Brandin Cooks",
+  "position": "WR",
+  "short": "B. Cooks",
+  "team": "SF"
+ },
  "2216": {
   "espnId": "16737",
   "headshot": "https://sleepercdn.com/content/nfl/players/2216.jpg",
@@ -1996,6 +2006,16 @@
   "short": "S. Ahmed",
   "team": "CHI"
  },
+ "6920": {
+  "espnId": "4242540",
+  "headshot": "https://sleepercdn.com/content/nfl/players/6920.jpg",
+  "id": "6920",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/pit.png",
+  "name": "Isaiah Hodgins",
+  "position": "WR",
+  "short": "I. Hodgins",
+  "team": "PIT"
+ },
  "6931": {
   "espnId": "4240631",
   "headshot": "https://sleepercdn.com/content/nfl/players/6931.jpg",
@@ -2295,6 +2315,16 @@
   "short": "Q. Morris",
   "team": "JAX"
  },
+ "7537": {
+  "espnId": "4362452",
+  "headshot": "https://sleepercdn.com/content/nfl/players/7537.jpg",
+  "id": "7537",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/min.png",
+  "name": "Jaret Patterson",
+  "position": "RB",
+  "short": "J. Patterson",
+  "team": "MIN"
+ },
  "7538": {
   "espnId": "4361259",
   "headshot": "https://sleepercdn.com/content/nfl/players/7538.jpg",
@@ -2334,6 +2364,16 @@
   "position": "TE",
   "short": "K. Pitts",
   "team": "ATL"
+ },
+ "7559": {
+  "espnId": "4240573",
+  "headshot": "https://sleepercdn.com/content/nfl/players/7559.jpg",
+  "id": "7559",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/car.png",
+  "name": "Ihmir Smith-Marsette",
+  "position": "WR",
+  "short": "I. Smith-Marsette",
+  "team": "CAR"
  },
  "7562": {
   "espnId": "4360797",
@@ -3554,6 +3594,16 @@
   "short": "M. Davis",
   "team": "DAL"
  },
+ "8849": {
+  "espnId": "4047422",
+  "headshot": "https://sleepercdn.com/content/nfl/players/8849.jpg",
+  "id": "8849",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/ne.png",
+  "name": "Tanner Conner",
+  "position": "TE",
+  "short": "T. Conner",
+  "team": "NE"
+ },
  "8861": {
   "espnId": "3929636",
   "headshot": "https://sleepercdn.com/content/nfl/players/8861.jpg",
@@ -3962,6 +4012,16 @@
   "position": "QB",
   "short": "H. Hooker",
   "team": "TEN"
+ },
+ "9999": {
+  "espnId": "4361418",
+  "headshot": "https://sleepercdn.com/content/nfl/players/9999.jpg",
+  "id": "9999",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/nyj.png",
+  "name": "Will Levis",
+  "position": "QB",
+  "short": "W. Levis",
+  "team": "NYJ"
  },
  "10210": {
   "espnId": "4372026",
@@ -4391,6 +4451,16 @@
   "position": "QB",
   "short": "T. Bagent",
   "team": "CHI"
+ },
+ "11257": {
+  "espnId": "4361332",
+  "headshot": "https://sleepercdn.com/content/nfl/players/11257.jpg",
+  "id": "11257",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/bal.png",
+  "name": "Shedrick Jackson",
+  "position": "WR",
+  "short": "S. Jackson",
+  "team": "BAL"
  },
  "11261": {
   "espnId": "4258620",
@@ -5543,15 +5613,25 @@
   "short": "D. Martin-Robinson",
   "team": "TEN"
  },
+ "12374": {
+  "espnId": "4362603",
+  "headshot": "https://sleepercdn.com/content/nfl/players/12374.jpg",
+  "id": "12374",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/jax.png",
+  "name": "Brenden Bates",
+  "position": "TE",
+  "short": "B. Bates",
+  "team": "JAX"
+ },
  "12389": {
   "espnId": "4428396",
   "headshot": "https://sleepercdn.com/content/nfl/players/12389.jpg",
   "id": "12389",
-  "logo": "https://sleepercdn.com/images/team_logos/nfl/jax.png",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/lac.png",
   "name": "Hayden Rucci",
   "position": "TE",
   "short": "H. Rucci",
-  "team": "JAX"
+  "team": "LAC"
  },
  "12455": {
   "espnId": "4596602",
@@ -8245,6 +8325,15 @@
   "position": "K",
   "short": "D. Zvada",
   "team": "NYG"
+ },
+ "13834": {
+  "headshot": "https://sleepercdn.com/content/nfl/players/13834.jpg",
+  "id": "13834",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/nyj.png",
+  "name": "Cody Hardy",
+  "position": "TE",
+  "short": "C. Hardy",
+  "team": "NYJ"
  },
  "13846": {
   "headshot": "https://sleepercdn.com/content/nfl/players/13846.jpg",

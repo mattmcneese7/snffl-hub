@@ -1527,16 +1527,6 @@
   "short": "T. Johnson",
   "team": "BUF"
  },
- "6045": {
-  "espnId": "3916071",
-  "headshot": "https://sleepercdn.com/content/nfl/players/6045.jpg",
-  "id": "6045",
-  "logo": "https://sleepercdn.com/images/team_logos/nfl/lac.png",
-  "name": "Gary Jennings",
-  "position": "WR",
-  "short": "G. Jennings",
-  "team": "LAC"
- },
  "6083": {
   "espnId": "4249087",
   "headshot": "https://sleepercdn.com/content/nfl/players/6083.jpg",
@@ -3112,16 +3102,6 @@
   "name": "Breece Hall",
   "position": "RB",
   "short": "B. Hall",
-  "team": "NYJ"
- },
- "8157": {
-  "espnId": "4250360",
-  "headshot": "https://sleepercdn.com/content/nfl/players/8157.jpg",
-  "id": "8157",
-  "logo": "https://sleepercdn.com/images/team_logos/nfl/nyj.png",
-  "name": "Bailey Zappe",
-  "position": "QB",
-  "short": "B. Zappe",
   "team": "NYJ"
  },
  "8160": {
@@ -4850,16 +4830,6 @@
   "position": "RB",
   "short": "W. Shipley",
   "team": "PHI"
- },
- "11579": {
-  "espnId": "4569682",
-  "headshot": "https://sleepercdn.com/content/nfl/players/11579.jpg",
-  "id": "11579",
-  "logo": "https://sleepercdn.com/images/team_logos/nfl/no.png",
-  "name": "Audric Estime",
-  "position": "RB",
-  "short": "A. Estime",
-  "team": "NO"
  },
  "11581": {
   "espnId": "4429023",
@@ -6696,6 +6666,16 @@
   "short": "C. Brayboy",
   "team": "NE"
  },
+ "12909": {
+  "espnId": "4430288",
+  "headshot": "https://sleepercdn.com/content/nfl/players/12909.jpg",
+  "id": "12909",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/ind.png",
+  "name": "Eli Pancol",
+  "position": "WR",
+  "short": "E. Pancol",
+  "team": "IND"
+ },
  "12925": {
   "espnId": "4892576",
   "headshot": "https://sleepercdn.com/content/nfl/players/12925.jpg",
@@ -8281,15 +8261,6 @@
   "short": "K. Matsuzawa",
   "team": "LV"
  },
- "13805": {
-  "headshot": "https://sleepercdn.com/content/nfl/players/13805.jpg",
-  "id": "13805",
-  "logo": "https://sleepercdn.com/images/team_logos/nfl/car.png",
-  "name": "E.J. Williams",
-  "position": "WR",
-  "short": "E. Williams",
-  "team": "CAR"
- },
  "13825": {
   "headshot": "https://sleepercdn.com/content/nfl/players/13825.jpg",
   "id": "13825",
@@ -8463,23 +8434,14 @@
   "short": "D. Patterson",
   "team": "TB"
  },
- "14038": {
-  "headshot": "https://sleepercdn.com/content/nfl/players/14038.jpg",
-  "id": "14038",
-  "logo": "https://sleepercdn.com/images/team_logos/nfl/min.png",
-  "name": "Trayvon Rudolph",
+ "14058": {
+  "headshot": "https://sleepercdn.com/content/nfl/players/14058.jpg",
+  "id": "14058",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/sea.png",
+  "name": "Malick Meiga",
   "position": "WR",
-  "short": "T. Rudolph",
-  "team": "MIN"
- },
- "14041": {
-  "headshot": "https://sleepercdn.com/content/nfl/players/14041.jpg",
-  "id": "14041",
-  "logo": "https://sleepercdn.com/images/team_logos/nfl/ind.png",
-  "name": "Anderson Castle",
-  "position": "RB",
-  "short": "A. Castle",
-  "team": "IND"
+  "short": "M. Meiga",
+  "team": "SEA"
  },
  "ARI": {
   "headshot": "https://sleepercdn.com/images/team_logos/nfl/ari.png",

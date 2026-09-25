@@ -1527,6 +1527,16 @@
   "short": "T. Johnson",
   "team": "BUF"
  },
+ "6045": {
+  "espnId": "3916071",
+  "headshot": "https://sleepercdn.com/content/nfl/players/6045.jpg",
+  "id": "6045",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/lac.png",
+  "name": "Gary Jennings",
+  "position": "WR",
+  "short": "G. Jennings",
+  "team": "LAC"
+ },
  "6083": {
   "espnId": "4249087",
   "headshot": "https://sleepercdn.com/content/nfl/players/6083.jpg",
@@ -6608,6 +6618,15 @@
   "position": "WR",
   "short": "A. Armstrong",
   "team": "KC"
+ },
+ "12865": {
+  "headshot": "https://sleepercdn.com/content/nfl/players/12865.jpg",
+  "id": "12865",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/mia.png",
+  "name": "AJ Henning",
+  "position": "WR",
+  "short": "A. Henning",
+  "team": "MIA"
  },
  "12884": {
   "espnId": "4572380",

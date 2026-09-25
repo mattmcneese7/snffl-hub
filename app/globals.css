@@ -136,8 +136,10 @@
      a tint, a brighter rim of the same hue, and the blur behind it. The ink is
      lifted toward white so it still reads on a fill that is now mostly ground. */
   --ticker-league-bg: var(--tint-blue);
+  --ticker-league-line: var(--tint-blue-line);
   --ticker-league-ink: var(--tint-blue-ink);
   --ticker-nfl-bg: var(--tint-red);
+  --ticker-nfl-line: var(--tint-red-line);
   --ticker-nfl-ink: var(--tint-red-ink);
 
   /* Shape.

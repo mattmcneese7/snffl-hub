@@ -228,18 +228,21 @@
 .snffl-ticker-tag,
 .snffl-ticker-tag-league,
 .snffl-ticker-tag-nfl {
-  /* The band's own label, not a chip sitting in it. Full height, flush to the
-     edge, square: a pill floated in the middle of nothing, and a pill with one
-     square end read as a stub. This is how a broadcast crawl names itself. */
+  /* The same button the dock uses: an inset pill of tinted glass with a full
+     outline. It was a full height square band flush to the edge, which is how
+     a broadcast crawl names itself but is not how anything else in this app
+     is drawn, so the two bars ended up with two unrelated button shapes on
+     top of one sheet of glass. One shape now, and the hue is the only thing
+     that separates a tag from a tab. */
   flex: 0 0 auto;
-  align-self: stretch;
+  align-self: center;
   display: grid;
   place-items: center;
-  height: auto;
-  margin: 0;
-  padding: 0 12px;
-  border-radius: 0;
-  border: 0;
+  height: calc(var(--ticker-h) - 10px);
+  margin: 0 0 0 8px;
+  padding: 0 10px;
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
   clip-path: none;
   font: 700 9.5px/1 var(--mono);
   letter-spacing: 0.12em;
@@ -253,10 +256,12 @@
 }
 .snffl-ticker-tag-league {
   background: var(--ticker-league-bg);
+  border-color: var(--ticker-league-line);
   color: var(--ticker-league-ink);
 }
 .snffl-ticker-tag-nfl {
   background: var(--ticker-nfl-bg);
+  border-color: var(--ticker-nfl-line);
   color: var(--ticker-nfl-ink);
 }
 .snffl-ticker-track { color: var(--ink); padding-left: 12px; }
@@ -313,7 +318,6 @@ body { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
 /* The bands inside the crawl carry no ground of their own: the frost paints
    it, exactly as it does inside the dock. */
 /* Same trick at the top of the screen, grown downward over the page. */
-
 
 /* The bands carry no fill or rule of their own; the scrim is the background. */
 .snffl-ticker-row {
@@ -624,7 +628,6 @@ h3,
   to { transform: none; }
 }
 
-
 @media (prefers-reduced-motion: reduce) {
   .snffl-intro { display: none; }
 }
@@ -744,23 +747,6 @@ h3,
 .snffl-icon-chip-red { background: #b3313d; }
 .snffl-icon-chip-slate { background: #38455c; }
 
-/* Heavy blur over a gradient produces stepped contour lines, because the blur
-   is working in 8 bit and the bands have nowhere to go. A faint turbulence
-   overlay dithers them away. Kept at 4 percent: any more and it reads as dirt
-   rather than as grain. */
-.snffl-glass::after,
-.snffl-dock::after,
-.snffl-ticker-stack::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0.04;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
-  border-radius: inherit;
-}
-
 /* The chrome keeps a lit edge where it meets the page, the way a pane of glass
    catches light along its rim. Without it the bar has no thickness and reads
    as a wash rather than as a surface. */
@@ -768,89 +754,6 @@ h3,
    stark edge the ramp exists to avoid; the frost's own gradient is the edge. */
 
 /* ---------- Progressive frost ---------- */
-
-
-/* The bar's glass: one surface, clipped to its shape, with an edge.
-   
-   It used to fade into the page on a ramp, which is right for a crawl pinned
-   to the screen edge and wrong for a control that should read as an object.
-   The clip lives here rather than on the dock so the mark can still break out
-   of the top of it. */
-.snffl-frost {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  border-radius: inherit;
-  overflow: hidden;
-  /* The tint, and over it the sheen: a band of light running across the pane
-     the way it does on anything actually made of glass. Without it the
-     surface is matte, which is a plastic panel with a blur behind it. */
-  background:
-    linear-gradient(118deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.05) 24%, rgba(255, 255, 255, 0) 46%),
-    var(--glass-bar);
-  -webkit-backdrop-filter: blur(26px) saturate(180%);
-  backdrop-filter: blur(26px) saturate(180%);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
-}
-
-/* The edge, which is the part that actually reads as Liquid Glass.
-   
-   Apple's is a gradient stroke rather than a flat rim: bright where the light
-   falls on the top left, dim on the bottom right where it falls away, so the
-   pane has a direction and a thickness. A uniform 1px line is a box with a
-   border. Drawn as a ring by masking the fill out of the middle, which is the
-   only way to put a gradient on a rounded border. */
-.snffl-frost::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.62) 0%,
-    rgba(255, 255, 255, 0.24) 18%,
-    rgba(255, 255, 255, 0.07) 38%,
-    rgba(255, 255, 255, 0.04) 62%,
-    rgba(0, 0, 0, 0.32) 100%
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
-/* Heavy blur over a gradient produces stepped contour lines, because the blur
-   is working in 8 bit and the bands have nowhere to go. A faint turbulence
-   overlay dithers them away. Kept at 4 percent: any more and it reads as dirt
-   rather than as grain. */
-.snffl-glass::after,
-.snffl-dock::after,
-.snffl-ticker-stack::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0.04;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
-  border-radius: inherit;
-}
-
-/* The chrome keeps a lit edge where it meets the page, the way a pane of glass
-   catches light along its rim. Without it the bar has no thickness and reads
-   as a wash rather than as a surface. */
-/* No inset rim on either. A 1px line across the whole width is exactly the
-   stark edge the ramp exists to avoid; the frost's own gradient is the edge. */
-
-/* ---------- Progressive frost ---------- */
-
 
 /* The bar's glass: one surface, clipped to its shape, with an edge.
    
@@ -966,8 +869,6 @@ h3,
    as a wash rather than as a surface. */
 /* No inset rim on either. A 1px line across the whole width is exactly the
    stark edge the ramp exists to avoid; the frost's own gradient is the edge. */
-
-
 
 /* ---------- Coloured glass ---------- */
 

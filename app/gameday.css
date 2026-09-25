@@ -1162,7 +1162,7 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   overflow: hidden;
   background:
     radial-gradient(120% 90% at 80% 10%, rgba(255, 255, 255, 0.22), transparent 60%),
-    linear-gradient(150deg, var(--team), #05070d 130%);
+    linear-gradient(150deg, var(--team), #091c1e 130%);
 }
 .snffl-story-art-player .snffl-story-art-logo {
   position: absolute;

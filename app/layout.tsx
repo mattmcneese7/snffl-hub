@@ -82,7 +82,7 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
   // One theme, so one colour. The browser chrome matches the app rather than
   // the phone's setting.
-  themeColor: '#060a13',
+  themeColor: '#0a1f24',
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

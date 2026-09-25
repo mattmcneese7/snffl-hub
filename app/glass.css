@@ -685,7 +685,7 @@ h3,
   cursor: pointer;
 }
 /* Its own layer, so the ground can clear while the mark is still flying. */
-.snffl-intro-curtain { position: absolute; inset: 0; background: #05070d; }
+.snffl-intro-curtain { position: absolute; inset: 0; background: #091c1e; }
 /* The box the mark occupies, and the thing the flight actually animates: the
    glow has to travel with the artwork, so the two move as one element rather
    than as an image with a light left behind it. Sized here, since this is now

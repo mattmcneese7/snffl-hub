@@ -12,7 +12,14 @@
      frosted, never see-through, which is what keeps every text pair at 4.5:1
      over the brightest stadium glow behind them. scripts/contrast-check.mjs
      composites each pair over the glows at their peak to prove it. */
-  --bg: #060a13;
+  /* The ground, on the mark's own spectrum. It was #0a1f24, a near black navy
+     that owed nothing to the logo and made every panel on it look like a grey
+     box in a dark room. It is the same value mixed nine percent toward the
+     mint in the mark, which roughly triples its luminance while staying
+     unmistakably a dark theme: light text still reads at better than 15:1 on
+     it. The panel ramp moves with it by the same amount, because a teal
+     ground under navy panels is two palettes, not one. */
+  --bg: #0a1f24;
 
   /* Three materials, and a component declares which one it is.
      
@@ -29,14 +36,24 @@
      
      They were flat opaque fills, which is why they read as cheap next to the
      dock: no edge, no light, nothing of the stadium glow behind them coming
-     through. They are translucent with a lit rim now. What they do not carry
-     is a blur, and deliberately: a panel sits on the ground, which is a fixed
-     gradient that never moves, so there is nothing behind it to blur. Blur is
+     through. They are translucent with a lit rim now.
+
+     Translucent for real, which they were not. The tint was a navy at 78
+     percent, from before the ground moved onto the mark's spectrum: it never
+     moved with it, and at that alpha almost nothing came through anyway, so
+     every widget on the site was a solid slab sitting on a teal floor. It is
+     the ground's own hue, lifted, at 32 percent. The glows behind now change
+     a panel's colour depending on where it sits on the page, which is the
+     whole point of building them out of glass.
+
+     What they do not carry is a blur, and deliberately: a panel sits on the
+     ground, which is a fixed gradient that never moves, so blurring it would
+     cost a phone real frames to arrive at the same smooth gradient. Blur is
      for the chrome, where the page really does scroll underneath. */
-  --panel: rgba(16, 24, 41, 0.78);
-  --panel-solid: #0e1524;
-  --panel-raised: #141d30;
-  --panel-sunken: #0a101c;
+  --panel: rgba(44, 96, 106, 0.32);
+  --panel-solid: #112933;
+  --panel-raised: #16303e;
+  --panel-sunken: #0d252c;
   /* A panel's own rim and the light along its top edge. Quieter than the
      chrome's, because a page holds many panels and one dock. */
   --panel-line: rgba(255, 255, 255, 0.08);
@@ -84,7 +101,12 @@
   --glass-shine: rgba(255, 255, 255, 0.18);
   --shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
   /* The ground's glows take the mark's teal and blue ends. */
-  --glow-a: rgba(30, 174, 156, 0.28);
+  /* Dimmed from 0.28 when the ground moved onto the mark's spectrum. This is
+     the teal glow, and it was now teal light on a teal ground: the two stacked
+     into a patch bright enough to drop the won and lost colours below 3:1 on
+     it. Status colours are not brand colours and do not get retuned to suit a
+     background, so the redundant light gave way instead. */
+  --glow-a: rgba(30, 174, 156, 0.18);
   --glow-b: rgba(227, 24, 45, 0.26);
   --glow-c: rgba(0, 90, 180, 0.42);
 

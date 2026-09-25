@@ -22,9 +22,24 @@ const nextConfig: NextConfig = {
 
   async headers() {
     return [
+      // Everything but the invite. The negative lookahead is what keeps this
+      // off /join: two matching rules would send two X-Robots-Tag headers and
+      // a crawler combines them, so the nosnippet would apply anyway.
       {
-        source: '/:path*',
+        source: '/:path((?!join).*)',
         headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive, nosnippet' }],
+      },
+      // The invite is the one page meant to be passed around, so it keeps
+      // noindex, which is what actually keeps it out of search, and drops
+      // noarchive and nosnippet, which are the two that stop a chat app from
+      // building a card for it.
+      {
+        source: '/join',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
+      },
+      {
+        source: '/join/:path*',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
       },
     ];
   },

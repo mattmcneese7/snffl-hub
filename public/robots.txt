@@ -1,2 +1,18 @@
+# The app stays out of search. The invite has to be shareable.
+#
+# Disallow is what keeps the league's pages out of crawlers' hands, but it was
+# also stopping every link preview: Slack, Discord, X, WhatsApp, LinkedIn and
+# Facebook all respect this file, so a blanket Disallow meant nobody ever
+# fetched /join and no card was ever built for it.
+#
+# Worth saying plainly, because it reads backwards: a Disallow is the wrong
+# tool for keeping a page out of search. A crawler that is not allowed to
+# fetch the page never sees the noindex on it. Allowing the fetch and serving
+# noindex is what actually works, and it is what /join does.
+#
+# Allow wins here because it is the longer match, per the robots spec, and it
+# covers /join/opengraph-image as a prefix.
+
 User-agent: *
 Disallow: /
+Allow: /join

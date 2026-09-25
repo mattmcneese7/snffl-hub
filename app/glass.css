@@ -226,9 +226,13 @@
 .snffl-ticker-tag-nfl {
   flex: 0 0 auto;
   height: 22px;
-  margin: 0 0 0 8px;
-  padding: 0 10px;
-  border-radius: var(--radius-pill);
+  /* Anchored to the edge of the screen rather than floating eight pixels off
+     it. The left corners are square so the tag reads as coming out of the
+     edge, and the right corners stay round so it still reads as a tag. */
+  margin: 0;
+  padding: 0 12px 0 14px;
+  border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
+  border-left: 0;
   clip-path: none;
   font: 700 9.5px/22px var(--mono);
   letter-spacing: 0.12em;
@@ -281,10 +285,10 @@ body { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
   left: 0;
   right: 0;
   bottom: 0;
-  /* Room above the bar for the mark to rise into, so the scrim carries the
-     arced week rather than leaving it to float over whatever photograph the
-     page happens to have scrolled to. */
-  padding-top: 34px;
+  /* No padding above the bar. The mark breaks through the dock's top edge
+     rather than the dock opening a band of empty glass for it to sit in,
+     which is the whole point of a raised control: it interrupts the surface.
+     Padding here put thirty four pixels of nothing over every tab. */
   padding-bottom: env(safe-area-inset-bottom, 0px);
   pointer-events: none;
 }
@@ -556,7 +560,9 @@ h3,
   background: radial-gradient(120% 120% at 50% 15%, #16243c 0%, #070c16 70%);
   border: 1px solid rgba(120, 206, 255, 0.35);
   box-shadow:
-    0 0 0 5px var(--scrim),
+    /* The ring is the dock's own colour, so the disc reads as a piece of the
+       bar pushed up through its surface rather than a badge dropped on it. */
+    0 0 0 6px var(--scrim),
     0 0 12px rgba(76, 194, 255, 0.22),
     0 8px 20px rgba(0, 0, 0, 0.5);
 }

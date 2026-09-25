@@ -157,11 +157,10 @@ export default function SiteChrome({
           the week on the right. It replaced a separate section strip, which
           spent a whole band of the screen on two words. Theme and alerts live
           in Settings. */}
+      {/* The mark and the week, and nothing else. The section name came out:
+          the tab bar already says which screen this is, so the header was
+          spending its width repeating it. */}
       <header className={`snffl-header${scrolled ? ' snffl-header-compact' : ''}`}>
-        <span className="snffl-header-section">
-          <span className="snffl-header-section-name">{section}</span>
-          {sub ? <span className="snffl-header-section-sub">{sub}</span> : null}
-        </span>
         {/* The app mark, centred, and where the opening animation lands. It
             replaced the wordmark here: this is an app, and an app wears its
             icon. The wordmark still leads the desktop nav, which has the room
@@ -170,10 +169,8 @@ export default function SiteChrome({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo-mark-v2-128.png" alt="Squirtnite FFL" />
         </span>
-        <span className="snffl-header-week">
-          <span className="snffl-week-tag">
-            <span>WEEK {week}</span>
-          </span>
+        <span className="snffl-week-tag">
+          <span>WEEK {week}</span>
         </span>
       </header>
 

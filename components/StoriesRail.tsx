@@ -67,9 +67,10 @@ export default function StoriesRail({ managers, week }: { managers: StoryManager
               <ManagerLink rosterId={manager.rosterId} className="snffl-story-label">
                 {manager.firstName}
               </ManagerLink>
-              <span className="snffl-story-count">
-                {has ? `${reels} ${reels === 1 ? 'CLIP' : 'CLIPS'}` : 'HIS WEEK'}
-              </span>
+              {/* No count under the name. The lit ring already says a manager
+                  has replays to watch, and the number printed under every
+                  bubble was a second line of small type saying the same thing
+                  fourteen times. */}
             </div>
           );
         })}

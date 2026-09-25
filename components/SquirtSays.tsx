@@ -28,7 +28,7 @@ export function SquirtHead({ count, week }: { count: number; week: number }) {
     <div className="snffl-squirt-head">
       <span className="snffl-squirt-face">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/logo-mark-v2-128.png" alt="" />
+        <img src="/logo-mark-v3-128.png" alt="" />
       </span>
       <span className="snffl-squirt-title">
         <strong>Squirt says</strong>

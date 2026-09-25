@@ -1065,13 +1065,6 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
     conic-gradient(from 200deg, var(--water-mid), var(--logo-red), var(--beer-light), var(--water-mid)) border-box;
   border: 3px solid transparent;
 }
-.snffl-story-count {
-  display: block;
-  font: 700 9px/1 var(--mono);
-  letter-spacing: 0.08em;
-  color: var(--ink-secondary);
-  margin-top: 3px;
-}
 
 /* ---------- Top Plays rail on Home ---------- */
 

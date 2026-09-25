@@ -126,7 +126,7 @@ export default function AppIntro() {
       <img
         ref={logo}
         className={`snffl-intro-mark${phase === 'hold' ? ' snffl-intro-pulse' : ''}`}
-        src="/logo-mark-v2.png"
+        src="/logo-mark-v3.png"
         alt=""
       />
     </div>

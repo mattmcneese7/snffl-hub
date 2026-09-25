@@ -548,6 +548,8 @@ h3,
 .snffl-app-mark-disc {
   /* Bigger now that it is the whole button rather than a disc with a caption,
      and taller than the bar it sits in, which is the point of it. */
+  --mark-img: 44px;
+  position: relative;
   width: 64px;
   height: 64px;
   border-radius: 50%;
@@ -561,11 +563,72 @@ h3,
      belongs to the selected tab, not to the logo. */
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
-.snffl-app-mark-disc img { width: 44px; height: 44px; display: block; object-fit: contain; }
-/* On its own tab the rim brightens. The invert waits on real artwork. */
+.snffl-app-mark-disc img {
+  width: var(--mark-img);
+  height: var(--mark-img);
+  display: block;
+  object-fit: contain;
+  /* Over the glow, so the mark's own pixels stay sharp and only its holes
+     let the light through. */
+  position: relative;
+  z-index: 1;
+}
+
+/* The eyes, lit from behind.
+   The laces and both eyes are knocked out of the artwork rather than painted
+   on it, so they are genuinely transparent and whatever sits behind the mark
+   shows through them. That is the whole trick here: two soft lights placed on
+   the eyes alone, under the image, so the eyes glow and the laces stay dark
+   without needing a second copy of the artwork. The positions are measured
+   off the asset, not guessed: the eyes centre at 33 and 66.8 percent across
+   and 57.6 percent down, and run 14 percent of its width by 10 of its
+   height. */
+.snffl-app-mark-disc::after {
+  content: '';
+  position: absolute;
+  width: var(--mark-img);
+  height: var(--mark-img);
+  z-index: 0;
+  opacity: 0;
+  pointer-events: none;
+  /* Strong, because the eye holes are not fully clear: they sit at about a
+     quarter opacity, so a gentle light behind them barely tints through. */
+  background-image:
+    radial-gradient(
+      ellipse 11% 8% at 33% 57.6%,
+      #8df0ff 0%,
+      #22b6ff 45%,
+      rgba(34, 182, 255, 0.5) 72%,
+      transparent 88%
+    ),
+    radial-gradient(
+      ellipse 11% 8% at 66.8% 57.6%,
+      #8df0ff 0%,
+      #22b6ff 45%,
+      rgba(34, 182, 255, 0.5) 72%,
+      transparent 88%
+    );
+}
+/* Lit and breathing, on the tab this button opens. */
+.snffl-app-mark-on .snffl-app-mark-disc::after {
+  opacity: 1;
+  animation: snffl-eye-pulse 2.6s ease-in-out infinite;
+}
+@keyframes snffl-eye-pulse {
+  0%, 100% { opacity: 0.55; filter: blur(0.4px); }
+  50% { opacity: 1; filter: blur(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .snffl-app-mark-on .snffl-app-mark-disc::after { animation: none; opacity: 0.9; }
+}
+/* On its own tab the rim lights too, so the ring and the eyes say the same
+   thing: this is the page you are on. */
 .snffl-app-mark-on .snffl-app-mark-disc {
-  border-color: rgba(140, 216, 255, 0.85);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  border-color: rgba(140, 216, 255, 0.9);
+  box-shadow:
+    0 0 0 1px rgba(90, 224, 255, 0.35),
+    0 0 16px 1px rgba(35, 178, 255, 0.4),
+    0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
 /* The week, set along the rim above the mark. */

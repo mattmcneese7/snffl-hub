@@ -6,7 +6,10 @@ import { useCallback, useEffect, useRef, useState } from 'react';
  * The app open animation.
  *
  * The mark, large and centred, with a thin blue neon edge that breathes for
- * about four seconds. Then it moves up into the header, where it is the app's
+ * about four seconds. The file carries a version in its name: it lives in
+ * public, which is served without a content hash, so a changed mark at an
+ * unchanged path would reach returning visitors as whatever their browser
+ * still had. Then it moves up into the header, where it is the app's
  * permanent mark, and the app is already there behind it.
  *
  * This replaced a ten second film. The film was 8MB, which is a lot of
@@ -17,7 +20,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
  *
  * Rules, because an intro that cannot be escaped is a tax:
  *   once per session, not per page, so moving around does not replay it
- *   a tap, a key or Skip ends it immediately
+ *   a tap or a key ends it immediately. There is no Skip button: four seconds
+ *     does not need a control, and a button in the corner is the one thing on
+ *     screen that says this is a thing to get past
  *   reduced motion gets the mark without the pulse or the flight
  *   the app is already rendered behind it, never waiting on it
  */
@@ -120,14 +125,9 @@ export default function AppIntro() {
       <img
         ref={logo}
         className={`snffl-intro-mark${phase === 'hold' ? ' snffl-intro-pulse' : ''}`}
-        src="/logo-mark.png"
+        src="/logo-mark-v2.png"
         alt=""
       />
-      {phase === 'hold' ? (
-        <button type="button" className="snffl-intro-skip" onClick={land}>
-          Skip
-        </button>
-      ) : null}
     </div>
   );
 }

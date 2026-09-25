@@ -168,7 +168,7 @@ export default function SiteChrome({
             for it. */}
         <span className="snffl-header-mark" id="snffl-header-mark">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-mark.png" alt="Squirtnite FFL" />
+          <img src="/logo-mark-v2-128.png" alt="Squirtnite FFL" />
         </span>
         <span className="snffl-header-week">
           <span className="snffl-week-tag">

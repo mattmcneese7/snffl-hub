@@ -258,12 +258,28 @@ Matt's call on each point.
   outright while a document is hidden.
 - **3.2MB at 720p** through avconvert, down from 8MB, running 4 seconds at speed.
 
+## Chug videos, to be featured
+
+Matt keeps the league's chug videos in a Google Drive folder and wants them in
+the app. The Chug Meter and the Shartzone carry only numbers and names today,
+and footage of somebody paying his debt is the payoff both are missing. It is
+also league made, so unlike the NFL's clips nobody can block it. Not built:
+reading Drive needs an authorized connector, and serving them needs a hosting
+decision, most likely pulling each one once rather than linking to Drive.
+
 ## A v2 visual overhaul, to be researched
 
-Matt's direction, recorded now and not yet built: **drop light mode entirely**
-and make this a dark, mobile first, app first experience. Desktop must still
-look good but is explicitly secondary. Until that work starts, Day Game stays
-and both themes keep passing the contrast gate.
+Matt's direction: **drop light mode entirely** and make this a dark, mobile
+first, app first experience. Desktop must still look good but is explicitly
+secondary, and his call on it is phone first, widening gracefully: a wide
+screen gets more columns of the same design, never a second design.
+
+His call on sequencing: **research and mock first, no code in the live app**.
+So `/lab` holds the proposal, Blacklight, as its own route with its own
+stylesheet and no site chrome, noindexed, with Home, a matchup and the Feed
+mocked at real numbers. Nothing there touches a live token, so it can be kept,
+changed or thrown away without a migration. Until the overhaul starts properly,
+Day Game stays and both themes keep passing the contrast gate.
 
 ## Squirtfucius Says, Checkpoint 12c
 

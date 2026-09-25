@@ -104,11 +104,7 @@
   --ticker-stack-h: calc(var(--ticker-h) * 2);
 }
 
-.snffl-header {
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  gap: 8px;
-  box-shadow: var(--shadow), inset 0 1px 0 var(--glass-shine);
-}
+/* Night Glass panels are for content. The chrome carries no card of its own. */
 /* The mark leads and is the only filled shape; the week is outlined beside
    it, because it is a label and not a button. */
 
@@ -127,17 +123,19 @@
    that still adds it stays correct. */
 .snffl-section-strip { display: none; }
 
+/* A label, not a control: no border, no fill, nothing to press, and smaller
+   than the mark it sits under so the two are never read as equals. */
 .snffl-week-tag {
   transform: none;
-  border-radius: var(--radius-pill);
-  padding: 5px 10px;
+  padding: 0;
   background: transparent;
-  border: 1px solid var(--line);
+  border: 0;
   color: var(--ink-secondary);
   font: 700 10px/1 var(--mono);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.16em;
   white-space: nowrap;
 }
+.snffl-header-compact .snffl-week-tag { letter-spacing: 0.12em; }
 .snffl-week-tag > span { transform: none; }
 
 /* ---------- Ticker bands ---------- */
@@ -188,27 +186,34 @@
 
 body { padding-bottom: calc(96px + var(--ticker-stack-h) + env(safe-area-inset-bottom, 0px)); }
 
-/* The whole dock is the floating card, so the crawl and the tabs share one
-   edge, one blur and one shadow instead of each carrying their own. */
+/* The dock is a scrim, not a card. The page runs under it and fades out into
+   it, so navigation belongs to the screen rather than hovering over it as a
+   bar of buttons. Same construction as the header: the blur and the wash live
+   on a pseudo element so masking them does not fade the tabs. */
 .snffl-dock {
-  left: 10px;
-  right: 10px;
-  bottom: calc(10px + env(safe-area-inset-bottom, 0px));
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: var(--card-strong);
-  -webkit-backdrop-filter: blur(28px) saturate(170%);
-  backdrop-filter: blur(28px) saturate(170%);
-  box-shadow: inset 0 1px 0 var(--glass-shine), var(--shadow);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
-/* Inside the dock the bands are transparent: the dock already paints. */
+.snffl-dock::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(18px) saturate(140%);
+  background: linear-gradient(0deg, var(--bg) 0%, rgba(6, 10, 19, 0.78) 62%, transparent 100%);
+  -webkit-mask-image: linear-gradient(0deg, #000 0%, #000 64%, transparent 100%);
+  mask-image: linear-gradient(0deg, #000 0%, #000 64%, transparent 100%);
+}
+/* The bands carry no fill or rule of their own; the scrim is the background. */
 .snffl-ticker-row {
   background: transparent;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   border-top: 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 0;
 }
 .snffl-tabbar { padding-bottom: 0; background: transparent; }
 .snffl-tab { padding: 10px 0 9px; }
@@ -379,12 +384,12 @@ h3,
 .snffl-header-mark {
   display: block;
   flex: 0 0 auto;
-  width: 30px;
-  height: 30px;
+  width: 58px;
+  height: 58px;
   transition: width 0.18s ease, height 0.18s ease;
 }
 .snffl-header-mark img { width: 100%; height: 100%; display: block; object-fit: contain; }
-.snffl-header-compact .snffl-header-mark { width: 26px; height: 26px; }
+.snffl-header-compact .snffl-header-mark { width: 28px; height: 28px; }
 
 .snffl-intro {
   position: fixed;

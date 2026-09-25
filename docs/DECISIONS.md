@@ -430,3 +430,71 @@ The Shartzone stays brown and the beer stays amber.
 a dark theme from before the app went dark only, and its accent column
 predates this mark. The tokens in `app/globals.css` are the source of truth,
 and `npm run contrast` is what enforces them.
+
+---
+
+## Checkpoint 11: the API cost check
+
+The last item of the final check, measured rather than estimated. Numbers are
+from `data/spend.json`, which every Claude call writes to, and from counting
+the requests each scheduled job actually makes.
+
+### Claude, against the $10 credit
+
+$1.13 spent across four active days, weeks 1 and 2. The guard in
+`lib/claude.ts` sits at $8.50, and `canSpend()` is checked before every call,
+so the failure mode is the writing pausing and falling back to templates, not
+a bill.
+
+| | Cost |
+|---|---|
+| The Rag, week 2, clean run | $0.17 |
+| The Rag, week 1, with four retries while the prompts were being tuned | $0.62 |
+| Highlight tagging, the week the store was first populated | $0.22 |
+| Highlight tagging, a steady week since | $0.01 |
+
+A steady week is about $0.18 to $0.22. Around fifteen issues remain, regular
+season and playoffs, which lands the season near $4.50 of the $8.50 ceiling.
+
+The one scenario that reaches the ceiling is every week needing week 1's retry
+pattern: fifteen weeks at $0.62 would trip the guard around week 13 and the
+last issues would publish from templates. Retries have not recurred since the
+prompts settled, so this is a watch item rather than a change.
+
+Nothing paid is reachable from a page render. `lib/claude.ts` is imported only
+by scripts, so no visitor can spend money by loading a page, and no traffic
+spike can move any of these numbers.
+
+### YouTube Data API, against the 10,000 unit daily quota
+
+The brief's decision to read the NFL channel's uploads rather than
+`search.list` is what makes this free in practice: uploads cost 1 unit a page
+where a search costs 100.
+
+The highlights pull runs every ten minutes on Sunday, Monday, Tuesday and
+Friday, and hourly on Thursday and Saturday. Each run reads up to two pages of
+the uploads playlist, so 2 units.
+
+| Day | Runs | Units | Of quota |
+|---|---|---|---|
+| Sun, Mon, Tue, Fri | 144 | 288 | 2.9% |
+| Thu, Sat | 24 | 48 | 0.5% |
+
+About 34 times more headroom than the busiest day needs.
+
+**One fix came out of this.** Each run was also spending a unit on
+`channels.list` to resolve which playlist holds the channel's uploads. That
+answer cannot change, and it does not need the API at all: a channel's uploads
+playlist is its own id with `UC` swapped for `UU`. The unit was the smaller
+half of it. The larger half was that `scripts/highlights-pull.ts` exits when
+that call returns null, so a single bad response to a question with a fixed
+answer took out a whole highlights run. It is derived now, and the request
+remains for any id that is not a `UC` one. Verified against the live API: the
+derived playlist returns the NFL's real uploads.
+
+### Everything else
+
+Sleeper, ESPN and nflverse are keyless and free. Supabase and Vercel are on
+free tiers. The share images are generated on demand but the route carries
+`revalidate = 3600`, so a fourteen person league reading the same week's image
+costs one render an hour rather than one a request.

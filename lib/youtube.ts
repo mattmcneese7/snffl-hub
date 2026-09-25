@@ -40,7 +40,20 @@ export const embedUrl = (id: string) => `https://www.youtube-nocookie.com/embed/
  * channels.list costs 1 unit and the answer never changes, so the caller is
  * expected to hold onto it rather than ask on every run.
  */
+/**
+ * A channel's uploads playlist, without asking.
+ *
+ * Every channel's uploads playlist is its own id with the `UC` prefix swapped
+ * for `UU`. That is a documented invariant of the service, not a guess, so
+ * resolving it over the network spent a quota unit on every run of a job that
+ * runs every ten minutes, and worse, gave the job a way to fail: the pull
+ * exits on a null playlist, so one bad response to a question whose answer
+ * cannot change took out an entire highlights run.
+ *
+ * The request stays as the path for anything that is not a `UC` id.
+ */
 export async function uploadsPlaylistId(channelId = NFL_CHANNEL_ID): Promise<string | null> {
+  if (channelId.startsWith('UC')) return `UU${channelId.slice(2)}`;
   if (!youtubeConfigured()) return null;
   try {
     const params = new URLSearchParams({

@@ -44,6 +44,7 @@ export function toFeature(game: Game, label: string, live?: LiveMatchup): Featur
     week: game.week,
     matchupId: game.matchupId,
     status: game.status,
+    inPlay: game.inPlay ?? false,
     margin: game.margin,
     away: toSide(game.away, game.status, live?.away),
     home: toSide(game.home, game.status, live?.home),

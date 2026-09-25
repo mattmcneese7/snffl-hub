@@ -202,3 +202,31 @@ export function outlookOf(live: LiveMatchup | undefined) {
     homeProjected: live.home.projectedTotal,
   };
 }
+
+/**
+ * Mark the matchups that have somebody actually playing.
+ *
+ * Sleeper calls a matchup live from the moment any point is scored, which is
+ * true in the sense that the week is under way and useless in the sense a
+ * reader means: on Tuesday every matchup still said LIVE with a pulsing dot
+ * and nothing was happening. A matchup is in play when one of its starters is
+ * in an NFL game that is on right now.
+ */
+export function markInPlay<T extends Game>(
+  games: T[],
+  nfl: { state: string; home: { abbr: string }; away: { abbr: string } }[]
+): T[] {
+  const onField = new Set<string>();
+  for (const game of nfl) {
+    if (game.state !== 'in') continue;
+    onField.add(game.home.abbr);
+    onField.add(game.away.abbr);
+  }
+  if (!onField.size) return games.map((game) => ({ ...game, inPlay: false }));
+  return games.map((game) => ({
+    ...game,
+    inPlay: [...game.home.lineup, ...game.away.lineup].some(
+      (slot) => slot.team && onField.has(slot.team)
+    ),
+  }));
+}

@@ -105,8 +105,8 @@
   -webkit-backdrop-filter: blur(14px) saturate(150%);
   backdrop-filter: blur(14px) saturate(150%);
   color: #ffffff;
-  font: 700 10px/1.4 var(--mono);
-  letter-spacing: 0.08em;
+  font: 700 10px/1.4 var(--display);
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
@@ -339,8 +339,9 @@ body { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
   left: 50%;
   top: 50%;
   z-index: -1;
+  /* Six pixels of glass on every side of the highlight. */
   width: calc(100% - 4px);
-  height: calc(100% - 10px);
+  height: calc(100% - 12px);
   transform: translate(-50%, -50%);
   /* Concentric with the bar, not a stadium sitting inside it. The dock is
      rounded 22px and this sits about five pixels in from that edge, so its

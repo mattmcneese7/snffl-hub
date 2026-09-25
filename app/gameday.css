@@ -20,6 +20,9 @@
   align-items: center;
   margin-top: 10px;
 }
+/* A credit is a sentence: "Scores and win probability via ESPN". Set in
+   tracked out mono capitals it read as a system message and ran wide enough
+   to wrap. Mono is for data on this site, not for English. */
 .snffl-source {
   display: inline-flex;
   align-items: center;
@@ -27,10 +30,9 @@
   min-height: 24px;
   color: var(--ink-secondary);
   text-decoration: none;
-  font-family: var(--mono);
-  font-size: var(--t-label);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-family: var(--display);
+  font-size: var(--t-small);
+  font-weight: 600;
   white-space: nowrap;
 }
 a.snffl-source:hover .snffl-source-text strong { text-decoration: underline; }
@@ -713,6 +715,9 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
 .snffl-slate-line { display: flex; gap: 10px; color: var(--ink); }
 .snffl-slate-situation { color: var(--ink); }
 .snffl-slate-starters {
+  /* Inherited the crawl's mono from the footer it sits in. It is a sentence
+     with one number in it, so it reads in the interface face. */
+  font-family: var(--display);
   padding: 3px 7px;
   border-radius: var(--radius-pill);
   background: var(--surface);
@@ -1123,11 +1128,11 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   line-height: 1.05;
   text-wrap: balance;
 }
+/* A sentence about the play, not a label on it: four facts joined by
+   middots, which in tracked out capitals ran to two lines of shouting. */
 .snffl-top-play-tags {
   padding: 0 12px;
-  font: 700 9.5px/1.3 var(--mono);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font: 600 11px/1.35 var(--display);
   color: var(--ink-secondary);
 }
 @media (min-width: 900px) { .snffl-top-play { flex-basis: 300px; } }
@@ -1278,8 +1283,8 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   box-shadow: inset 0 1px 0 var(--glass-shine), var(--shadow);
 }
 .snffl-hardware-name {
-  font: 700 9.5px/1.25 var(--mono);
-  letter-spacing: 0.08em;
+  font: 700 10px/1.25 var(--display);
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--ink-secondary);
   text-wrap: balance;
@@ -1354,7 +1359,7 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   text-shadow: 3px 3px 0 #1c1108, -1px -1px 0 #8a5a2b;
   letter-spacing: 0.02em;
 }
-.snffl-shartzone-sub { font: 700 10px/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: #e8d3a8; }
+.snffl-shartzone-sub { font: 700 10px/1 var(--display); letter-spacing: 0.08em; text-transform: uppercase; color: #e8d3a8; }
 
 .snffl-shartzone-hero { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 14px; align-items: center; }
 .snffl-shartzone-throne { position: relative; width: 96px; height: 96px; }
@@ -1399,8 +1404,8 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   border-radius: var(--radius-pill);
   background: #f7c04a;
   color: #1c1108;
-  font: 800 10px/1 var(--mono);
-  letter-spacing: 0.1em;
+  font: 800 10px/1 var(--display);
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 .snffl-shartzone-name {

@@ -11,7 +11,7 @@ import { Figure } from '@/components/Stat';
 import { toFeature } from '@/lib/feature';
 import { getWeekGames } from '@/lib/league';
 import { firstNameOf } from '@/config/managers';
-import { buildLiveMatchup, getMatchupContext } from '@/lib/matchup-live';
+import { buildLiveMatchup, getMatchupContext, markInPlay } from '@/lib/matchup-live';
 
 export default async function MatchupDetail({
   params,
@@ -22,7 +22,8 @@ export default async function MatchupDetail({
   const week = Math.min(17, Math.max(1, Number(rawWeek) || 1));
   const matchupId = Number(rawId);
 
-  const [games, ctx] = await Promise.all([getWeekGames(week), getMatchupContext(week)]);
+  const [rawGames, ctx] = await Promise.all([getWeekGames(week), getMatchupContext(week)]);
+  const games = markInPlay(rawGames, ctx.nfl);
   const game = games.find((g) => g.matchupId === matchupId);
   if (!game) notFound();
 

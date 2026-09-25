@@ -499,9 +499,10 @@
 .snffl-standings-streak { font-size: var(--t-label); color: var(--ink-secondary); font-weight: 700; }
 .snffl-standings-playoff-line { border-bottom: 2px dashed var(--muted); }
 .snffl-standings-playoff-caption {
+  font-family: var(--display);
   font-size: var(--t-label);
   font-weight: 800;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--muted);
   padding: 5px 12px 0;

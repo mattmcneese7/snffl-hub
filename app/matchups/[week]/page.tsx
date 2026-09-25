@@ -13,6 +13,7 @@ import { getWeekGames, teams } from '@/lib/league';
 import {
   getMatchupContext,
   outlookOf,
+  markInPlay,
   startersByNflTeam,
   winProbabilities,
 } from '@/lib/matchup-live';
@@ -32,11 +33,14 @@ export function generateStaticParams() {
 export default async function WeekPage({ params }: { params: Promise<{ week: string }> }) {
   const { week: raw } = await params;
   const week = Math.min(17, Math.max(1, Number(raw) || 1));
-  const [games, ctx, oracle] = await Promise.all([
+  const [rawGames, ctx, oracle] = await Promise.all([
     getWeekGames(week),
     getMatchupContext(week),
     oracleFor(week),
   ]);
+  // Sleeper calls a matchup live all week once anyone scores. Whether a
+  // starter is on the field right now is what the badge should follow.
+  const games = markInPlay(rawGames, ctx.nfl);
   // One saying per manager, the mistakes he can still fix first.
   const sayings = leagueVerdicts(oracle.sides, oracle.input);
   // ESPN rather than the game status: status is derived from week arithmetic,

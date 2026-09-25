@@ -89,8 +89,8 @@ export default function ResultBug({ game, outlook }: { game: Game; outlook?: Bug
         href={`/matchups/${game.week}/${game.matchupId}`}
         aria-label={`Open ${game.away.team} against ${game.home.team}`}
       />
-      <div className={`snffl-bug${game.status === 'live' ? ' snffl-bug-live' : ''}`}>
-        {game.status === 'live' ? <LiveBadge /> : null}
+      <div className={`snffl-bug${game.inPlay ? ' snffl-bug-live' : ''}`}>
+        {game.inPlay ? <LiveBadge /> : null}
         <div className="snffl-bug-body">
           <Side side={game.away} game={game} projected={outlook?.awayProjected} />
           <Side side={game.home} game={game} projected={outlook?.homeProjected} />
@@ -125,7 +125,7 @@ export default function ResultBug({ game, outlook }: { game: Game; outlook?: Bug
                     {close ? ' · CLOSE' : ''}
                   </span>
                 </span>
-                <span>{game.status === 'live' ? 'Live' : 'Final'}</span>
+                <span>{game.inPlay ? 'Live' : game.status === 'final' ? 'Final' : 'In progress'}</span>
               </>
             )}
           </div>

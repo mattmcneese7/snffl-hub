@@ -36,6 +36,7 @@ import {
 import {
   getMatchupContext,
   outlookOf,
+  markInPlay,
   startersByNflTeam,
   winProbabilities,
 } from '@/lib/matchup-live';
@@ -60,7 +61,7 @@ const QUICK_LINKS = [
 
 export default async function HomePage() {
   const week = await scoredWeek();
-  const [games, standings, performers, rankings, odds, chugs, trades, nfl, livePosts, clips, ctx, trophies] =
+  const [rawGames, standings, performers, rankings, odds, chugs, trades, nfl, livePosts, clips, ctx, trophies] =
     await Promise.all([
       getWeekGames(week),
       getStandings(),
@@ -75,6 +76,10 @@ export default async function HomePage() {
       getMatchupContext(week),
       getTrophyBoard(),
     ]);
+
+  // Sleeper marks a matchup live from the first point of the week. The badge
+  // should follow whether a starter is on the field right now.
+  const games = markInPlay(rawGames, ctx.nfl);
   const models = winProbabilities(games, ctx);
 
   // The Shartzone: every week's Shart, newest first, the latest one chugging.

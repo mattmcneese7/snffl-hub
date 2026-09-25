@@ -121,8 +121,10 @@
      pale highlight on the droplet and the mid tone under it. */
   --logo-aqua: #96e4f6;
   --logo-aqua-deep: #3cbaea;
-  /* The active tab, lit in the logo's colour instead of plain white glass. */
-  --tab-on: linear-gradient(135deg, rgba(150, 228, 246, 0.22) 0%, rgba(60, 186, 234, 0.1) 100%);
+  /* The active tab, lit in the logo's colour instead of plain white glass.
+     Flat, not a gradient: a 22px tall highlight is too small to carry a ramp,
+     so the ramp only read as one end being dirty. */
+  --tab-on: rgba(150, 228, 246, 0.16);
   --tab-on-line: rgba(150, 228, 246, 0.42);
 
   --water-light: #c9eeff;

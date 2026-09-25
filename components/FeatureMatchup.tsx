@@ -40,6 +40,8 @@ export type FeatureData = {
   week: number;
   matchupId: number;
   status: 'pending' | 'live' | 'final';
+  /** A starter is on the field right now, as opposed to sometime this week. */
+  inPlay?: boolean;
   margin: number;
   away: FeatureSide;
   home: FeatureSide;
@@ -130,7 +132,7 @@ export default function FeatureMatchup({
   size?: 'md' | 'lg';
   link?: boolean;
 }) {
-  const { away, home, label, status, week, matchupId } = data;
+  const { away, home, label, status, inPlay, week, matchupId } = data;
   const awayLead = status !== 'pending' && away.points > home.points;
   const homeLead = status !== 'pending' && home.points > away.points;
   const hasModel = away.winProb != null && home.winProb != null;
@@ -153,8 +155,12 @@ export default function FeatureMatchup({
         <Side side={away} align="left" leading={awayLead} status={status} week={week} />
         {/* Where a scoreboard keeps the clock. Floating it off to the right of
             the header left it attached to nothing. */}
-        <span className={`snffl-board-mid snffl-board-mid-${status}`}>
-          {status === 'live' ? (
+        <span
+          className={`snffl-board-mid snffl-board-mid-${
+            inPlay ? 'live' : status === 'final' ? 'final' : 'pending'
+          }`}
+        >
+          {inPlay ? (
             <>
               <span className="snffl-live-pill-dot" aria-hidden />
               LIVE

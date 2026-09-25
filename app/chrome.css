@@ -295,8 +295,11 @@ body { padding-bottom: 76px; }
   grid-template-columns: repeat(2, 1fr) 60px repeat(2, 1fr);
   align-items: center;
   height: var(--tabbar-h);
-  /* And the end tabs stop short of the bar's rounded corners. */
-  padding: 0 8px;
+  /* And the end tabs stop short of the bar's rounded corners. Four, not
+     eight: the highlight adds two of its own, and the gap it leaves at the
+     sides has to match the one it leaves top and bottom or it reads as
+     pinned vertically and floating horizontally. */
+  padding: 0 4px;
   background: transparent;
 }
 .snffl-tabbar > :nth-child(1) { grid-column: 1; }

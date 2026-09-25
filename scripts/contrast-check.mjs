@@ -214,8 +214,8 @@ const LITERAL_PAIRS = [
   ['#d6ecff', '#183250', 4.5, 'blue tinted chip on a panel'],
   ['#ffeecb', '#3e382c', 4.5, 'amber tinted chip on a panel'],
   // The active tab's turquoise, at its lightest corner, over the dock glass.
-  ['#f2f5fa', '#2d4556', 4.5, 'active tab label on the logo turquoise'],
-  ['#a9b3c4', '#2d4556', 4.5, 'inactive tab label beside it'],
+  ['#f2f5fa', '#25394a', 4.5, 'active tab label on the logo turquoise'],
+  ['#a9b3c4', '#25394a', 4.5, 'inactive tab label beside it'],
   // And these two are the crawl's tags over the crawl's own scrim.
   ['#d6ecff', '#15314f', 4.5, 'LEAGUE tag on its own tinted glass'],
   ['#ffdde0', '#421a27', 4.5, 'NFL tag on its own tinted glass'],

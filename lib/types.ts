@@ -81,6 +81,15 @@ export type GameSide = {
 export type Game = {
   matchupId: number;
   week: number;
+  /**
+   * A starter is on the field right now.
+   *
+   * Distinct from status: 'live', which only means somebody has scored this
+   * week and stays true from Thursday night until the week rolls over. A
+   * pulsing LIVE badge on a Tuesday afternoon is a lie, so the badge reads
+   * this and the scoring logic keeps reading status.
+   */
+  inPlay?: boolean;
   home: GameSide;
   away: GameSide;
   margin: number;

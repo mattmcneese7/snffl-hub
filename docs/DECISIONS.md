@@ -241,6 +241,30 @@ Matt's call on each point.
   sentences. The writer may use what is in it and nothing it would have to
   invent, such as history from other leagues.
 
+## The app mark and the opening animation, September 2026
+
+- **Matt's logo is the official icon everywhere.** The manifest pair, the Apple
+  touch icon, the favicon png and the .ico, which is written as a wrapped 32
+  pixel png because sips cannot author one.
+- **The intro plays once a session, muted, at 2.5x**, and its logo drifts and
+  shrinks into a mark in the header. The flight is a FLIP measured against that
+  mark, so it lands on it exactly.
+- **The header mark keeps the icon's own rounded black ground.** The image that
+  flies is the image that lands, so nothing has to be cut out of a background.
+- **It is escapable and never blocking.** A tap, a key or Skip ends it, reduced
+  motion never sees it, and the app renders behind it rather than after it. An
+  app opened into a background tab waits for somebody to be looking before it
+  plays and before it marks itself seen, because video autoplay is refused
+  outright while a document is hidden.
+- **3.2MB at 720p** through avconvert, down from 8MB, running 4 seconds at speed.
+
+## A v2 visual overhaul, to be researched
+
+Matt's direction, recorded now and not yet built: **drop light mode entirely**
+and make this a dark, mobile first, app first experience. Desktop must still
+look good but is explicitly secondary. Until that work starts, Day Game stays
+and both themes keep passing the contrast gate.
+
 ## Squirtfucius Says, Checkpoint 12c
 
 The week read forwards. C'mon Man judges a lineup once it cannot change; this

@@ -21,7 +21,7 @@
   --strip-h: 28px;
   /* Two bands of 28. Read by the body padding and the ticker's own offset. */
   --ticker-stack-h: 56px;
-  --tabbar-h: 62px;
+  --tabbar-h: 52px;
 }
 
 
@@ -253,7 +253,7 @@ body { padding-bottom: 76px; }
    stretched the row to 96 pixels around 60 pixels of tabs, and the disc
    floated somewhere inside that dead space. */
 .snffl-tabbar {
-  --tabbar-h: 64px;
+  --tabbar-h: 52px;
   position: relative;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -271,9 +271,9 @@ body { padding-bottom: 76px; }
   display: grid;
   align-content: center;
   justify-items: center;
-  gap: 3px;
+  gap: 2px;
   color: var(--ink-secondary);
-  font-size: var(--t-label);
+  font-size: 9.5px;
   font-weight: 700;
   text-decoration: none;
 }
@@ -287,7 +287,9 @@ body { padding-bottom: 76px; }
   background: var(--ink);
   transform: skewX(calc(-1 * var(--slant)));
 }
-.snffl-tab-icon { width: 23px; height: 23px; display: block; }
+/* Trimmed with the bar. At 23 the icons set the bar's height rather than
+   sitting in it. */
+.snffl-tab-icon { width: 20px; height: 20px; display: block; }
 
 /* ---------- Page shell ---------- */
 

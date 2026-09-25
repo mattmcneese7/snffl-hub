@@ -319,20 +319,71 @@
   opacity: 0.7;
 }
 
-/* One stream, newest first. */
-.snffl-feed-list { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+/* The stream as a weekend, not a table. Each day is a heading with its own
+   count, and the moments under it hang off a spine, so scrolling reads as
+   going back through time rather than down a list of identical boxes. */
+.snffl-feed-days { display: grid; gap: var(--s-5); }
+.snffl-feed-day { display: grid; gap: var(--s-3); }
+.snffl-feed-day-label {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin: 0;
+  font: 700 var(--t-label) / 1 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.snffl-feed-day-label span {
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  background: var(--panel-raised);
+  color: var(--ink-secondary);
+}
+
+.snffl-feed-list {
+  position: relative;
+  display: grid;
+  gap: var(--s-4);
+  margin: 0;
+  padding: 0 0 0 var(--s-5);
+  list-style: none;
+}
+/* The spine, stopping short at both ends so a day does not look cut off. */
+.snffl-feed-list::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 7px;
+  bottom: 7px;
+  width: 1px;
+  background: var(--line);
+}
 .snffl-feed-row {
+  position: relative;
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  padding: 12px 12px;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-bottom: 0;
+  gap: var(--s-3);
+  padding: 0;
+  background: transparent;
+  border: 0;
 }
-.snffl-feed-row:first-child { border-radius: var(--radius) var(--radius) 0 0; }
-.snffl-feed-row:last-child { border-bottom: 1px solid var(--line); border-radius: 0 0 var(--radius) var(--radius); }
-.snffl-feed-row:only-child { border-radius: var(--radius); }
+/* The bead on the spine, in the moment's own colour. */
+.snffl-feed-row::before {
+  content: '';
+  position: absolute;
+  left: -22px;
+  top: 6px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--panel-raised);
+  box-shadow: 0 0 0 3px var(--bg);
+}
+.snffl-feed-row-touchdown::before { background: var(--win); }
+.snffl-feed-row-cmon::before { background: var(--bad); }
+.snffl-feed-row-lead::before { background: var(--live); }
+.snffl-feed-row-shart::before { background: var(--shart); }
 .snffl-feed-mark {
   flex: 0 0 auto;
   min-width: 46px;

@@ -143,3 +143,35 @@ export function applyFilter(items: FeedItem[], filter: FeedFilter): FeedItem[] {
     return true;
   });
 }
+
+export type FeedDay = { key: string; label: string; items: FeedItem[] };
+
+/**
+ * The stream grouped into days, so it reads as a record of when things
+ * happened rather than as a table that happens to be sorted.
+ *
+ * The label is the day in the league's own time zone, because a touchdown at
+ * ten past eleven on a Sunday night in Chicago is Sunday's, not Monday's.
+ */
+export function byDay(items: FeedItem[], now = new Date()): FeedDay[] {
+  const fmt = new Intl.DateTimeFormat('en-US', {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'America/Chicago',
+  });
+  const dayKey = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Chicago' });
+  const today = dayKey.format(now);
+  const yesterday = dayKey.format(new Date(now.getTime() - 86_400_000));
+
+  const out: FeedDay[] = [];
+  for (const item of items) {
+    const at = new Date(item.at);
+    const key = dayKey.format(at);
+    const label = key === today ? 'Today' : key === yesterday ? 'Yesterday' : fmt.format(at);
+    const last = out[out.length - 1];
+    if (last && last.key === key) last.items.push(item);
+    else out.push({ key, label, items: [item] });
+  }
+  return out;
+}

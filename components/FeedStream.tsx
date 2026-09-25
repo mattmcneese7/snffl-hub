@@ -6,6 +6,7 @@ import ReelPlayer from './ReelPlayer';
 import {
   applyFilter,
   buildFeed,
+  byDay,
   facetsOf,
   EMPTY_FILTER,
   KIND_LABELS,
@@ -26,10 +27,11 @@ import { toReelClip } from '@/lib/reel-clips';
  * every clip and the other two tabs were empty, which reads as broken rather
  * than as empty.
  *
- * Now: replays that actually play across the top, then one stream of
- * everything newest first, with filters built from what is in the stream. Each
+ * Now: replays that actually play across the top, then the stream itself,
+ * grouped into days along a spine, with filters built from what is in it. Each
  * filter counts what it would leave, and a filter that cannot change the
- * screen is never drawn.
+ * screen is never drawn. A flat list of two hundred rows is a data dump; a
+ * weekend with Sunday at the top of it is a record of what happened.
  */
 
 const KIND_MARK: Record<FeedItemKind, string> = {
@@ -115,6 +117,9 @@ export default function FeedStream({
   const nameOf = (id: string) => managers[id] ?? `Roster ${id}`;
   const facets = useMemo(() => facetsOf(items, nameOf), [items, managers]);
   const shown = useMemo(() => applyFilter(items, filter), [items, filter]);
+  // Grouped by day, so the stream reads as a record of a weekend rather than
+  // as a table that happens to be sorted.
+  const days = useMemo(() => byDay(shown), [shown]);
 
   // The replay rail: only clips that play in the site, best first. A link out
   // is still in the stream below, marked as one, but it is never offered here
@@ -196,20 +201,30 @@ export default function FeedStream({
         </div>
 
         {shown.length ? (
-          <ol className="snffl-feed-list">
-            {shown.map((item) => (
-              <FeedRow
-                key={`${item.kind}-${item.id}`}
-                item={item}
-                names={names}
-                now={now}
-                onPlay={() => {
-                  const index = reels.findIndex((clip) => clip.id === item.id);
-                  if (index >= 0) setPlaying(index);
-                }}
-              />
+          <div className="snffl-feed-days">
+            {days.map((day) => (
+              <section className="snffl-feed-day" key={day.key}>
+                <h3 className="snffl-feed-day-label">
+                  {day.label}
+                  <span>{day.items.length}</span>
+                </h3>
+                <ol className="snffl-feed-list">
+                  {day.items.map((item) => (
+                    <FeedRow
+                      key={`${item.kind}-${item.id}`}
+                      item={item}
+                      names={names}
+                      now={now}
+                      onPlay={() => {
+                        const index = reels.findIndex((clip) => clip.id === item.id);
+                        if (index >= 0) setPlaying(index);
+                      }}
+                    />
+                  ))}
+                </ol>
+              </section>
             ))}
-          </ol>
+          </div>
         ) : (
           <div className="snffl-placeholder">
             <span className="snffl-placeholder-label">Nothing matches</span>

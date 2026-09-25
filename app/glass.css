@@ -170,7 +170,7 @@
   --ticker-h: 30px;
   /* Where every tab's label sits above the bar's bottom edge. The mark button
      hangs its week on the same line. */
-  --tab-label-bottom: 11px;
+  --tab-label-bottom: 9px;
   /* Two bands, read by the body padding that clears them. */
   --ticker-stack-h: calc(var(--ticker-h) * 2);
 }
@@ -287,10 +287,10 @@ body { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
 .snffl-dock {
   left: 10px;
   right: 10px;
-  bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+  bottom: calc(6px + env(safe-area-inset-bottom, 0px));
   /* Between a box and a pill. A pill on a bar this tall reads as a lozenge of
      buttons; square reads as a toolbar. */
-  border-radius: 22px;
+  border-radius: 20px;
   /* No padding above the bar. The mark breaks through the dock's top edge
      rather than the dock opening a band of empty glass for it to sit in,
      which is the whole point of a raised control: it interrupts the surface.
@@ -526,12 +526,12 @@ h3,
   /* Tight to its label, like every other tab is to its icon. Nine pixels here
      let the disc drift up away from the row and read as a thing hovering over
      the bar rather than the first item in it. */
-  gap: 5px;
+  gap: 4px;
   text-decoration: none;
 }
 .snffl-app-mark-disc {
-  width: 46px;
-  height: 46px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -544,7 +544,7 @@ h3,
     0 0 12px rgba(76, 194, 255, 0.22),
     0 8px 20px rgba(0, 0, 0, 0.5);
 }
-.snffl-app-mark-disc img { width: 30px; height: 30px; display: block; object-fit: contain; }
+.snffl-app-mark-disc img { width: 26px; height: 26px; display: block; object-fit: contain; }
 .snffl-app-mark-on .snffl-app-mark-disc {
   border-color: rgba(140, 216, 255, 0.85);
   box-shadow:
@@ -558,7 +558,7 @@ h3,
    mark reads as one of the five and not as a badge with a caption. It was
    mono and upper case beside four sans, sentence case labels. */
 .snffl-app-week {
-  font-size: var(--t-label);
+  font-size: 9.5px;
   font-weight: 700;
   color: var(--ink-secondary);
   white-space: nowrap;
@@ -766,24 +766,6 @@ h3,
 
 /* ---------- Progressive frost ---------- */
 
-/* A backdrop-filter is one strength, so wherever its mask ends the page snaps
-   from frosted to sharp. Three layers of rising blur, each masked to a
-   different height, ramp it: at the bar all three stack, further up only the
-   lightest is left, and the last of it dissolves rather than stopping. Each
-   layer also reaches well past the bar so the filter has pixels to sample,
-   since backdrop-filter only sees what is directly behind it. */
-.snffl-frost {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: -140%;
-  z-index: -1;
-  pointer-events: none;
-  display: block;
-}
-.snffl-frost-top { top: 0; bottom: -140%; }
-.snffl-frost i { position: absolute; inset: 0; display: block; }
 
 /* The bar's glass: one surface, clipped to its shape, with an edge.
    
@@ -867,63 +849,4 @@ h3,
 /* No inset rim on either. A 1px line across the whole width is exactly the
    stark edge the ramp exists to avoid; the frost's own gradient is the edge. */
 
-/* ---------- Progressive frost ---------- */
 
-/* A backdrop-filter is one strength, so wherever its mask ends the page snaps
-   from frosted to sharp. Three layers of rising blur, each masked to a
-   different height, ramp it: at the bar all three stack, further up only the
-   lightest is left, and the last of it dissolves rather than stopping. Each
-   layer also reaches well past the bar so the filter has pixels to sample,
-   since backdrop-filter only sees what is directly behind it. */
-.snffl-frost {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: -140%;
-  z-index: -1;
-  pointer-events: none;
-  display: block;
-}
-.snffl-frost-top { top: 0; bottom: -140%; }
-.snffl-frost i { position: absolute; inset: 0; display: block; }
-
-/* Each layer fades on a multi stop ramp rather than three stops. A gradient
-   with a couple of stops is a step with soft edges: it produced a visible line
-   across the bar where the tint stopped while the blur carried on. The stops
-   below approximate an ease, so no single point along the fade is where the
-   change happens. */
-.snffl-frost i:nth-child(1) {
-  -webkit-backdrop-filter: blur(3px);
-  backdrop-filter: blur(3px);
-  -webkit-mask-image: linear-gradient(0deg, #000 0%, #000 26%, rgba(0, 0, 0, 0.88) 34%, rgba(0, 0, 0, 0.66) 41%, rgba(0, 0, 0, 0.4) 48%, rgba(0, 0, 0, 0.18) 55%, transparent 64%);
-  mask-image: linear-gradient(0deg, #000 0%, #000 26%, rgba(0, 0, 0, 0.88) 34%, rgba(0, 0, 0, 0.66) 41%, rgba(0, 0, 0, 0.4) 48%, rgba(0, 0, 0, 0.18) 55%, transparent 64%);
-}
-.snffl-frost i:nth-child(2) {
-  -webkit-backdrop-filter: blur(10px) saturate(150%);
-  backdrop-filter: blur(10px) saturate(150%);
-  -webkit-mask-image: linear-gradient(0deg, #000 0%, #000 22%, rgba(0, 0, 0, 0.85) 29%, rgba(0, 0, 0, 0.6) 36%, rgba(0, 0, 0, 0.34) 43%, rgba(0, 0, 0, 0.14) 50%, transparent 58%);
-  mask-image: linear-gradient(0deg, #000 0%, #000 22%, rgba(0, 0, 0, 0.85) 29%, rgba(0, 0, 0, 0.6) 36%, rgba(0, 0, 0, 0.34) 43%, rgba(0, 0, 0, 0.14) 50%, transparent 58%);
-}
-.snffl-frost i:nth-child(3) {
-  -webkit-backdrop-filter: blur(26px) saturate(180%);
-  backdrop-filter: blur(26px) saturate(180%);
-  background: linear-gradient(0deg, var(--scrim) 0%, rgba(8, 13, 24, 0.66) 18%, rgba(8, 13, 24, 0.58) 25%, rgba(8, 13, 24, 0.47) 31%, rgba(8, 13, 24, 0.34) 37%, rgba(8, 13, 24, 0.2) 43%, rgba(8, 13, 24, 0.08) 49%, transparent 56%);
-  -webkit-mask-image: linear-gradient(0deg, #000 0%, #000 18%, rgba(0, 0, 0, 0.82) 26%, rgba(0, 0, 0, 0.56) 33%, rgba(0, 0, 0, 0.3) 40%, rgba(0, 0, 0, 0.12) 47%, transparent 55%);
-  mask-image: linear-gradient(0deg, #000 0%, #000 18%, rgba(0, 0, 0, 0.82) 26%, rgba(0, 0, 0, 0.56) 33%, rgba(0, 0, 0, 0.3) 40%, rgba(0, 0, 0, 0.12) 47%, transparent 55%);
-}
-
-/* At the top of the screen the ramp runs the other way. */
-.snffl-frost-top i:nth-child(1) {
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 40%, transparent 58%);
-  mask-image: linear-gradient(180deg, #000 0%, #000 40%, transparent 58%);
-}
-.snffl-frost-top i:nth-child(2) {
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 37%, transparent 50%);
-  mask-image: linear-gradient(180deg, #000 0%, #000 37%, transparent 50%);
-}
-.snffl-frost-top i:nth-child(3) {
-  background: linear-gradient(180deg, var(--scrim) 0%, var(--scrim) 33%, var(--scrim-soft) 40%, transparent 46%);
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 33%, transparent 46%);
-  mask-image: linear-gradient(180deg, #000 0%, #000 33%, transparent 46%);
-}

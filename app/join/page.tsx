@@ -17,6 +17,22 @@ import InstallInvite from '@/components/InstallInvite';
 export const metadata: Metadata = {
   title: 'Join',
   description: 'Put SQUIRT on your home screen.',
+  // What the card in the group chat says. The page title is "Join, SQUIRT",
+  // which is right for a browser tab and useless as the first thing thirteen
+  // people read about the app: a preview gets one line, so it spends it on
+  // the instruction rather than on the name, which the image already carries.
+  openGraph: {
+    title: 'Add SQUIRT to your home screen',
+    description: 'Live scores, the Rag, every chug and the week in ninety seconds.',
+    siteName: 'SQUIRT',
+    type: 'website',
+    url: '/join',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Add SQUIRT to your home screen',
+    description: 'Live scores, the Rag, every chug and the week in ninety seconds.',
+  },
 };
 
 export default function JoinPage() {

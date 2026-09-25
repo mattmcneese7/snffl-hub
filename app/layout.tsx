@@ -60,6 +60,10 @@ const permanentMarker = Permanent_Marker({
 });
 
 export const metadata: Metadata = {
+  // Link previews are fetched by somebody else's server, so every image URL
+  // in the head has to be absolute. Without this Next emits a relative one and
+  // the card comes back blank in a group chat.
+  metadataBase: new URL('https://www.squirtnite.live'),
   title: { default: 'SQUIRT', template: '%s, SQUIRT' },
   description: 'The home of the Squirtnite FFL.',
   // Hidden from search engines entirely. The matching header lives in next.config.ts.

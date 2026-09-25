@@ -167,6 +167,8 @@ export default function InstallInvite() {
   const [stage, setStage] = useState<Stage>('checking');
   const [deferred, setDeferred] = useState<InstallPrompt | null>(null);
   const [shared, setShared] = useState(false);
+  /** Set when neither the share sheet nor the clipboard would take it. */
+  const [showLink, setShowLink] = useState(false);
   /** The scrawled arrow the Install button raises, and what it points at. */
   const [guiding, setGuiding] = useState(false);
   const [target, setTarget] = useState<Target | null>(null);
@@ -213,19 +215,32 @@ export default function InstallInvite() {
   // How Matt passes it on. The native sheet where there is one, the clipboard
   // everywhere else, because a link somebody has to select by hand is a link
   // that gets sent wrong.
+  //
+  // The text matters as much as the link. A share sheet drops title and text
+  // into the message for him, and a bare URL in a group chat is a blue line
+  // thirteen people scroll past: this arrives already saying what it is and
+  // what to do with it. The same sentence the preview card carries, so the
+  // message and the thumbnail under it do not say two different things.
   const passItOn = useCallback(async () => {
     const url = window.location.origin + '/join';
+    const text = 'Live scores, the Rag, every chug and the week in ninety seconds. Tap to add it to your home screen.';
     try {
       if (navigator.share) {
-        await navigator.share({ title: 'SQUIRT', url });
+        await navigator.share({ title: 'Add SQUIRT to your home screen', text, url });
         return;
       }
-      await navigator.clipboard.writeText(url);
+      // Clipboard, with the same pitch attached. A link on its own pasted
+      // into a chat is the thing this is trying to avoid.
+      await navigator.clipboard.writeText(`${text}\n${url}`);
       setShared(true);
       setTimeout(() => setShared(false), 2400);
-    } catch {
-      // A cancelled share sheet and a blocked clipboard both land here, and
-      // neither is worth saying anything about.
+    } catch (error) {
+      // Cancelling the share sheet lands here and means nothing. A refused
+      // clipboard also lands here and means the button did nothing at all,
+      // which is the worst outcome on the page: he taps it, no sheet opens,
+      // no text changes, and he has no way to get the link out. So the link
+      // itself comes up instead, selectable, and he can copy it by hand.
+      if ((error as Error)?.name !== 'AbortError') setShowLink(true);
     }
   }, []);
 
@@ -373,8 +388,15 @@ export default function InstallInvite() {
 
       {stage !== 'checking' ? (
         <button type="button" className="snffl-invite-pass" onClick={passItOn}>
-          {shared ? 'Link copied' : 'Send this to someone'}
+          {shared ? 'Copied, ready to paste' : 'Send this to the league'}
         </button>
+      ) : null}
+
+      {showLink ? (
+        <p className="snffl-invite-link">
+          Copy this and send it over:
+          <span>squirtnite.live/join</span>
+        </p>
       ) : null}
     </div>
   );

@@ -955,6 +955,22 @@
 }
 .snffl-invite-pass:hover { color: var(--ink-secondary); }
 
+/* The last resort, when the browser will hand over neither a share sheet nor
+   the clipboard. Selectable, because copying it by hand is the whole point. */
+.snffl-invite-link {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  font-size: var(--t-small);
+  color: var(--ink-tertiary);
+}
+.snffl-invite-link span {
+  user-select: all;
+  font-family: var(--mono);
+  font-size: var(--t-body);
+  color: var(--logo-aqua);
+}
+
 /* The coach mark: the two taps, over the page, aimed at Safari's own bar. */
 .snffl-invite-coach {
   position: fixed;

@@ -39,6 +39,9 @@ export default function ChugSplash({ week, src }: { week: number; src: string })
     } catch {
       // Not being able to remember is not a reason to refuse to play.
     }
+    // The replay ribbon waits on this. Offering a way to watch it again while
+    // it is still playing for the first time is a button with nothing to do.
+    window.dispatchEvent(new Event('snffl:chug-closed'));
   }, [week]);
 
   useEffect(() => {

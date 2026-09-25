@@ -13,13 +13,31 @@ import { useEffect, useState } from 'react';
  * and the Shartzone already own that colour.
  */
 export default function ChugReplay({ week }: { week: number }) {
-  // Lands with the week story ribbon, a beat behind it, so the two arrive as
-  // a pair rather than one shunting the other.
+  // Not until the film has been watched or dismissed. A way to watch it again
+  // that appears while it is still playing for the first time is a button
+  // with nothing to do.
   const [landed, setLanded] = useState(false);
+
   useEffect(() => {
-    const id = setTimeout(() => setLanded(true), 2600);
-    return () => clearTimeout(id);
-  }, []);
+    let alreadySeen = false;
+    try {
+      alreadySeen = localStorage.getItem(`snffl.chug.seen.w${week}`) === '1';
+    } catch {
+      // Storage refused, so treat it as unseen and wait for the close.
+      alreadySeen = false;
+    }
+
+    if (alreadySeen) {
+      // Nothing is going to play, so it lands with the week story ribbon, a
+      // beat behind it, and the two arrive as a pair.
+      const id = setTimeout(() => setLanded(true), 2600);
+      return () => clearTimeout(id);
+    }
+
+    const onClosed = () => setLanded(true);
+    window.addEventListener('snffl:chug-closed', onClosed);
+    return () => window.removeEventListener('snffl:chug-closed', onClosed);
+  }, [week]);
 
   return (
     <div className={`snffl-wstory-ribbon${landed ? ' snffl-wstory-ribbon-in' : ''}`}>

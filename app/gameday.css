@@ -1865,8 +1865,25 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   text-transform: uppercase;
   cursor: pointer;
 }
-/* The accent is the mark and a hint of colour in the glass, not a fill. */
-.snffl-wstory-open .snffl-frost { background: var(--tab-on), var(--glass-bar); }
+/* Colour in the glass, under the sheen rather than instead of it. Setting a
+   tint as the frost's background replaced the band of light that makes it
+   read as glass at all, so the tint is layered between the sheen and the
+   base. */
+.snffl-wstory-open .snffl-frost {
+  background:
+    linear-gradient(
+      118deg,
+      rgba(255, 255, 255, 0.18) 0%,
+      rgba(255, 255, 255, 0.06) 24%,
+      rgba(255, 255, 255, 0.02) 50%,
+      rgba(255, 255, 255, 0.08) 100%
+    ),
+    /* A bare colour is only legal as the last layer of the shorthand, so the
+       tint is a flat gradient. Written as a colour it made the whole
+       declaration invalid and the frost lost its background entirely. */
+    linear-gradient(rgba(138, 230, 221, 0.26), rgba(138, 230, 221, 0.26)),
+    var(--glass-bar);
+}
 .snffl-wstory-play {
   width: 9px;
   height: 11px;
@@ -2083,10 +2100,17 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   grid-template-rows: 0fr;
   transition:
     grid-template-rows 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    margin-bottom 0.55s cubic-bezier(0.22, 1, 0.36, 1),
     opacity 0.4s ease-out;
   opacity: 0;
 }
 .snffl-wstory-ribbon > * { overflow: hidden; min-height: 0; }
+/* A ribbon of zero height is still a child of the page grid, and a grid child
+   costs a 32px gap whether or not it has anything in it. Two of them held 64
+   pixels open above the Rag before either had arrived, which is exactly the
+   space they were supposed to create by arriving. The collapsed state cancels
+   its own gap and gives it back on landing. */
+.snffl-wstory-ribbon { margin-bottom: -32px; }
 .snffl-wstory-ribbon-in { grid-template-rows: 1fr; opacity: 1; }
 /* The button itself slides the last few pixels, so it reads as arriving from
    above rather than simply appearing at full height. */
@@ -2118,8 +2142,19 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   cursor: pointer;
 }
 /* Amber glass: this is the beer, and the Chug Meter already owns that hue. */
-.snffl-chugreplay-button .snffl-frost { background: var(--tint-amber), var(--glass-bar); }
-.snffl-wstory-ribbon-in { margin-bottom: calc(-1 * var(--s-4)); }
+.snffl-chugreplay-button .snffl-frost {
+  background:
+    linear-gradient(
+      118deg,
+      rgba(255, 255, 255, 0.18) 0%,
+      rgba(255, 255, 255, 0.06) 24%,
+      rgba(255, 255, 255, 0.02) 50%,
+      rgba(255, 255, 255, 0.08) 100%
+    ),
+    linear-gradient(rgba(255, 196, 77, 0.28), rgba(255, 196, 77, 0.28)),
+    var(--glass-bar);
+}
+.snffl-wstory-ribbon-in { margin-bottom: -18px; }
 .snffl-wstory-ribbon-in .snffl-wstory-open,
 .snffl-wstory-ribbon-in .snffl-chugreplay-button { transform: translateY(0); }
 @media (prefers-reduced-motion: reduce) {

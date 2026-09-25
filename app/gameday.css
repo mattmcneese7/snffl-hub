@@ -1996,12 +1996,16 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   animation: snffl-wstory-fade 0.5s ease-out both;
 }
 /* The top play slide is the footage. Its pool sits lower and lighter, because
-   the copy is two short lines and covering the play defeats the slide. */
-.snffl-wstory-stage:has(.snffl-wstory-play)::after {
+   the copy is two short lines and covering the play defeats the slide.
+
+   Named -topplay, not -play: the button's triangle already owned -play, and
+   the card's align-self and margin landed on that triangle instead, which is
+   why it sat above the label rather than beside it. */
+.snffl-wstory-stage:has(.snffl-wstory-topplay)::after {
   -webkit-mask-image: radial-gradient(ellipse 80% 26% at 50% 76%, #000 0%, #000 34%, transparent 82%);
   mask-image: radial-gradient(ellipse 80% 26% at 50% 76%, #000 0%, #000 34%, transparent 82%);
 }
-.snffl-wstory-play { align-self: end; margin-bottom: 4vh; }
+.snffl-wstory-topplay { align-self: end; margin-bottom: 4vh; }
 @keyframes snffl-wstory-fade {
   from { opacity: 0; }
   to { opacity: 1; }

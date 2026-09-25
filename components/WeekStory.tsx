@@ -337,7 +337,7 @@ function Slide({ slide }: { slide: StorySlide }) {
       );
     case 'play':
       return (
-        <div className="snffl-wstory-card snffl-wstory-play">
+        <div className="snffl-wstory-card snffl-wstory-topplay">
           <span className="snffl-wstory-kicker">Top play</span>
           <strong className="snffl-wstory-name">{slide.headline}</strong>
           <p className="snffl-wstory-line">

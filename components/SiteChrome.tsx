@@ -257,14 +257,15 @@ export default function SiteChrome({
             className={`snffl-app-mark${pathname === '/' ? ' snffl-app-mark-on' : ''}`}
             aria-label="Home"
           >
+            {/* Just the mark. The week used to hang under it as this button's
+                label, which spent a slot on a number the page itself always
+                states and left the one round thing on the bar carrying a
+                caption nothing else had. The button is Home; the logo says
+                so. */}
             <span className="snffl-app-mark-disc">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/logo-mark-v2-128.png" alt="" />
             </span>
-            {/* The week reads as this button's label, on the same line as every
-                other tab's. Arced over the rim it was unreadable: nine pixel
-                type, curved, over a dark textured disc. */}
-            <span className="snffl-app-week">Week {week}</span>
           </Link>
 
           {TABS.slice(2).map((tab) => (

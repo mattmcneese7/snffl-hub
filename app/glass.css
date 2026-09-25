@@ -167,14 +167,6 @@
 :root {
   --strip-h: 0px;
   --ticker-h: 30px;
-  /* Where every tab's label sits above the bar's bottom edge. The mark button
-     hangs its week on the same line.
-
-     Measured against where the other tabs actually put their labels, not
-     guessed. It is derived from the bar's height, so shortening the bar from
-     68 to 60 moved the tab labels and left the week four pixels high. If the
-     bar height changes again, measure this again. */
-  --tab-label-bottom: 7px;
   /* Two bands, read by the body padding that clears them. */
   --ticker-stack-h: calc(var(--ticker-h) * 2);
 }
@@ -543,25 +535,20 @@ h3,
   position: absolute;
   z-index: 2;
   left: 50%;
-  /* Anchored to the same line the tab labels sit on, so the week reads as this
-     button's label and the disc rises out of the bar above it. */
-  bottom: var(--tab-label-bottom);
+  /* With no label under it the disc sets its own depth: ten pixels of bar
+     below it, six of it proud of the top edge. Enough to read as the one
+     object on the bar that breaks the line, not so much that it hovers. */
+  bottom: 10px;
   transform: translateX(-50%);
   display: grid;
   justify-items: center;
-  /* Closed up against its label.
-     The mark is anchored by its bottom edge, so the space between the disc
-     and the week is the only thing that decides how far the disc rides out of
-     the bar: every pixel here lifts it by one and leaves the label where it
-     is. At three it stood nineteen pixels proud, a third of its own height
-     above the bar, which reads as hovering rather than as part of it. */
   gap: 0;
   text-decoration: none;
 }
 .snffl-app-mark-disc {
-  /* Four pixels off the disc buys four more of it sitting inside the bar. */
-  width: 48px;
-  height: 48px;
+  /* Bigger now that it is the whole button rather than a disc with a caption. */
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -573,7 +560,7 @@ h3,
      belongs to the selected tab, not to the logo. */
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
-.snffl-app-mark-disc img { width: 32px; height: 32px; display: block; object-fit: contain; }
+.snffl-app-mark-disc img { width: 38px; height: 38px; display: block; object-fit: contain; }
 /* On its own tab the rim brightens. That is the whole change: no halo. */
 .snffl-app-mark-on .snffl-app-mark-disc {
   border-color: rgba(140, 216, 255, 0.85);
@@ -584,29 +571,6 @@ h3,
 /* Set exactly as a tab label: same family, size, weight and colour, so the
    mark reads as one of the five and not as a badge with a caption. It was
    mono and upper case beside four sans, sentence case labels. */
-/* The week gets a plate of its own, directly under the disc.
-   As bare text it was the only label on the bar with nothing holding it: the
-   four tabs each sit in a column with an icon over them, and this one floated
-   under a circle that is a different shape from everything around it. A small
-   chip anchors it and makes it read as the mark button's own label rather
-   than as a caption that happens to be nearby. */
-.snffl-app-week {
-  padding: 2px 9px;
-  border-radius: var(--radius-pill);
-  background: var(--glass);
-  border: 1px solid var(--glass-line);
-  font-size: var(--t-label);
-  font-weight: 700;
-  color: var(--ink-secondary);
-  white-space: nowrap;
-}
-/* On its own tab the plate lights like any other selected tab. */
-.snffl-app-mark-on .snffl-app-week {
-  color: var(--ink);
-  background: var(--tab-on);
-  border-color: var(--tab-on-line);
-  box-shadow: 0 0 12px 1px rgba(76, 194, 255, 0.2);
-}
 
 .snffl-intro {
   position: fixed;

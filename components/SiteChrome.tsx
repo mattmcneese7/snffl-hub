@@ -205,11 +205,7 @@ export default function SiteChrome({
           to be glanced at rather than reached for. It also gives the mark room
           to rise out of the bar below without the two colliding. */}
       <div className="snffl-ticker-stack">
-        <span className="snffl-frost snffl-frost-top" aria-hidden>
-          <i />
-          <i />
-          <i />
-        </span>
+        <span className="snffl-frost" aria-hidden />
         <Ticker tag="LEAGUE" items={leagueTicker} variant="league" />
         <Ticker tag="NFL" items={nflTicker} variant="nfl" />
       </div>

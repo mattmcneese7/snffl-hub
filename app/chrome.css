@@ -146,13 +146,17 @@ body { padding-bottom: 76px; }
 
 /* The crawl holds the top of the screen, where the header used to be, and
    navigation holds the bottom. Both stay put while the page moves under them. */
+/* The crawl is the same object as the dock, at the other end of the screen:
+   inset from the edges, rounded, one glass surface. It used to be a full
+   width band fading into the page, which made the two ends of the app look
+   like different materials. */
 .snffl-ticker-stack {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: calc(env(safe-area-inset-top, 0px) + 8px);
+  left: 10px;
+  right: 10px;
   z-index: 60;
-  padding-top: env(safe-area-inset-top, 0px);
+  border-radius: 20px;
 }
 .snffl-dock {
   position: fixed;
@@ -295,7 +299,7 @@ body { padding-bottom: 76px; }
    title sits closer to the section above it than to its own content and reads
    as belonging to the wrong one. */
 .snffl-page {
-  padding: calc(var(--ticker-stack-h) + env(safe-area-inset-top, 0px) + 14px) 14px 14px;
+  padding: calc(var(--ticker-stack-h) + env(safe-area-inset-top, 0px) + 22px) 14px 14px;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 32px;

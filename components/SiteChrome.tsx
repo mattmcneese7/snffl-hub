@@ -232,7 +232,7 @@ export default function SiteChrome({
             {/* The week reads as this button's label, on the same line as every
                 other tab's. Arced over the rim it was unreadable: nine pixel
                 type, curved, over a dark textured disc. */}
-            <span className="snffl-app-week">WEEK {week}</span>
+            <span className="snffl-app-week">Week {week}</span>
           </Link>
 
           {TABS.slice(2).map((tab) => (

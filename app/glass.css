@@ -424,7 +424,9 @@ h3,
   transform: translateX(-50%);
   display: grid;
   justify-items: center;
-  gap: 3px;
+  /* Clear of the disc's glow. At three pixels the label sat inside the bloom
+     and looked smudged rather than placed. */
+  gap: 9px;
   text-decoration: none;
 }
 .snffl-app-mark-disc {
@@ -437,22 +439,25 @@ h3,
   border: 1px solid rgba(120, 206, 255, 0.35);
   box-shadow:
     0 0 0 5px rgba(6, 10, 19, 0.92),
-    0 0 18px rgba(76, 194, 255, 0.28),
-    0 10px 24px rgba(0, 0, 0, 0.55);
+    0 0 12px rgba(76, 194, 255, 0.22),
+    0 8px 20px rgba(0, 0, 0, 0.5);
 }
 .snffl-app-mark-disc img { width: 34px; height: 34px; display: block; object-fit: contain; }
 .snffl-app-mark-on .snffl-app-mark-disc {
   border-color: rgba(140, 216, 255, 0.85);
   box-shadow:
     0 0 0 5px rgba(6, 10, 19, 0.92),
-    0 0 26px rgba(76, 194, 255, 0.5),
-    0 10px 24px rgba(0, 0, 0, 0.55);
+    0 0 18px rgba(76, 194, 255, 0.42),
+    0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
 /* The week, set along the rim above the mark. */
+/* Set exactly as a tab label: same family, size, weight and colour, so the
+   mark reads as one of the five and not as a badge with a caption. It was
+   mono and upper case beside four sans, sentence case labels. */
 .snffl-app-week {
-  font: 700 10px/1 var(--mono);
-  letter-spacing: 0.06em;
+  font-size: 10px;
+  font-weight: 700;
   color: var(--ink-secondary);
   white-space: nowrap;
 }

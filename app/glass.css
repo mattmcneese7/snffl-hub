@@ -535,10 +535,10 @@ h3,
   position: absolute;
   z-index: 2;
   left: 50%;
-  /* With no label under it the disc sets its own depth: ten pixels of bar
-     below it, six of it proud of the top edge. Enough to read as the one
-     object on the bar that breaks the line, not so much that it hovers. */
-  bottom: 10px;
+  /* Sat low and deep: four pixels of bar under it, so it is anchored near the
+     floor of the box rather than hovering in the middle of it, and eight
+     proud of the top edge, which is the part that breaks the line. */
+  bottom: 4px;
   transform: translateX(-50%);
   display: grid;
   justify-items: center;
@@ -546,9 +546,10 @@ h3,
   text-decoration: none;
 }
 .snffl-app-mark-disc {
-  /* Bigger now that it is the whole button rather than a disc with a caption. */
-  width: 56px;
-  height: 56px;
+  /* Bigger now that it is the whole button rather than a disc with a caption,
+     and taller than the bar it sits in, which is the point of it. */
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -560,7 +561,7 @@ h3,
      belongs to the selected tab, not to the logo. */
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
-.snffl-app-mark-disc img { width: 38px; height: 38px; display: block; object-fit: contain; }
+.snffl-app-mark-disc img { width: 44px; height: 44px; display: block; object-fit: contain; }
 /* On its own tab the rim brightens. That is the whole change: no halo. */
 .snffl-app-mark-on .snffl-app-mark-disc {
   border-color: rgba(140, 216, 255, 0.85);

@@ -96,10 +96,10 @@ export default function WeekStory({
       </header>
 
       <div className="snffl-wstory-stage">
-        {slide.kind === 'play' && slide.still ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img className="snffl-story-backdrop" src={slide.still} alt="" aria-hidden />
-        ) : null}
+        {/* Real football behind every slide, picked for the manager it is
+            about. The clip runs where ESPN has a playable one and the still
+            stands in otherwise, so a slide never falls back to black. */}
+        <Backdrop art={slide.art} key={`${slide.kind}-${active}`} />
 
         <button
           type="button"
@@ -122,6 +122,58 @@ export default function WeekStory({
       </footer>
     </div>,
     document.body
+  );
+}
+
+/**
+ * The picture behind a slide.
+ *
+ * The still paints immediately and the clip fades in over it once it can
+ * play, so the slide is never empty while a video negotiates. Muted, looping
+ * and inert: it is scenery, and a story that pauses for buffering has stopped
+ * being 90 seconds long.
+ */
+function Backdrop({ art }: { art: { still: string | null; espnId: string | null } }) {
+  const [video, setVideo] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!art.espnId) return;
+    let dead = false;
+    let detach: (() => void) | null = null;
+    (async () => {
+      const [{ clipSource }] = await Promise.all([import('@/lib/espn-playback')]);
+      const source = await clipSource(art.espnId!).catch(() => null);
+      // The progressive file only. Scenery does not justify pulling hls.js
+      // into the bundle, and a clip with no mp4 simply stays a still.
+      if (dead || !source?.mp4) return;
+      setVideo(source.mp4);
+      detach = null;
+    })();
+    return () => {
+      dead = true;
+      detach?.();
+    };
+  }, [art.espnId]);
+
+  if (!art.still && !video) return null;
+  return (
+    <>
+      {art.still ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img className="snffl-story-backdrop" src={art.still} alt="" aria-hidden />
+      ) : null}
+      {video ? (
+        <video
+          className="snffl-story-backdrop snffl-wstory-video"
+          src={video}
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-hidden
+        />
+      ) : null}
+    </>
   );
 }
 
@@ -151,7 +203,32 @@ function Slide({ slide }: { slide: StorySlide }) {
       );
     case 'motw':
       return (
-        <div className="snffl-wstory-card">
+        <div className="snffl-wstory-card snffl-wstory-champ">
+          {/* Gems, because winning the week should feel like something. They
+              are generated rather than listed so the fall never repeats in the
+              same pattern twice, and they sit behind the copy. */}
+          <span className="snffl-gems" aria-hidden>
+            {Array.from({ length: 18 }, (_, i) => (
+              <i
+                key={i}
+                style={{
+                  left: `${(i * 37) % 100}%`,
+                  animationDelay: `${(i % 9) * 0.34}s`,
+                  animationDuration: `${2.6 + ((i * 7) % 5) * 0.32}s`,
+                  transform: `scale(${0.7 + ((i * 3) % 5) * 0.16})`,
+                }}
+              />
+            ))}
+          </span>
+          {slide.avatar ? (
+            <span className="snffl-wstory-crowned">
+              <span className="snffl-wstory-crown" aria-hidden>
+                &#9819;
+              </span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className="snffl-wstory-avatar" src={slide.avatar} alt="" />
+            </span>
+          ) : null}
           <span className="snffl-wstory-kicker">Manager of the week</span>
           <strong className="snffl-wstory-name">{slide.team}</strong>
           {slide.manager && slide.manager !== slide.team ? (
@@ -161,11 +238,36 @@ function Slide({ slide }: { slide: StorySlide }) {
           {caption(slide.detail, slide.value) ? (
             <p className="snffl-wstory-line">{caption(slide.detail, slide.value)}</p>
           ) : null}
+          {slide.star ? (
+            <span className="snffl-wstory-star">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className="snffl-wstory-star-face" src={slide.star.headshot} alt="" />
+              <span className="snffl-wstory-star-body">
+                <strong>{slide.star.name}</strong>
+                <span className="snffl-numeric">{slide.star.points.toFixed(2)} carried it</span>
+              </span>
+            </span>
+          ) : null}
         </div>
       );
     case 'shart':
       return (
         <div className="snffl-wstory-card snffl-wstory-shart">
+          {/* The stink. Four plumes on different delays and drifts, rising
+              through the slide and dissipating, with the card itself swaying
+              very slightly so the whole thing feels unwell. */}
+          <span className="snffl-stink" aria-hidden>
+            {Array.from({ length: 5 }, (_, i) => (
+              <i
+                key={i}
+                style={{
+                  left: `${12 + i * 19}%`,
+                  animationDelay: `${i * 0.7}s`,
+                  animationDuration: `${3.4 + (i % 3) * 0.6}s`,
+                }}
+              />
+            ))}
+          </span>
           {/* The stamp, per the brief. */}
           <span className="snffl-wstory-stamp" aria-hidden>
             Shart
@@ -178,6 +280,12 @@ function Slide({ slide }: { slide: StorySlide }) {
           <strong className="snffl-wstory-huge snffl-numeric">{slide.value.toFixed(2)}</strong>
           {caption(slide.detail, slide.value) ? (
             <p className="snffl-wstory-line">{caption(slide.detail, slide.value)}</p>
+          ) : null}
+          {slide.star ? (
+            <p className="snffl-wstory-line snffl-wstory-cope">
+              Best on the roster: {slide.star.name},{' '}
+              <b className="snffl-numeric">{slide.star.points.toFixed(2)}</b>.
+            </p>
           ) : null}
         </div>
       );

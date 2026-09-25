@@ -173,6 +173,12 @@ export default async function HomePage() {
       <Chrome section="Home" week={week} />
       <LiveRefresh live={liveNow} week={week} />
       <main className="snffl-page">
+        {/* The week's story arrives as a ribbon rather than a widget: it drops
+            in from under the crawl a couple of seconds after the page settles
+            and pushes everything below it down to make room, so it reads as
+            something that just landed rather than another row in the column. */}
+        <WeekStoryButton slides={storySlides} />
+
         {/* Manager stories: each manager's clips from the last finished week,
             played as a vertical story. */}
         <section className="snffl-home-section">
@@ -231,12 +237,6 @@ export default async function HomePage() {
                 )
               )}
             />
-          </HomeWidget>
-        ) : null}
-
-        {storySlides.length ? (
-          <HomeWidget title="The Week">
-            <WeekStoryButton slides={storySlides} />
           </HomeWidget>
         ) : null}
 

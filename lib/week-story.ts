@@ -7,12 +7,35 @@
 // Every slide is data, not markup, so the same five drive the on screen story
 // and the share images without either one restating the other.
 
-import { getHighlights, stillFor, type Highlight } from './highlights.ts';
-import { getSeasonResults, teamByRoster, teams } from './league.ts';
+import {
+  espnClipId,
+  getHighlights,
+  isEspnClip,
+  stillFor,
+  type Highlight,
+} from './highlights.ts';
+import { getSeasonResults, getWeekGames, teamByRoster, teams } from './league.ts';
 import { awardsForWeek, type Award } from './trophies.ts';
 
+/**
+ * The picture behind a slide.
+ *
+ * A still always, and an ESPN clip id where the backdrop came from a playable
+ * one, so the slide can run the footage rather than a frame of it. Black
+ * behind a slide about somebody's week is the one background that says
+ * nothing about it.
+ */
+export type Backdrop = { still: string | null; espnId: string | null };
+
 export type StorySlide =
-  | { kind: 'intro'; week: number; games: number; topScore: number; topTeam: string }
+  | {
+      kind: 'intro';
+      week: number;
+      games: number;
+      topScore: number;
+      topTeam: string;
+      art: Backdrop;
+    }
   | {
       kind: 'motw';
       week: number;
@@ -21,6 +44,10 @@ export type StorySlide =
       manager: string;
       value: number;
       detail: string;
+      art: Backdrop;
+      avatar: string | null;
+      /** The starter who actually did it, for the slide to celebrate. */
+      star: { name: string; headshot: string; points: number } | null;
     }
   | {
       kind: 'shart';
@@ -30,6 +57,11 @@ export type StorySlide =
       manager: string;
       value: number;
       detail: string;
+      art: Backdrop;
+      avatar: string | null;
+      /** His best starter, which on this slide is the joke rather than the
+          boast: this was the most anyone on the roster managed. */
+      star: { name: string; headshot: string; points: number } | null;
     }
   | {
       kind: 'play';
@@ -39,11 +71,13 @@ export type StorySlide =
       points: number | null;
       manager: string | null;
       clipId: string;
+      art: Backdrop;
     }
   | {
       kind: 'shakeup';
       week: number;
       movers: { rosterId: number; team: string; manager: string; from: number; to: number }[];
+      art: Backdrop;
     };
 
 /** Seeds from results alone, sorted the way the standings page sorts. */
@@ -71,6 +105,36 @@ const named = (rosterId: number) => {
   return { team: team?.teamName ?? `Roster ${rosterId}`, manager: team?.manager ?? '' };
 };
 
+/**
+ * A slide's picture, with the manager's own face as the floor.
+ *
+ * Clips are the good case but the league does not always have one: ESPN
+ * prunes them within days and some weeks yield none at all. A slide with no
+ * football behind it falls back to the manager's avatar, blown up and blurred
+ * by the viewer, which is still something about him rather than black.
+ */
+const artOf = (clip: Highlight | null | undefined, avatar: string | null = null): Backdrop => ({
+  still: (clip ? stillFor(clip) : null) ?? avatar,
+  espnId: clip && isEspnClip(clip.id) ? espnClipId(clip.id) : null,
+});
+
+const avatarOf = (rosterId: number) => teamByRoster(rosterId)?.avatarUrl ?? null;
+
+/**
+ * A clip belonging to this manager, preferring one with a picture.
+ *
+ * A slide about somebody's week should have that manager's football behind
+ * it, not a stock frame. Where he has no clip at all the caller falls back to
+ * the week's best, which is at least this league's football.
+ */
+function clipFor(clips: Highlight[], rosterId: number): Highlight | null {
+  const his = clips.filter((clip) => Number(clip.ownerTeamId) === rosterId);
+  const withArt = his.filter((clip) => stillFor(clip));
+  const pool = withArt.length ? withArt : his;
+  if (!pool.length) return null;
+  return [...pool].sort((a, b) => (b.fantasyPoints ?? 0) - (a.fantasyPoints ?? 0))[0];
+}
+
 /** The pick of the week's clips: the one worth the most points. */
 function bestPlay(clips: Highlight[]): Highlight | null {
   const scored = clips.filter((clip) => clip.fantasyPoints != null);
@@ -88,16 +152,19 @@ function bestPlay(clips: Highlight[]): Highlight | null {
 export async function weekStory(week: number): Promise<StorySlide[]> {
   if (week < 1) return [];
 
-  const [awards, results, clips] = await Promise.all([
+  const [awards, results, clips, games] = await Promise.all([
     awardsForWeek(week).catch((): Award[] => []),
     getSeasonResults(week).catch(() => []),
     getHighlights(week).catch((): Highlight[] => []),
+    getWeekGames(week).catch(() => []),
   ]);
   if (!awards.length) return [];
 
   const slides: StorySlide[] = [];
   const thisWeek = results.filter((row) => row.week === week);
   const top = [...thisWeek].sort((a, b) => b.points - a.points)[0];
+  // The week's best clip, used wherever a slide has no manager of its own.
+  const house = bestPlay(clips);
 
   slides.push({
     kind: 'intro',
@@ -105,19 +172,50 @@ export async function weekStory(week: number): Promise<StorySlide[]> {
     games: thisWeek.length / 2,
     topScore: top?.points ?? 0,
     topTeam: top ? named(top.rosterId).team : '',
+    art: artOf(top ? (clipFor(clips, top.rosterId) ?? house) : house, top ? avatarOf(top.rosterId) : null),
   });
 
-  for (const kind of ['motw', 'shart'] as const) {
-    const award = awards.find((a) => a.kind === kind);
-    if (!award) continue;
-    slides.push({
-      kind,
-      week,
-      rosterId: award.rosterId,
-      ...named(award.rosterId),
-      value: award.value,
-      detail: award.detail,
-    });
+  // The top starter on a roster this week, which is who a celebration is
+  // actually about.
+  const starFor = (rosterId: number) => {
+    for (const game of games) {
+      for (const side of [game.away, game.home]) {
+        if (side.rosterId !== rosterId) continue;
+        const best = [...side.lineup].sort((a, b) => b.points - a.points)[0];
+        if (!best) return null;
+        return { name: best.name, headshot: best.headshot, points: best.points };
+      }
+    }
+    return null;
+  };
+
+  for (const award of awards) {
+    if (award.kind === 'motw') {
+      slides.push({
+        kind: 'motw',
+        week,
+        rosterId: award.rosterId,
+        ...named(award.rosterId),
+        value: award.value,
+        detail: award.detail,
+        art: artOf(clipFor(clips, award.rosterId) ?? house, avatarOf(award.rosterId)),
+        avatar: avatarOf(award.rosterId),
+        star: starFor(award.rosterId),
+      });
+    }
+    if (award.kind === 'shart') {
+      slides.push({
+        kind: 'shart',
+        week,
+        rosterId: award.rosterId,
+        ...named(award.rosterId),
+        value: award.value,
+        detail: award.detail,
+        art: artOf(clipFor(clips, award.rosterId) ?? house, avatarOf(award.rosterId)),
+        avatar: avatarOf(award.rosterId),
+        star: starFor(award.rosterId),
+      });
+    }
   }
 
   const play = bestPlay(clips);
@@ -130,6 +228,7 @@ export async function weekStory(week: number): Promise<StorySlide[]> {
       points: play.fantasyPoints ?? null,
       manager: play.ownerTeamId ? (named(Number(play.ownerTeamId)).manager ?? null) : null,
       clipId: play.id,
+      art: artOf(play),
     });
   }
 
@@ -147,7 +246,14 @@ export async function weekStory(week: number): Promise<StorySlide[]> {
     .filter((m) => m.from && m.to && m.from !== m.to)
     .sort((a, b) => Math.abs(b.from - b.to) - Math.abs(a.from - a.to))
     .slice(0, 4);
-  if (movers.length) slides.push({ kind: 'shakeup', week, movers });
+  if (movers.length) {
+    slides.push({
+      kind: 'shakeup',
+      week,
+      movers,
+      art: artOf(clipFor(clips, movers[0].rosterId) ?? house, avatarOf(movers[0].rosterId)),
+    });
+  }
 
   return slides;
 }

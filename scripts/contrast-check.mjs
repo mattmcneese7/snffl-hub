@@ -213,6 +213,8 @@ const LITERAL_PAIRS = [
   ['#ffdde0', '#3e1e2e', 4.5, 'red tinted chip on a panel'],
   ['#d6ecff', '#183250', 4.5, 'blue tinted chip on a panel'],
   ['#ffeecb', '#3e382c', 4.5, 'amber tinted chip on a panel'],
+  // The week story button: the same tint over the page ground rather than the dock.
+  ['#f2f5fa', '#161f2a', 4.5, 'week story button label'],
   // The active tab's turquoise, at its lightest corner, over the dock glass.
   ['#f2f5fa', '#243946', 4.5, 'active tab label on the logo turquoise'],
   ['#a9b3c4', '#243946', 4.5, 'inactive tab label beside it'],

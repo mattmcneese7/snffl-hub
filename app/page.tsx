@@ -47,6 +47,8 @@ import { publishedWeeks, readIssue } from '@/lib/rag';
 import { getTrades } from '@/lib/trades';
 import { photosForWeek } from '@/lib/game-photos';
 import FeedDigest from '@/components/FeedDigest';
+import Squirtfucius from '@/components/Squirtfucius';
+import { leagueVerdicts, oracleFor } from '@/lib/squirtfucius';
 import { buildFeed } from '@/lib/feed-view';
 import type { Game, GameSide } from '@/lib/types';
 
@@ -148,6 +150,10 @@ export default async function HomePage() {
   const [ragClips, ragFeatured] = latestRagWeek
     ? await Promise.all([getHighlights(latestRagWeek, 200), featuredPlayers(latestRagWeek)])
     : [[], []];
+
+  // Squirtfucius Says: the week read forwards, before anybody can fix it.
+  const oracle = await oracleFor(week);
+  const sayings = leagueVerdicts(oracle.sides, oracle.input);
 
   const feature = matchupOfTheWeek(games);
   const topChuggers = chugs.filter((c) => c.count > 0).slice(0, 5);
@@ -316,6 +322,19 @@ export default async function HomePage() {
                 rather than only while a game is on. */}
             <HomeWidget title="The Feed" href="/feed" linkLabel="Everything">
               <FeedDigest items={buildFeed(livePosts, []).slice(0, 5)} />
+            </HomeWidget>
+
+            <HomeWidget title="Squirtfucius Says" href={`/matchups/${week}`} linkLabel="Every lineup">
+              <div className="snffl-card">
+                <Squirtfucius verdicts={sayings} week={week} limit={4} showWeek />
+              </div>
+              <SourceStrip
+                items={[
+                  { source: 'sleeper', label: 'Projections' },
+                  { source: 'draftsharks', label: 'Floors and ceilings' },
+                  { source: 'draftkings', label: 'Game totals' },
+                ]}
+              />
             </HomeWidget>
 
             <HomeWidget title="Power Rankings" href="/power-rankings">

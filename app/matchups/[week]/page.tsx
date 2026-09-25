@@ -3,7 +3,9 @@ import LiveRefresh from '@/components/LiveRefresh';
 import NflSlate from '@/components/NflSlate';
 import ResultBug from '@/components/ResultBug';
 import { SourceStrip } from '@/components/SourceMark';
+import Squirtfucius from '@/components/Squirtfucius';
 import WeekSelector from '@/components/WeekSelector';
+import { leagueVerdicts, oracleFor } from '@/lib/squirtfucius';
 import { getWeekGames } from '@/lib/league';
 import {
   getMatchupContext,
@@ -27,7 +29,13 @@ export function generateStaticParams() {
 export default async function WeekPage({ params }: { params: Promise<{ week: string }> }) {
   const { week: raw } = await params;
   const week = Math.min(17, Math.max(1, Number(raw) || 1));
-  const [games, ctx] = await Promise.all([getWeekGames(week), getMatchupContext(week)]);
+  const [games, ctx, oracle] = await Promise.all([
+    getWeekGames(week),
+    getMatchupContext(week),
+    oracleFor(week),
+  ]);
+  // One saying per manager, the mistakes he can still fix first.
+  const sayings = leagueVerdicts(oracle.sides, oracle.input);
   // ESPN rather than the game status: status is derived from week arithmetic,
   // so it can read live on a week that simply has points on the board. Whether
   // a ball is actually in play is the honest gate for a 30 second poll.
@@ -42,6 +50,25 @@ export default async function WeekPage({ params }: { params: Promise<{ week: str
         <section>
           <WeekSelector active={week} hrefFor={(w) => `/matchups/${w}`} />
         </section>
+
+        {sayings.length ? (
+          <section>
+            <div className="snffl-block-heading">
+              <h2 className="snffl-headline">Squirtfucius Says</h2>
+              <span className="snffl-block-heading-link">All 14 lineups</span>
+            </div>
+            <div className="snffl-card">
+              <Squirtfucius verdicts={sayings} week={week} />
+            </div>
+            <SourceStrip
+              items={[
+                { source: 'sleeper', label: 'Projections' },
+                { source: 'draftsharks', label: 'Floors and ceilings' },
+                { source: 'draftkings', label: 'Game totals' },
+              ]}
+            />
+          </section>
+        ) : null}
 
         <section>
           <div className="snffl-block-heading">

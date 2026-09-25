@@ -577,3 +577,43 @@
 /* On Home the rows sit inside a widget, so they carry no outer frame. */
 .snffl-feed-digest .snffl-feed-row { padding: 10px 12px; }
 .snffl-feed-digest .snffl-feed-row-title { font-size: 13px; }
+
+/* ---------- Squirtfucius Says ---------- */
+
+.snffl-oracle { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+.snffl-oracle-row {
+  display: grid;
+  gap: 5px;
+  padding: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.snffl-oracle-row:last-child { border-bottom: 0; }
+.snffl-oracle-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.snffl-oracle-tag {
+  padding: 2px 7px;
+  border-radius: 999px;
+  font: 800 10px/1.5 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--surface);
+  color: var(--ink-secondary);
+}
+/* The two a manager can still act on carry weight; the rest are observations. */
+.snffl-oracle-tag-sit { background: var(--bad-chip); color: var(--on-chip); }
+.snffl-oracle-tag-bench { background: var(--bad-chip); color: var(--on-chip); }
+.snffl-oracle-tag-thin { background: var(--pending-chip); color: var(--on-chip); }
+.snffl-oracle-tag-lock { background: var(--good-chip); color: var(--on-chip); }
+.snffl-oracle-manager { font-size: 13px; font-weight: 800; }
+.snffl-oracle-week {
+  margin-left: auto;
+  font: 700 10px/1.2 var(--mono);
+  color: var(--muted);
+  white-space: nowrap;
+}
+.snffl-oracle-saying {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink-secondary);
+  text-wrap: pretty;
+}

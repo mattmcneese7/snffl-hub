@@ -13,6 +13,24 @@
      over the brightest stadium glow behind them. scripts/contrast-check.mjs
      composites each pair over the glows at their peak to prove it. */
   --bg: #060a13;
+
+  /* Three materials, and a component declares which one it is.
+     
+     glass     translucent, hairline, blurred. Controls only: chips, filters,
+               the dock, buttons laid over a photograph. It means "this floats
+               over something", so it is only used where something is under it.
+     panel     a solid step off the ground, no rim at all. Content: sections,
+               lists, stat groups. Separation is value, not a drawn edge.
+     photo     the image runs to the card's edges and the metadata floats on it.
+     
+     Every panel used to be glass with a lit rim, which is why a trophy badge
+     and a whole section were made of identical stuff and nothing led. */
+  --panel: #0e1524;
+  --panel-raised: #141d30;
+  --panel-sunken: #0a101c;
+  --glass: rgba(255, 255, 255, 0.07);
+  --glass-line: rgba(255, 255, 255, 0.13);
+
   --card: rgba(16, 22, 36, 0.76);
   --card-strong: rgba(20, 28, 46, 0.9);
   /* Inner fills: score boxes, table heads. Laid over a card, not the ground. */

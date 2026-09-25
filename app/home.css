@@ -17,26 +17,41 @@
 }
 .snffl-rag-hero::-webkit-scrollbar { display: none; }
 
+/* A photo card: the picture fills it and the story sits on the picture. It
+   used to be a 132 pixel strip of photograph with a panel of text bolted
+   underneath, which wastes the one thing the Rag now has plenty of, real
+   photographs of the week's games. */
 .snffl-rag-hero-card {
+  position: relative;
   flex: 0 0 86%;
+  aspect-ratio: 4 / 5;
   scroll-snap-align: center;
-  display: grid;
-  grid-template-rows: 132px auto;
-  background: var(--card);
-  border: 1px solid var(--line);
+  display: block;
   color: inherit;
   text-decoration: none;
   overflow: hidden;
 }
 .snffl-rag-hero-lead { flex-basis: 92%; }
 
-.snffl-rag-hero-art {
-  /* Placeholder until Checkpoint 8 supplies real highlight stills. */
-  background: linear-gradient(120deg, var(--ink) 0 55%, var(--surface) 55% 100%);
-  border-bottom: 1px solid var(--line);
+.snffl-rag-hero-art { position: absolute; inset: 0; }
+/* The floor the headline stands on, so it reads whatever the photograph is
+   doing behind it. */
+.snffl-rag-hero-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(4, 7, 13, 0.5) 0%, rgba(4, 7, 13, 0.08) 34%, rgba(4, 7, 13, 0.72) 72%, rgba(4, 7, 13, 0.94) 100%);
 }
 
-.snffl-rag-hero-body { display: grid; gap: 4px; padding: 12px; }
+.snffl-rag-hero-body {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  align-content: end;
+  gap: 6px;
+  height: 100%;
+  padding: 14px;
+}
 .snffl-rag-hero-headline {
   font-family: var(--font-archivo);
   font-weight: 900;
@@ -207,10 +222,19 @@
 
 /* A real highlight still sits over the gradient placeholder, so a frame that
    fails to load leaves the gradient rather than a gap. Brief Section 2. */
-.snffl-rag-hero-art { position: relative; overflow: hidden; }
+.snffl-rag-hero-art { overflow: hidden; }
 .snffl-rag-hero-art img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
+
+/* On a photograph the category is a chip, not a coloured caption: it needs its
+   own ground to sit on. */
+.snffl-rag-hero-kicker { justify-self: start; }
+.snffl-rag-hero-card .snffl-rag-hero-headline,
+.snffl-rag-hero-card .snffl-rag-hero-deck,
+.snffl-rag-hero-card .snffl-rag-meta { color: #ffffff; }
+.snffl-rag-hero-card .snffl-rag-hero-deck { color: rgba(255, 255, 255, 0.82); }
+.snffl-rag-hero-card .snffl-rag-meta { color: rgba(255, 255, 255, 0.66); }

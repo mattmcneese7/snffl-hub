@@ -48,7 +48,7 @@ export default function RagHero({
             <StoryArtView art={stills[article.slug]} />
           </span>
           <span className="snffl-rag-hero-body">
-            <span className="snffl-rag-category">{article.category}</span>
+            <span className="snffl-photo-chip snffl-rag-hero-kicker">{article.category}</span>
             <span className="snffl-rag-hero-headline">{article.headline}</span>
             {article.deck ? <span className="snffl-rag-hero-deck">{article.deck}</span> : null}
             <span className="snffl-rag-meta">

@@ -287,10 +287,12 @@
   align-items: center;
   gap: 4px;
   min-height: 30px;
-  padding: 0 10px;
+  padding: 0 12px;
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
   border-radius: var(--radius-pill);
-  background: var(--card);
-  border: 1px solid var(--line);
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
   color: var(--ink);
   font: inherit;
   font-size: 12px;

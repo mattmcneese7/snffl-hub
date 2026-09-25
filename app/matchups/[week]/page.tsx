@@ -3,9 +3,9 @@ import LiveRefresh from '@/components/LiveRefresh';
 import NflSlate from '@/components/NflSlate';
 import ResultBug from '@/components/ResultBug';
 import { SourceStrip } from '@/components/SourceMark';
-import Squirtfucius from '@/components/Squirtfucius';
+import SquirtSays from '@/components/SquirtSays';
 import WeekSelector from '@/components/WeekSelector';
-import { leagueVerdicts, oracleFor } from '@/lib/squirtfucius';
+import { leagueVerdicts, oracleFor } from '@/lib/squirt-says';
 import { getWeekGames } from '@/lib/league';
 import {
   getMatchupContext,
@@ -53,12 +53,8 @@ export default async function WeekPage({ params }: { params: Promise<{ week: str
 
         {sayings.length ? (
           <section>
-            <div className="snffl-block-heading">
-              <h2 className="snffl-headline">Squirtfucius Says</h2>
-              <span className="snffl-block-heading-link">All 14 lineups</span>
-            </div>
             <div className="snffl-card">
-              <Squirtfucius verdicts={sayings} week={week} />
+              <SquirtSays verdicts={sayings} week={week} />
             </div>
             <SourceStrip
               items={[

@@ -225,20 +225,14 @@ export default function SiteChrome({
             className={`snffl-app-mark${pathname === '/' ? ' snffl-app-mark-on' : ''}`}
             aria-label="Home"
           >
-            {/* The week arcs over the mark rather than sitting beside it, so
-                it reads as a rim on the button and not a second label. */}
-            <svg className="snffl-app-week" viewBox="0 0 100 54" aria-hidden>
-              <path id="snffl-week-arc" d="M8 50 A 42 42 0 0 1 92 50" fill="none" />
-              <text>
-                <textPath href="#snffl-week-arc" startOffset="50%" textAnchor="middle">
-                  WEEK {week}
-                </textPath>
-              </text>
-            </svg>
             <span className="snffl-app-mark-disc">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/logo-mark-v2-128.png" alt="" />
             </span>
+            {/* The week reads as this button's label, on the same line as every
+                other tab's. Arced over the rim it was unreadable: nine pixel
+                type, curved, over a dark textured disc. */}
+            <span className="snffl-app-week">WEEK {week}</span>
           </Link>
 
           {TABS.slice(2).map((tab) => (

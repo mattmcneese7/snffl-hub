@@ -578,18 +578,18 @@
 .snffl-feed-digest .snffl-feed-row { padding: 10px 12px; }
 .snffl-feed-digest .snffl-feed-row-title { font-size: 13px; }
 
-/* ---------- Squirtfucius Says ---------- */
+/* ---------- Squirt Says ---------- */
 
-.snffl-oracle { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
-.snffl-oracle-row {
+.snffl-squirt { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+.snffl-squirt-row {
   display: grid;
   gap: 4px;
   padding: 12px;
   border-bottom: 1px solid var(--line);
 }
-.snffl-oracle-row:last-child { border-bottom: 0; }
-.snffl-oracle-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.snffl-oracle-tag {
+.snffl-squirt-row:last-child { border-bottom: 0; }
+.snffl-squirt-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.snffl-squirt-tag {
   padding: 2px 7px;
   border-radius: var(--radius-pill);
   font: 800 10px/1.5 var(--mono);
@@ -599,21 +599,60 @@
   color: var(--ink-secondary);
 }
 /* The two a manager can still act on carry weight; the rest are observations. */
-.snffl-oracle-tag-sit { background: var(--bad-chip); color: var(--on-chip); }
-.snffl-oracle-tag-bench { background: var(--bad-chip); color: var(--on-chip); }
-.snffl-oracle-tag-thin { background: var(--pending-chip); color: var(--on-chip); }
-.snffl-oracle-tag-lock { background: var(--good-chip); color: var(--on-chip); }
-.snffl-oracle-manager { font-size: 13px; font-weight: 800; }
-.snffl-oracle-week {
+.snffl-squirt-tag-sit { background: var(--bad-chip); color: var(--on-chip); }
+.snffl-squirt-tag-bench { background: var(--bad-chip); color: var(--on-chip); }
+.snffl-squirt-tag-thin { background: var(--pending-chip); color: var(--on-chip); }
+.snffl-squirt-tag-lock { background: var(--good-chip); color: var(--on-chip); }
+.snffl-squirt-manager { font-size: 13px; font-weight: 800; }
+.snffl-squirt-week {
   margin-left: auto;
   font: 700 10px/1.2 var(--mono);
   color: var(--muted);
   white-space: nowrap;
 }
-.snffl-oracle-saying {
+.snffl-squirt-saying {
   margin: 0;
   font-size: 13px;
   line-height: 1.45;
   color: var(--ink-secondary);
   text-wrap: pretty;
+}
+
+/* Squirt at the head of his own section: the mascot speaking, not a list under
+   a heading that borrows his name. */
+.snffl-squirt-says { display: grid; }
+.snffl-squirt-head {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-3);
+  border-bottom: 1px solid var(--line);
+}
+.snffl-squirt-face {
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(120% 120% at 50% 15%, #16243c 0%, #070c16 70%);
+  border: 1px solid rgba(120, 206, 255, 0.3);
+  box-shadow: 0 0 16px rgba(76, 194, 255, 0.22);
+}
+.snffl-squirt-face img { width: 32px; height: 32px; display: block; object-fit: contain; }
+.snffl-squirt-title { display: grid; gap: 2px; min-width: 0; }
+.snffl-squirt-title strong {
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 75%;
+  font-size: 19px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.snffl-squirt-title span {
+  font: 700 10px/1.2 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
 }

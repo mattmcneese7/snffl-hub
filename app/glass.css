@@ -100,8 +100,9 @@
 :root {
   --strip-h: 0px;
   --ticker-h: 30px;
-  /* Half the disc stands above the bar, and the arc sits over that. */
-  --mark-lift: 29px;
+  /* Where every tab's label sits above the bar's bottom edge. The mark button
+     hangs its week on the same line. */
+  --tab-label-bottom: 11px;
   /* Two bands, read by the body padding that clears them. */
   --ticker-stack-h: calc(var(--ticker-h) * 2);
 }
@@ -199,7 +200,7 @@ body { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
   /* Room above the bar for the mark to rise into, so the scrim carries the
      arced week rather than leaving it to float over whatever photograph the
      page happens to have scrolled to. */
-  padding-top: calc(var(--mark-lift) + 48px);
+  padding-top: 34px;
   padding-bottom: env(safe-area-inset-bottom, 0px);
   pointer-events: none;
 }
@@ -417,19 +418,18 @@ h3,
   position: absolute;
   z-index: 2;
   left: 50%;
-  top: 0;
-  /* The disc straddles the bar's edge, not the whole block. Centring the block
-     put the arc's height into the sum and pushed the disc down inside the bar,
-     so half of it sat below the edge and half of the jut disappeared. */
-  transform: translate(-50%, calc(-100% + var(--mark-lift)));
+  /* Anchored to the same line the tab labels sit on, so the week reads as this
+     button's label and the disc rises out of the bar above it. */
+  bottom: var(--tab-label-bottom);
+  transform: translateX(-50%);
   display: grid;
   justify-items: center;
-  gap: 0;
+  gap: 3px;
   text-decoration: none;
 }
 .snffl-app-mark-disc {
-  width: 58px;
-  height: 58px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -440,7 +440,7 @@ h3,
     0 0 18px rgba(76, 194, 255, 0.28),
     0 10px 24px rgba(0, 0, 0, 0.55);
 }
-.snffl-app-mark-disc img { width: 40px; height: 40px; display: block; object-fit: contain; }
+.snffl-app-mark-disc img { width: 34px; height: 34px; display: block; object-fit: contain; }
 .snffl-app-mark-on .snffl-app-mark-disc {
   border-color: rgba(140, 216, 255, 0.85);
   box-shadow:
@@ -451,23 +451,12 @@ h3,
 
 /* The week, set along the rim above the mark. */
 .snffl-app-week {
-  width: 86px;
-  height: 44px;
-  margin-bottom: -10px;
-  overflow: visible;
+  font: 700 10px/1 var(--mono);
+  letter-spacing: 0.06em;
+  color: var(--ink-secondary);
+  white-space: nowrap;
 }
-.snffl-app-week text {
-  fill: var(--ink-secondary);
-  font-family: var(--mono);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  /* It sits over the page, not over a panel, so it carries its own ground. */
-  paint-order: stroke;
-  stroke: rgba(6, 10, 19, 0.92);
-  stroke-width: 4px;
-  stroke-linejoin: round;
-}
+.snffl-app-mark-on .snffl-app-week { color: var(--ink); }
 
 .snffl-intro {
   position: fixed;

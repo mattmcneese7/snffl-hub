@@ -1,4 +1,4 @@
-// Squirtfucius Says, Checkpoint 12c.
+// Squirt Says, Checkpoint 12c.
 //
 // C'mon Man judges a week once it cannot change. This is the same arithmetic
 // run forwards, before kickoff, when the manager can still do something about
@@ -49,7 +49,7 @@ export type Verdict = {
   rosterId: number;
   /** The manager's first name, for the copy. */
   manager: string;
-  /** What Squirtfucius says. One sentence, always true, always numbered. */
+  /** What Squirt says. One sentence, always true, always numbered. */
   saying: string;
   /** The player it is about, and the one it would swap in. */
   player: LineupSlot;
@@ -295,7 +295,7 @@ function topVerdict(side: GameSide, manager: string, input: OracleInput): Verdic
   };
 }
 
-/** Everything Squirtfucius has to say about one lineup, worst first. */
+/** Everything Squirt has to say about one lineup, worst first. */
 export function verdictsFor(side: GameSide, manager: string, input: OracleInput): Verdict[] {
   return [
     sitVerdict(side, manager, input),

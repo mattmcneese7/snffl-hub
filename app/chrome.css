@@ -237,7 +237,7 @@ body { padding-bottom: 76px; }
    stretched the row to 96 pixels around 60 pixels of tabs, and the disc
    floated somewhere inside that dead space. */
 .snffl-tabbar {
-  --tabbar-h: 56px;
+  --tabbar-h: 64px;
   position: relative;
   display: grid;
   grid-template-columns: repeat(5, 1fr);

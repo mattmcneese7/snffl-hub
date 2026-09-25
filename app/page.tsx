@@ -47,8 +47,8 @@ import { publishedWeeks, readIssue } from '@/lib/rag';
 import { getTrades } from '@/lib/trades';
 import { photosForWeek } from '@/lib/game-photos';
 import FeedDigest from '@/components/FeedDigest';
-import Squirtfucius from '@/components/Squirtfucius';
-import { leagueVerdicts, oracleFor } from '@/lib/squirtfucius';
+import SquirtSays, { SquirtHead } from '@/components/SquirtSays';
+import { leagueVerdicts, oracleFor } from '@/lib/squirt-says';
 import { buildFeed } from '@/lib/feed-view';
 import type { Game, GameSide } from '@/lib/types';
 
@@ -151,7 +151,7 @@ export default async function HomePage() {
     ? await Promise.all([getHighlights(latestRagWeek, 200), featuredPlayers(latestRagWeek)])
     : [[], []];
 
-  // Squirtfucius Says: the week read forwards, before anybody can fix it.
+  // Squirt Says: the week read forwards, before anybody can fix it.
   const oracle = await oracleFor(week);
   const sayings = leagueVerdicts(oracle.sides, oracle.input);
 
@@ -324,9 +324,13 @@ export default async function HomePage() {
               <FeedDigest items={buildFeed(livePosts, []).slice(0, 5)} />
             </HomeWidget>
 
-            <HomeWidget title="Squirtfucius Says" href={`/matchups/${week}`} linkLabel="Every lineup">
+            <HomeWidget
+              title={<SquirtHead count={Math.min(sayings.length, 4)} week={week} />}
+              href={`/matchups/${week}`}
+              linkLabel="Every lineup"
+            >
               <div className="snffl-card">
-                <Squirtfucius verdicts={sayings} week={week} limit={4} showWeek />
+                <SquirtSays verdicts={sayings} week={week} limit={4} head={false} />
               </div>
               <SourceStrip
                 items={[

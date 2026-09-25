@@ -134,7 +134,7 @@ Decisions taken while building the watcher that the brief does not specify.
 ## Night Glass and the live board, Checkpoint 12a
 
 Scope beyond the brief, approved by Matt in order 12a (Night Glass site wide,
-matchup redo, lines), 12b (speed), 12c (Squirtfucius Says rankings), 12d (Rag
+matchup redo, lines), 12b (speed), 12c (Squirt Says rankings), 12d (Rag
 2.0).
 
 - **Night Glass replaces the Checkpoint 2 frame.** Token names are unchanged, so
@@ -289,7 +289,7 @@ the safest version of every dark app ever made. Matt is supplying the
 reference. Until then, Day Game stays and both themes keep passing the contrast
 gate.
 
-## Squirtfucius Says, Checkpoint 12c
+## Squirt Says, Checkpoint 12c
 
 The week read forwards. C'mon Man judges a lineup once it cannot change; this
 is the same arithmetic run before kickoff, while the manager can still act.

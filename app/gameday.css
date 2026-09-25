@@ -3,17 +3,13 @@
    few fixed colors are brand fills with their own contrast entries in
    scripts/contrast-check.mjs. */
 
-/* ---------- Theme-specific artwork ---------- */
+/* ---------- Source artwork ---------- */
 
-/* Scoped under :root so these outrank a component's own display rule, which
-   otherwise showed both DraftKings logos side by side. */
-:root .snffl-theme-dark-only { display: none; }
-:root[data-theme='dark'] .snffl-theme-light-only { display: none; }
-:root[data-theme='dark'] .snffl-theme-dark-only { display: inline-block; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) .snffl-theme-light-only { display: none; }
-  :root:not([data-theme='light']) .snffl-theme-dark-only { display: inline-block; }
-}
+/* One theme, so a source shows its dark variant and nothing else. Scoped under
+   :root so this outranks a component's own display rule, which otherwise
+   showed both DraftKings logos side by side. */
+:root .snffl-theme-light-only { display: none; }
+:root .snffl-theme-dark-only { display: inline-block; }
 
 /* ---------- Source marks ---------- */
 

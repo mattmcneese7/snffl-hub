@@ -28,9 +28,9 @@ function Mark({ source }: { source: Source }) {
       return (
         <>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="snffl-source-logo snffl-source-wide snffl-theme-light-only" src="/sources/draftkings-light.svg" alt="" />
+          
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="snffl-source-logo snffl-source-wide snffl-theme-dark-only" src="/sources/draftkings-dark.svg" alt="" />
+          <img className="snffl-source-logo snffl-source-wide" src="/sources/draftkings-dark.svg" alt="" />
         </>
       );
     case 'draftsharks':

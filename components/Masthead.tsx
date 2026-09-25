@@ -12,16 +12,10 @@ export default function Masthead() {
   return (
     <span className="snffl-masthead">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        className="snffl-masthead-art snffl-masthead-art-light"
-        src="/squirtrag-masthead-light.svg"
-        alt="The SquirtRag"
-        width={314}
-        height={90}
-      />
+      
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        className="snffl-masthead-art snffl-masthead-art-dark"
+        className="snffl-masthead-art"
         src="/squirtrag-masthead-dark.svg"
         alt="The SquirtRag"
         width={314}

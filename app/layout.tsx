@@ -68,38 +68,20 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#e6ecf4' },
-    { media: '(prefers-color-scheme: dark)', color: '#060a13' },
-  ],
+  // One theme, so one colour. The browser chrome matches the app rather than
+  // the phone's setting.
+  themeColor: '#060a13',
 };
-
-// Runs before paint so a saved theme never flashes the wrong colors.
-const themeScript = `
-try {
-  var t = localStorage.getItem('snffl.theme');
-  if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
-} catch (e) {}
-`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        {/* In head, as a plain inline script: it runs before first paint so a
-            saved theme never flashes, and head is outside the tree React
-            re-renders on navigation. next/script with beforeInteractive in
-            body was the source of the hydration mismatch in production
-            (React error 418). */}
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
       <body
         className={`${archivo.variable} ${martianMono.variable} ${sourceSerif.variable} ${permanentMarker.variable}`}
       >
         {/* The stadium-light field every glass panel floats over. Fixed and
             painted once as gradients rather than blurred shapes, which a phone
-            GPU would otherwise recomposite on every scroll frame. After the
-            theme script, which has to stay the first thing in body. */}
+            GPU would otherwise recomposite on every scroll frame. */}
         <div className="snffl-field" aria-hidden />
         {children}
         {/* Plays once a session, over the app rather than instead of it. */}

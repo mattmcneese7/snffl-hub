@@ -20,12 +20,16 @@
 :root {
   --header-h: 56px;
   --strip-h: 28px;
+  /* Two bands of 28. Read by the body padding and the ticker's own offset. */
+  --ticker-stack-h: 56px;
+  --tabbar-h: 62px;
 }
 html.snffl-scrolled {
   --header-h: 46px;
 }
 
-body { padding-bottom: 76px; }
+/* Clears the tab bar and the ticker stack now sitting above it. */
+body { padding-bottom: calc(76px + var(--ticker-stack-h)); }
 
 .snffl-numeric {
   font-family: var(--font-archivo);
@@ -43,19 +47,30 @@ body { padding-bottom: 76px; }
   margin: 0;
 }
 
-/* ---------- Pinned header ---------- */
+/* ---------- Floating header ---------- */
 
+/* It floats rather than spanning the top. The full width bar plus a strip plus
+   two ticker bands spent a third of a phone screen on chrome before any
+   football; the header is now a single object over the page and the tickers
+   moved to the bottom, out of the way. */
 .snffl-header {
-  position: sticky;
-  top: 0;
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(calc(100vw - 20px), 560px);
   z-index: 60;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-items: center;
-  height: calc(var(--header-h) + env(safe-area-inset-top, 0px));
-  padding: env(safe-area-inset-top, 0px) 10px 0;
-  background: var(--card);
-  border-bottom: 1px solid var(--line);
+  height: var(--header-h);
+  padding: 0 12px;
+  border-radius: 18px;
+  background: var(--card-strong);
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  backdrop-filter: blur(28px) saturate(170%);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
   transition: height 0.18s ease;
 }
 
@@ -140,10 +155,14 @@ body { padding-bottom: 76px; }
 
 /* ---------- Stacked tickers ---------- */
 
+/* Pinned above the tab bar rather than under the header. Scores stay on screen
+   the whole time, which is the point of a ticker, without being the first
+   thing between the reader and the page. */
 .snffl-ticker-stack {
-  position: sticky;
-  top: calc(var(--header-h) + var(--strip-h) + env(safe-area-inset-top, 0px));
-  transition: top 0.18s ease;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px));
   z-index: 50;
 }
 
@@ -234,6 +253,7 @@ body { padding-bottom: 76px; }
 /* ---------- Bottom tab bar ---------- */
 
 .snffl-tabbar {
+  --tabbar-h: 62px;
   position: fixed;
   left: 0;
   right: 0;
@@ -275,7 +295,9 @@ body { padding-bottom: 76px; }
    title sits closer to the section above it than to its own content and reads
    as belonging to the wrong one. */
 .snffl-page {
-  padding: 14px;
+  /* The header floats above the page rather than sitting in the flow, so the
+     page opens its own room for it. */
+  padding: calc(var(--header-h) + env(safe-area-inset-top, 0px) + 20px) 14px 14px;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 30px;
@@ -324,6 +346,9 @@ body { padding-bottom: 76px; }
   body { padding-bottom: 0; }
   .snffl-header { display: none; }
   .snffl-tabbar { display: none; }
+  /* No tab bar to sit above, so the ticker takes the floor. */
+  .snffl-ticker-stack { bottom: 0; }
+  body { padding-bottom: calc(24px + var(--ticker-stack-h)); }
 
   .snffl-desktop-nav {
     position: sticky;

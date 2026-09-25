@@ -1,5 +1,6 @@
 // Contrast test suite, Brief Section 4 rule 5.
-// 4.5:1 for small text, 3:1 for large text and UI shapes, checked in both themes.
+// 4.5:1 for small text, 3:1 for large text and UI shapes. One theme since
+// September 2026: Day Game was removed, so there is one set of tokens to check.
 // Reads tokens.css so the tokens stay the single source of truth.
 import fs from 'node:fs';
 
@@ -14,8 +15,7 @@ function block(selector) {
   );
 }
 
-const light = block(':root {');
-const dark = { ...light, ...block(":root[data-theme='dark']") };
+const theme = block(':root {');
 
 const parse = (v) => {
   if (v.startsWith('#')) {
@@ -137,8 +137,8 @@ function flatten(tokens, key, ground) {
   return raw[3] < 1 ? over(raw, ground) : raw.slice(0, 3);
 }
 
-for (const [name, tokens] of [['light', light], ['dark', dark]]) {
-  console.log(`\n${name} theme`);
+for (const [name, tokens] of [['Night Glass', theme]]) {
+  console.log(`\n${name}`);
   const grounds = groundsFor(tokens);
   for (const [fgKey, bgKey, min, label] of PAIRS) {
     let worst = Infinity;
@@ -232,5 +232,5 @@ for (const [fg, bg, min, label] of LITERAL_PAIRS) {
   console.log(`  ${ok ? 'pass' : 'FAIL'}  ${r.toFixed(2)}:1  (min ${min})  ${label}`);
 }
 
-console.log(failures ? `\n${failures} failing pair(s)` : '\nall pairs pass in both themes');
+console.log(failures ? `\n${failures} failing pair(s)` : '\nall pairs pass');
 process.exit(failures ? 1 : 0);

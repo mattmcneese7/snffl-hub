@@ -7,44 +7,44 @@
    never reference these variables inside SVG presentation attributes. */
 
 :root {
-  /* Ground and glass, light. Panels are frosted, never see-through: 74 to 90
-     percent opaque, which is what keeps every text pair at 4.5:1 over the
-     brightest stadium glow behind them. scripts/contrast-check.mjs composites
-     each pair over the glows at their peak to prove it. */
-  --bg: #e6ecf4;
-  --card: rgba(255, 255, 255, 0.76);
-  --card-strong: rgba(255, 255, 255, 0.9);
+  /* Night Glass, and the only theme. Day Game was removed in September 2026:
+     Matt's call is that this is an app, and an app has one look. Panels are
+     frosted, never see-through, which is what keeps every text pair at 4.5:1
+     over the brightest stadium glow behind them. scripts/contrast-check.mjs
+     composites each pair over the glows at their peak to prove it. */
+  --bg: #060a13;
+  --card: rgba(16, 22, 36, 0.76);
+  --card-strong: rgba(20, 28, 46, 0.9);
   /* Inner fills: score boxes, table heads. Laid over a card, not the ground. */
-  --surface: rgba(11, 18, 32, 0.05);
-  --ink: #0b1220;
-  --ink-secondary: #3f4a5c;
-  --line: rgba(11, 18, 32, 0.1);
-  --glass-edge: rgba(255, 255, 255, 0.95);
-  --glass-shine: rgba(255, 255, 255, 0.9);
-  --shadow: 0 18px 48px rgba(15, 30, 60, 0.12);
-  --glow-a: rgba(91, 182, 242, 0.55);
-  --glow-b: rgba(227, 24, 45, 0.18);
-  --glow-c: rgba(31, 116, 201, 0.3);
+  --surface: rgba(255, 255, 255, 0.06);
+  --ink: #f2f5fa;
+  --ink-secondary: #a9b3c4;
+  --line: rgba(255, 255, 255, 0.09);
+  --glass-edge: rgba(255, 255, 255, 0.14);
+  --glass-shine: rgba(255, 255, 255, 0.18);
+  --shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+  --glow-a: rgba(91, 182, 242, 0.28);
+  --glow-b: rgba(227, 24, 45, 0.26);
+  --glow-c: rgba(31, 116, 201, 0.42);
 
-  /* Theme-aware exceptions */
-  --shart: #7a4f31;
-  --shart-on: #ffffff;
-  --marker-red: #d31126;
+  /* Formerly theme-aware, now simply the values. */
+  --shart: #c4946e;
+  --shart-on: #141210;
+  --marker-red: #ff5a6a;
   /* Logo red is a brand colour and identical in both themes, so small labels
      take a theme-aware red of their own. Darkened again for Night Glass: the
      cool ground is darker than the old off-white, and #d31126 fell to 4.3:1 on
      it at label size. */
-  --rag-category: #940a19;
-  --marker-ink: #940a19;
-  --link: #0f4a85;
-  --win: #0a6e48;
+  --rag-category: #ff8a95;
+  --marker-ink: #ff8a95;
+  --link: #7cc6f7;
+  --win: #3ddc97;
 
-  /* Status. Chips keep one hex in both themes. The bare status colors are
-     used on the ground for chart bars and arrows, and the cooler, darker Day
-     Game ground needed a deeper step of each to hold 3:1 over the red glow. */
-  --good: #137a4c;
+  /* Status. Chips keep their own hex; the bare status colors are used on the
+     ground for chart bars and arrows. */
+  --good: #1f9460;
   --good-chip: #157a4e;
-  --bad: #c22f3d;
+  --bad: #e54b5a;
   --bad-chip: #c8323f;
   --live: #3584d2;
   --live-chip: #2b6cb0;
@@ -52,7 +52,7 @@
   --pending-chip: #5e6573;
   --gold: #e3b341;
   --gold-on: #141210;
-  --muted: #5d6a86;
+  --muted: #8a97b0;
   --on-chip: #ffffff;
 
   /* Brand, never used for status */
@@ -84,62 +84,6 @@
   --radius-sm: 10px;
 }
 
-:root[data-theme='dark'] {
-  --bg: #060a13;
-  --card: rgba(16, 22, 36, 0.76);
-  --card-strong: rgba(20, 28, 46, 0.9);
-  --surface: rgba(255, 255, 255, 0.06);
-  --ink: #f2f5fa;
-  --ink-secondary: #a9b3c4;
-  --line: rgba(255, 255, 255, 0.09);
-  --glass-edge: rgba(255, 255, 255, 0.14);
-  --glass-shine: rgba(255, 255, 255, 0.18);
-  --shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
-  --glow-a: rgba(91, 182, 242, 0.28);
-  --glow-b: rgba(227, 24, 45, 0.26);
-  --glow-c: rgba(31, 116, 201, 0.42);
-
-  --shart: #c4946e;
-  --shart-on: #141210;
-  --marker-red: #ff5a6a;
-  --rag-category: #ff8a95;
-  --marker-ink: #ff8a95;
-  --link: #7cc6f7;
-  --win: #3ddc97;
-  --muted: #8a97b0;
-  --good: #1f9460;
-  --bad: #e54b5a;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --bg: #060a13;
-    --card: rgba(16, 22, 36, 0.76);
-    --card-strong: rgba(20, 28, 46, 0.9);
-    --surface: rgba(255, 255, 255, 0.06);
-    --ink: #f2f5fa;
-    --ink-secondary: #a9b3c4;
-    --line: rgba(255, 255, 255, 0.09);
-    --glass-edge: rgba(255, 255, 255, 0.14);
-    --glass-shine: rgba(255, 255, 255, 0.18);
-    --shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
-    --glow-a: rgba(91, 182, 242, 0.28);
-    --glow-b: rgba(227, 24, 45, 0.26);
-    --glow-c: rgba(31, 116, 201, 0.42);
-
-    --shart: #c4946e;
-    --shart-on: #141210;
-    --marker-red: #ff5a6a;
-    --rag-category: #ff8a95;
-    --marker-ink: #ff8a95;
-    --link: #7cc6f7;
-    --win: #3ddc97;
-    --muted: #8a97b0;
-    --good: #1f9460;
-    --bad: #e54b5a;
-  }
-}
-
 *,
 *::before,
 *::after {
@@ -147,7 +91,9 @@
 }
 
 html {
-  color-scheme: light dark;
+  /* One theme, so the browser paints its own furniture dark too: scrollbars,
+     form controls, and the overscroll area past the end of the page. */
+  color-scheme: dark;
   background: var(--bg);
 }
 

@@ -6,24 +6,12 @@
   display: inline-block;
   line-height: 0;
 }
-/* Both variants stay class level. A descendant selector like
-   `.snffl-masthead img` outscores a bare class and would pin one variant
-   visible in both themes. */
+/* One theme, so one masthead. The light copy is no longer rendered. */
 .snffl-masthead-art {
   display: block;
   height: 60px;
   width: auto;
   max-width: 100%;
-}
-.snffl-masthead-art-dark { display: none; }
-
-/* The theme toggle wins, and the system preference only decides when the
-   reader has not chosen, which is the same order the color tokens use. */
-:root[data-theme='dark'] .snffl-masthead-art-light { display: none; }
-:root[data-theme='dark'] .snffl-masthead-art-dark { display: block; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) .snffl-masthead-art-light { display: none; }
-  :root:not([data-theme='light']) .snffl-masthead-art-dark { display: block; }
 }
 .snffl-masthead-note {
   margin: 8px 0 0;

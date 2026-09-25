@@ -113,6 +113,8 @@ export default function WeekStory({
             playsInline
             aria-hidden
           />
+        ) : slide.kind === 'shakeup' && slide.montage.length ? (
+          <Montage clips={slide.montage} poster={slide.art.still} key={`montage-${active}`} />
         ) : (
           <Backdrop art={slide.art} key={`${slide.kind}-${active}`} />
         )}
@@ -138,6 +140,31 @@ export default function WeekStory({
       </footer>
     </div>,
     document.body
+  );
+}
+
+/**
+ * The week's plays, one after another, behind the table.
+ *
+ * Each clip runs to its end and hands over to the next rather than being cut
+ * at a fixed interval, so no play is ever clipped mid catch, and the last one
+ * wraps to the first. One element with a changing source rather than a stack
+ * of them: four videos all decoding at once to show one is how a phone gets
+ * hot holding a story.
+ */
+function Montage({ clips, poster }: { clips: string[]; poster: string | null }) {
+  const [at, setAt] = useState(0);
+  return (
+    <video
+      className="snffl-story-backdrop snffl-wstory-video"
+      src={clips[at % clips.length]}
+      poster={poster ?? undefined}
+      autoPlay
+      muted
+      playsInline
+      aria-hidden
+      onEnded={() => setAt((i) => (i + 1) % clips.length)}
+    />
   );
 }
 

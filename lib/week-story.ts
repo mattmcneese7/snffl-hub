@@ -82,6 +82,17 @@ export type StorySlide =
       week: number;
       movers: { rosterId: number; team: string; manager: string; from: number; to: number }[];
       art: Backdrop;
+      /**
+       * The week's plays, running one after another behind the table.
+       *
+       * Sourced as our own files rather than embedded. The NFL channel does
+       * post vertical Shorts of exactly this and they are all embeddable, but
+       * YouTube's developer policies forbid obscuring or blocking any part of
+       * their player, and a player behind copy and a scrim is doing both. The
+       * same plays are available to us as plain video, so they are played as
+       * plain video.
+       */
+      montage: string[];
     };
 
 /** Seeds from results alone, sorted the way the standings page sorts. */
@@ -167,19 +178,22 @@ function bestPlay(clips: Highlight[]): Highlight | null {
  * Capped at six attempts. A week where the top six are all dead is a week
  * with no playable footage, and the seventh is not going to save it.
  */
-async function bestPlayable(
-  clips: Highlight[]
-): Promise<{ clip: Highlight; video: string } | null> {
+async function playableClips(
+  clips: Highlight[],
+  want: number
+): Promise<{ clip: Highlight; video: string }[]> {
   const candidates = clips
     .filter((clip) => isEspnClip(clip.id))
     .sort((a, b) => (b.fantasyPoints ?? 0) - (a.fantasyPoints ?? 0))
-    .slice(0, 6);
+    .slice(0, 8);
 
+  const out: { clip: Highlight; video: string }[] = [];
   for (const clip of candidates) {
+    if (out.length >= want) break;
     const source = await clipSource(espnClipId(clip.id)).catch(() => null);
-    if (source?.mp4) return { clip, video: source.mp4 };
+    if (source?.mp4) out.push({ clip, video: source.mp4 });
   }
-  return null;
+  return out;
 }
 
 /**
@@ -310,7 +324,10 @@ export async function weekStory(week: number, taken: Iterable<string> = []): Pro
     }
   }
 
-  const playable = await bestPlayable(clips);
+  // Four at most: one leads the top play slide and the rest run behind the
+  // table at the end.
+  const playables = await playableClips(clips, 4);
+  const playable = playables[0] ?? null;
   if (playable) {
     const play = playable.clip;
     slides.push({
@@ -356,6 +373,9 @@ export async function weekStory(week: number, taken: Iterable<string> = []): Pro
         clipFor(clips, movers[0].rosterId) ?? house,
         avatarOf(movers[0].rosterId)
       ),
+      // The ones the top play slide did not use, so the week's football is
+      // still running under the table rather than repeating the lead.
+      montage: playables.slice(1).map((entry) => entry.video),
     });
   }
 

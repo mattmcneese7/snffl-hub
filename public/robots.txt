@@ -1,18 +1,62 @@
 # The app stays out of search. The invite has to be shareable.
 #
-# Disallow is what keeps the league's pages out of crawlers' hands, but it was
-# also stopping every link preview: Slack, Discord, X, WhatsApp, LinkedIn and
-# Facebook all respect this file, so a blanket Disallow meant nobody ever
-# fetched /join and no card was ever built for it.
+# Two things about this file are deliberate and both look wrong at a glance.
+#
+# First, Allow comes before Disallow in every group. The spec says the most
+# specific rule wins regardless of order, and Google and Bing implement that,
+# but several crawlers are simple first-match parsers: they read Disallow: /
+# and stop. Putting the Allow first costs nothing and is the difference
+# between a link preview and a blank card on those.
+#
+# Second, the preview bots get their own groups even though the wildcard group
+# says the same thing. A crawler that matches a named group ignores the
+# wildcard entirely, and Meta's own debugger asks for exactly this: "please
+# allowlist facebookexternalhit on your sites robots.txt config". The wildcard
+# alone was returning 403 to it.
 #
 # Worth saying plainly, because it reads backwards: a Disallow is the wrong
-# tool for keeping a page out of search. A crawler that is not allowed to
-# fetch the page never sees the noindex on it. Allowing the fetch and serving
-# noindex is what actually works, and it is what /join does.
+# tool for keeping a page out of search. A crawler that cannot fetch the page
+# never sees the noindex on it. Allowing the fetch and serving noindex is what
+# actually works, and it is what /join does.
 #
-# Allow wins here because it is the longer match, per the robots spec, and it
-# covers /join/opengraph-image as a prefix.
+# Allow: /join covers /join/opengraph-image as a prefix.
+
+User-agent: facebookexternalhit
+Allow: /join
+Disallow: /
+
+User-agent: Twitterbot
+Allow: /join
+Disallow: /
+
+User-agent: Slackbot
+Allow: /join
+Disallow: /
+
+User-agent: Slackbot-LinkExpanding
+Allow: /join
+Disallow: /
+
+User-agent: Discordbot
+Allow: /join
+Disallow: /
+
+User-agent: LinkedInBot
+Allow: /join
+Disallow: /
+
+User-agent: WhatsApp
+Allow: /join
+Disallow: /
+
+User-agent: TelegramBot
+Allow: /join
+Disallow: /
+
+User-agent: Applebot
+Allow: /join
+Disallow: /
 
 User-agent: *
-Disallow: /
 Allow: /join
+Disallow: /

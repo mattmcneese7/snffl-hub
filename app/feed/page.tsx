@@ -49,11 +49,6 @@ export default async function FeedPage() {
       <main className="snffl-page">
         <PageHead
           title="The Feed"
-          facts={[
-            { label: 'Moments', value: String(posts.length + highlights.length) },
-            { label: 'Replays', value: String(playableCount) },
-            { label: 'This week', value: String(thisWeekCount) },
-          ]}
         />
 
         <FeedStream

@@ -62,15 +62,6 @@ export default async function MatchupDetail({
             live.home.rosterId,
             live.home.manager
           )}`}
-          facts={[
-            { label: 'Margin', value: Math.abs(game.margin).toFixed(2) },
-            {
-              label: 'To play',
-              value: String(live.away.yetToPlay + live.home.yetToPlay),
-              tone: game.status === 'live' ? 'live' : 'plain',
-            },
-            { label: 'Win prob', value: `${Math.round(leader.winProb * 100)}%` },
-          ]}
         />
 
         <div className="snffl-matchup-detail">
@@ -80,30 +71,22 @@ export default async function MatchupDetail({
                 knows who is logged in, the site does not need to. */}
             {game.status !== 'final' ? <SleeperActions actions={['lineup', 'matchup']} /> : null}
 
-            {/* What is actually deciding it: the best man on each side, and
-                how much football each still has to come. */}
+            {/* One thing the scoreboard above does not say: who is carrying
+                each side. The score, the margin and the counts are all
+                already on the card, and repeating them here was a dashboard
+                built for its own sake. */}
             <section className="snffl-swing">
-              <div className="snffl-block-heading">
-                <h2 className="snffl-headline">Deciding it</h2>
-                <span className="snffl-block-heading-link">
-                  {nameOf(leader.rosterId, leader.manager)} by {Math.abs(game.margin).toFixed(2)}
-                </span>
-              </div>
               <div className="snffl-swing-grid">
                 {[leader, trailer].map((side) => {
                   const best = topOf(side);
+                  if (!best) return null;
                   return (
                     <div className="snffl-card snffl-swing-card" key={side.rosterId}>
                       <span className="snffl-stat-label">
-                        {nameOf(side.rosterId, side.manager)}
+                        Carrying {nameOf(side.rosterId, side.manager)}
                       </span>
-                      <Figure value={side.points.toFixed(2)} size="lg" />
-                      <span className="snffl-swing-line">
-                        {best ? `${best.short} leads on ${best.points.toFixed(2)}` : 'Nobody yet'}
-                      </span>
-                      <span className="snffl-swing-line">
-                        {side.yetToPlay} to play · {side.inPlay} playing
-                      </span>
+                      <span className="snffl-swing-name">{best.short}</span>
+                      <Figure value={best.points.toFixed(2)} unit="pts" size="md" />
                     </div>
                   );
                 })}

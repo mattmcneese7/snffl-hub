@@ -200,12 +200,8 @@ if (palettes) {
 // near white in dark and the line would disappear against its own fill.
 const LITERAL_PAIRS = [
   ['#ffffff', '#141210', 4.5, 'position and team chip on the player hero'],
-  // Win probability liquid. The percentage sits low in the tube, on the
-  // deepest part of each gradient, and is 22px at weight 800, large text.
-  ['#ffffff', '#16539a', 4.5, 'win probability label on water'],
-  ['#ffffff', '#9f0e1f', 4.5, 'win probability label on red'],
-  ['#ffffff', '#1f74c9', 3, 'win probability label at the water surface'],
-  ['#ffffff', '#c8142a', 3, 'win probability label at the red surface'],
+  // The win probability bar carries no text on colour: the percentages sit
+  // above it on the panel, so they are covered by the ink pairs already.
   // Source badges keep each brand's own tile, in both themes.
   ['#ffffff', '#0b1a2e', 4.5, 'DraftSharks badge label'],
   ['#ffffff', '#1f74c9', 4.5, 'SNFFL model badge letter'],

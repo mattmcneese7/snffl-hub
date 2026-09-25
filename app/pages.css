@@ -710,28 +710,7 @@
   text-transform: uppercase;
 }
 
-/* Facts, not a sentence. Each one is a live number with its name under it. */
-.snffl-page-facts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s-4);
-  margin: 0;
-}
-.snffl-page-fact { display: grid; gap: 2px; }
-.snffl-page-fact dt {
-  font: 700 var(--t-label) / 1.2 var(--mono);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted);
-  order: 2;
-}
-.snffl-page-fact dd {
-  margin: 0;
-  font-size: var(--t-h2);
-  line-height: 1;
-  order: 1;
-}
-.snffl-page-fact-live dd { color: var(--live); }
+
 
 /* A way back that is a control rather than a sentence with an arrow in it. */
 .snffl-back {
@@ -755,4 +734,4 @@
 .snffl-swing { margin-top: var(--s-4); }
 .snffl-swing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); }
 .snffl-swing-card { display: grid; gap: var(--s-1); padding: var(--s-3); }
-.snffl-swing-line { font-size: var(--t-small); color: var(--ink-secondary); text-wrap: pretty; }
+.snffl-swing-name { font-size: var(--t-h3); font-weight: 800; line-height: 1.2; }

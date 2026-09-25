@@ -56,15 +56,6 @@ export default async function WeekPage({ params }: { params: Promise<{ week: str
       <main className="snffl-page">
         <PageHead
           title="Matchups"
-          facts={[
-            { label: 'Week', value: String(week) },
-            {
-              label: 'Live',
-              value: String(games.filter((game) => game.status === 'live').length),
-              tone: 'live',
-            },
-            { label: 'Closest', value: closest ? closest.margin.toFixed(2) : '0.00' },
-          ]}
         />
 
         <section>

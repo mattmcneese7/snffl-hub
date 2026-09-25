@@ -1550,3 +1550,44 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   text-transform: uppercase;
   text-decoration: none;
 }
+
+/* ---------- Win probability ---------- */
+
+/* One bar, split at the probability, each end in its own team's colour. The
+   two tubes it replaces took a third of the card to say one number twice:
+   the pair always sums to a hundred, so the second said nothing the first
+   had not. */
+.snffl-winbar { display: grid; gap: var(--s-2); }
+.snffl-winbar-heads {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+}
+.snffl-winbar-side { display: inline-flex; align-items: center; gap: 6px; }
+.snffl-winbar-side-right { flex-direction: row; }
+.snffl-winbar-side b { font-size: var(--t-h1); line-height: 1; }
+.snffl-winbar-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+.snffl-winbar-caption {
+  font: 700 var(--t-label) / 1.2 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+}
+.snffl-winbar-track {
+  display: flex;
+  height: 10px;
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  background: var(--surface);
+}
+.snffl-winbar-fill { display: block; height: 100%; transition: width 0.4s ease; }
+/* A hairline where the two colours meet, so neither bleeds into the other. */
+.snffl-winbar-fill-right { box-shadow: inset 1px 0 0 rgba(0, 0, 0, 0.45); }

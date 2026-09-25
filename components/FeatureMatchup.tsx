@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { LiveTeamPoints } from './LiveScores';
 import ManagerLink from './ManagerLink';
 import SourceMark from './SourceMark';
-import WinTube from './WinTube';
+import WinBar from './WinBar';
 
 /**
  * The matchup scoreboard: both managers, the broadcast score, projections and
@@ -150,20 +150,10 @@ export default function FeatureMatchup({
 
       {/* A decided game has nothing left to predict; 100 and 0 would be noise. */}
       {hasModel && status !== 'final' ? (
-        <div className="snffl-board-tubes">
-          <WinTube
-            pct={away.winProb!}
-            tone="water"
-            label={`${away.teamName} win probability ${Math.round(away.winProb! * 100)} percent`}
-            caption="WIN PROB"
-          />
-          <WinTube
-            pct={home.winProb!}
-            tone="red"
-            label={`${home.teamName} win probability ${Math.round(home.winProb! * 100)} percent`}
-            caption="WIN PROB"
-          />
-        </div>
+        <WinBar
+          away={{ pct: away.winProb!, primary: away.primary, name: away.teamName }}
+          home={{ pct: home.winProb!, primary: home.primary, name: home.teamName }}
+        />
       ) : null}
 
       {status === 'final' ? null : (

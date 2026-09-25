@@ -811,6 +811,20 @@ h3,
   pointer-events: none;
 }
 
+/* A bar that runs edge to edge has one edge that meets the page, the bottom
+   one, and three that meet the side of the screen. The ring above is drawn for
+   a pane that floats: its gradient starts at 62 percent white in the top left,
+   which on a floating card is the lit corner and against the screen boundary
+   is a white line down the side of the phone. So the full bleed crawl keeps
+   the hairline where the glass actually ends and drops the rest. */
+.snffl-ticker-stack .snffl-frost::before {
+  padding: 0;
+  background: none;
+  -webkit-mask: none;
+  mask: none;
+  border-bottom: 1px solid var(--glass-line);
+}
+
 /* The crawl keeps the ramp: it is pinned to the edge of the screen, where a
    defined edge would be a line across the top of every page. */
 .snffl-frost-top {

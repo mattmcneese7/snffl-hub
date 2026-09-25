@@ -136,7 +136,25 @@ body {
   /* Declared here, not on :root: next/font puts the face variables on body,
      and a custom property that reads var() resolves where it is declared, so
      on :root these came out empty and the page fell back to the system serif. */
+  /* Type.
+     
+     Two voices, not one. The app used a 62% condensed black italic for every
+     heading on every screen, which is a sports tabloid device: it shouts, and
+     a thing that shouts constantly is not emphatic, it is just loud. Upright
+     Archivo at normal width carries the interface, and the condensed italic is
+     kept for the places that are actually editorial, the Rag's headlines, the
+     Shartzone, a trophy winner's name, where it now means something because it
+     is rare.
+     
+     One scale, six steps, against the sixteen ad hoc sizes it replaces. */
   --display: var(--font-archivo), 'Arial Narrow', system-ui, sans-serif;
+  --t-display: 34px;
+  --t-h1: 24px;
+  --t-h2: 18px;
+  --t-h3: 15px;
+  --t-body: 14px;
+  --t-small: 12px;
+  --t-label: 10px;
   --mono: var(--font-mono), ui-monospace, 'SF Mono', Menlo, monospace;
   margin: 0;
   /* The ground is painted on html. A body background would sit on top of the

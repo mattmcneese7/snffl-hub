@@ -35,13 +35,29 @@ body { padding-bottom: 76px; }
   font-weight: 800;
 }
 
+/* The interface voice: upright, normal width, heavy but not black. Every
+   section heading used to be a condensed black italic, which made "Top Plays"
+   shout as hard as a Rag front page. */
 .snffl-headline {
+  font-family: var(--font-archivo);
+  font-weight: 800;
+  font-stretch: 100%;
+  font-size: var(--t-h2);
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  margin: 0;
+}
+
+/* The editorial voice, kept for the places that earn it. */
+.snffl-headline-editorial,
+.snffl-rag-hero-headline,
+.snffl-shartzone-name,
+.snffl-hardware-winner {
   font-family: var(--font-archivo);
   font-weight: 900;
   font-style: italic;
   font-stretch: 62%;
   letter-spacing: -0.01em;
-  margin: 0;
 }
 
 /* ---------- No top header ----------
@@ -109,7 +125,7 @@ body { padding-bottom: 76px; }
 }
 .snffl-section-strip-name {
   font-weight: 800;
-  font-size: 11px;
+  font-size: var(--t-small);
   letter-spacing: 0.07em;
   text-transform: uppercase;
 }
@@ -120,7 +136,7 @@ body { padding-bottom: 76px; }
   background: var(--ink);
   color: var(--bg);
   padding: 2px 8px;
-  font-size: 10px;
+  font-size: var(--t-label);
   font-weight: 800;
   letter-spacing: 0.05em;
 }
@@ -157,7 +173,7 @@ body { padding-bottom: 76px; }
   display: grid;
   place-items: center;
   padding: 0 14px 0 8px;
-  font-size: 11px;
+  font-size: var(--t-small);
   font-weight: 800;
   letter-spacing: 0.1em;
   /* The animated track is later in DOM order and would paint over the tag. */
@@ -188,7 +204,7 @@ body { padding-bottom: 76px; }
   white-space: nowrap;
   padding-left: 16px;
   color: var(--ticker-ink);
-  font-size: 12px;
+  font-size: var(--t-small);
   font-weight: 700;
   animation: snffl-ticker-scroll 42s linear infinite;
 }
@@ -205,12 +221,12 @@ body { padding-bottom: 76px; }
   color: var(--ticker-ink);
   font-weight: 900;
   font-variant-numeric: tabular-nums;
-  font-size: 13px;
+  font-size: var(--t-body);
 }
 .snffl-ticker-link {
   color: var(--ticker-ink-secondary);
   font-weight: 600;
-  font-size: 11px;
+  font-size: var(--t-small);
   opacity: 0.8;
 }
 .snffl-ticker-divider {
@@ -220,7 +236,7 @@ body { padding-bottom: 76px; }
 }
 .snffl-ticker-item-status {
   color: var(--ticker-ink-secondary);
-  font-size: 10px;
+  font-size: var(--t-label);
   font-weight: 800;
   letter-spacing: 0.08em;
 }
@@ -257,7 +273,7 @@ body { padding-bottom: 76px; }
   justify-items: center;
   gap: 3px;
   color: var(--ink-secondary);
-  font-size: 10px;
+  font-size: var(--t-label);
   font-weight: 700;
   text-decoration: none;
 }
@@ -312,13 +328,13 @@ body { padding-bottom: 76px; }
   background: var(--surface);
 }
 .snffl-placeholder-label {
-  font-size: 10px;
+  font-size: var(--t-label);
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--muted);
 }
-.snffl-placeholder-note { font-size: 13px; color: var(--ink-secondary); }
+.snffl-placeholder-note { font-size: var(--t-body); color: var(--ink-secondary); }
 
 /* ---------- Desktop ---------- */
 
@@ -345,7 +361,7 @@ body { padding-bottom: 76px; }
   .snffl-desktop-nav .snffl-wordmark-svg { width: 132px; margin: 0; }
   .snffl-desktop-nav-links { display: flex; gap: 22px; margin-left: 8px; }
   .snffl-desktop-nav-link {
-    font-size: 13px;
+    font-size: var(--t-body);
     font-weight: 800;
     letter-spacing: 0.04em;
     text-transform: uppercase;

@@ -3,7 +3,6 @@ import Chrome from '@/components/Chrome';
 import FeatureMatchup from '@/components/FeatureMatchup';
 import HomeWidget from '@/components/HomeWidget';
 import LiveRefresh from '@/components/LiveRefresh';
-import Masthead from '@/components/Masthead';
 import ManagerLink from '@/components/ManagerLink';
 import ShartZone from '@/components/ShartZone';
 import { HardwareStrip } from '@/components/TrophyBits';
@@ -194,9 +193,9 @@ export default async function HomePage() {
         </section>
 
         <HomeWidget
-          title={<Masthead />}
+          title="The Rag"
           href={latestRagWeek ? `/rag/${latestRagWeek}` : '/rag'}
-          linkLabel={latestRagWeek ? `Week ${latestRagWeek} issue` : 'The section'}
+          linkLabel={latestRagWeek ? `Week ${latestRagWeek}` : 'The section'}
         >
           <RagHero
             week={latestRagWeek}
@@ -227,7 +226,7 @@ export default async function HomePage() {
 
 
         {feature ? (
-          <HomeWidget title="Matchup of the Week" href={`/matchups/${week}`} linkLabel="All matchups">
+          <HomeWidget title="Featured" href={`/matchups/${week}`} linkLabel="All matchups">
             <FeatureMatchup
               data={toFeature(feature, 'Closest Game', models.get(feature.matchupId))}
             />
@@ -235,7 +234,7 @@ export default async function HomePage() {
         ) : null}
 
         {trophies.latest.length ? (
-          <HomeWidget title={`Week ${trophies.latestWeek} Hardware`} href="/managers" linkLabel="Trophy cases">
+          <HomeWidget title="Hardware" href="/managers" linkLabel="Trophy cases">
             <HardwareStrip awards={trophies.latest} names={firstNames} />
           </HomeWidget>
         ) : null}
@@ -248,7 +247,7 @@ export default async function HomePage() {
             already shows. Outside a live window it stays two columns. */}
         <div className={`snffl-home-grid${liveNow ? ' snffl-home-grid-gameday' : ''}`}>
           <div>
-            <HomeWidget title="Your Matchup">
+            <HomeWidget title="Your Game">
               <YourMatchup
                 options={games.map((g) => toFeature(g, 'Your Matchup', models.get(g.matchupId)))}
                 teams={teams.map((t) => ({
@@ -259,7 +258,7 @@ export default async function HomePage() {
               />
             </HomeWidget>
 
-            <HomeWidget title={`Week ${week} Scoreboard`} href={`/matchups/${week}`}>
+            <HomeWidget title="Scoreboard" href={`/matchups/${week}`}>
               <div className="snffl-card">
                 {games.map((game) => (
                   <ResultBug
@@ -277,7 +276,7 @@ export default async function HomePage() {
               />
             </HomeWidget>
 
-            <HomeWidget title="Top Performers" href={`/players`} linkLabel="All players">
+            <HomeWidget title="Top Scorers" href={`/players`} linkLabel="All players">
               <div className="snffl-performers">
                 {performers.map((player) => (
                   <Link
@@ -389,7 +388,7 @@ export default async function HomePage() {
               </div>
             </HomeWidget>
 
-            <HomeWidget title="Chug Meter" href="/chug" linkLabel="Full meter">
+            <HomeWidget title="The Chug" href="/chug" linkLabel="Full meter">
               {topChuggers.length ? (
                 <div className="snffl-card">
                   {topChuggers.map((entry) => {
@@ -437,7 +436,7 @@ export default async function HomePage() {
               <StandingsTable standings={standings} holders={trophies.holders} />
             </HomeWidget>
 
-            <HomeWidget title="Trade Desk" href="/trades" linkLabel="All trades">
+            <HomeWidget title="Trades" href="/trades" linkLabel="All trades">
               {latestTrade ? (
                 <div className="snffl-card snffl-mini-trade">
                   <span className="snffl-week-tag">

@@ -16,7 +16,7 @@
   margin-bottom: var(--s-3);
   gap: var(--s-3);
 }
-.snffl-block-heading h2 { font-size: 18px; }
+.snffl-block-heading h2 { font-size: var(--t-h2); }
 
 /* A section link is a quiet control, not a blue word. The references all set
    this as a small neutral label with a chevron: it is a way onward, and
@@ -27,13 +27,13 @@
   gap: 4px;
   color: var(--ink-secondary);
   font-weight: 700;
-  font-size: 12px;
+  font-size: var(--t-small);
   text-decoration: none;
   white-space: nowrap;
 }
 .snffl-block-heading-link::after {
   content: '›';
-  font-size: 15px;
+  font-size: var(--t-h3);
   line-height: 1;
   color: var(--muted);
 }
@@ -73,7 +73,7 @@
   display: block;
 }
 .snffl-story-label {
-  font-size: 10px;
+  font-size: var(--t-label);
   font-weight: 700;
   margin-top: 5px;
   color: var(--ink-secondary);
@@ -88,7 +88,7 @@
   border-radius: 50%;
   color: #fff;
   font-weight: 800;
-  font-size: 11px;
+  font-size: var(--t-small);
 }
 
 /* Your Matchup, the team picked once and remembered on the device. */
@@ -109,7 +109,7 @@
    its widest option and would otherwise push the whole page sideways. */
 .snffl-browser-field { display: grid; gap: 4px; min-width: 0; }
 .snffl-browser-label {
-  font-size: 10px;
+  font-size: var(--t-label);
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -132,12 +132,12 @@
   align-items: center;
   gap: 8px;
   min-height: var(--tap);
-  font-size: 13px;
+  font-size: var(--t-body);
   font-weight: 700;
 }
 .snffl-browser-count {
   margin: 0 0 6px;
-  font-size: 12px;
+  font-size: var(--t-small);
   color: var(--ink-secondary);
 }
 .snffl-browser-notice {
@@ -145,7 +145,7 @@
   padding: 8px 10px;
   background: var(--surface);
   border-left: 3px solid var(--pending-chip);
-  font-size: 12px;
+  font-size: var(--t-small);
   color: var(--ink-secondary);
 }
 .snffl-browser-more {
@@ -217,7 +217,7 @@
 .snffl-feature-matchup-body { position: relative; padding: 16px; display: grid; gap: 14px; }
 
 .snffl-feature-matchup-label {
-  font-size: 10px;
+  font-size: var(--t-label);
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -242,14 +242,14 @@
   background: rgba(0, 0, 0, 0.25);
 }
 .snffl-feature-side-team {
-  font-size: 12px;
+  font-size: var(--t-small);
   font-weight: 800;
   line-height: 1.15;
   overflow-wrap: anywhere;
 }
-.snffl-feature-side-manager { font-size: 10px; opacity: 0.85; font-weight: 600; }
-.snffl-feature-side-score { font-size: 34px; line-height: 1; }
-.snffl-feature-versus { font-size: 11px; font-weight: 800; opacity: 0.8; }
+.snffl-feature-side-manager { font-size: var(--t-label); opacity: 0.85; font-weight: 600; }
+.snffl-feature-side-score { font-size: var(--t-display); line-height: 1; }
+.snffl-feature-versus { font-size: var(--t-small); font-weight: 800; opacity: 0.8; }
 
 .snffl-winprob { display: grid; gap: 5px; }
 .snffl-winprob-bar {
@@ -262,13 +262,13 @@
 .snffl-winprob-legend {
   display: flex;
   justify-content: space-between;
-  font-size: 10px;
+  font-size: var(--t-label);
   font-weight: 800;
 }
 .snffl-players-left {
   display: flex;
   justify-content: space-between;
-  font-size: 10px;
+  font-size: var(--t-label);
   font-weight: 700;
   opacity: 0.9;
 }
@@ -288,7 +288,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 9px;
+  font-size: var(--t-label);
   font-weight: 800;
   letter-spacing: 0.06em;
   color: var(--marker-red);
@@ -317,7 +317,7 @@
   width: 44px;
   height: 20px;
   border-radius: var(--radius);
-  font-size: 9px;
+  font-size: var(--t-label);
   font-weight: 800;
   letter-spacing: 0.04em;
   color: #fff;
@@ -352,12 +352,12 @@
 }
 .snffl-bug-side-loser .snffl-bug-team,
 .snffl-bug-side-loser .snffl-bug-score { color: var(--ink-secondary); }
-.snffl-bug-score { font-size: 15px; }
+.snffl-bug-score { font-size: var(--t-h3); }
 .snffl-bug-meta {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 10px;
+  font-size: var(--t-label);
   color: var(--ink-secondary);
   margin-top: 1px;
 }
@@ -365,7 +365,7 @@
 .snffl-margin-chip {
   transform: skewX(calc(-1 * var(--slant)));
   padding: 1px 7px;
-  font-size: 9px;
+  font-size: var(--t-label);
   font-weight: 800;
   color: #fff;
   background: var(--pending-chip);
@@ -412,7 +412,7 @@
 
 .snffl-standings-head {
   background: var(--surface);
-  font-size: 10px;
+  font-size: var(--t-label);
   font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -421,28 +421,28 @@
 .snffl-standings-num { text-align: right; }
 .snffl-standings-against { color: var(--ink-secondary); }
 .snffl-standings-row:last-child { border-bottom: 0; }
-.snffl-standings-seed { font-size: 12px; color: var(--ink-secondary); font-weight: 800; }
+.snffl-standings-seed { font-size: var(--t-small); color: var(--ink-secondary); font-weight: 800; }
 .snffl-standings-colorbar { width: 4px; height: 26px; background: var(--mgr-primary, var(--muted)); }
 .snffl-standings-team { overflow: hidden; }
 .snffl-standings-team-name {
   display: block;
   font-weight: 700;
-  font-size: 13px;
+  font-size: var(--t-body);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .snffl-standings-manager {
   display: block;
-  font-size: 10px;
+  font-size: var(--t-label);
   color: var(--ink-secondary);
   font-weight: 600;
 }
-.snffl-standings-record { font-size: 13px; }
-.snffl-standings-streak { font-size: 10px; color: var(--ink-secondary); font-weight: 700; }
+.snffl-standings-record { font-size: var(--t-body); }
+.snffl-standings-streak { font-size: var(--t-label); color: var(--ink-secondary); font-weight: 700; }
 .snffl-standings-playoff-line { border-bottom: 2px dashed var(--muted); }
 .snffl-standings-playoff-caption {
-  font-size: 9px;
+  font-size: var(--t-label);
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -473,9 +473,9 @@
   object-fit: cover;
   background: var(--surface);
 }
-.snffl-performer-name { font-size: 11px; font-weight: 800; }
-.snffl-performer-meta { font-size: 10px; color: var(--ink-secondary); font-weight: 600; }
-.snffl-performer-points { font-size: 19px; color: var(--good); }
+.snffl-performer-name { font-size: var(--t-small); font-weight: 800; }
+.snffl-performer-meta { font-size: var(--t-label); color: var(--ink-secondary); font-weight: 600; }
+.snffl-performer-points { font-size: var(--t-h2); color: var(--good); }
 
 /* ---------- Week selector ---------- */
 
@@ -490,7 +490,7 @@
   border: 1px solid var(--line);
   color: var(--ink);
   font-weight: 800;
-  font-size: 12px;
+  font-size: var(--t-small);
   text-decoration: none;
   transform: skewX(calc(-1 * var(--slant)));
 }
@@ -513,7 +513,7 @@
   place-items: center;
   width: 30px;
   height: 30px;
-  font-size: 14px;
+  font-size: var(--t-body);
   font-weight: 900;
   transform: skewX(calc(-1 * var(--slant)));
   border: 2px solid var(--ink);
@@ -521,9 +521,9 @@
 }
 .snffl-rank-number > span { display: inline-block; transform: skewX(var(--slant)); }
 .snffl-rank-number-top { background: var(--ink); color: var(--bg); }
-.snffl-rank-blurb { font-size: 11px; color: var(--ink-secondary); margin-top: 2px; }
+.snffl-rank-blurb { font-size: var(--t-small); color: var(--ink-secondary); margin-top: 2px; }
 .snffl-rank-movement {
-  font-size: 11px;
+  font-size: var(--t-small);
   font-weight: 800;
   text-align: right;
   color: var(--ink-secondary);
@@ -545,7 +545,7 @@
 .snffl-lineup-slot {
   display: grid;
   place-items: center;
-  font-size: 10px;
+  font-size: var(--t-label);
   font-weight: 800;
   letter-spacing: 0.06em;
   color: var(--ink-secondary);
@@ -566,21 +566,21 @@
 }
 .snffl-lineup-name {
   display: block;
-  font-size: 12px;
+  font-size: var(--t-small);
   font-weight: 700;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.snffl-lineup-meta { display: block; font-size: 10px; color: var(--ink-secondary); }
-.snffl-lineup-points { font-size: 13px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.snffl-lineup-meta { display: block; font-size: var(--t-label); color: var(--ink-secondary); }
+.snffl-lineup-points { font-size: var(--t-body); font-weight: 800; font-variant-numeric: tabular-nums; }
 .snffl-lineup-totals {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 54px minmax(0, 1fr);
   gap: 8px;
   padding: 10px;
   background: var(--surface);
-  font-size: 16px;
+  font-size: var(--t-h3);
 }
 /* ---------- Boxscore ---------- */
 
@@ -599,7 +599,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
+  font-size: var(--t-small);
   font-weight: 800;
   color: var(--ink-secondary);
   overflow: hidden;
@@ -615,12 +615,12 @@
   padding: 1px 5px;
   background: var(--good-chip);
   color: #fff;
-  font-size: 10px;
+  font-size: var(--t-label);
   font-weight: 900;
   transform: skewX(calc(-1 * var(--slant)));
 }
 .snffl-box-head-slot {
-  font-size: 9px;
+  font-size: var(--t-label);
   font-weight: 800;
   letter-spacing: 0.08em;
   color: var(--ink-secondary);
@@ -651,7 +651,7 @@
   padding: 2px 4px;
   background: var(--surface);
   border: 1px solid var(--line);
-  font-size: 15px;
+  font-size: var(--t-h3);
   font-weight: 800;
   font-variant-numeric: tabular-nums;
 }
@@ -666,13 +666,13 @@
   background: var(--surface);
   border-top: 1px solid var(--line);
 }
-.snffl-box-total-score { font-size: 22px; color: var(--ink-secondary); }
+.snffl-box-total-score { font-size: var(--t-h1); color: var(--ink-secondary); }
 .snffl-box-total-score:last-of-type { text-align: right; }
 .snffl-box-total-won { color: var(--ink); }
 
 .snffl-lineup-bench summary {
   padding: 10px 12px;
-  font-size: 12px;
+  font-size: var(--t-small);
   font-weight: 800;
   cursor: pointer;
   color: var(--ink-secondary);

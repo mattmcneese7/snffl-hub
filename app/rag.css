@@ -15,7 +15,7 @@
 }
 .snffl-masthead-note {
   margin: 8px 0 0;
-  font-size: 11px;
+  font-size: var(--t-small);
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -24,14 +24,14 @@
 
 .snffl-rag-status {
   margin: 0;
-  font-size: 12px;
+  font-size: var(--t-small);
   font-weight: 700;
   color: var(--ink-secondary);
 }
 
 .snffl-rag-category {
   display: block;
-  font-size: 10px;
+  font-size: var(--t-label);
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -45,18 +45,18 @@
   color: inherit;
   text-decoration: none;
 }
-.snffl-rag-lead-headline { font-size: 26px; margin: 0 0 6px; }
+.snffl-rag-lead-headline { font-size: var(--t-display); margin: 0 0 6px; }
 .snffl-rag-deck {
   margin: 0;
   font-family: var(--font-serif), Georgia, serif;
-  font-size: 15px;
+  font-size: var(--t-h3);
   line-height: 1.45;
   color: var(--ink-secondary);
 }
 .snffl-rag-meta {
   display: block;
   margin-top: 8px;
-  font-size: 11px;
+  font-size: var(--t-small);
   font-weight: 700;
   color: var(--ink-secondary);
 }
@@ -82,15 +82,15 @@
   display: block;
   font-family: var(--font-archivo);
   font-weight: 800;
-  font-size: 14px;
+  font-size: var(--t-body);
   line-height: 1.25;
 }
 
 .snffl-rag-article { display: grid; gap: 10px; }
-.snffl-rag-article-headline { font-size: 30px; margin: 0; }
+.snffl-rag-article-headline { font-size: var(--t-display); margin: 0; }
 .snffl-rag-byline {
   margin: 0;
-  font-size: 11px;
+  font-size: var(--t-small);
   font-weight: 700;
   color: var(--ink-secondary);
   border-bottom: 1px solid var(--line);
@@ -98,13 +98,13 @@
 }
 .snffl-rag-body {
   font-family: var(--font-serif), Georgia, serif;
-  font-size: 16px;
+  font-size: var(--t-h3);
   line-height: 1.6;
 }
 .snffl-rag-body p { margin: 0 0 14px; }
 .snffl-rag-note {
   margin: 0;
-  font-size: 11px;
+  font-size: var(--t-small);
   color: var(--ink-secondary);
   border-top: 1px solid var(--line);
   padding-top: 10px;
@@ -115,7 +115,7 @@
   border: 3px solid var(--marker-red);
   color: var(--marker-red);
   font-weight: 900;
-  font-size: 14px;
+  font-size: var(--t-body);
   letter-spacing: 0.14em;
   padding: 4px 10px;
   transform: rotate(-6deg);
@@ -143,3 +143,12 @@
 
 .snffl-rag-thumb { position: relative; overflow: hidden; }
 .snffl-rag-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* The section's name, in the editorial voice, replacing the drawn masthead. */
+.snffl-rag-title {
+  margin: 0;
+  font-size: clamp(38px, 12vw, 56px);
+  line-height: 0.92;
+  text-transform: uppercase;
+  color: var(--ink);
+}

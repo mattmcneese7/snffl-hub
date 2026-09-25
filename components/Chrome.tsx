@@ -16,7 +16,12 @@ export default async function Chrome({
   sub?: string;
   week?: number;
 }) {
+  // The week a page is *about*, which decides which scores the ticker carries.
   const current = week ?? (await scoredWeek());
+  // The week the league is *in*, which is what the bar reports. Reading Week 2
+  // on the tab bar because you opened an old Rag issue is the chrome telling
+  // you the wrong thing about the present.
+  const leagueWeek = await scoredWeek();
 
   const [games, nfl] = await Promise.all([
     getWeekGames(current).catch(() => []),
@@ -60,7 +65,7 @@ export default async function Chrome({
     <SiteChrome
       section={section}
       sub={sub}
-      week={current}
+      week={leagueWeek}
       leagueTicker={leagueTicker}
       nflTicker={nflTicker}
     />

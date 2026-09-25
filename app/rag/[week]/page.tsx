@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import Chrome from '@/components/Chrome';
-import Masthead from '@/components/Masthead';
 import WeekSelector from '@/components/WeekSelector';
 import { getHighlights } from '@/lib/highlights';
 import { teams } from '@/lib/league';
@@ -48,7 +47,10 @@ export default async function RagWeek({ params }: { params: Promise<{ week: stri
       <Chrome section="The Rag" sub={`Week ${week}`} week={week} />
       <main className="snffl-page">
         <section>
-          <Masthead />
+          {/* The name, set in the app's own editorial voice. The drawn
+              masthead was a second logo competing with the app's mark, and a
+              section does not need a wordmark to be a section. */}
+          <h1 className="snffl-rag-title snffl-headline-editorial">The Rag</h1>
           <p className="snffl-masthead-note">New stories every Tuesday at 9:00 AM Central</p>
         </section>
 

@@ -132,13 +132,13 @@
 .snffl-trade-grade {
   font-family: var(--mono);
   font-weight: 700;
-  font-size: 10px;
+  font-size: var(--t-label);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 .snffl-label { color: var(--ink-secondary); }
 
-.snffl-block-heading h2 { font-size: 20px; }
+.snffl-block-heading h2 { font-size: var(--t-h1); }
 
 /* ---------- Pinned chrome ----------
    Full width, pinned to the top, frosted: the header and the two ticker bands
@@ -223,7 +223,7 @@
 .snffl-ticker-link,
 .snffl-ticker-divider,
 .snffl-ticker-item-status { color: var(--ink-secondary); }
-.snffl-ticker-item-status { font-family: var(--mono); font-size: 9px; }
+.snffl-ticker-item-status { font-family: var(--mono); font-size: var(--t-label); }
 .snffl-ticker-score {
   color: var(--ink);
   font-stretch: 112%;
@@ -527,7 +527,7 @@ h3,
    mark reads as one of the five and not as a badge with a caption. It was
    mono and upper case beside four sans, sentence case labels. */
 .snffl-app-week {
-  font-size: 10px;
+  font-size: var(--t-label);
   font-weight: 700;
   color: var(--ink-secondary);
   white-space: nowrap;
@@ -624,9 +624,9 @@ h3,
 }
 .snffl-figure-fraction { color: var(--ink-secondary); font-weight: 700; }
 
-.snffl-figure-sm { font-size: 16px; }
-.snffl-figure-md { font-size: 22px; }
-.snffl-figure-lg { font-size: 30px; }
+.snffl-figure-sm { font-size: var(--t-h3); }
+.snffl-figure-md { font-size: var(--t-h1); }
+.snffl-figure-lg { font-size: var(--t-display); }
 .snffl-figure-xl { font-size: 40px; font-stretch: 112%; }
 
 .snffl-stat { display: grid; gap: 5px; justify-items: start; }
@@ -669,7 +669,7 @@ h3,
   border-radius: var(--radius-pill);
   border: 1px solid transparent;
   font: inherit;
-  font-size: 13px;
+  font-size: var(--t-body);
   font-weight: 800;
   text-decoration: none;
   cursor: pointer;

@@ -2,7 +2,7 @@
 // types, so server pages and client components can both use it.
 
 import type { Highlight } from './highlights.ts';
-import type { GameSide } from './types.ts';
+import type { Game, GameSide } from './types.ts';
 
 export type ReelClip = {
   id: string;
@@ -54,34 +54,55 @@ const money = (n: number) => n.toFixed(2);
 /**
  * One manager's week as a card slide: the result, his best start, and what he
  * left on the bench, which is the number people argue about.
+ *
+ * A result is only claimed once the matchup is final. A week in progress says
+ * who is ahead and says it is in progress, because "beat Adam 35.30 to 18.48"
+ * with one running back played is not a fact, it is a scoreboard mid quarter.
  */
 export function weekCardClip(
   side: GameSide,
   opponent: GameSide,
   managerName: string,
   opponentName: string,
-  week: number
+  week: number,
+  status: Game['status']
 ): ReelClip {
   const best = [...side.lineup].sort((a, b) => b.points - a.points)[0] ?? null;
   const benched = (side.bench ?? []).reduce((sum, player) => sum + player.points, 0);
-  const won = side.points > opponent.points;
-  const tied = side.points === opponent.points;
+  const final = status === 'final';
+  const ahead = side.points > opponent.points;
+  const level = side.points === opponent.points;
+
+  const headline = final
+    ? level
+      ? `Tied with ${opponentName}`
+      : ahead
+        ? `Beat ${opponentName}`
+        : `Lost to ${opponentName}`
+    : level
+      ? `Level with ${opponentName}`
+      : ahead
+        ? `Leading ${opponentName}`
+        : `Trailing ${opponentName}`;
 
   return {
     id: `card:${week}:${side.rosterId}`,
     title: `${managerName}, Week ${week}`,
-    tags: [managerName, `Week ${week}`],
+    tags: [managerName, `Week ${week}`, final ? 'Final' : 'In progress'],
     still: null,
     embed: null,
     sourceUrl: `/matchups/${week}`,
     source: 'espn',
     card: {
-      headline: tied ? `Tied with ${opponentName}` : won ? `Beat ${opponentName}` : `Lost to ${opponentName}`,
-      score: `${money(side.points)} to ${money(opponent.points)}`,
+      headline,
+      score: final ? `${money(side.points)} to ${money(opponent.points)}` : `${money(side.points)} to ${money(opponent.points)}, still playing`,
+      // The best start is the headshot above, so it is not repeated here: a
+      // hyphenated name and a score wrapped onto two lines and left a word
+      // hanging on its own.
       lines: [
-        { label: 'Points', value: money(side.points) },
-        { label: 'Best start', value: best ? `${best.short}, ${money(best.points)}` : 'Nobody' },
-        { label: 'Left on the bench', value: money(benched) },
+        { label: 'His points', value: money(side.points) },
+        { label: `${opponentName}`, value: money(opponent.points) },
+        { label: final ? 'Left on the bench' : 'On the bench so far', value: money(benched) },
       ],
       player: best
         ? { name: best.short, slot: best.slot, points: money(best.points), headshot: best.headshot }

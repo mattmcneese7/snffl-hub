@@ -45,7 +45,7 @@ import {
 import { getPlayoffOdds } from '@/lib/playoff-odds';
 import { publishedWeeks, readIssue } from '@/lib/rag';
 import { getTrades } from '@/lib/trades';
-import type { GameSide } from '@/lib/types';
+import type { Game, GameSide } from '@/lib/types';
 
 const QUICK_LINKS = [
   { href: '/managers', label: 'Managers', note: 'All 14 teams' },
@@ -106,32 +106,32 @@ export default async function HomePage() {
   const thisWeekClips = await playableIn(week);
   const storyWeek = thisWeekClips.length || week === 1 ? week : week - 1;
   const storyClips = storyWeek === week ? thisWeekClips : await playableIn(storyWeek);
-  // The card that closes every manager's story describes a week he has
-  // actually played. The story week can be the week in progress, where half
-  // the league has not kicked off yet, so a manager whose game has no points
-  // on it gets the week before rather than a card reading "tied, 0.00 to
-  // 0.00". The choice is per manager, because on a Sunday morning some of
-  // them have played and some have not.
+  // The card that closes every manager's story prefers his last finished
+  // matchup, per manager. A week in progress is not a result: a card reading
+  // "beat Adam 35.30 to 18.48" off one running back is a scoreboard mid
+  // quarter dressed up as a verdict. If nothing of his is final yet, the card
+  // says who is ahead and says it is still being played.
   const storyGames = storyWeek === week ? games : await getWeekGames(storyWeek);
   const priorGames = storyWeek > 1 ? await getWeekGames(storyWeek - 1) : [];
-  const sidesOf = (list: typeof storyGames) => {
-    const out = new Map<number, { side: GameSide; opponent: GameSide }>();
+  type CardSide = { side: GameSide; opponent: GameSide; status: Game['status']; week: number };
+  const sidesOf = (list: typeof storyGames, atWeek: number) => {
+    const out = new Map<number, CardSide>();
     for (const game of list) {
-      out.set(game.home.rosterId, { side: game.home, opponent: game.away });
-      out.set(game.away.rosterId, { side: game.away, opponent: game.home });
+      out.set(game.home.rosterId, { side: game.home, opponent: game.away, status: game.status, week: atWeek });
+      out.set(game.away.rosterId, { side: game.away, opponent: game.home, status: game.status, week: atWeek });
     }
     return out;
   };
-  const thisWeekSides = sidesOf(storyGames);
-  const priorSides = sidesOf(priorGames);
-  const cardFor = (rosterId: number) => {
-    const current = thisWeekSides.get(rosterId);
-    if (current && (current.side.points > 0 || current.opponent.points > 0)) {
-      return { ...current, week: storyWeek };
-    }
-    const prior = priorSides.get(rosterId);
-    if (prior) return { ...prior, week: storyWeek - 1 };
-    return current ? { ...current, week: storyWeek } : null;
+  const thisWeekSides = sidesOf(storyGames, storyWeek);
+  const priorSides = sidesOf(priorGames, storyWeek - 1);
+  const cardFor = (rosterId: number): CardSide | null => {
+    const current = thisWeekSides.get(rosterId) ?? null;
+    const prior = priorSides.get(rosterId) ?? null;
+    if (current?.status === 'final') return current;
+    if (prior?.status === 'final') return prior;
+    // Nothing finished yet, so his game in progress is the honest card.
+    if (current && (current.side.points > 0 || current.opponent.points > 0)) return current;
+    return prior ?? current;
   };
 
   // ESPN rather than the game status, which is derived from week arithmetic and
@@ -174,7 +174,10 @@ export default async function HomePage() {
                 // His week closes the story, and is the whole of it when ESPN
                 // has no clip of anybody he started.
                 return own
-                  ? [...reels, weekCardClip(own.side, own.opponent, name, nameOf(own.opponent.rosterId), own.week)]
+                  ? [
+                      ...reels,
+                      weekCardClip(own.side, own.opponent, name, nameOf(own.opponent.rosterId), own.week, own.status),
+                    ]
                   : reels;
               })(),
             }))}

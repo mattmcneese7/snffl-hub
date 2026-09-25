@@ -275,11 +275,19 @@ secondary, and his call on it is phone first, widening gracefully: a wide
 screen gets more columns of the same design, never a second design.
 
 His call on sequencing: **research and mock first, no code in the live app**.
-So `/lab` holds the proposal, Blacklight, as its own route with its own
-stylesheet and no site chrome, noindexed, with Home, a matchup and the Feed
-mocked at real numbers. Nothing there touches a live token, so it can be kept,
-changed or thrown away without a migration. Until the overhaul starts properly,
-Day Game stays and both themes keep passing the contrast gate.
+
+The first attempt, Blacklight, was rejected and removed. It is in the history
+at 0ea9446 if it is ever wanted. It deserved rejecting: near black ground, one
+cyan accent, every container the same rounded card, pill chips, mono micro
+labels, a glowing active tab. Swap the words and it is a crypto dashboard. It
+was a theme rather than a world, and it borrowed nothing from a league that
+already owns a distinctive visual language in the Rag's print identity.
+
+**The rule that comes out of it: the direction has to be grounded in a
+reference, not derived from adjectives.** "Dark, sleek, app first" describes
+the safest version of every dark app ever made. Matt is supplying the
+reference. Until then, Day Game stays and both themes keep passing the contrast
+gate.
 
 ## Squirtfucius Says, Checkpoint 12c
 

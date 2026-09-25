@@ -195,9 +195,30 @@ export function weightOf(item: FeedItem): number {
   return KIND_WEIGHT[item.kind] + points;
 }
 
-/** The moments that mattered most, heaviest first. */
+/**
+ * Who or what a moment is about, for deduping a ranking.
+ *
+ * Every clip of a player carries that player's week, so ranking by points
+ * alone returns the same quarterback six times: five Josh Allen touchdowns and
+ * nothing else happened, apparently. A clip is keyed by the name its headline
+ * opens with, which is how these are written, so one player contributes his
+ * best moment and then steps aside.
+ */
+function subjectOf(item: FeedItem): string {
+  if (item.kind !== 'clip') return `${item.kind}:${item.id}`;
+  const name = item.title.split(/\s+/).slice(0, 2).join(' ').toLowerCase();
+  return `clip:${item.managerIds[0] ?? name}`;
+}
+
+/** The moments that mattered most, heaviest first, one per subject. */
 export function biggest(items: FeedItem[], limit = 6): FeedItem[] {
-  return [...items]
+  const best = new Map<string, FeedItem>();
+  for (const item of items) {
+    const key = subjectOf(item);
+    const held = best.get(key);
+    if (!held || weightOf(item) > weightOf(held)) best.set(key, item);
+  }
+  return [...best.values()]
     .sort((a, b) => weightOf(b) - weightOf(a) || new Date(b.at).getTime() - new Date(a.at).getTime())
     .slice(0, limit);
 }

@@ -3,9 +3,10 @@ import { firstNameOf } from '@/config/managers';
 import { SourceStrip } from '@/components/SourceMark';
 import Chrome from '@/components/Chrome';
 import FeedStream from '@/components/FeedStream';
+import PageHead from '@/components/PageHead';
 import { getFeedPosts } from '@/lib/feed';
-import { getHighlights, isRelevantClip } from '@/lib/highlights';
-import { allPlayers, teams } from '@/lib/league';
+import { getHighlights, isEspnClip, isRelevantClip } from '@/lib/highlights';
+import { allPlayers, scoredWeek, teams } from '@/lib/league';
 
 const FANTASY_POSITIONS = new Set(['QB', 'RB', 'WR', 'TE', 'K']);
 
@@ -28,6 +29,13 @@ export default async function FeedPage() {
   // Only clips someone in this league could care about: owned players and
   // D/STs, and unowned players at positions the league rosters.
   const highlights = allClips.filter((clip) => isRelevantClip(clip, (id) => fantasy.has(id)));
+  // Facts for the page's opening. Real counts, worked out here rather than
+  // described in a sentence underneath the title.
+  const playableCount = highlights.filter((clip) => isEspnClip(clip.id) && clip.thumbnail).length;
+  const week = await scoredWeek();
+  const thisWeekCount =
+    posts.filter((post) => post.week === week).length +
+    highlights.filter((clip) => clip.week === week).length;
 
   // Keyed by text, because owner_team_id is a text column even though roster
   // ids are numbers everywhere else in the project.
@@ -39,20 +47,14 @@ export default async function FeedPage() {
     <>
       <Chrome section="The Feed" />
       <main className="snffl-page">
-        <section>
-          <div className="snffl-block-heading">
-            <h2 className="snffl-headline">The Feed</h2>
-            <span className="snffl-block-heading-link">
-              {posts.length + highlights.length
-                ? `${posts.length + highlights.length} moments`
-                : 'Quiet right now'}
-            </span>
-          </div>
-          <p className="snffl-menu-note">
-            Your week first, then the replays, then what actually mattered. The whole record is
-            underneath if you want it.
-          </p>
-        </section>
+        <PageHead
+          title="The Feed"
+          facts={[
+            { label: 'Moments', value: String(posts.length + highlights.length) },
+            { label: 'Replays', value: String(playableCount) },
+            { label: 'This week', value: String(thisWeekCount) },
+          ]}
+        />
 
         <FeedStream
           posts={posts}

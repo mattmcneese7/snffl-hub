@@ -692,3 +692,43 @@
   .snffl-feature-side-score { font-size: 46px; }
   .snffl-matchups-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
 }
+
+/* ---------- How a page opens ---------- */
+
+.snffl-page-head { display: grid; gap: var(--s-3); margin-bottom: var(--s-2); }
+.snffl-page-title {
+  margin: 0;
+  font-family: var(--font-archivo);
+  font-weight: 800;
+  font-size: var(--t-display);
+  line-height: 0.96;
+  letter-spacing: -0.025em;
+}
+.snffl-page-title.snffl-headline-editorial {
+  font-size: clamp(38px, 12vw, 56px);
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+/* Facts, not a sentence. Each one is a live number with its name under it. */
+.snffl-page-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-4);
+  margin: 0;
+}
+.snffl-page-fact { display: grid; gap: 2px; }
+.snffl-page-fact dt {
+  font: 700 var(--t-label) / 1.2 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  order: 2;
+}
+.snffl-page-fact dd {
+  margin: 0;
+  font-size: var(--t-h2);
+  line-height: 1;
+  order: 1;
+}
+.snffl-page-fact-live dd { color: var(--live); }

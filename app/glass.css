@@ -855,3 +855,30 @@ h3,
    stark edge the ramp exists to avoid; the frost's own gradient is the edge. */
 
 
+
+/* ---------- Coloured glass ---------- */
+
+/* One recipe, four hues. A chip keeps its colour and gains the frost, so the
+   material is the same everywhere instead of the chrome being glass and every
+   status badge being a painted rectangle. */
+.snffl-tint {
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
+  border: 1px solid transparent;
+}
+.snffl-tint-blue { background: var(--tint-blue); border-color: var(--tint-blue-line); color: var(--tint-blue-ink); }
+.snffl-tint-red { background: var(--tint-red); border-color: var(--tint-red-line); color: var(--tint-red-ink); }
+.snffl-tint-green { background: var(--tint-green); border-color: var(--tint-green-line); color: var(--tint-green-ink); }
+.snffl-tint-amber { background: var(--tint-amber); border-color: var(--tint-amber-line); color: var(--tint-amber-ink); }
+
+/* The chips that carried flat fills now take the same tinted glass. */
+.snffl-feed-mark-td,
+.snffl-feed-mark-touchdown { background: var(--tint-green); border: 1px solid var(--tint-green-line); color: var(--tint-green-ink); }
+.snffl-feed-mark-cmon { background: var(--tint-red); border: 1px solid var(--tint-red-line); color: var(--tint-red-ink); }
+.snffl-feed-mark-lead { background: var(--tint-blue); border: 1px solid var(--tint-blue-line); color: var(--tint-blue-ink); }
+.snffl-squirt-tag-sit,
+.snffl-squirt-tag-bench { background: var(--tint-red); border: 1px solid var(--tint-red-line); color: var(--tint-red-ink); }
+.snffl-squirt-tag-lock { background: var(--tint-green); border: 1px solid var(--tint-green-line); color: var(--tint-green-ink); }
+.snffl-squirt-tag-thin { background: var(--tint-amber); border: 1px solid var(--tint-amber-line); color: var(--tint-amber-ink); }
+.snffl-chip-live,
+.snffl-board-status-live { background: var(--tint-red); border: 1px solid var(--tint-red-line); color: var(--tint-red-ink); }

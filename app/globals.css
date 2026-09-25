@@ -41,6 +41,23 @@
      chrome's, because a page holds many panels and one dock. */
   --panel-line: rgba(255, 255, 255, 0.08);
   --panel-shine: rgba(255, 255, 255, 0.07);
+  /* Coloured glass. A tinted pane keeps its hue but stops being a solid slab
+     of it: a low tint, a brighter rim of the same colour, and the frost behind
+     it. Every status chip in the app used a flat fill, which is why nothing
+     read as glass except the chrome. */
+  --tint-blue: rgba(59, 150, 235, 0.22);
+  --tint-blue-line: rgba(109, 186, 255, 0.5);
+  --tint-blue-ink: #d6ecff;
+  --tint-red: rgba(233, 62, 80, 0.22);
+  --tint-red-line: rgba(255, 120, 132, 0.5);
+  --tint-red-ink: #ffdde0;
+  --tint-green: rgba(53, 211, 154, 0.2);
+  --tint-green-line: rgba(98, 232, 180, 0.5);
+  --tint-green-ink: #cdf6e6;
+  --tint-amber: rgba(255, 196, 77, 0.2);
+  --tint-amber-line: rgba(255, 214, 128, 0.5);
+  --tint-amber-ink: #ffeecb;
+
   --glass: rgba(255, 255, 255, 0.07);
   --glass-line: rgba(255, 255, 255, 0.13);
   /* The chrome's own glass: the dock and the crawl.
@@ -118,12 +135,12 @@
   /* Coloured glass. A tag keeps its colour but stops being a solid slab of it:
      a tint, a brighter rim of the same hue, and the blur behind it. The ink is
      lifted toward white so it still reads on a fill that is now mostly ground. */
-  --ticker-league-bg: rgba(59, 150, 235, 0.26);
-  --ticker-league-line: rgba(109, 186, 255, 0.55);
-  --ticker-league-ink: #d6ecff;
-  --ticker-nfl-bg: rgba(233, 62, 80, 0.26);
-  --ticker-nfl-line: rgba(255, 120, 132, 0.55);
-  --ticker-nfl-ink: #ffdde0;
+  --ticker-league-bg: var(--tint-blue);
+  --ticker-league-line: var(--tint-blue-line);
+  --ticker-league-ink: var(--tint-blue-ink);
+  --ticker-nfl-bg: var(--tint-red);
+  --ticker-nfl-line: var(--tint-red-line);
+  --ticker-nfl-ink: var(--tint-red-ink);
 
   /* Shape.
      

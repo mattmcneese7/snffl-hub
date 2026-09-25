@@ -206,8 +206,14 @@ const LITERAL_PAIRS = [
   ['#ffffff', '#0b1a2e', 4.5, 'DraftSharks badge label'],
   ['#ffffff', '#1f74c9', 4.5, 'SNFFL model badge letter'],
   ['#ffffff', '#c8323f', 4.5, 'injury tag on a lineup row'],
-  // Tinted glass tags, composited by hand: the tag's own tint over the dock's
-  // scrim over the ground, which is what the label actually sits on.
+  // Tinted glass, composited by hand: a translucent fill cannot be read from a
+  // token, so each tint is worked out over the surface it actually sits on.
+  // These four are the tint over a panel over the ground.
+  ['#cdf6e6', '#163b3c', 4.5, 'green tinted chip on a panel'],
+  ['#ffdde0', '#3e1e2e', 4.5, 'red tinted chip on a panel'],
+  ['#d6ecff', '#183250', 4.5, 'blue tinted chip on a panel'],
+  ['#ffeecb', '#3e382c', 4.5, 'amber tinted chip on a panel'],
+  // And these two are the crawl's tags over the crawl's own scrim.
   ['#d6ecff', '#15314f', 4.5, 'LEAGUE tag on its own tinted glass'],
   ['#ffdde0', '#421a27', 4.5, 'NFL tag on its own tinted glass'],
   // The Shartzone is brown in both themes.

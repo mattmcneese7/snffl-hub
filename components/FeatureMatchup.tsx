@@ -99,12 +99,21 @@ function Side({
       />
       {status !== 'final' && side.projected != null ? (
         <span className="snffl-board-proj">
-          <span className="snffl-label">Proj</span> {side.projected.toFixed(1)}
+          <span className="snffl-board-proj-item">
+            <span className="snffl-label">Proj</span>
+            <b>{side.projected.toFixed(1)}</b>
+          </span>
           {status === 'live' && side.expected != null ? (
-            <>
-              {' '}
-              <span className="snffl-label">Pace</span> {side.expected.toFixed(1)}
-            </>
+            // Pace against projection is the only one of the two that says
+            // something: running hot or running cold, coloured accordingly.
+            <span
+              className={`snffl-board-proj-item snffl-board-pace${
+                side.expected >= side.projected ? ' snffl-board-pace-hot' : ' snffl-board-pace-cold'
+              }`}
+            >
+              <span className="snffl-label">Pace</span>
+              <b>{side.expected.toFixed(1)}</b>
+            </span>
           ) : null}
         </span>
       ) : null}

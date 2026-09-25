@@ -197,14 +197,30 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
 
 .snffl-board-score { font-size: clamp(26px, 8.6vw, 34px); margin-top: 6px; }
 .snffl-board-score-lead { color: var(--win); }
+/* Two readings, not one string. They ran together as "PROJ 122.3 PACE 132.1",
+   which reads as a single number nobody parses. Each is its own item with its
+   label above it, and pace is set in italic and coloured, because whether a
+   side is running ahead of its projection or behind it is the only part of
+   this that is a verdict. */
 .snffl-board-proj {
+  display: flex;
+  gap: var(--s-3);
   font-family: var(--font-archivo);
-  font-size: var(--t-small);
-  font-weight: 700;
   font-variant-numeric: tabular-nums;
+}
+.snffl-board-proj-item { display: grid; gap: 1px; }
+.snffl-board-proj-item .snffl-label {
+  font-size: var(--t-label);
+  color: var(--muted);
+}
+.snffl-board-proj-item b {
+  font-size: var(--t-small);
+  font-weight: 800;
   color: var(--ink-secondary);
 }
-.snffl-board-proj .snffl-label { font-size: var(--t-label); }
+.snffl-board-pace b { font-style: italic; }
+.snffl-board-pace-hot b { color: var(--win); }
+.snffl-board-pace-cold b { color: var(--bad); }
 
 .snffl-board-tubes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .snffl-board-counts {

@@ -1,7 +1,7 @@
 {
-  "name": "Squirtnite FFL",
-  "short_name": "SNFFL",
-  "description": "The Squirtnite FFL hub.",
+  "name": "SQUIRT",
+  "short_name": "SQUIRT",
+  "description": "The home of the Squirtnite FFL.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

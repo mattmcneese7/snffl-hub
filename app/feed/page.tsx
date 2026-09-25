@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { managerNames } from '@/lib/manager-names';
 import { firstNameOf } from '@/config/managers';
 import { PageSources } from '@/components/SourceMark';
@@ -9,6 +10,8 @@ import { storiesRail } from '@/lib/stories-rail';
 import { getFeedPosts } from '@/lib/feed';
 import { getHighlights, isEspnClip, isRelevantClip } from '@/lib/highlights';
 import { allPlayers, scoredWeek, teams } from '@/lib/league';
+
+export const metadata: Metadata = { title: 'Feed' };
 
 const FANTASY_POSITIONS = new Set(['QB', 'RB', 'WR', 'TE', 'K']);
 

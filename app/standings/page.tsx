@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import ManagerLink from '@/components/ManagerLink';
 import { PageSources } from '@/components/SourceMark';
 import Link from 'next/link';
@@ -11,6 +12,8 @@ import { getPlayoffOdds } from '@/lib/playoff-odds';
 import { getPostseason } from '@/lib/postseason';
 import { getPickupCounts } from '@/lib/transactions';
 import { getTrophyBoard } from '@/lib/trophies';
+
+export const metadata: Metadata = { title: 'Standings' };
 
 /**
  * Where everyone stands.

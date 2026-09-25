@@ -44,7 +44,7 @@ function headline(slides: StorySlide[]): { kicker: string; big: string; sub: str
   if (intro && intro.kind === 'intro') {
     return { kicker: 'The week', big: intro.topTeam, sub: `${intro.topScore.toFixed(2)} points` };
   }
-  return { kicker: 'SNFFL', big: 'The week', sub: '' };
+  return { kicker: 'SQUIRT', big: 'The week', sub: '' };
 }
 
 /** Whatever this slide leads with, as three lines. */
@@ -154,7 +154,7 @@ export async function GET(
             color: DIM,
           }}
         >
-          <span>SNFFL · Week {week}</span>
+          <span>SQUIRT · Week {week}</span>
           <span>squirtnite.live</span>
         </div>
       </div>

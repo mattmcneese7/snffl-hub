@@ -1,6 +1,9 @@
+import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import Chrome from '@/components/Chrome';
 import { publishedWeeks } from '@/lib/rag';
+
+export const metadata: Metadata = { title: 'The Rag' };
 
 export default function RagIndex() {
   const weeks = publishedWeeks();

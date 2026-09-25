@@ -217,7 +217,7 @@ export default function InstallInvite() {
     const url = window.location.origin + '/join';
     try {
       if (navigator.share) {
-        await navigator.share({ title: 'Squirtnite FFL', url });
+        await navigator.share({ title: 'SQUIRT', url });
         return;
       }
       await navigator.clipboard.writeText(url);
@@ -237,7 +237,7 @@ export default function InstallInvite() {
         <img src="/logo-mark-v4.png" alt="" />
       </div>
 
-      <h1 className="snffl-invite-title">Squirtnite FFL</h1>
+      <h1 className="snffl-invite-title">SQUIRT</h1>
       <p className="snffl-invite-deck">
         Live scores, the Rag, every chug and the week in ninety seconds. Put it on
         your home screen and it opens like an app.

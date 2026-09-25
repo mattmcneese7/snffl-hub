@@ -1,8 +1,11 @@
+import type { Metadata } from 'next';
 import ManagerLink from '@/components/ManagerLink';
 import Link from 'next/link';
 import PageHead from '@/components/PageHead';
 import Chrome from '@/components/Chrome';
 import { getTrades } from '@/lib/trades';
+
+export const metadata: Metadata = { title: 'Trades' };
 
 export default async function TradesPage() {
   const trades = await getTrades();

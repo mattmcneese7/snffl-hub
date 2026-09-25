@@ -140,7 +140,7 @@ function GameCard({
         )}
         {starters ? (
           <span className="snffl-slate-starters">
-            {starters} SNFFL {starters === 1 ? 'starter' : 'starters'}
+            {starters} league {starters === 1 ? 'starter' : 'starters'}
           </span>
         ) : null}
       </footer>

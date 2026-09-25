@@ -53,8 +53,19 @@
   --panel: rgba(10, 26, 31, 0.52);
   /* A panel's own rim and the light along its top edge. Quieter than the
      chrome's, because a page holds many panels and one dock. */
-  --panel-line: rgba(255, 255, 255, 0.08);
-  --panel-shine: rgba(255, 255, 255, 0.07);
+  /* A panel's rim, the light along its top edge and the shade along its
+     bottom. The rim and shine were 0.08 and 0.07, which is under the threshold
+     where an edge reads as an edge: the panels were a flat fill with a hairline
+     nobody could see, which is why they sat on the ground rather than above it.
+     Lit top and shaded bottom together are what make a surface read as curved,
+     and it is the same recipe the chrome's glass uses, a step quieter because a
+     page holds many panels and one dock. */
+  --panel-line: rgba(255, 255, 255, 0.15);
+  --panel-shine: rgba(255, 255, 255, 0.2);
+  --panel-shade: rgba(0, 0, 0, 0.3);
+  /* The sheen across the top of the pane. Barely there by design: it is the
+     fall of light on glass, not a gradient anybody should notice. */
+  --panel-sheen: rgba(255, 255, 255, 0.05);
   /* Coloured glass. A tinted pane keeps its hue but stops being a solid slab
      of it: a low tint, a brighter rim of the same colour, and the frost behind
      it. Every status chip in the app used a flat fill, which is why nothing

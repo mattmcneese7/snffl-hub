@@ -1,9 +1,12 @@
+import type { Metadata } from 'next';
 import PageHead from '@/components/PageHead';
 import Chrome from '@/components/Chrome';
 import ChugMeter, { type ChugColumn } from '@/components/ChugMeter';
 import { getChugCounts } from '@/lib/awards';
 import { teams } from '@/lib/league';
 import { CHUG_RULES, CHUG_SUBMISSION } from '@/config/league-rules';
+
+export const metadata: Metadata = { title: 'Chug Meter' };
 
 export default async function ChugPage() {
   const tallies = await getChugCounts();

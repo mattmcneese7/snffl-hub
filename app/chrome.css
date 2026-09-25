@@ -80,47 +80,22 @@ body { padding-bottom: 76px; }
    The app has none. Everything it used to hold, the mark and the week, moved
    into the dock at the bottom, where a thumb already is. What is left at the
    top of a screen is the content. */
-/* The artwork is 300x130, but the letters only occupy roughly y=13 to 66.
-   The rest is drips hanging below, which may overhang the header edge. */
-.snffl-wordmark-svg {
-  display: block;
-  width: 152px;
-  height: auto;
-  margin: 0 auto;
-  overflow: visible;
-  transition: width 0.18s ease;
+/* The brand in the desktop bar: the mark, then the name set in the display
+   face. Not a drawn wordmark any more, so there is nothing here to keep in
+   sync with the logo. */
+.snffl-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-archivo);
+  font-style: italic;
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--ink);
 }
-/* The header instance is clipped to its cropped box so nothing paints over the
-   section strip below it. */
-.snffl-wordmark-crop { overflow: hidden; }
-.snffl-header-compact .snffl-wordmark-svg { width: 92px; }
-
-.snffl-wave { animation: snffl-wave 2.4s linear infinite; }
-.snffl-tilt { transform-box: view-box; transform-origin: 150px 58px; }
-.snffl-tilt.snffl-slosh { animation: snffl-slosh 1.7s cubic-bezier(0.3, 0.6, 0.4, 1); }
-.snffl-fall {
-  transform-box: fill-box;
-  transform-origin: 50% 0;
-  animation: snffl-drop 3.4s cubic-bezier(0.5, 0, 0.9, 0.6) infinite;
-  transition: opacity 0.2s;
-}
-.snffl-compact .snffl-fall { opacity: 0; animation-play-state: paused; }
-
-@keyframes snffl-wave { to { transform: translateX(-40px); } }
-@keyframes snffl-drop {
-  0% { transform: translateY(-4px) scale(0.25); opacity: 0; }
-  35% { transform: none; opacity: 1; }
-  55% { transform: none; opacity: 1; }
-  90% { transform: translateY(24px); opacity: 0; }
-  100% { opacity: 0; }
-}
-@keyframes snffl-slosh {
-  15% { transform: rotate(-7deg) translateY(-6px); }
-  35% { transform: rotate(5deg); }
-  55% { transform: rotate(-3deg); }
-  75% { transform: rotate(1.5deg); }
-  100% { transform: none; }
-}
+.snffl-brand img { width: 26px; height: 26px; display: block; }
 
 /* ---------- Section strip ---------- */
 
@@ -423,7 +398,7 @@ body { padding-bottom: 76px; }
     background: var(--panel);
     border-bottom: 1px solid var(--line);
   }
-  .snffl-desktop-nav .snffl-wordmark-svg { width: 132px; margin: 0; }
+  .snffl-desktop-nav .snffl-brand { font-size: 20px; }
   .snffl-desktop-nav-links { display: flex; gap: 22px; margin-left: 8px; }
   .snffl-desktop-nav-link {
     font-size: var(--t-body);

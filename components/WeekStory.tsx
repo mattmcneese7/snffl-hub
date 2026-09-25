@@ -395,7 +395,7 @@ function ShareRow({ week, index, kind }: { week: number; index: number; kind: st
   const image = `/api/share/${week}/slide?i=${index}`;
 
   const share = async () => {
-    const data = { title: `SNFFL Week ${week}`, text: `Week ${week}: ${kind}`, url };
+    const data = { title: `SQUIRT Week ${week}`, text: `Week ${week}: ${kind}`, url };
     try {
       if (navigator.share) {
         await navigator.share(data);

@@ -60,8 +60,8 @@ const permanentMarker = Permanent_Marker({
 });
 
 export const metadata: Metadata = {
-  title: { default: 'Squirtnite FFL', template: '%s, SNFFL' },
-  description: 'The Squirtnite FFL hub.',
+  title: { default: 'SQUIRT', template: '%s, SQUIRT' },
+  description: 'The home of the Squirtnite FFL.',
   // Hidden from search engines entirely. The matching header lives in next.config.ts.
   robots: { index: false, follow: false, nocache: true },
   manifest: '/manifest.webmanifest',
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
   // view underneath it. black-translucent put the clock and battery on top of
   // the wordmark. The safe-area padding stays as a second line of defence, and
   // reports 0 once iOS reserves the space, so the two do not double up.
-  appleWebApp: { capable: true, title: 'SNFFL', statusBarStyle: 'default' },
+  appleWebApp: { capable: true, title: 'SQUIRT', statusBarStyle: 'default' },
   icons: {
     icon: [{ url: '/favicon-32.png', sizes: '32x32', type: 'image/png' }],
     apple: '/apple-touch-icon.png',

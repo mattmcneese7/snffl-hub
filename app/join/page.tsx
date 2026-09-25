@@ -16,7 +16,7 @@ import InstallInvite from '@/components/InstallInvite';
  */
 export const metadata: Metadata = {
   title: 'Join',
-  description: 'Put the Squirtnite FFL hub on your home screen.',
+  description: 'Put SQUIRT on your home screen.',
 };
 
 export default function JoinPage() {

@@ -1,7 +1,10 @@
+import type { Metadata } from 'next';
 import PageHead from '@/components/PageHead';
 import Chrome from '@/components/Chrome';
 import SettingsPanel from '@/components/SettingsPanel';
 import { teams } from '@/lib/league';
+
+export const metadata: Metadata = { title: 'Settings' };
 
 export default function SettingsPage() {
   return (

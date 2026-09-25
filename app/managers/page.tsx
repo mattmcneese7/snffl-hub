@@ -1,8 +1,11 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import PageHead from '@/components/PageHead';
 import Chrome from '@/components/Chrome';
 import TeamAvatar from '@/components/TeamAvatar';
 import { getStandings } from '@/lib/league';
+
+export const metadata: Metadata = { title: 'Managers' };
 
 export default async function ManagersPage() {
   const standings = await getStandings();

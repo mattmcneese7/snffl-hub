@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import {
   BeerStein,
@@ -11,6 +12,8 @@ import {
 import PageHead from '@/components/PageHead';
 import Chrome from '@/components/Chrome';
 import { league } from '@/lib/league';
+
+export const metadata: Metadata = { title: 'More' };
 
 /* Every row leads with a coloured chip, which is the pattern that turns a
    list of links into a menu. The colour groups them: blue is the league's

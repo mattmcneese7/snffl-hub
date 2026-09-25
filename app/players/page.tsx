@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import PageHead from '@/components/PageHead';
 import Chrome from '@/components/Chrome';
 import PlayersBrowser, { type PlayerRow } from '@/components/PlayersBrowser';
@@ -5,6 +6,8 @@ import { league, teamByRoster, teams } from '@/lib/league';
 import { getPlayerDirectory } from '@/lib/players';
 import { getWeekProjections } from '@/lib/projections';
 import { positionRank, snapSharePct, totalTouchdowns, totalYards } from '@/lib/stats';
+
+export const metadata: Metadata = { title: 'Players' };
 
 export default async function PlayersPage() {
   // state.week is the week in progress. display_week lags it, so projecting

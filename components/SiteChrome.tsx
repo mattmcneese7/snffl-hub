@@ -11,7 +11,6 @@ import {
   Strategy,
   type IconWeight,
 } from '@phosphor-icons/react';
-import SnfflWordmark from './SnfflWordmark';
 
 /** Parts rather than one string, so scores can read differently to names. */
 export type TickerPart = { text: string; kind: 'team' | 'score' | 'link' | 'logo'; src?: string };
@@ -202,7 +201,17 @@ export default function SiteChrome({
           spent a whole band of the screen on two words. Theme and alerts live
           in Settings. */}
       <nav className="snffl-desktop-nav">
-        <SnfflWordmark className="snffl-wordmark-svg" />
+        {/* The mark and the name. This was an SVG that drew the letters
+            S N F F L as custom paths, with water sloshing inside them: a nice
+            piece of work for a name the app no longer has. Redrawing six new
+            letterforms by hand would be worse than setting them, so the name
+            is set in the display face the headlines already use, beside the
+            mark that is the brand everywhere else in the app. */}
+        <span className="snffl-brand">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo-mark-v4-128.png" alt="" />
+          SQUIRT
+        </span>
         <div className="snffl-desktop-nav-links">
           {DESKTOP_TABS.map(({ label, href }) => {
             const active = href === '/' ? pathname === '/' : pathname.startsWith(href);

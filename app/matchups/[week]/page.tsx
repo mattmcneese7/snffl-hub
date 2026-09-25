@@ -134,7 +134,7 @@ export default async function WeekPage({ params }: { params: Promise<{ week: str
 
         <section>
           <div className="snffl-block-heading">
-            <h2 className="snffl-headline">The Slate</h2>
+            <h2 className="snffl-headline">NFL Scores</h2>
             <span className="snffl-block-heading-link">NFL Week {week}</span>
           </div>
           <NflSlate games={ctx.nfl} lines={ctx.lines} startersByTeam={startersByNflTeam(games)} />

@@ -367,3 +367,33 @@ only once the player in question can no longer score.
   distinctly from names and a divider between matchups.
 - Completed matchups read as a fantasy boxscore: the winner is marked and every
   player's score sits in its own box.
+
+## Write access to Sleeper and DraftKings, filed September 2026
+
+Matt asked whether OAuth could let the app do the things it currently only
+links out to: set a lineup, propose a trade, make a claim.
+
+**It cannot, through any route open to us.** Sleeper's API documentation is
+explicit: "We do not perform authentication as our API is read-only and only
+contains league information", and "No API Token is necessary, as you cannot
+modify contents via this API." There is no OAuth flow, no token, and no write
+endpoint to authorise against. Sleeper does invite enquiries about licensing
+for commercial use, which is the only door to anything beyond reads, and this
+is a private fourteen person league rather than a commercial product.
+
+DraftKings is the same answer for a different reason. There is no public
+consumer API, and we do not talk to DraftKings at all: the lines on the
+Scoreboard come from ESPN's own odds feed, which names DraftKings as the
+book. Placing a bet from here was never on the table and is not something
+this app should do.
+
+**So the workaround stays, and it is the right one.** Every action lives as a
+deep link into the Sleeper app, on the screen where the thing can actually be
+done, marked with Sleeper's own logo so it is obvious you are leaving. Sleeper
+knows who is logged in; this site does not need to, which also means it never
+holds a credential for anyone's account.
+
+**Revisit if** Sleeper ships a public OAuth or write API, or if the league
+ever wants this badly enough to ask Sleeper about a licence. Until one of
+those changes, treat the deep links as the finished feature and not as a
+placeholder.

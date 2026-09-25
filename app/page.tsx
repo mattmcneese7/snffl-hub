@@ -451,7 +451,7 @@ export default async function HomePage() {
             </HomeWidget>
 
             {liveNow ? null : (
-              <HomeWidget title="The Lines" href={`/matchups/${week}`} linkLabel="Full slate">
+              <HomeWidget title="NFL Scores" href={`/matchups/${week}`} linkLabel="Full slate">
                 <NflSlate
                   games={ctx.nfl}
                   lines={ctx.lines}

@@ -1,4 +1,5 @@
 import { formatMoneyline, impliedTeamTotal, type GameLines, type NflGame, type NflSide } from '@/lib/gameday';
+import Link from 'next/link';
 import SourceMark from './SourceMark';
 import WinBar from './WinBar';
 
@@ -79,7 +80,14 @@ function GameCard({
   const homeScore = game.home.score ?? 0;
 
   return (
-    <article className={`snffl-slate-game snffl-slate-${game.state}`}>
+    <article className={`snffl-slate-game snffl-slate-${game.state} snffl-card-link`}>
+      {/* The cards went nowhere, which made the whole slate a read only block
+          of numbers. Each one opens the game from this league's side. */}
+      <Link
+        className="snffl-card-link-cover"
+        href={`/nfl/${game.id}`}
+        aria-label={`Open ${game.away.name} at ${game.home.name}`}
+      />
       <header className="snffl-slate-head">
         {game.state === 'in' ? (
           <span className="snffl-live-pill snffl-live-pill-sm">

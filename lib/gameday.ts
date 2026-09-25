@@ -215,3 +215,85 @@ export function impliedTeamTotal(lines: GameLines | undefined, home: boolean): n
   const homeTotal = (lines.overUnder - lines.spread) / 2;
   return Number((home ? homeTotal : lines.overUnder - homeTotal).toFixed(1));
 }
+
+type FantasySlot = {
+  id: string;
+  name: string;
+  position: string;
+  team?: string;
+  headshot: string;
+  slot: string;
+  points: number;
+};
+type FantasySide = {
+  rosterId: number;
+  team: string;
+  manager: string;
+  lineup: FantasySlot[];
+  bench?: FantasySlot[];
+};
+
+/** One league player appearing in an NFL game, and who owns him. */
+export type LeagueEntry = {
+  playerId: string;
+  name: string;
+  position: string;
+  /** Sleeper code of the NFL team he plays for. */
+  nflTeam: string;
+  headshot: string;
+  rosterId: number;
+  manager: string;
+  teamName: string;
+  /** The lineup slot, or null when he is on the bench. */
+  slot: string | null;
+  points: number;
+};
+
+/**
+ * Every league player on either side of one NFL game.
+ *
+ * This is the thing that makes an NFL game matter here. Nobody in a fourteen
+ * person league watches Jets at Patriots for the football; they watch it
+ * because three of their starters are in it and one of them belongs to the
+ * manager they are playing this week. Bench players are included and marked,
+ * because "he had him on the bench" is the whole joke.
+ *
+ * Sorted starters first, then by points, so the ones deciding somebody's week
+ * are at the top.
+ */
+export function leagueEntriesInGame(
+  weekGames: { home: FantasySide; away: FantasySide }[],
+  teams: string[]
+): LeagueEntry[] {
+  const wanted = new Set(teams.filter(Boolean));
+  const out: LeagueEntry[] = [];
+
+  for (const game of weekGames) {
+    for (const side of [game.away, game.home]) {
+      const rows: [FantasySlot, string | null][] = [
+        ...side.lineup.map((s) => [s, s.slot] as [FantasySlot, string | null]),
+        ...(side.bench ?? []).map((s) => [s, null] as [FantasySlot, string | null]),
+      ];
+      for (const [slot, lineupSlot] of rows) {
+        if (!slot.team || !wanted.has(slot.team)) continue;
+        out.push({
+          playerId: slot.id,
+          name: slot.name,
+          position: slot.position,
+          nflTeam: slot.team,
+          headshot: slot.headshot,
+          rosterId: side.rosterId,
+          manager: side.manager,
+          teamName: side.team,
+          slot: lineupSlot,
+          points: slot.points,
+        });
+      }
+    }
+  }
+
+  return out.sort((a, b) => {
+    if (!!a.slot !== !!b.slot) return a.slot ? -1 : 1;
+    return b.points - a.points;
+  });
+}

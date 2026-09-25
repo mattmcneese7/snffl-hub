@@ -1635,3 +1635,86 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
 .snffl-winbar-compact { display: grid; }
 .snffl-winbar-compact > b:last-of-type { text-align: right; }
 .snffl-winbar-compact .snffl-winbar-track { height: 6px; background: var(--line); }
+
+/* ---------- One NFL game, from this league's side ---------- */
+
+.snffl-nflg { display: grid; gap: var(--s-3); padding: var(--s-4); }
+.snffl-nflg-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+}
+.snffl-nflg-sides {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--s-3);
+}
+/* Each side is a column: mark, code, name, record, score, book. The away side
+   reads left to right and the home side mirrors it, the way a scoreboard
+   sets two teams facing each other. */
+.snffl-nflg-side { display: grid; justify-items: start; gap: 2px; min-width: 0; }
+.snffl-nflg-side-home { justify-items: end; text-align: right; }
+.snffl-nflg-logo { width: 38px; height: 38px; object-fit: contain; }
+.snffl-nflg-abbr {
+  font-family: var(--mono);
+  font-size: var(--t-small);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--ink-secondary);
+}
+.snffl-nflg-name { font-size: var(--t-h3); font-weight: 800; }
+.snffl-nflg-record { font-size: var(--t-small); color: var(--muted); }
+.snffl-nflg-score { font-size: 38px; font-weight: 800; line-height: 1.05; }
+.snffl-nflg-book {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-2);
+  font-size: var(--t-small);
+}
+.snffl-nflg-side-home .snffl-nflg-book { flex-direction: row-reverse; }
+.snffl-nflg-situation {
+  margin: 0;
+  text-align: center;
+  font-size: var(--t-small);
+  color: var(--ink-secondary);
+}
+
+/* The book, as four figures rather than a sentence. */
+.snffl-nflg-book-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-3);
+  padding: var(--s-4);
+}
+.snffl-nflg-book-grid > div { display: grid; gap: 2px; }
+.snffl-nflg-book-grid b { font-size: var(--t-h3); }
+
+.snffl-nflg-managers { display: grid; gap: var(--s-3); }
+.snffl-nflg-mgr { padding: var(--s-3) var(--s-4) var(--s-4); }
+.snffl-nflg-mgr-head {
+  display: grid;
+  grid-template-columns: 4px minmax(0, 1fr);
+  align-items: center;
+  gap: var(--s-3);
+  padding-bottom: var(--s-3);
+  border-bottom: 1px solid var(--line);
+}
+.snffl-nflg-players { list-style: none; margin: 0; padding: 0; display: grid; }
+.snffl-nflg-players li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--s-2) var(--s-3);
+  padding: var(--s-3) 0;
+  border-bottom: 1px solid var(--line);
+}
+.snffl-nflg-players li:last-child { border-bottom: 0; }
+.snffl-nflg-players a { color: inherit; font-weight: 700; text-decoration: none; }
+.snffl-nflg-players .snffl-menu-note { grid-column: 1; }
+.snffl-nflg-players b { grid-row: 1 / span 2; grid-column: 2; font-size: var(--t-h3); }
+
+@media (min-width: 700px) {
+  .snffl-nflg-book-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .snffl-nflg-managers { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

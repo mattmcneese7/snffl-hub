@@ -222,8 +222,11 @@
   backdrop-filter: blur(28px) saturate(170%);
   border-top: 1px solid var(--line);
 }
+/* No fill on the bands: the frost behind them is the surface. A 90 percent
+   opaque card colour here is what made the crawl read as a painted slab while
+   the dock read as glass. */
 .snffl-ticker-row-league,
-.snffl-ticker-row-nfl { background: var(--card-strong); }
+.snffl-ticker-row-nfl { background: transparent; }
 .snffl-ticker-tag,
 .snffl-ticker-tag-league,
 .snffl-ticker-tag-nfl {
@@ -293,7 +296,7 @@ body { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
   bottom: calc(6px + env(safe-area-inset-bottom, 0px));
   /* Between a box and a pill. A pill on a bar this tall reads as a lozenge of
      buttons; square reads as a toolbar. */
-  border-radius: 24px;
+  border-radius: 22px;
   /* No padding above the bar. The mark breaks through the dock's top edge
      rather than the dock opening a band of empty glass for it to sit in,
      which is the whole point of a raised control: it interrupts the surface.
@@ -791,23 +794,41 @@ h3,
   background:
     linear-gradient(118deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.05) 24%, rgba(255, 255, 255, 0) 46%),
     var(--glass-bar);
-  border: 1px solid var(--glass-line);
   -webkit-backdrop-filter: blur(26px) saturate(180%);
   backdrop-filter: blur(26px) saturate(180%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.22),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.32),
-    0 12px 32px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
 }
-/* A brighter streak along the top edge, where a pane catches the most light. */
-.snffl-frost::after {
+
+/* The edge, which is the part that actually reads as Liquid Glass.
+   
+   Apple's is a gradient stroke rather than a flat rim: bright where the light
+   falls on the top left, dim on the bottom right where it falls away, so the
+   pane has a direction and a thickness. A uniform 1px line is a box with a
+   border. Drawn as a ring by masking the fill out of the middle, which is the
+   only way to put a gradient on a rounded border. */
+.snffl-frost::before {
   content: '';
   position: absolute;
-  left: 8%;
-  right: 8%;
-  top: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.62) 0%,
+    rgba(255, 255, 255, 0.24) 18%,
+    rgba(255, 255, 255, 0.07) 38%,
+    rgba(255, 255, 255, 0.04) 62%,
+    rgba(0, 0, 0, 0.32) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 /* Heavy blur over a gradient produces stepped contour lines, because the blur
@@ -855,23 +876,41 @@ h3,
   background:
     linear-gradient(118deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.05) 24%, rgba(255, 255, 255, 0) 46%),
     var(--glass-bar);
-  border: 1px solid var(--glass-line);
   -webkit-backdrop-filter: blur(26px) saturate(180%);
   backdrop-filter: blur(26px) saturate(180%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.22),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.32),
-    0 12px 32px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
 }
-/* A brighter streak along the top edge, where a pane catches the most light. */
-.snffl-frost::after {
+
+/* The edge, which is the part that actually reads as Liquid Glass.
+   
+   Apple's is a gradient stroke rather than a flat rim: bright where the light
+   falls on the top left, dim on the bottom right where it falls away, so the
+   pane has a direction and a thickness. A uniform 1px line is a box with a
+   border. Drawn as a ring by masking the fill out of the middle, which is the
+   only way to put a gradient on a rounded border. */
+.snffl-frost::before {
   content: '';
   position: absolute;
-  left: 8%;
-  right: 8%;
-  top: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.62) 0%,
+    rgba(255, 255, 255, 0.24) 18%,
+    rgba(255, 255, 255, 0.07) 38%,
+    rgba(255, 255, 255, 0.04) 62%,
+    rgba(0, 0, 0, 0.32) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 /* The crawl keeps the ramp: it is pinned to the edge of the screen, where a

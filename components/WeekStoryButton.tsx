@@ -26,12 +26,27 @@ export default function WeekStoryButton({ slides }: { slides: StorySlide[] }) {
   if (!slides.length) return null;
   const week = slides[0].week;
 
+  // Nothing at all until it lands, rather than a collapsed box.
+  //
+  // A zero height element is still a child of the page grid, still costs a
+  // row gap, and still has a height the browser is free to disagree with me
+  // about, which it did: three attempts at collapsing it left 44, then 32,
+  // then 32 pixels of nothing above the Rag. An element that does not exist
+  // cannot reserve anything, and the reflow when it appears is the push.
+  if (!landed) {
+    return open ? <WeekStory slides={slides} onClose={() => setOpen(false)} /> : null;
+  }
+
   return (
-    <div className={`snffl-wstory-ribbon${landed ? ' snffl-wstory-ribbon-in' : ''}`}>
-      {/* One button. It is a way in, not a panel: the slide count and a
-          status dot were furniture on something you either tap or scroll
-          past. */}
-      <button type="button" className="snffl-wstory-open" onClick={() => setOpen(true)}>
+    <div className="snffl-wstory-ribbon">
+      {/* The clip. A grid row animating from 0fr can only collapse a child
+          that is allowed to have no height, and a button with a tap sized
+          min-height is not, so it needs something between it and the row. */}
+      <span className="snffl-ribbon-clip">
+        {/* One button. It is a way in, not a panel: the slide count and a
+            status dot were furniture on something you either tap or scroll
+            past. */}
+        <button type="button" className="snffl-wstory-open" onClick={() => setOpen(true)}>
         <span className="snffl-frost" aria-hidden />
         {/* Drawn, not typed. U+25B6 carries emoji presentation on iOS, so the
             character turns into a colour glyph from the system font and the
@@ -40,7 +55,8 @@ export default function WeekStoryButton({ slides }: { slides: StorySlide[] }) {
           <path d="M0 0 L10 6 L0 12 Z" fill="currentColor" />
         </svg>
         Week {week} in 90 seconds
-      </button>
+        </button>
+      </span>
       {open ? <WeekStory slides={slides} onClose={() => setOpen(false)} /> : null}
     </div>
   );

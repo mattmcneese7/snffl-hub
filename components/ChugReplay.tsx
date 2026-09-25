@@ -39,9 +39,14 @@ export default function ChugReplay({ week }: { week: number }) {
     return () => window.removeEventListener('snffl:chug-closed', onClosed);
   }, [week]);
 
+  // Nothing at all until it lands: see WeekStoryButton for why a collapsed
+  // box is not good enough.
+  if (!landed) return null;
+
   return (
-    <div className={`snffl-wstory-ribbon${landed ? ' snffl-wstory-ribbon-in' : ''}`}>
-      <button
+    <div className="snffl-wstory-ribbon">
+      <span className="snffl-ribbon-clip">
+        <button
         type="button"
         className="snffl-chugreplay-button"
         onClick={() => window.dispatchEvent(new Event('snffl:chug'))}
@@ -50,8 +55,9 @@ export default function ChugReplay({ week }: { week: number }) {
         <svg className="snffl-chugreplay-mark" viewBox="0 0 10 12" aria-hidden focusable="false">
           <path d="M0 0 L10 6 L0 12 Z" fill="currentColor" />
         </svg>
-        Week {week} chug
-      </button>
+          Week {week} chug
+        </button>
+      </span>
     </div>
   );
 }

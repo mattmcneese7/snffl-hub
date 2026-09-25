@@ -1851,19 +1851,21 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   justify-content: center;
   gap: var(--s-2);
   width: 100%;
-  min-height: var(--tap);
+  /* About a third off the old height. These are full width, so the tap target
+     is still large; the height is the only dimension giving anything up. */
+  min-height: 26px;
   padding: 0 var(--s-4);
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
   background: transparent;
   border: 0;
   overflow: hidden;
-  color: var(--ink);
   font-family: var(--font-archivo);
-  font-size: var(--t-small);
+  font-size: var(--t-label);
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   cursor: pointer;
+  color: var(--ink);
 }
 /* Colour in the glass, under the sheen rather than instead of it. Setting a
    tint as the frost's background replaced the band of light that makes it
@@ -1884,9 +1886,24 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
     linear-gradient(rgba(138, 230, 221, 0.26), rgba(138, 230, 221, 0.26)),
     var(--glass-bar);
 }
+
+/* Amber glass: this is the beer, and the Chug Meter already owns that hue.
+   Same recipe as the week's ribbon, one hue apart, so the pair read as a set. */
+.snffl-chugreplay-button .snffl-frost {
+  background:
+    linear-gradient(
+      118deg,
+      rgba(255, 255, 255, 0.18) 0%,
+      rgba(255, 255, 255, 0.06) 24%,
+      rgba(255, 255, 255, 0.02) 50%,
+      rgba(255, 255, 255, 0.08) 100%
+    ),
+    linear-gradient(rgba(255, 196, 77, 0.28), rgba(255, 196, 77, 0.28)),
+    var(--glass-bar);
+}
 .snffl-wstory-play {
-  width: 9px;
-  height: 11px;
+  width: 7px;
+  height: 9px;
   flex: 0 0 auto;
   color: var(--logo-aqua);
 }
@@ -2095,72 +2112,30 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
    it. Animating the row of a one row grid from 0fr to 1fr is what makes the
    page open up smoothly rather than snapping: height cannot be transitioned
    from auto, and a fixed height would have to guess the button's. */
+/* It is not in the document until it lands, so there is no collapsed state to
+   style: it arrives, and the reflow is the push. The height animates from
+   nothing to a known maximum, which is the one way to animate opening without
+   animating to auto. */
 .snffl-wstory-ribbon {
   display: grid;
-  grid-template-rows: 0fr;
-  transition:
-    grid-template-rows 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-    margin-bottom 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.4s ease-out;
-  opacity: 0;
-}
-.snffl-wstory-ribbon > * { overflow: hidden; min-height: 0; }
-/* A ribbon of zero height is still a child of the page grid, and a grid child
-   costs a 32px gap whether or not it has anything in it. Two of them held 64
-   pixels open above the Rag before either had arrived, which is exactly the
-   space they were supposed to create by arriving. The collapsed state cancels
-   its own gap and gives it back on landing. */
-.snffl-wstory-ribbon { margin-bottom: -32px; }
-.snffl-wstory-ribbon-in { grid-template-rows: 1fr; opacity: 1; }
-/* The button itself slides the last few pixels, so it reads as arriving from
-   above rather than simply appearing at full height. */
-/* No margin of its own: .snffl-page is a grid with a 32px gap, so a margin
-   here was a second gap stacked on the first and left the ribbon floating
-   half a screen above the rail. It pulls up slightly instead, because a thin
-   ribbon does not need a full section's worth of air under it. */
-.snffl-wstory-ribbon .snffl-wstory-open,
-.snffl-wstory-ribbon .snffl-chugreplay-button {
-  position: relative;
-  isolation: isolate;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--s-2);
-  width: 100%;
-  min-height: var(--tap);
-  padding: 0 var(--s-4);
-  border-radius: var(--radius);
-  background: transparent;
-  border: 0;
   overflow: hidden;
-  color: var(--tint-amber-ink);
-  font-family: var(--font-archivo);
-  font-size: var(--t-small);
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  cursor: pointer;
+  margin-bottom: -18px;
+  animation: snffl-ribbon-drop 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-/* Amber glass: this is the beer, and the Chug Meter already owns that hue. */
-.snffl-chugreplay-button .snffl-frost {
-  background:
-    linear-gradient(
-      118deg,
-      rgba(255, 255, 255, 0.18) 0%,
-      rgba(255, 255, 255, 0.06) 24%,
-      rgba(255, 255, 255, 0.02) 50%,
-      rgba(255, 255, 255, 0.08) 100%
-    ),
-    linear-gradient(rgba(255, 196, 77, 0.28), rgba(255, 196, 77, 0.28)),
-    var(--glass-bar);
+@keyframes snffl-ribbon-drop {
+  from {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    max-height: 40px;
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.snffl-wstory-ribbon-in { margin-bottom: -18px; }
-.snffl-wstory-ribbon-in .snffl-wstory-open,
-.snffl-wstory-ribbon-in .snffl-chugreplay-button { transform: translateY(0); }
 @media (prefers-reduced-motion: reduce) {
-  .snffl-wstory-ribbon,
-  .snffl-wstory-ribbon .snffl-wstory-open,
-  .snffl-wstory-ribbon .snffl-chugreplay-button { transition: none; }
+  .snffl-wstory-ribbon { animation: none; }
 }
 
 /* ---------- The champ's slide ---------- */
@@ -2394,23 +2369,27 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
    than the app's turquoise: this is the beer, and the Chug Meter and the
    Shartzone already own that colour. */
 .snffl-chugreplay-button {
+  position: relative;
+  isolation: isolate;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--s-2);
   width: 100%;
-  min-height: var(--tap);
+  /* About a third off the old height. These are full width, so the tap target
+     is still large; the height is the only dimension giving anything up. */
+  min-height: 26px;
   padding: 0 var(--s-4);
-  border-radius: var(--radius-pill);
-  background: var(--tint-amber);
-  border: 1px solid var(--tint-amber-line);
-  box-shadow: 0 0 14px 1px rgba(255, 196, 77, 0.18);
-  color: var(--tint-amber-ink);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: 0;
+  overflow: hidden;
   font-family: var(--font-archivo);
-  font-size: var(--t-small);
+  font-size: var(--t-label);
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   cursor: pointer;
+  color: var(--tint-amber-ink);
 }
-.snffl-chugreplay-mark { width: 9px; height: 11px; flex: 0 0 auto; color: var(--beer-light); }
+.snffl-chugreplay-mark { width: 7px; height: 9px; flex: 0 0 auto; color: var(--beer-light); }

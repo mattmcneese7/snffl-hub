@@ -2226,3 +2226,129 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   display: inline-block;
   vertical-align: baseline;
 }
+
+/* ---------- The week's chug, on the way in ---------- */
+
+/* A modal over a working app, not a takeover. The page behind stays loaded,
+   visible and readable through the scrim, and the panel is the same glass the
+   dock and the crawl are made of. */
+.snffl-chugsplash {
+  position: fixed;
+  inset: 0;
+  z-index: 420;
+  display: grid;
+  place-items: center;
+  padding: var(--s-4);
+  animation: snffl-reel-in 0.24s ease-out both;
+}
+.snffl-chugsplash-scrim {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  padding: 0;
+  background: rgba(4, 7, 13, 0.62);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  backdrop-filter: blur(6px) saturate(120%);
+  cursor: pointer;
+}
+/* Tight to the film. The panel is a frame around somebody's video, not a
+   page: a hairline of glass on three sides and only as much room at the top
+   as the label needs. */
+.snffl-chugsplash-card {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  gap: var(--s-2);
+  width: min(78vw, 340px);
+  padding: 6px;
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+/* The video keeps the shape it was filmed in, upright, and never grows past
+   what the screen can hold with the chrome around it. */
+.snffl-chugsplash-video {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  max-height: 62vh;
+  object-fit: cover;
+  border-radius: var(--radius);
+  background: #000000;
+  display: block;
+}
+.snffl-chugsplash-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding: 2px 2px 0 8px;
+}
+.snffl-chugsplash-tag {
+  font-family: var(--font-archivo);
+  font-size: var(--t-small);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--logo-aqua);
+}
+.snffl-chugsplash-close {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  color: var(--ink);
+  font-size: 19px;
+  line-height: 1;
+  cursor: pointer;
+}
+/* The sound is the point of a chug, so the control to turn it on is the
+   loudest thing in the panel. It floats over the foot of the film rather than
+   taking a row of its own, which is what made the panel tall. */
+.snffl-chugsplash-sound {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  min-height: 40px;
+  padding: 0 var(--s-4);
+  border-radius: var(--radius-pill);
+  background: var(--logo-aqua);
+  border: 0;
+  color: #06121a;
+  font-family: var(--font-archivo);
+  font-size: var(--t-small);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 0 22px 2px rgba(138, 230, 221, 0.4);
+}
+
+
+/* The way back to the week's chug, in the gap under the reels. Amber rather
+   than the app's turquoise: this is the beer, and the Chug Meter and the
+   Shartzone already own that colour. */
+.snffl-chugreplay { display: grid; }
+.snffl-chugreplay-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  width: 100%;
+  min-height: var(--tap);
+  padding: 0 var(--s-4);
+  border-radius: var(--radius-pill);
+  background: var(--tint-amber);
+  border: 1px solid var(--tint-amber-line);
+  box-shadow: 0 0 14px 1px rgba(255, 196, 77, 0.18);
+  color: var(--tint-amber-ink);
+  font-family: var(--font-archivo);
+  font-size: var(--t-small);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.snffl-chugreplay-mark { width: 9px; height: 11px; flex: 0 0 auto; color: var(--beer-light); }

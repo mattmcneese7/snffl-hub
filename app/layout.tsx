@@ -1,5 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import AppIntro from '@/components/AppIntro';
+import ChugSplash from '@/components/ChugSplash';
+import { latestChug } from '@/lib/chug-video';
+import { scoredWeek } from '@/lib/league';
 import { Archivo, Martian_Mono, Source_Serif_4, Permanent_Marker } from 'next/font/google';
 import './globals.css';
 import './chrome.css';
@@ -73,7 +76,12 @@ export const viewport: Viewport = {
   themeColor: '#060a13',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Whether the league has filmed a chug yet, and for which week. A file
+  // lookup, so a season with none costs nothing.
+  const week = await scoredWeek().catch(() => 1);
+  const chug = latestChug(week);
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -86,6 +94,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
         {/* Plays once a session, over the app rather than instead of it. */}
         <AppIntro />
+        {/* The week's chug, once, behind the opening animation. */}
+        {chug ? <ChugSplash week={chug.week} src={chug.src} /> : null}
       </body>
     </html>
   );

@@ -11,6 +11,7 @@ import StoriesRail from '@/components/StoriesRail';
 import TopPlays from '@/components/TopPlays';
 import { firstNameOf } from '@/config/managers';
 import { toReelClip, weekCardClip } from '@/lib/reel-clips';
+import ChugReplay from '@/components/ChugReplay';
 import RagHero from '@/components/RagHero';
 import ResultBug from '@/components/ResultBug';
 import YourMatchup from '@/components/YourMatchup';
@@ -43,6 +44,7 @@ import {
 } from '@/lib/matchup-live';
 import { getPlayoffOdds } from '@/lib/playoff-odds';
 import { latestWeekStory } from '@/lib/week-story';
+import { latestChug } from '@/lib/chug-video';
 import { publishedWeeks, readIssue } from '@/lib/rag';
 import { getTrades } from '@/lib/trades';
 import { photosForWeek } from '@/lib/game-photos';
@@ -120,6 +122,7 @@ export default async function HomePage() {
   // at the clip driven story week meant no story at all during a live week,
   // which is precisely when somebody wants last week's.
   const storySlides = await latestWeekStory(week).catch(() => []);
+  const chug = latestChug(week);
   // The card that closes every manager's story prefers his last finished
   // matchup, per manager. A week in progress is not a result: a card reading
   // "beat Adam 35.30 to 18.48" off one running back is a scoreboard mid
@@ -207,6 +210,9 @@ export default async function HomePage() {
             }))}
           />
         </section>
+
+        {/* The gap under the reels, where the week's chug can be had again. */}
+        {chug ? <ChugReplay week={chug.week} /> : null}
 
         <HomeWidget
           title={<span className="snffl-rag-wordmark">The Rag</span>}

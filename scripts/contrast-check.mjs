@@ -215,6 +215,11 @@ const LITERAL_PAIRS = [
   ['#ffeecb', '#3e382c', 4.5, 'amber tinted chip on a panel'],
   // The week story button: the same tint over the page ground rather than the dock.
   ['#f2f5fa', '#161f2a', 4.5, 'week story button label'],
+  // The replay ribbon: amber tinted glass over the page ground.
+  ['#ffeecb', '#2b2a24', 4.5, 'chug replay ribbon label'],
+  // The chug splash sits on black, and its sound button is a solid fill.
+  ['#8ae6dd', '#000000', 4.5, 'chug splash tag on black'],
+  ['#06121a', '#8ae6dd', 4.5, 'chug sound button label'],
   // The active tab's turquoise, at its lightest corner, over the dock glass.
   ['#f2f5fa', '#243946', 4.5, 'active tab label on the logo turquoise'],
   ['#a9b3c4', '#243946', 4.5, 'inactive tab label beside it'],

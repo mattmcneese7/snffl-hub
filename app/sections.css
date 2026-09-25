@@ -653,7 +653,10 @@
   border-bottom: 1px solid var(--line);
 }
 .snffl-squirt-row:last-child { border-bottom: 0; }
-.snffl-squirt-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+/* A verdict's own head row. Renamed off .snffl-squirt-head, which the mascot
+   header had taken: two different things sharing one class meant the section
+   header's padding and rule landed on all fourteen rows. */
+.snffl-squirt-row-head { display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
 .snffl-squirt-tag {
   padding: 2px 7px;
   border-radius: var(--radius-pill);
@@ -790,3 +793,25 @@
 
 .snffl-feed-archive-toggle { width: 100%; }
 .snffl-feed-archive { display: grid; gap: var(--s-4); margin-top: var(--s-3); }
+
+/* Squirt folded shut: the mascot header is the control, and the chevron turns
+   when it opens. */
+.snffl-squirt-fold > summary { cursor: pointer; list-style: none; }
+.snffl-squirt-fold > summary::-webkit-details-marker { display: none; }
+.snffl-squirt-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+}
+.snffl-squirt-summary .snffl-squirt-head { flex: 1 1 auto; border-bottom: 0; }
+.snffl-squirt-chevron {
+  flex: 0 0 auto;
+  padding-right: var(--s-3);
+  font-size: 22px;
+  line-height: 1;
+  color: var(--muted);
+  transition: transform 0.18s ease;
+}
+.snffl-squirt-fold[open] .snffl-squirt-chevron { transform: rotate(90deg); }
+.snffl-squirt-fold[open] .snffl-squirt-summary { border-bottom: 1px solid var(--line); }

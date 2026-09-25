@@ -46,6 +46,7 @@ export default function Squirt({
   limit,
   showWeek = false,
   head = true,
+  collapsible = false,
 }: {
   verdicts: Verdict[];
   week: number;
@@ -58,17 +59,58 @@ export default function Squirt({
   showWeek?: boolean;
   /** Off where the section already leads with his face. */
   head?: boolean;
+  /**
+   * Folded shut until asked. Fourteen verdicts is a lot to walk past on the
+   * way to a scoreboard, but it is the first thing worth reading once the
+   * score has been read, so it sits high and closed rather than low and open.
+   */
+  collapsible?: boolean;
 }) {
   const shown = limit ? verdicts.slice(0, limit) : verdicts;
   if (!shown.length) return null;
 
+  if (collapsible) {
+    return (
+      // A native disclosure, so it opens with no JavaScript and the browser
+      // handles the state, the keyboard and the accessibility for us.
+      <details className="snffl-squirt-says snffl-squirt-fold">
+        <summary className="snffl-squirt-summary">
+          <SquirtHead count={shown.length} week={week} />
+          <span className="snffl-squirt-chevron" aria-hidden>
+            ›
+          </span>
+        </summary>
+        <Verdicts shown={shown} week={week} showWeek={showWeek} />
+      </details>
+    );
+  }
+
   return (
     <div className="snffl-squirt-says">
       {head ? <SquirtHead count={shown.length} week={week} /> : null}
+<Verdicts shown={shown} week={week} showWeek={showWeek} />
+    </div>
+  );
+}
+
+/** The rows themselves, shared by the folded and the open shapes. */
+function Verdicts({
+  shown,
+  week,
+  showWeek,
+}: {
+  shown: Verdict[];
+  week: number;
+  showWeek: boolean;
+}) {
+  return (
     <ol className="snffl-squirt">
       {shown.map((verdict) => (
-        <li className={`snffl-squirt-row snffl-squirt-${verdict.kind}`} key={`${verdict.rosterId}-${verdict.kind}`}>
-          <span className="snffl-squirt-head">
+        <li
+          className={`snffl-squirt-row snffl-squirt-${verdict.kind}`}
+          key={`${verdict.rosterId}-${verdict.kind}`}
+        >
+          <span className="snffl-squirt-row-head">
             <span className={`snffl-squirt-tag snffl-squirt-tag-${verdict.kind}`}>
               {LABELS[verdict.kind]}
             </span>
@@ -80,7 +122,6 @@ export default function Squirt({
           <p className="snffl-squirt-saying">{verdict.saying}</p>
         </li>
       ))}
-      </ol>
-    </div>
+    </ol>
   );
 }

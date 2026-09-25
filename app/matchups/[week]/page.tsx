@@ -4,9 +4,12 @@ import NflSlate from '@/components/NflSlate';
 import ResultBug from '@/components/ResultBug';
 import { SourceStrip } from '@/components/SourceMark';
 import SquirtSays from '@/components/SquirtSays';
+import PageHead from '@/components/PageHead';
 import WeekSelector from '@/components/WeekSelector';
+import YourMatchup from '@/components/YourMatchup';
+import { toFeature } from '@/lib/feature';
 import { leagueVerdicts, oracleFor } from '@/lib/squirt-says';
-import { getWeekGames } from '@/lib/league';
+import { getWeekGames, teams } from '@/lib/league';
 import {
   getMatchupContext,
   outlookOf,
@@ -41,20 +44,58 @@ export default async function WeekPage({ params }: { params: Promise<{ week: str
   // a ball is actually in play is the honest gate for a 30 second poll.
   const live = ctx.nfl.some((game) => game.state === 'in');
   const models = winProbabilities(games, ctx);
+  // The tightest game on the board, for the page's opening facts.
+  const closest = games.length
+    ? games.reduce((tightest, game) => (game.margin < tightest.margin ? game : tightest))
+    : null;
 
   return (
     <>
       <Chrome section="Matchups" week={week} />
       <LiveRefresh live={live} week={week} />
       <main className="snffl-page">
+        <PageHead
+          title="Matchups"
+          facts={[
+            { label: 'Week', value: String(week) },
+            {
+              label: 'Live',
+              value: String(games.filter((game) => game.status === 'live').length),
+              tone: 'live',
+            },
+            { label: 'Closest', value: closest ? closest.margin.toFixed(2) : '0.00' },
+          ]}
+        />
+
         <section>
           <WeekSelector active={week} hrefFor={(w) => `/matchups/${w}`} />
         </section>
 
+        {/* Yours first. The question a Sunday opens with is how am I doing, and
+            the page used to answer it somewhere below fourteen lineups of
+            advice and a grid of seven games. */}
+        <section className="snffl-matchups-yours">
+          <div className="snffl-block-heading">
+            <h2 className="snffl-headline">Your game</h2>
+            <span className="snffl-block-heading-link">Week {week}</span>
+          </div>
+          <YourMatchup
+            options={games.map((game) => toFeature(game, 'Your game', models.get(game.matchupId)))}
+            teams={teams.map((team) => ({
+              rosterId: team.rosterId,
+              teamName: team.teamName,
+              manager: team.manager,
+            }))}
+          />
+        </section>
+
+        {/* Squirt sits high but folded. Fourteen verdicts is a lot to walk
+            past on the way to a scoreboard, and the first thing worth reading
+            once the score has been read. */}
         {sayings.length ? (
           <section>
             <div className="snffl-card">
-              <SquirtSays verdicts={sayings} week={week} />
+              <SquirtSays verdicts={sayings} week={week} collapsible />
             </div>
             <SourceStrip
               items={[
@@ -66,9 +107,10 @@ export default async function WeekPage({ params }: { params: Promise<{ week: str
           </section>
         ) : null}
 
+        {/* Then the league at a glance, before any of its detail. */}
         <section>
           <div className="snffl-block-heading">
-            <h2 className="snffl-headline">Week {week}</h2>
+            <h2 className="snffl-headline">The league</h2>
             <span className="snffl-block-heading-link">
               {games.length} {games.length === 1 ? 'game' : 'games'}
             </span>

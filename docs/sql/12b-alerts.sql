@@ -24,4 +24,11 @@ create table if not exists public.alert_claims (
 );
 alter table public.alert_claims enable row level security;
 
+-- 3. The still for a highlight. This column was named in the code but never
+--    actually added, with two consequences: every ESPN clip's still is fetched
+--    from ESPN at read time on a cold render, and the write path's fallback
+--    drops `side` along with `thumbnail`, so no clip ever kept its unit tag and
+--    defensive credit to the D/ST owner fell back to reading the play type.
+alter table public.highlights add column if not exists thumbnail text;
+
 -- Housekeeping, if it is ever wanted: delete from public.alert_claims where week < 1;

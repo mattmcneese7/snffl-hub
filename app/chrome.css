@@ -291,8 +291,13 @@ body { padding-bottom: 76px; }
      absolutely positioned and centred on the bar regardless. Giving it a
      full fifth of the width spent seventy pixels on a fifty two pixel disc
      while Scoreboard, the longest label, had four pixels either side of it.
-     The reclaimed width goes to the four real tabs. */
-  grid-template-columns: repeat(2, 1fr) 60px repeat(2, 1fr);
+     The reclaimed width goes to the four real tabs.
+
+     It does have to clear the disc, though: at sixty pixels a sixty four
+     pixel mark overlapped the highlights either side of it. Seventy two
+     leaves the same six pixel gap between the disc and a neighbouring pill
+     that every other gap on this bar uses. */
+  grid-template-columns: repeat(2, 1fr) 72px repeat(2, 1fr);
   align-items: center;
   height: var(--tabbar-h);
   /* And the end tabs stop short of the bar's rounded corners. Four, not

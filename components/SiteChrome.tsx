@@ -12,6 +12,7 @@ import {
   type IconWeight,
 } from '@phosphor-icons/react';
 import SnfflWordmark from './SnfflWordmark';
+import SquirtMark from './SquirtMark';
 
 /** Parts rather than one string, so scores can read differently to names. */
 export type TickerPart = { text: string; kind: 'team' | 'score' | 'link' | 'logo'; src?: string };
@@ -263,8 +264,7 @@ export default function SiteChrome({
                 caption nothing else had. The button is Home; the logo says
                 so. */}
             <span className="snffl-app-mark-disc">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo-mark-v2-128.png" alt="" />
+              <SquirtMark size={44} id="dock" />
             </span>
           </Link>
 

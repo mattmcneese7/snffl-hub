@@ -1,3 +1,4 @@
+import PageHead from '@/components/PageHead';
 import Chrome from '@/components/Chrome';
 import SettingsPanel from '@/components/SettingsPanel';
 import { teams } from '@/lib/league';
@@ -7,10 +8,8 @@ export default function SettingsPage() {
     <>
       <Chrome section="Settings" />
       <main className="snffl-page">
+        <PageHead title="Settings" />
         <section>
-          <div className="snffl-block-heading">
-            <h2 className="snffl-headline">Settings</h2>
-          </div>
           <SettingsPanel
             teams={teams.map((t) => ({
               rosterId: t.rosterId,

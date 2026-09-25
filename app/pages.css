@@ -706,6 +706,10 @@
   letter-spacing: -0.01em;
   text-transform: uppercase;
 }
+/* The dock already names this page, so the title steps down to sit between a
+   masthead and a shelf label rather than competing with both. */
+.snffl-page-title-compact { font-size: var(--t-h1); letter-spacing: 0.01em; }
+
 .snffl-page-title.snffl-headline-editorial {
   font-size: clamp(38px, 12vw, 56px);
   line-height: 0.92;

@@ -30,9 +30,9 @@ export default async function PlayoffsPage() {
       <main className="snffl-page">
         <section>
           <div className="snffl-playoff-head">
-            <h2 className="snffl-headline snffl-playoff-title">
+            <h1 className="snffl-headline snffl-playoff-title">
               <PlayoffTitle week={week} />
-            </h2>
+            </h1>
           </div>
           <p className="snffl-menu-note">
             SNFFL odds, from our own simulation of the rest of the season. Not Sleeper&apos;s

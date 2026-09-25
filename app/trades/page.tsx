@@ -1,5 +1,6 @@
 import ManagerLink from '@/components/ManagerLink';
 import Link from 'next/link';
+import PageHead from '@/components/PageHead';
 import Chrome from '@/components/Chrome';
 import { getTrades } from '@/lib/trades';
 
@@ -10,14 +11,8 @@ export default async function TradesPage() {
     <>
       <Chrome section="Trade Tracker" />
       <main className="snffl-page">
+        <PageHead title="Trade Tracker" />
         <section>
-          <div className="snffl-block-heading">
-            <h2 className="snffl-headline">Trade Tracker</h2>
-            <span className="snffl-block-heading-link">
-              {trades.length} {trades.length === 1 ? 'trade' : 'trades'}
-            </span>
-          </div>
-
           {trades.length === 0 ? (
             <div className="snffl-placeholder">
               <span className="snffl-placeholder-label">No trades yet</span>

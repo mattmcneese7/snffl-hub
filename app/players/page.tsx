@@ -1,3 +1,4 @@
+import PageHead from '@/components/PageHead';
 import Chrome from '@/components/Chrome';
 import PlayersBrowser, { type PlayerRow } from '@/components/PlayersBrowser';
 import { league, teamByRoster, teams } from '@/lib/league';
@@ -47,11 +48,8 @@ export default async function PlayersPage() {
     <>
       <Chrome section="Players" />
       <main className="snffl-page">
+        <PageHead title="Players" />
         <section>
-          <div className="snffl-block-heading">
-            <h2 className="snffl-headline">Players</h2>
-            <span className="snffl-block-heading-link">{rows.length} in the database</span>
-          </div>
           <PlayersBrowser
             rows={rows}
             owners={owners}

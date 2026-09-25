@@ -1,3 +1,4 @@
+import PageHead from '@/components/PageHead';
 import Chrome from '@/components/Chrome';
 import { candidateAppLinks } from '@/lib/sleeper-links';
 
@@ -13,10 +14,8 @@ export default function SleeperLinksTest() {
     <>
       <Chrome section="Link Test" />
       <main className="snffl-page">
+        <PageHead title="Sleeper Link Test" />
         <section>
-          <div className="snffl-block-heading">
-            <h2 className="snffl-headline">Sleeper Link Test</h2>
-          </div>
           <div className="snffl-card snffl-rules-card">
             <p className="snffl-rules-intro">
               Tap each link on your iPhone with the Sleeper app installed. For each one, note

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import PageHead from '@/components/PageHead';
 import Chrome from '@/components/Chrome';
 import TeamAvatar from '@/components/TeamAvatar';
 import { getStandings } from '@/lib/league';
@@ -10,11 +11,8 @@ export default async function ManagersPage() {
     <>
       <Chrome section="Managers" />
       <main className="snffl-page">
+        <PageHead title="Managers" />
         <section>
-          <div className="snffl-block-heading">
-            <h2 className="snffl-headline">Managers</h2>
-            <span className="snffl-block-heading-link">All {standings.length}</span>
-          </div>
           <div className="snffl-manager-grid">
             {standings.map((team) => (
               <Link

@@ -47,9 +47,7 @@ export default async function FeedPage() {
     <>
       <Chrome section="The Feed" />
       <main className="snffl-page">
-        <PageHead
-          title="The Feed"
-        />
+        <PageHead title="The Feed" compact />
 
         <FeedStream
           posts={posts}

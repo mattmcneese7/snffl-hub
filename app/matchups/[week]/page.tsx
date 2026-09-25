@@ -54,9 +54,7 @@ export default async function WeekPage({ params }: { params: Promise<{ week: str
       <Chrome section="Matchups" week={week} />
       <LiveRefresh live={live} week={week} />
       <main className="snffl-page">
-        <PageHead
-          title="Matchups"
-        />
+        <PageHead title="Matchups" compact />
 
         <section>
           <WeekSelector active={week} hrefFor={(w) => `/matchups/${w}`} />

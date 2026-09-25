@@ -10,6 +10,7 @@ import {
   Trophy,
   UsersThree,
 } from '@phosphor-icons/react/dist/ssr';
+import PageHead from '@/components/PageHead';
 import Chrome from '@/components/Chrome';
 import { league } from '@/lib/league';
 
@@ -33,11 +34,8 @@ export default function MorePage() {
     <>
       <Chrome section="More" />
       <main className="snffl-page">
+        <PageHead title="More" compact />
         <section>
-          <div className="snffl-block-heading">
-            <h2 className="snffl-headline">More</h2>
-            <span className="snffl-block-heading-link">{league.name}</span>
-          </div>
           <div className="snffl-card">
             {MENU.map((item) => (
               <Link className="snffl-menu-row" href={item.href} key={item.href}>

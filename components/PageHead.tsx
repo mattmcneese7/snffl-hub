@@ -11,14 +11,31 @@
 export default function PageHead({
   title,
   editorial = false,
+  compact = false,
 }: {
   title: string;
   /** For sections that are brands in their own right, like the Rag. */
   editorial?: boolean;
+  /**
+   * For the pages the dock already names. A tab bar reading "Feed" under a
+   * masthead reading FEED is the same word twice, and the second one costs
+   * sixty pixels of a phone screen. The pages behind More have no tab naming
+   * them, so those keep the full size: it is the only thing telling you where
+   * you are. The heading stays an h1 either way, because the page still needs
+   * one and a screen reader still has to hear it.
+   */
+  compact?: boolean;
 }) {
+  const kind = [
+    'snffl-page-title',
+    editorial ? 'snffl-headline-editorial' : '',
+    compact ? 'snffl-page-title-compact' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
   return (
     <header className="snffl-page-head">
-      <h1 className={`snffl-page-title${editorial ? ' snffl-headline-editorial' : ''}`}>{title}</h1>
+      <h1 className={kind}>{title}</h1>
     </header>
   );
 }

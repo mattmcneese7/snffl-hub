@@ -1,4 +1,5 @@
 import { SourceStrip } from '@/components/SourceMark';
+import PageHead from '@/components/PageHead';
 import Chrome from '@/components/Chrome';
 import PowerRankRow from '@/components/PowerRankRow';
 import { getPowerRankings } from '@/lib/league';
@@ -10,11 +11,8 @@ export default async function PowerRankingsPage() {
     <>
       <Chrome section="Power Rankings" />
       <main className="snffl-page">
+        <PageHead title="Power Rankings" />
         <section>
-          <div className="snffl-block-heading">
-            <h2 className="snffl-headline">Power Rankings</h2>
-            <span className="snffl-block-heading-link">All {rankings.length}</span>
-          </div>
           <div className="snffl-card">
             {rankings.map((entry) => (
               <PowerRankRow key={entry.team.rosterId} entry={entry} />

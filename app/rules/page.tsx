@@ -1,3 +1,4 @@
+import PageHead from '@/components/PageHead';
 import Chrome from '@/components/Chrome';
 import { league } from '@/lib/league';
 import { CHUG_SUBMISSION, CUSTOM_RULES } from '@/config/league-rules';
@@ -76,6 +77,7 @@ export default function RulesPage() {
     <>
       <Chrome section="Rules" />
       <main className="snffl-page">
+        <PageHead title="Rules" />
         <section>
           <div className="snffl-block-heading">
             <h2 className="snffl-headline">League Setup</h2>

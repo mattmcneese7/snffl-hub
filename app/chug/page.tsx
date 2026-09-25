@@ -1,3 +1,4 @@
+import PageHead from '@/components/PageHead';
 import Chrome from '@/components/Chrome';
 import ChugMeter, { type ChugColumn } from '@/components/ChugMeter';
 import { getChugCounts } from '@/lib/awards';
@@ -27,13 +28,8 @@ export default async function ChugPage() {
     <>
       <Chrome section="Chug Meter" />
       <main className="snffl-page">
+        <PageHead title="The Chug Meter" />
         <section>
-          <div className="snffl-block-heading">
-            <h2 className="snffl-headline">The Chug Meter</h2>
-            <span className="snffl-block-heading-link">
-              {owed.length} of {columns.length} on the board
-            </span>
-          </div>
           <div className="snffl-card snffl-chug-card">
             <ChugMeter columns={columns} />
           </div>

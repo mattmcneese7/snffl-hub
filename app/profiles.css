@@ -225,7 +225,7 @@
   flex-wrap: wrap;
   padding-top: 20px;
 }
-.snffl-playoff-title { font-size: var(--t-h1); }
+.snffl-playoff-title { font-size: var(--t-display); letter-spacing: 0.02em; }
 /* The same treatment inside a Home widget heading, which runs at 17px. The
    scribble scales with it, and the heading reserves headroom because the
    scribble is positioned above the line it sits on. */

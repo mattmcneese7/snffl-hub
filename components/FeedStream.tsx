@@ -1,19 +1,23 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { LinkedText, type NameEntry } from './ManagerLink';
 import ReelPlayer from './ReelPlayer';
 import {
   applyFilter,
+  biggest,
   buildFeed,
   byDay,
   facetsOf,
+  forManager,
+  playable,
   EMPTY_FILTER,
   KIND_LABELS,
   type FeedFilter,
   type FeedItem,
   type FeedItemKind,
 } from '@/lib/feed-view';
+import FeedReel from './FeedReel';
 import type { FeedPost } from '@/lib/feed';
 import type { Highlight } from '@/lib/highlights';
 import { toReelClip } from '@/lib/reel-clips';
@@ -108,6 +112,16 @@ export default function FeedStream({
 }) {
   const [filter, setFilter] = useState<FeedFilter>(EMPTY_FILTER);
   const [playing, setPlaying] = useState<number | null>(null);
+  const [archive, setArchive] = useState(false);
+  const [team, setTeam] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      setTeam(localStorage.getItem('snffl.myTeam'));
+    } catch {
+      // Private browsing refuses storage; the league sections still work.
+    }
+  }, []);
 
   // Rendered once on the client, so every row agrees on what "now" is and the
   // server's HTML is never contradicted halfway down the list.
@@ -135,106 +149,136 @@ export default function FeedStream({
 
   const filtering = Boolean(filter.kind || filter.manager || filter.week);
 
+  const mine = useMemo(() => forManager(items, team), [items, team]);
+  const reel = useMemo(() => playable(items).slice(0, 12), [items]);
+  const top = useMemo(() => biggest(items, 6), [items]);
+
   return (
     <div className="snffl-feed">
-      {reels.length ? (
-        <section className="snffl-feed-replays">
+      {/* Yours, if the app knows whose team to watch. Everything here is about
+          you: your players, the game you are in, the calls made on you. */}
+      {mine.length ? (
+        <section className="snffl-feed-piece">
           <div className="snffl-block-heading">
-            <h2 className="snffl-headline">Replays</h2>
-            <span className="snffl-block-heading-link">{reels.length} playable</span>
+            <h2 className="snffl-headline">Your week</h2>
+            <span className="snffl-block-heading-link">{mine.length} moments</span>
           </div>
-          <div className="snffl-feed-reel-rail">
-            {reels.map((clip, index) => (
-              <button
-                type="button"
-                className="snffl-feed-reel"
-                key={clip.id}
-                onClick={() => setPlaying(index)}
-                aria-label={`Play: ${clip.title}`}
-              >
-                <span className="snffl-feed-reel-art">
-                  {clip.still ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={clip.still} alt="" loading="lazy" />
-                  ) : null}
-                  <span className="snffl-feed-reel-play" aria-hidden>
-                    ▶
-                  </span>
-                </span>
-                <span className="snffl-feed-reel-title">{clip.title}</span>
-                {clip.tags.length ? (
-                  <span className="snffl-feed-reel-tags">{clip.tags.slice(0, 2).join(' · ')}</span>
-                ) : null}
-              </button>
-            ))}
+          <div className="snffl-card">
+            <ol className="snffl-feed-list snffl-feed-list-plain">
+              {mine.slice(0, 5).map((item) => (
+                <FeedRow key={`mine-${item.id}`} item={item} names={names} now={now} onPlay={() => {}} />
+              ))}
+            </ol>
           </div>
         </section>
       ) : null}
 
-      <section className="snffl-feed-stream">
-        <div className="snffl-block-heading">
-          <h2 className="snffl-headline">Everything</h2>
-          <span className="snffl-block-heading-link">
-            {shown.length === items.length ? `${items.length} moments` : `${shown.length} of ${items.length}`}
-          </span>
-        </div>
+      {/* The reel. Full width, playing as it passes, rather than a strip of
+          thumbnails parked above a wall of text. */}
+      {reel.length ? (
+        <section className="snffl-feed-piece">
+          <div className="snffl-block-heading">
+            <h2 className="snffl-headline">Replays</h2>
+            <span className="snffl-block-heading-link">{reel.length} playable</span>
+          </div>
+          <FeedReel items={reel} />
+        </section>
+      ) : null}
 
-        <div className="snffl-feed-filters">
-          <Chips
-            label="What"
-            facets={facets.kinds}
-            active={filter.kind}
-            onPick={(kind) => setFilter((f) => ({ ...f, kind }))}
-          />
-          <Chips
-            label="Who"
-            facets={facets.managers}
-            active={filter.manager}
-            onPick={(manager) => setFilter((f) => ({ ...f, manager }))}
-          />
-          <Chips
-            label="When"
-            facets={facets.weeks}
-            active={filter.week}
-            onPick={(week) => setFilter((f) => ({ ...f, week }))}
-          />
-        </div>
-
-        {shown.length ? (
-          <div className="snffl-feed-days">
-            {days.map((day) => (
-              <section className="snffl-feed-day" key={day.key}>
-                <h3 className="snffl-feed-day-label">
-                  {day.label}
-                  <span>{day.items.length}</span>
-                </h3>
-                <ol className="snffl-feed-list">
-                  {day.items.map((item) => (
-                    <FeedRow
-                      key={`${item.kind}-${item.id}`}
-                      item={item}
-                      names={names}
-                      now={now}
-                      onPlay={() => {
-                        const index = reels.findIndex((clip) => clip.id === item.id);
-                        if (index >= 0) setPlaying(index);
-                      }}
-                    />
-                  ))}
-                </ol>
-              </section>
+      {/* The week by consequence rather than by clock. */}
+      {top.length ? (
+        <section className="snffl-feed-piece">
+          <div className="snffl-block-heading">
+            <h2 className="snffl-headline">What mattered</h2>
+            <span className="snffl-block-heading-link">Ranked</span>
+          </div>
+          <ol className="snffl-feed-ranked">
+            {top.map((item, index) => (
+              <li className="snffl-feed-ranked-row" key={`big-${item.id}`}>
+                <span className="snffl-feed-rank">{index + 1}</span>
+                <span className="snffl-feed-ranked-body">
+                  <span className="snffl-feed-row-title">
+                    <LinkedText text={item.title} names={names} />
+                  </span>
+                  {item.body ? (
+                    <span className="snffl-body">
+                      <LinkedText text={item.body} names={names} />
+                    </span>
+                  ) : null}
+                </span>
+              </li>
             ))}
+          </ol>
+        </section>
+      ) : null}
+
+      {/* And the whole record, folded away. It is a reference, not a feed. */}
+      <section className="snffl-feed-piece">
+        <button
+          type="button"
+          className="snffl-btn snffl-btn-secondary snffl-feed-archive-toggle"
+          aria-expanded={archive}
+          onClick={() => setArchive((open) => !open)}
+        >
+          {archive ? 'Hide the full record' : `The full record, ${items.length} moments`}
+        </button>
+
+        {archive ? (
+          <div className="snffl-feed-archive">
+            <div className="snffl-feed-filters">
+              <Chips
+                label="What"
+                facets={facets.kinds}
+                active={filter.kind}
+                onPick={(kind) => setFilter((f) => ({ ...f, kind }))}
+              />
+              <Chips
+                label="Who"
+                facets={facets.managers}
+                active={filter.manager}
+                onPick={(manager) => setFilter((f) => ({ ...f, manager }))}
+              />
+              <Chips
+                label="When"
+                facets={facets.weeks}
+                active={filter.week}
+                onPick={(week) => setFilter((f) => ({ ...f, week }))}
+              />
+            </div>
+
+            {shown.length ? (
+              <div className="snffl-feed-days">
+                {days.map((day) => (
+                  <section className="snffl-feed-day" key={day.key}>
+                    <h3 className="snffl-feed-day-label">
+                      {day.label}
+                      <span>{day.items.length}</span>
+                    </h3>
+                    <ol className="snffl-feed-list">
+                      {day.items.map((item) => (
+                        <FeedRow
+                          key={`${item.kind}-${item.id}`}
+                          item={item}
+                          names={names}
+                          now={now}
+                          onPlay={() => {
+                            const index = reels.findIndex((clip) => clip.id === item.id);
+                            if (index >= 0) setPlaying(index);
+                          }}
+                        />
+                      ))}
+                    </ol>
+                  </section>
+                ))}
+              </div>
+            ) : (
+              <div className="snffl-placeholder">
+                <span className="snffl-placeholder-label">Nothing matches</span>
+                <span className="snffl-placeholder-note">Clear a filter to see the rest.</span>
+              </div>
+            )}
           </div>
-        ) : (
-          <div className="snffl-placeholder">
-            <span className="snffl-placeholder-label">Nothing matches</span>
-            <span className="snffl-placeholder-note">
-              {filtering
-                ? 'Clear a filter to see the rest of the week.'
-                : 'Touchdowns, lead changes and replays land here while games are running.'}
-            </span>
-          </div>
-        )}
+        ) : null}
       </section>
 
       {playing != null ? (

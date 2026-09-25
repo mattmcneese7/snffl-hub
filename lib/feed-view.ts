@@ -175,3 +175,42 @@ export function byDay(items: FeedItem[], now = new Date()): FeedDay[] {
   }
   return out;
 }
+
+/**
+ * How much a moment mattered, for the parts of the Feed that rank rather than
+ * list. Points where a moment has them, since a 42 point game is the story of
+ * a week; otherwise the kind, because a callout and a lead change carry weight
+ * a routine touchdown does not. Time only breaks ties.
+ */
+const KIND_WEIGHT: Record<FeedItemKind, number> = {
+  cmon: 22,
+  shart: 18,
+  lead: 14,
+  clip: 10,
+  touchdown: 8,
+};
+
+export function weightOf(item: FeedItem): number {
+  const points = item.clip?.points ?? 0;
+  return KIND_WEIGHT[item.kind] + points;
+}
+
+/** The moments that mattered most, heaviest first. */
+export function biggest(items: FeedItem[], limit = 6): FeedItem[] {
+  return [...items]
+    .sort((a, b) => weightOf(b) - weightOf(a) || new Date(b.at).getTime() - new Date(a.at).getTime())
+    .slice(0, limit);
+}
+
+/** Everything about one manager's team, newest first. */
+export function forManager(items: FeedItem[], rosterId: string | null): FeedItem[] {
+  if (!rosterId) return [];
+  return items.filter((item) => item.managerIds.includes(rosterId));
+}
+
+/** Clips that play, best first, for the reel. */
+export function playable(items: FeedItem[]): FeedItem[] {
+  return items
+    .filter((item) => item.kind === 'clip' && item.clip?.playable)
+    .sort((a, b) => (b.clip?.points ?? 0) - (a.clip?.points ?? 0));
+}

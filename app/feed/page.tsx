@@ -49,8 +49,8 @@ export default async function FeedPage() {
             </span>
           </div>
           <p className="snffl-menu-note">
-            Every touchdown, lead change, callout and replay of the season, newest first. Filter it
-            by what happened, by whose team it was, or by week.
+            Your week first, then the replays, then what actually mattered. The whole record is
+            underneath if you want it.
           </p>
         </section>
 

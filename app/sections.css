@@ -721,3 +721,72 @@
   text-transform: uppercase;
   color: var(--muted);
 }
+
+/* ---------- The Feed as pieces ---------- */
+
+/* Each piece is its own thing with its own shape. The page is composed, not
+   streamed: a lens on your own week, a reel, a ranking, and the record folded
+   away underneath. */
+.snffl-feed-piece { display: grid; gap: var(--s-3); }
+.snffl-feed-list-plain { padding-left: 0; }
+.snffl-feed-list-plain::before { display: none; }
+.snffl-feed-list-plain .snffl-feed-row { padding: var(--s-3); }
+.snffl-feed-list-plain .snffl-feed-row::before { display: none; }
+.snffl-feed-list-plain .snffl-feed-row + .snffl-feed-row { border-top: 1px solid var(--line); }
+
+/* The reel: one clip per card, full width, playing as it passes. */
+.snffl-reel-feed { display: grid; gap: var(--s-4); }
+.snffl-reel-card {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--panel);
+}
+.snffl-reel-card-stage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #000000;
+}
+.snffl-reel-card-stage img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.snffl-reel-card-body { display: grid; gap: var(--s-2); padding: var(--s-3); }
+.snffl-reel-card-title {
+  margin: 0;
+  font-size: var(--t-h3);
+  font-weight: 800;
+  line-height: 1.25;
+  text-wrap: pretty;
+}
+.snffl-reel-card-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+
+/* The ranking: consequence, not clock. The numeral carries the order so the
+   rows do not need to. */
+.snffl-feed-ranked {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--panel);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.snffl-feed-ranked-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-3);
+  padding: var(--s-3);
+}
+.snffl-feed-ranked-row + .snffl-feed-ranked-row { border-top: 1px solid var(--line); }
+.snffl-feed-rank {
+  flex: 0 0 auto;
+  width: 22px;
+  font-family: var(--font-archivo);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--t-h2);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--muted);
+}
+.snffl-feed-ranked-body { display: grid; gap: 3px; min-width: 0; }
+
+.snffl-feed-archive-toggle { width: 100%; }
+.snffl-feed-archive { display: grid; gap: var(--s-4); margin-top: var(--s-3); }

@@ -548,7 +548,17 @@ h3,
 .snffl-app-mark-disc {
   /* Bigger now that it is the whole button rather than a disc with a caption,
      and taller than the bar it sits in, which is the point of it. */
-  --mark-img: 44px;
+  /* Filling the disc without crowding its rim. 44 of 64 left the ring mostly
+     empty; 56 left the drop touching it. */
+  --mark-img: 50px;
+  /* Optical centring. The drop's bounding box is dead centre in its canvas,
+     but its weight is not: it is a point at the top and a round mass at the
+     bottom, so the centre of mass measures 6.4 percent of the height below
+     the middle and it reads as sitting low in the circle. Lifting by about
+     two thirds of that puts the weight where the eye expects it without
+     leaving the point crowding the rim. The glow moves with it, or the eyes
+     light where the eyes are not. */
+  --mark-lift: 4%;
   position: relative;
   width: 64px;
   height: 64px;
@@ -572,6 +582,7 @@ h3,
      let the light through. */
   position: relative;
   z-index: 1;
+  transform: translateY(calc(-1 * var(--mark-lift)));
 }
 
 /* The eyes, lit from behind.
@@ -580,9 +591,10 @@ h3,
    shows through them. That is the whole trick here: two soft lights placed on
    the eyes alone, under the image, so the eyes glow and the laces stay dark
    without needing a second copy of the artwork. The positions are measured
-   off the asset, not guessed: the eyes centre at 33 and 66.8 percent across
-   and 57.6 percent down, and run 14 percent of its width by 10 of its
-   height. */
+   off the asset, not guessed: on the final mark the eyes centre at 31.7 and
+   68.2 percent across and 58.4 percent down, and run 15 percent of its width
+   by 11 of its height. Re-measure these whenever the artwork changes; the
+   wider final drop moved them well past a pixel. */
 .snffl-app-mark-disc::after {
   content: '';
   position: absolute;
@@ -591,23 +603,30 @@ h3,
   z-index: 0;
   opacity: 0;
   pointer-events: none;
-  /* Strong, because the eye holes are not fully clear: they sit at about a
-     quarter opacity, so a gentle light behind them barely tints through. */
+  transform: translateY(calc(-1 * var(--mark-lift)));
+  /* Bright, because the eye holes are not fully clear: they sit at about a
+     quarter opacity, so anything gentle behind them barely tints through.
+     White hot at the centre falling to cyan, which is what reads as a lit
+     eye rather than a blue patch. */
   background-image:
     radial-gradient(
-      ellipse 11% 8% at 33% 57.6%,
-      #8df0ff 0%,
-      #22b6ff 45%,
-      rgba(34, 182, 255, 0.5) 72%,
-      transparent 88%
+      ellipse 13% 10% at 31.7% 58.4%,
+      #ffffff 0%,
+      #b6f7ff 26%,
+      #35d6ff 55%,
+      rgba(53, 214, 255, 0.65) 80%,
+      transparent 95%
     ),
     radial-gradient(
-      ellipse 11% 8% at 66.8% 57.6%,
-      #8df0ff 0%,
-      #22b6ff 45%,
-      rgba(34, 182, 255, 0.5) 72%,
-      transparent 88%
+      ellipse 13% 10% at 68.2% 58.4%,
+      #ffffff 0%,
+      #b6f7ff 26%,
+      #35d6ff 55%,
+      rgba(53, 214, 255, 0.65) 80%,
+      transparent 95%
     );
+  /* And a real bloom around them, so the light spills onto the drop. */
+  filter: drop-shadow(0 0 6px rgba(70, 220, 255, 0.85));
 }
 /* Lit and breathing, on the tab this button opens. */
 .snffl-app-mark-on .snffl-app-mark-disc::after {
@@ -615,19 +634,31 @@ h3,
   animation: snffl-eye-pulse 2.6s ease-in-out infinite;
 }
 @keyframes snffl-eye-pulse {
-  0%, 100% { opacity: 0.55; filter: blur(0.4px); }
-  50% { opacity: 1; filter: blur(0); }
+  0%, 100% {
+    opacity: 0.8;
+    filter: drop-shadow(0 0 5px rgba(70, 220, 255, 0.7));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 12px rgba(120, 235, 255, 1));
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .snffl-app-mark-on .snffl-app-mark-disc::after { animation: none; opacity: 0.9; }
 }
-/* On its own tab the rim lights too, so the ring and the eyes say the same
-   thing: this is the page you are on. */
+/* On its own tab the whole disc lights: the ring, the air inside it, and the
+   eyes. One tab of five is home, and it should not take a second look to find
+   out which. The inside glow is a wash from the rim inward rather than a flat
+   fill, so the mark still sits on something dark enough to read against. */
 .snffl-app-mark-on .snffl-app-mark-disc {
-  border-color: rgba(140, 216, 255, 0.9);
+  background:
+    radial-gradient(circle at 50% 58%, rgba(53, 214, 255, 0.34) 0%, transparent 62%),
+    radial-gradient(120% 120% at 50% 15%, #16243c 0%, #070c16 70%);
+  border-color: rgba(170, 233, 255, 0.95);
   box-shadow:
-    0 0 0 1px rgba(90, 224, 255, 0.35),
-    0 0 16px 1px rgba(35, 178, 255, 0.4),
+    inset 0 0 18px rgba(70, 220, 255, 0.45),
+    0 0 0 1px rgba(90, 224, 255, 0.45),
+    0 0 22px 2px rgba(35, 178, 255, 0.55),
     0 8px 20px rgba(0, 0, 0, 0.5);
 }
 

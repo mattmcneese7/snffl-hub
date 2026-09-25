@@ -16,6 +16,7 @@ import ResultBug from '@/components/ResultBug';
 import YourMatchup from '@/components/YourMatchup';
 import { getChugCounts } from '@/lib/awards';
 import NflSlate from '@/components/NflSlate';
+import WeekStoryButton from '@/components/WeekStoryButton';
 import { PageSources } from '@/components/SourceMark';
 import { anyGameLive, ESPN_TEAM_LOGO, getNflScoreboard } from '@/lib/espn';
 import { toFeature } from '@/lib/feature';
@@ -41,6 +42,7 @@ import {
   winProbabilities,
 } from '@/lib/matchup-live';
 import { getPlayoffOdds } from '@/lib/playoff-odds';
+import { latestWeekStory } from '@/lib/week-story';
 import { publishedWeeks, readIssue } from '@/lib/rag';
 import { getTrades } from '@/lib/trades';
 import { photosForWeek } from '@/lib/game-photos';
@@ -113,6 +115,11 @@ export default async function HomePage() {
   const thisWeekClips = await playableIn(week);
   const storyWeek = thisWeekClips.length || week === 1 ? week : week - 1;
   const storyClips = storyWeek === week ? thisWeekClips : await playableIn(storyWeek);
+  // The story is about a week that is over, so this walks back from the week
+  // the league is in until it finds one with trophies handed out. Pointing it
+  // at the clip driven story week meant no story at all during a live week,
+  // which is precisely when somebody wants last week's.
+  const storySlides = await latestWeekStory(week).catch(() => []);
   // The card that closes every manager's story prefers his last finished
   // matchup, per manager. A week in progress is not a result: a card reading
   // "beat Adam 35.30 to 18.48" off one running back is a scoreboard mid
@@ -224,6 +231,12 @@ export default async function HomePage() {
                 )
               )}
             />
+          </HomeWidget>
+        ) : null}
+
+        {storySlides.length ? (
+          <HomeWidget title="The Week">
+            <WeekStoryButton slides={storySlides} />
           </HomeWidget>
         ) : null}
 

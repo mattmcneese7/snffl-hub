@@ -264,7 +264,7 @@ export default function SiteChrome({
                 so. */}
             <span className="snffl-app-mark-disc">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo-mark-v3-128.png" alt="" />
+              <img src="/logo-mark-v4-128.png" alt="" />
             </span>
           </Link>
 

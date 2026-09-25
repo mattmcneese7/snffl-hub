@@ -296,15 +296,25 @@ body { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
 }
 .snffl-tabbar { padding-bottom: 0; background: transparent; }
 .snffl-tab { padding: 10px 0 9px; }
+/* The active tab is a solid pill holding its icon and label, the way every
+   reference marks the current place. A five pixel dot under a slightly
+   brighter label is a hint; a filled shape is a statement, and on a bar of
+   five it is the only thing the eye has to find. */
 .snffl-tab-active::before {
-  top: auto;
-  bottom: 3px;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--logo-red);
-  transform: none;
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: -1;
+  width: calc(100% - 8px);
+  height: calc(100% - 10px);
+  transform: translate(-50%, -50%);
+  border-radius: var(--radius-pill);
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
 }
+.snffl-tab-active { color: var(--ink); }
+.snffl-tab { isolation: isolate; }
 
 @media (min-width: 900px) {
   body { padding-bottom: 0; }
@@ -584,3 +594,118 @@ h3,
 @media (prefers-reduced-motion: reduce) {
   .snffl-intro { display: none; }
 }
+
+/* ---------- Figures ---------- */
+
+/* The unit is small and lifted, the fraction is a step quieter than the
+   integer, and the delta carries its own colour. A score stops being a blob of
+   bold digits the eye has to parse. */
+.snffl-figure {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  font-family: var(--font-archivo);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--ink);
+}
+.snffl-figure-unit {
+  font-family: var(--mono);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 0.42em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  align-self: flex-start;
+  padding-top: 0.22em;
+}
+.snffl-figure-fraction { color: var(--ink-secondary); font-weight: 700; }
+
+.snffl-figure-sm { font-size: 16px; }
+.snffl-figure-md { font-size: 22px; }
+.snffl-figure-lg { font-size: 30px; }
+.snffl-figure-xl { font-size: 40px; font-stretch: 112%; }
+
+.snffl-stat { display: grid; gap: 5px; justify-items: start; }
+.snffl-stat-label {
+  font: 700 10px/1.2 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.snffl-stat-delta { font: 700 11px/1.2 var(--mono); color: var(--ink-secondary); }
+.snffl-stat-delta-up { color: var(--win); }
+.snffl-stat-delta-down { color: var(--bad); }
+
+/* One tile in a group takes the accent, the way the references highlight the
+   single number that matters and leave its neighbours quiet. */
+.snffl-stat-accent {
+  padding: var(--s-3);
+  border-radius: var(--radius);
+  background: var(--water-mid, #1f74c9);
+  color: #ffffff;
+}
+.snffl-stat-accent .snffl-stat-label,
+.snffl-stat-accent .snffl-figure,
+.snffl-stat-accent .snffl-figure-fraction,
+.snffl-stat-accent .snffl-figure-unit,
+.snffl-stat-accent .snffl-stat-delta { color: #ffffff; }
+
+/* ---------- Buttons ---------- */
+
+/* Three kinds and no more. Every section used to grow its own: 53 families of
+   chip, tab, tag and button, several of which differed only by a pixel of
+   padding and a font weight. */
+.snffl-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 38px;
+  padding: 0 var(--s-4);
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+/* Primary: the one action on a screen worth spending the accent on. */
+.snffl-btn-primary { background: var(--ink); color: var(--bg); }
+/* Secondary: glass, because it is a control laid over the page. */
+.snffl-btn-secondary {
+  background: var(--glass);
+  border-color: var(--glass-line);
+  color: var(--ink);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
+}
+/* Quiet: a link that needs a target, with no box until it is touched. */
+.snffl-btn-quiet { background: transparent; color: var(--ink-secondary); padding: 0 var(--s-2); }
+.snffl-btn-quiet:hover { color: var(--ink); }
+
+/* ---------- Icon chips ---------- */
+
+/* The list pattern every reference uses: a solid rounded square carrying an
+   icon, the label beside it, hairline dividers between rows. It is what makes
+   a settings list read as a product rather than as a stack of links. */
+.snffl-icon-chip {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-sm);
+  color: #ffffff;
+}
+.snffl-icon-chip svg { width: 18px; height: 18px; }
+.snffl-icon-chip-blue { background: #1f74c9; }
+.snffl-icon-chip-green { background: #157a4e; }
+.snffl-icon-chip-amber { background: #b27a12; }
+.snffl-icon-chip-red { background: #b3313d; }
+.snffl-icon-chip-slate { background: #38455c; }

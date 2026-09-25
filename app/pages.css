@@ -13,16 +13,29 @@
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  margin-bottom: 9px;
-  gap: 10px;
+  margin-bottom: var(--s-3);
+  gap: var(--s-3);
 }
-.snffl-block-heading h2 { font-size: 17px; }
+.snffl-block-heading h2 { font-size: 18px; }
+
+/* A section link is a quiet control, not a blue word. The references all set
+   this as a small neutral label with a chevron: it is a way onward, and
+   colouring it competes with the one accent the app is trying to ration. */
 .snffl-block-heading-link {
-  color: var(--link);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--ink-secondary);
   font-weight: 700;
   font-size: 12px;
   text-decoration: none;
   white-space: nowrap;
+}
+.snffl-block-heading-link::after {
+  content: '›';
+  font-size: 15px;
+  line-height: 1;
+  color: var(--muted);
 }
 
 /* ---------- Horizontal rails ---------- */

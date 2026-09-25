@@ -139,6 +139,10 @@
   text-decoration: none;
 }
 .snffl-menu-row:last-child { border-bottom: 0; }
+/* Menus get the panel treatment too: a solid group with hairline dividers and
+   an icon chip leading every row, rather than a list of blue words. */
+.snffl-menu-row { gap: var(--s-3); }
+.snffl-menu-row .snffl-icon-chip { margin-right: 2px; }
 .snffl-menu-label { display: block; font-size: 14px; font-weight: 800; }
 .snffl-menu-note { display: block; font-size: 11px; color: var(--ink-secondary); }
 .snffl-menu-arrow { font-size: 20px; color: var(--ink-secondary); }

@@ -249,7 +249,12 @@
   height: calc(var(--ticker-h) - 10px);
   margin: 0 0 0 8px;
   padding: 0 10px;
-  border-radius: var(--radius-pill);
+  /* The scale's own answer for something this size, not a pill. These are
+     20px tall, and --radius-xs is documented as the radius for a tag under
+     about 24px: a 999px radius on a 20px box draws a 10px corner, rounder
+     than anything else on the screen, which is what made the crawl's two
+     buttons read as a different family to the ribbons and the dock. */
+  border-radius: var(--radius-xs);
   border: 1px solid transparent;
   clip-path: none;
   font: 700 9.5px/1 var(--mono);

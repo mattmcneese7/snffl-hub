@@ -425,3 +425,13 @@
   color: var(--ink-secondary);
 }
 .snffl-champion-name { font-size: var(--t-h1); }
+
+/* The week card is a way through to the NFL game, so it looks like one. */
+.snffl-week-card-head {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  color: inherit;
+  text-decoration: none;
+}
+.snffl-week-card-go { margin-left: auto; color: var(--muted); font-size: var(--t-h2); line-height: 1; }

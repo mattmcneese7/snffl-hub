@@ -95,6 +95,38 @@
 }
 .snffl-page-sources .snffl-source-strip { margin-top: 0; }
 
+/* A module that is a way through rather than a table. Where the thing being
+   summarised is the same fourteen teams a third time, or a season page that
+   says nothing about the game still being decided, the summary earns nothing
+   and the link earns everything. */
+.snffl-module-button {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-height: var(--tap);
+  margin-bottom: var(--s-4);
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--radius);
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  color: var(--ink);
+  font-size: var(--t-h3);
+  font-weight: 800;
+  text-decoration: none;
+}
+.snffl-module-button::after {
+  content: '\203A';
+  color: var(--muted);
+  font-size: var(--t-h2);
+  line-height: 1;
+}
+.snffl-module-button-note {
+  margin-left: auto;
+  color: var(--ink-secondary);
+  font-size: var(--t-small);
+  font-weight: 700;
+}
+
 /* ---------- Horizontal rails ---------- */
 
 .snffl-stories-rail,

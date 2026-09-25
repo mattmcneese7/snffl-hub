@@ -131,7 +131,10 @@ export default async function PlayerPage({
           </div>
           <div className="snffl-card snffl-week-card">
             {matchup ? (
-              <div className="snffl-week-card-head">
+              /* Through to the game itself, which is where the other thirteen
+                 managers with a stake in it are listed. This card has always
+                 known which NFL game he is in and never said so out loud. */
+              <Link className="snffl-week-card-head" href={`/nfl/${matchup.game.id}`}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img className="snffl-week-card-opp" src={matchup.opponent.logo} alt="" />
                 <div className="snffl-week-card-title">
@@ -150,7 +153,10 @@ export default async function PlayerPage({
                     {matchup.game.broadcast ? `, ${matchup.game.broadcast}` : ''}
                   </span>
                 </div>
-              </div>
+                <span className="snffl-week-card-go" aria-hidden>
+                  &#8250;
+                </span>
+              </Link>
             ) : (
               <p className="snffl-week-card-note">No game this week.</p>
             )}

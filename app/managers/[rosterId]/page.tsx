@@ -6,7 +6,7 @@ import TeamAvatar from '@/components/TeamAvatar';
 import { TrophyCase } from '@/components/TrophyBits';
 import { getPointsByWeek } from '@/lib/awards';
 import { getTrophyBoard } from '@/lib/trophies';
-import { getStandings, league, playerOf, teamByRoster, teams } from '@/lib/league';
+import { getStandings, getWeekGames, league, playerOf, scoredWeek, teamByRoster, teams } from '@/lib/league';
 import { getOddsFor } from '@/lib/playoff-odds';
 import { getRosters } from '@/lib/sleeper';
 
@@ -25,12 +25,25 @@ export default async function ManagerPage({
   const team = teamByRoster(rosterId);
   if (!team) notFound();
 
-  const [standings, byWeek, odds, trophies] = await Promise.all([
+  const week = await scoredWeek();
+  const [standings, byWeek, odds, trophies, weekGames] = await Promise.all([
     getStandings(),
     getPointsByWeek(rosterId),
     getOddsFor(rosterId),
     getTrophyBoard(),
+    getWeekGames(week).catch(() => []),
   ]);
+  // The game this manager is in right now. A profile that lists a whole season
+  // and says nothing about the one result still being decided is a record
+  // book, not a page you check on a Sunday.
+  const mine = weekGames.find(
+    (game) => game.home.rosterId === rosterId || game.away.rosterId === rosterId
+  );
+  const foe = mine
+    ? mine.home.rosterId === rosterId
+      ? mine.away
+      : mine.home
+    : null;
   const myAwards = trophies.all.filter((award) => award.rosterId === rosterId);
 
   const standing = standings.find((s) => s.rosterId === rosterId);
@@ -62,6 +75,17 @@ export default async function ManagerPage({
             <p className="snffl-profile-sub">{team.manager}</p>
           </div>
         </section>
+
+        {mine && foe ? (
+          <Link className="snffl-module-button" href={`/matchups/${week}/${mine.matchupId}`}>
+            <span>Week {week} vs {foe.manager}</span>
+            <span className="snffl-module-button-note snffl-numeric">
+              {(mine.home.rosterId === rosterId ? mine.home : mine.away).points.toFixed(2)}
+              {' - '}
+              {foe.points.toFixed(2)}
+            </span>
+          </Link>
+        ) : null}
 
         <section className="snffl-stat-tiles">
           <div className="snffl-stat-tile">

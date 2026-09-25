@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { usePathname } from 'next/navigation';
+import { guideRequested } from '@/lib/install-flow';
 import { introRunning } from './AppIntro';
 
 /**
@@ -25,6 +27,8 @@ import { introRunning } from './AppIntro';
  * the screen.
  */
 const seenKey = (week: number) => `snffl.chug.seen.w${week}`;
+/** Pages that are not the app. The invite has one job and this is not it. */
+const QUIET = ['/join'];
 /** Only a failsafe now: the intro says when it is done. */
 const AFTER_INTRO_MS = 6000;
 
@@ -32,6 +36,8 @@ export default function ChugSplash({ week, src }: { week: number; src: string })
   const [open, setOpen] = useState(false);
   const [muted, setMuted] = useState(true);
   const video = useRef<HTMLVideoElement>(null);
+  const pathname = usePathname();
+  const quiet = QUIET.includes(pathname);
 
   const close = useCallback(() => {
     setOpen(false);
@@ -46,6 +52,7 @@ export default function ChugSplash({ week, src }: { week: number; src: string })
   }, [week]);
 
   useEffect(() => {
+    if (quiet || guideRequested()) return;
     let seen = true;
     try {
       seen = localStorage.getItem(seenKey(week)) === '1';
@@ -73,7 +80,7 @@ export default function ChugSplash({ week, src }: { week: number; src: string })
       window.removeEventListener('snffl:intro-done', show);
       clearTimeout(failsafe);
     };
-  }, [week]);
+  }, [week, quiet]);
 
   useEffect(() => {
     if (!open) return;
@@ -90,12 +97,13 @@ export default function ChugSplash({ week, src }: { week: number; src: string })
   // through.
   useEffect(() => {
     const replay = () => {
+      if (quiet) return;
       setMuted(true);
       setOpen(true);
     };
     window.addEventListener('snffl:chug', replay);
     return () => window.removeEventListener('snffl:chug', replay);
-  }, []);
+  }, [quiet]);
 
   // React sets `muted` as a property on the element it creates, and on a
   // <video> that is famously unreliable: the attribute can be missing at the

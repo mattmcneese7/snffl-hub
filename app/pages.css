@@ -1016,6 +1016,15 @@
   text-align: left;
 }
 .snffl-invite-coach-line strong { font-weight: 800; }
+/* The one thing that goes wrong silently: adding from the wrong page gives an
+   icon that opens that page. Said on the screen they are looking at. */
+.snffl-invite-coach-note {
+  margin: 0;
+  font-size: var(--t-small);
+  line-height: 1.4;
+  color: var(--ink-tertiary);
+  text-align: left;
+}
 .snffl-invite-step {
   flex: none;
   display: grid;

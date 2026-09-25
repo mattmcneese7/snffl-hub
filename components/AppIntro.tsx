@@ -1,6 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { guideRequested } from '@/lib/install-flow';
 
 /**
  * The app open animation.
@@ -60,11 +62,31 @@ export function introRunning(): boolean {
 
 type Phase = 'hold' | 'flight' | 'done';
 
+/**
+ * Pages that are not the app.
+ *
+ * The invite is reached from a text message by somebody who has installed
+ * nothing. An opening animation is for opening an app you already own.
+ */
+const QUIET = ['/join'];
+
 export default function AppIntro() {
   const [phase, setPhase] = useState<Phase | null>(null);
   const logo = useRef<HTMLSpanElement>(null);
+  const pathname = usePathname();
+  const quiet = QUIET.includes(pathname);
 
   useEffect(() => {
+    // Still reports done, or anything waiting on the intro waits forever.
+    // guideRequested covers the handoff from the invite: he lands on the app
+    // to be shown two taps, and four seconds of animation over the top of
+    // them is the opposite of help. Read here rather than during render,
+    // since storage is not available on the server.
+    if (quiet || guideRequested()) {
+      setIntroState('done');
+      setPhase('done');
+      return;
+    }
     let seen = true;
     try {
       seen = sessionStorage.getItem(SEEN) === '1';
@@ -84,7 +106,7 @@ export default function AppIntro() {
       // Not being able to remember is not a reason to refuse to play.
     }
     setPhase('hold');
-  }, []);
+  }, [quiet]);
 
   const land = useCallback(() => {
     setPhase((current) => (current === 'hold' ? 'flight' : current));

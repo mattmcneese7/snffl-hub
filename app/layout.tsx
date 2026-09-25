@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import AppIntro from '@/components/AppIntro';
 import ChugSplash from '@/components/ChugSplash';
+import InstallGuide from '@/components/InstallGuide';
 import { latestChug } from '@/lib/chug-video';
 import { scoredWeek } from '@/lib/league';
 import { Archivo, Martian_Mono, Source_Serif_4, Permanent_Marker } from 'next/font/google';
@@ -109,6 +110,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <AppIntro />
         {/* The week's chug, once, behind the opening animation. */}
         {chug ? <ChugSplash week={chug.week} src={chug.src} /> : null}
+        {/* The home screen instructions, raised here rather than on the
+            invite: iOS saves the page you are looking at, so the taps have to
+            be taught on the page that should end up on the home screen. */}
+        <InstallGuide />
       </body>
     </html>
   );

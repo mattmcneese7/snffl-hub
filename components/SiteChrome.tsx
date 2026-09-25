@@ -24,13 +24,32 @@ type SiteChromeProps = {
   nflTicker?: TickerItem[];
 };
 
+/* Four labelled tabs, two either side of the mark, which is Home. */
 const TABS = [
-  { label: 'Home', href: '/', Icon: Football },
   { label: 'Matchups', href: '/matchups', Icon: FootballHelmet },
   { label: 'Feed', href: '/feed', Icon: MonitorPlay },
   { label: 'The Rag', href: '/rag', Icon: NewspaperClipping },
   { label: 'More', href: '/more', Icon: Strategy },
 ];
+
+function Tab({
+  tab,
+  pathname,
+}: {
+  tab: { label: string; href: string; Icon: typeof Football };
+  pathname: string;
+}) {
+  const active = tab.href === '/' ? pathname === '/' : pathname.startsWith(tab.href);
+  return (
+    <Link href={tab.href} className={`snffl-tab${active ? ' snffl-tab-active' : ''}`}>
+      <tab.Icon weight={active ? 'fill' : 'duotone'} className="snffl-tab-icon" />
+      <span>{tab.label}</span>
+    </Link>
+  );
+}
+
+/* The desktop bar still names every destination, Home included. */
+const DESKTOP_TABS = [{ label: 'Home', href: '/', Icon: Football }, ...TABS];
 
 // The header shrinks on scroll: wordmark 160px down to about 92px.
 function useScrolled(threshold = 24) {
@@ -157,27 +176,10 @@ export default function SiteChrome({
           the week on the right. It replaced a separate section strip, which
           spent a whole band of the screen on two words. Theme and alerts live
           in Settings. */}
-      {/* The mark and the week, and nothing else. The section name came out:
-          the tab bar already says which screen this is, so the header was
-          spending its width repeating it. */}
-      <header className={`snffl-header${scrolled ? ' snffl-header-compact' : ''}`}>
-        {/* The app mark, centred, and where the opening animation lands. It
-            replaced the wordmark here: this is an app, and an app wears its
-            icon. The wordmark still leads the desktop nav, which has the room
-            for it. */}
-        <span className="snffl-header-mark" id="snffl-header-mark">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-mark-v2-128.png" alt="Squirtnite FFL" />
-        </span>
-        <span className="snffl-week-tag">
-          <span>WEEK {week}</span>
-        </span>
-      </header>
-
       <nav className="snffl-desktop-nav">
         <SnfflWordmark className="snffl-wordmark-svg" />
         <div className="snffl-desktop-nav-links">
-          {TABS.map(({ label, href }) => {
+          {DESKTOP_TABS.map(({ label, href }) => {
             const active = href === '/' ? pathname === '/' : pathname.startsWith(href);
             return (
               <Link
@@ -198,25 +200,50 @@ export default function SiteChrome({
         </span>
       </nav>
 
-      {/* Scores and navigation are one object, not two stacked ones. Two
-          floating bars at the bottom of a phone read as a pile; a single dock
-          with the crawl above the tabs reads as designed. */}
-      <div className="snffl-dock">
-        <div className="snffl-ticker-stack">
-          <Ticker tag="LEAGUE" items={leagueTicker} variant="league" />
-          <Ticker tag="NFL" items={nflTicker} variant="nfl" />
-        </div>
+      {/* Scores at the top, navigation at the bottom. Removing the header left
+          the top of the screen empty, and a crawl is the one thing that wants
+          to be glanced at rather than reached for. It also gives the mark room
+          to rise out of the bar below without the two colliding. */}
+      <div className="snffl-ticker-stack">
+        <Ticker tag="LEAGUE" items={leagueTicker} variant="league" />
+        <Ticker tag="NFL" items={nflTicker} variant="nfl" />
+      </div>
 
+      <div className="snffl-dock">
+        {/* Two tabs, the mark, two tabs. The mark is Home and the app's one
+            raised control, which is where the opening animation now lands: the
+            logo ends its flight on the thing you press rather than on a
+            decoration at the top of a screen nobody looks at twice. */}
         <nav className="snffl-tabbar">
-          {TABS.map(({ label, href, Icon }) => {
-            const active = href === '/' ? pathname === '/' : pathname.startsWith(href);
-            return (
-              <Link key={label} href={href} className={`snffl-tab${active ? ' snffl-tab-active' : ''}`}>
-                <Icon weight={active ? 'fill' : 'duotone'} className="snffl-tab-icon" />
-                <span>{label}</span>
-              </Link>
-            );
-          })}
+          {TABS.slice(0, 2).map((tab) => (
+            <Tab key={tab.label} tab={tab} pathname={pathname} />
+          ))}
+
+          <Link
+            href="/"
+            id="snffl-app-mark"
+            className={`snffl-app-mark${pathname === '/' ? ' snffl-app-mark-on' : ''}`}
+            aria-label="Home"
+          >
+            {/* The week arcs over the mark rather than sitting beside it, so
+                it reads as a rim on the button and not a second label. */}
+            <svg className="snffl-app-week" viewBox="0 0 100 54" aria-hidden>
+              <path id="snffl-week-arc" d="M8 50 A 42 42 0 0 1 92 50" fill="none" />
+              <text>
+                <textPath href="#snffl-week-arc" startOffset="50%" textAnchor="middle">
+                  WEEK {week}
+                </textPath>
+              </text>
+            </svg>
+            <span className="snffl-app-mark-disc">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo-mark-v2-128.png" alt="" />
+            </span>
+          </Link>
+
+          {TABS.slice(2).map((tab) => (
+            <Tab key={tab.label} tab={tab} pathname={pathname} />
+          ))}
         </nav>
       </div>
     </>

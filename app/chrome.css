@@ -18,22 +18,15 @@
    compact header. Safe despite the Safari env() trap, because the variable
    holds a plain length and env() stays inline in the calc. */
 :root {
-  /* Two header states. At rest the mark is the screen's crown, with the week
-     beneath it; scrolled, it becomes a slim bar. The page reserves the resting
-     height so content does not jump up when the header shrinks. */
-  --header-h: 96px;
-  --header-h-rest: 96px;
   --strip-h: 28px;
   /* Two bands of 28. Read by the body padding and the ticker's own offset. */
   --ticker-stack-h: 56px;
   --tabbar-h: 62px;
 }
-html.snffl-scrolled {
-  --header-h: 46px;
-}
+
 
 /* Clears the tab bar and the ticker stack now sitting above it. */
-body { padding-bottom: calc(76px + var(--ticker-stack-h)); }
+body { padding-bottom: 76px; }
 
 .snffl-numeric {
   font-family: var(--font-archivo);
@@ -51,57 +44,10 @@ body { padding-bottom: calc(76px + var(--ticker-stack-h)); }
   margin: 0;
 }
 
-/* ---------- Floating header ---------- */
-
-/* It floats rather than spanning the top. The full width bar plus a strip plus
-   two ticker bands spent a third of a phone screen on chrome before any
-   football; the header is now a single object over the page and the tickers
-   moved to the bottom, out of the way. */
-/* No card, no edge. The chrome is a scrim the page passes under rather than a
-   pill sitting on top of it: a blur and a wash of the ground that both fade
-   out downward, so there is no line where the app stops and the content
-   starts. The blur lives on a pseudo element because masking the header
-   itself would fade the mark with it. */
-.snffl-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 60;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--s-1);
-  height: calc(var(--header-h) + env(safe-area-inset-top, 0px));
-  padding: env(safe-area-inset-top, 0px) var(--s-4) 0;
-  transition: height 0.18s ease;
-  pointer-events: none;
-}
-
-/* Scrolled: the same two things, laid along the bar rather than stacked, with
-   the mark at one end and the week at the other so neither reads as a caption
-   of the other. */
-.snffl-header-compact {
-  flex-direction: row;
-  justify-content: space-between;
-  gap: var(--s-3);
-}
-.snffl-header > * { pointer-events: auto; }
-/* Same rule as the dock: solid behind anything that has to be read, feathered
-   only where it meets the page. */
-.snffl-header::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
-  backdrop-filter: blur(20px) saturate(140%);
-  background: rgba(6, 10, 19, 0.93);
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 calc(100% - 20px), transparent 100%);
-  mask-image: linear-gradient(180deg, #000 0%, #000 calc(100% - 20px), transparent 100%);
-}
-
+/* ---------- No top header ----------
+   The app has none. Everything it used to hold, the mark and the week, moved
+   into the dock at the bottom, where a thumb already is. What is left at the
+   top of a screen is the content. */
 /* The artwork is 300x130, but the letters only occupy roughly y=13 to 66.
    The rest is drips hanging below, which may overhang the header edge. */
 .snffl-wordmark-svg {
@@ -148,8 +94,7 @@ body { padding-bottom: calc(76px + var(--ticker-stack-h)); }
 
 .snffl-section-strip {
   position: sticky;
-  top: calc(var(--header-h) + env(safe-area-inset-top, 0px));
-  transition: top 0.18s ease;
+  top: env(safe-area-inset-top, 0px);
   z-index: 55;
   display: flex;
   align-items: center;
@@ -183,9 +128,16 @@ body { padding-bottom: calc(76px + var(--ticker-stack-h)); }
 
 /* ---------- Stacked tickers ---------- */
 
-/* The dock: scores above navigation, as one floating object at the bottom.
-   Scores stay on screen the whole time, which is the point of a ticker,
-   without being the first thing between the reader and the page. */
+/* The crawl holds the top of the screen, where the header used to be, and
+   navigation holds the bottom. Both stay put while the page moves under them. */
+.snffl-ticker-stack {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  padding-top: env(safe-area-inset-top, 0px);
+}
 .snffl-dock {
   position: fixed;
   left: 0;
@@ -193,7 +145,6 @@ body { padding-bottom: calc(76px + var(--ticker-stack-h)); }
   bottom: 0;
   z-index: 70;
 }
-.snffl-ticker-stack { position: relative; }
 
 .snffl-ticker-row { display: flex; align-items: stretch; height: 28px; overflow: hidden; }
 .snffl-ticker-row-league { background: var(--ticker-band-a); }
@@ -281,19 +232,30 @@ body { padding-bottom: calc(76px + var(--ticker-stack-h)); }
 
 /* ---------- Bottom tab bar ---------- */
 
+/* Five even columns with the middle one held empty for the mark, which is
+   taken out of flow and centred on the bar's top edge. Left in flow it
+   stretched the row to 96 pixels around 60 pixels of tabs, and the disc
+   floated somewhere inside that dead space. */
 .snffl-tabbar {
-  --tabbar-h: 62px;
+  --tabbar-h: 56px;
+  position: relative;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+  align-items: center;
+  height: var(--tabbar-h);
   background: transparent;
 }
+.snffl-tabbar > :nth-child(1) { grid-column: 1; }
+.snffl-tabbar > :nth-child(2) { grid-column: 2; }
+.snffl-tabbar > :nth-child(4) { grid-column: 4; }
+.snffl-tabbar > :nth-child(5) { grid-column: 5; }
 .snffl-tab {
   position: relative;
-  min-height: var(--tap);
-  padding: 9px 0 10px;
+  height: 100%;
   display: grid;
+  align-content: center;
   justify-items: center;
-  gap: 4px;
+  gap: 3px;
   color: var(--ink-secondary);
   font-size: 10px;
   font-weight: 700;
@@ -317,10 +279,7 @@ body { padding-bottom: calc(76px + var(--ticker-stack-h)); }
    title sits closer to the section above it than to its own content and reads
    as belonging to the wrong one. */
 .snffl-page {
-  /* The header floats above the page rather than sitting in the flow, so the
-     page opens its own room for it. It reserves the resting height, not the
-     live one, or the page would jump up by the difference on first scroll. */
-  padding: calc(var(--header-h-rest) + env(safe-area-inset-top, 0px) + 16px) 14px 14px;
+  padding: calc(var(--ticker-stack-h) + env(safe-area-inset-top, 0px) + 14px) 14px 14px;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 32px;

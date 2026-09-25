@@ -100,6 +100,8 @@
 :root {
   --strip-h: 0px;
   --ticker-h: 30px;
+  /* Half the disc stands above the bar, and the arc sits over that. */
+  --mark-lift: 29px;
   /* Two bands, read by the body padding that clears them. */
   --ticker-stack-h: calc(var(--ticker-h) * 2);
 }
@@ -184,7 +186,7 @@
 
 /* ---------- Floating tab bar ---------- */
 
-body { padding-bottom: calc(96px + var(--ticker-stack-h) + env(safe-area-inset-bottom, 0px)); }
+body { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
 
 /* The dock is a scrim, not a card. The page runs under it and fades out into
    it, so navigation belongs to the screen rather than hovering over it as a
@@ -194,8 +196,14 @@ body { padding-bottom: calc(96px + var(--ticker-stack-h) + env(safe-area-inset-b
   left: 0;
   right: 0;
   bottom: 0;
+  /* Room above the bar for the mark to rise into, so the scrim carries the
+     arced week rather than leaving it to float over whatever photograph the
+     page happens to have scrolled to. */
+  padding-top: calc(var(--mark-lift) + 48px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
+  pointer-events: none;
 }
+.snffl-dock > * { pointer-events: auto; }
 /* Solid where anything is read, feathered only at the edge that meets the
    page. The first version faded across the whole dock, which put the score
    crawl in the weakest part of it: scores over a stadium photograph were
@@ -208,10 +216,24 @@ body { padding-bottom: calc(96px + var(--ticker-stack-h) + env(safe-area-inset-b
   z-index: -1;
   -webkit-backdrop-filter: blur(20px) saturate(140%);
   backdrop-filter: blur(20px) saturate(140%);
-  background: rgba(6, 10, 19, 0.93);
-  -webkit-mask-image: linear-gradient(0deg, #000 0%, #000 calc(100% - 18px), transparent 100%);
-  mask-image: linear-gradient(0deg, #000 0%, #000 calc(100% - 18px), transparent 100%);
+  background: linear-gradient(0deg, rgba(6, 10, 19, 0.96) 0%, rgba(6, 10, 19, 0.96) 76%, rgba(6, 10, 19, 0.8) 100%);
+  -webkit-mask-image: linear-gradient(0deg, #000 0%, #000 74%, transparent 100%);
+  mask-image: linear-gradient(0deg, #000 0%, #000 74%, transparent 100%);
 }
+/* Solid behind the scores, feathered at the edge that meets the page, the
+   same rule the dock follows at the other end of the screen. */
+.snffl-ticker-stack::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  backdrop-filter: blur(20px) saturate(140%);
+  background: rgba(6, 10, 19, 0.93);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 calc(100% - 16px), transparent 100%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 calc(100% - 16px), transparent 100%);
+}
+
 /* The bands carry no fill or rule of their own; the scrim is the background. */
 .snffl-ticker-row {
   background: transparent;
@@ -386,15 +408,66 @@ h3,
 /* The mark sits where the wordmark used to, centred in the header. It is also
    the target the opening animation flies into, which is why it is a plain box
    with known bounds rather than a loose image. */
-.snffl-header-mark {
-  display: block;
-  flex: 0 0 auto;
+/* The app mark as the one raised control, centre of the dock. It breaks the
+   top edge of the bar the way a primary action does, so the eye finds it
+   before it finds a label, and the week arcs over its rim. */
+/* Out of flow and pinned to the bar's top edge, so the disc straddles it
+   exactly and the bar keeps the height of its own tabs. */
+.snffl-app-mark {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 0;
+  /* The disc straddles the bar's edge, not the whole block. Centring the block
+     put the arc's height into the sum and pushed the disc down inside the bar,
+     so half of it sat below the edge and half of the jut disappeared. */
+  transform: translate(-50%, calc(-100% + var(--mark-lift)));
+  display: grid;
+  justify-items: center;
+  gap: 0;
+  text-decoration: none;
+}
+.snffl-app-mark-disc {
   width: 58px;
   height: 58px;
-  transition: width 0.18s ease, height 0.18s ease;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(120% 120% at 50% 15%, #16243c 0%, #070c16 70%);
+  border: 1px solid rgba(120, 206, 255, 0.35);
+  box-shadow:
+    0 0 0 5px rgba(6, 10, 19, 0.92),
+    0 0 18px rgba(76, 194, 255, 0.28),
+    0 10px 24px rgba(0, 0, 0, 0.55);
 }
-.snffl-header-mark img { width: 100%; height: 100%; display: block; object-fit: contain; }
-.snffl-header-compact .snffl-header-mark { width: 28px; height: 28px; }
+.snffl-app-mark-disc img { width: 40px; height: 40px; display: block; object-fit: contain; }
+.snffl-app-mark-on .snffl-app-mark-disc {
+  border-color: rgba(140, 216, 255, 0.85);
+  box-shadow:
+    0 0 0 5px rgba(6, 10, 19, 0.92),
+    0 0 26px rgba(76, 194, 255, 0.5),
+    0 10px 24px rgba(0, 0, 0, 0.55);
+}
+
+/* The week, set along the rim above the mark. */
+.snffl-app-week {
+  width: 86px;
+  height: 44px;
+  margin-bottom: -10px;
+  overflow: visible;
+}
+.snffl-app-week text {
+  fill: var(--ink-secondary);
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  /* It sits over the page, not over a panel, so it carries its own ground. */
+  paint-order: stroke;
+  stroke: rgba(6, 10, 19, 0.92);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
 
 .snffl-intro {
   position: fixed;

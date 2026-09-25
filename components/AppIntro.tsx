@@ -6,7 +6,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
  * The app open animation.
  *
  * The mark, large and centred, with a thin blue neon edge that breathes for
- * about four seconds. The file carries a version in its name: it lives in
+ * about four seconds, before flying down into the tab bar, where the same
+ * mark is the app's Home button. The file carries a version in its name: it lives in
  * public, which is served without a content hash, so a changed mark at an
  * unchanged path would reach returning visitors as whatever their browser
  * still had. Then it moves up into the header, where it is the app's
@@ -74,7 +75,7 @@ export default function AppIntro() {
 
   useEffect(() => {
     if (phase !== 'flight') return;
-    const mark = document.getElementById('snffl-header-mark');
+    const mark = document.getElementById('snffl-app-mark');
     const element = logo.current;
     if (!mark || !element) {
       setPhase('done');

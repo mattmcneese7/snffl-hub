@@ -159,8 +159,15 @@ export default function SiteChrome({
           in Settings. */}
       <header className={`snffl-header${scrolled ? ' snffl-header-compact' : ''}`}>
         <span className="snffl-header-section">
-          <span className="snffl-header-section-name">{section}</span>
-          {sub ? <span className="snffl-header-section-sub">{sub}</span> : null}
+          {/* The app mark, and where the opening animation lands its logo. */}
+          <span className="snffl-header-mark" id="snffl-header-mark">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/icon-192.png" alt="" />
+          </span>
+          <span className="snffl-header-section-text">
+            <span className="snffl-header-section-name">{section}</span>
+            {sub ? <span className="snffl-header-section-sub">{sub}</span> : null}
+          </span>
         </span>
         {/* Cropped so the drips do not overhang the tickers below. */}
         <SnfflWordmark className="snffl-wordmark-svg" compact={scrolled} crop />

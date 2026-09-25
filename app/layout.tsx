@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import AppIntro from '@/components/AppIntro';
 import { Archivo, Martian_Mono, Source_Serif_4, Permanent_Marker } from 'next/font/google';
 import './globals.css';
 import './chrome.css';
@@ -101,6 +102,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             theme script, which has to stay the first thing in body. */}
         <div className="snffl-field" aria-hidden />
         {children}
+        {/* Plays once a session, over the app rather than instead of it. */}
+        <AppIntro />
       </body>
     </html>
   );

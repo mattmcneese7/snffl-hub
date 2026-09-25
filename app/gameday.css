@@ -1883,7 +1883,7 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
     /* A bare colour is only legal as the last layer of the shorthand, so the
        tint is a flat gradient. Written as a colour it made the whole
        declaration invalid and the frost lost its background entirely. */
-    linear-gradient(rgba(138, 230, 221, 0.26), rgba(138, 230, 221, 0.26)),
+    linear-gradient(rgba(120, 232, 220, 0.34), rgba(120, 232, 220, 0.34)),
     var(--glass-bar);
 }
 
@@ -1898,7 +1898,7 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
       rgba(255, 255, 255, 0.02) 50%,
       rgba(255, 255, 255, 0.08) 100%
     ),
-    linear-gradient(rgba(255, 196, 77, 0.28), rgba(255, 196, 77, 0.28)),
+    linear-gradient(rgba(255, 190, 60, 0.42), rgba(255, 190, 60, 0.42)),
     var(--glass-bar);
 }
 .snffl-wstory-play {
@@ -2119,6 +2119,11 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
 .snffl-wstory-ribbon {
   display: grid;
   overflow: hidden;
+  /* Scroll anchoring exists to keep what you are looking at still when
+     something is inserted above it, which here means scrolling the page down
+     by exactly the height of the thing that just arrived, so the arrival is
+     never seen. The whole point is that the content moves. */
+  overflow-anchor: none;
   margin-bottom: -18px;
   animation: snffl-ribbon-drop 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }

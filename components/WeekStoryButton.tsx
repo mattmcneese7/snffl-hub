@@ -11,6 +11,19 @@ import type { StorySlide } from '@/lib/week-story';
  * built on the server and the page does not ship the trophy and highlight
  * code to the phone to render five cards.
  */
+/**
+ * Land, without letting the reader lose their place.
+ *
+ * Inserting above the fold moves everything below it down, which is the
+ * intent, but a reader sitting at the very top should still be at the very
+ * top afterwards rather than a ribbon's height into the page.
+ */
+function land(setLanded: (v: boolean) => void) {
+  const atTop = window.scrollY < 40;
+  setLanded(true);
+  if (atTop) requestAnimationFrame(() => window.scrollTo(0, 0));
+}
+
 export default function WeekStoryButton({ slides }: { slides: StorySlide[] }) {
   const [open, setOpen] = useState(false);
   // It arrives rather than being there. Held back until the page has settled,
@@ -19,7 +32,7 @@ export default function WeekStoryButton({ slides }: { slides: StorySlide[] }) {
 
   useEffect(() => {
     if (!slides.length) return;
-    const id = setTimeout(() => setLanded(true), 2200);
+    const id = setTimeout(() => land(setLanded), 2200);
     return () => clearTimeout(id);
   }, [slides.length]);
 

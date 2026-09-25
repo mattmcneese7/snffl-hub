@@ -357,6 +357,9 @@ body { padding-bottom: 76px; }
    title sits closer to the section above it than to its own content and reads
    as belonging to the wrong one. */
 .snffl-page {
+  /* See the ribbons: nothing on this page should be inserted and then hidden
+     by the browser scrolling to compensate. */
+  overflow-anchor: none;
   padding: calc(var(--ticker-stack-h) + env(safe-area-inset-top, 0px) + 22px) 14px 14px;
   display: grid;
   grid-template-columns: minmax(0, 1fr);

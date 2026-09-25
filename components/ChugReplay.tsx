@@ -12,6 +12,19 @@ import { useEffect, useState } from 'react';
  * Amber rather than the app's turquoise: this is the beer, and the Chug Meter
  * and the Shartzone already own that colour.
  */
+/**
+ * Land, without letting the reader lose their place.
+ *
+ * Inserting above the fold moves everything below it down, which is the
+ * intent, but a reader sitting at the very top should still be at the very
+ * top afterwards rather than a ribbon's height into the page.
+ */
+function land(setLanded: (v: boolean) => void) {
+  const atTop = window.scrollY < 40;
+  setLanded(true);
+  if (atTop) requestAnimationFrame(() => window.scrollTo(0, 0));
+}
+
 export default function ChugReplay({ week }: { week: number }) {
   // Not until the film has been watched or dismissed. A way to watch it again
   // that appears while it is still playing for the first time is a button
@@ -30,7 +43,7 @@ export default function ChugReplay({ week }: { week: number }) {
     if (alreadySeen) {
       // Nothing is going to play, so it lands with the week story ribbon, a
       // beat behind it, and the two arrive as a pair.
-      const id = setTimeout(() => setLanded(true), 2600);
+      const id = setTimeout(() => land(setLanded), 2600);
       return () => clearTimeout(id);
     }
 

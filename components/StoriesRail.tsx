@@ -11,7 +11,13 @@ import ReelPlayer from './ReelPlayer';
  * Each bubble is a manager. Tapping one plays his players' clips from the last
  * finished week as a vertical story: full screen, one clip at a time, tap the
  * right side for the next. Managers with clips carry the lit ring and come
- * first; a manager with none still shows, dimmed, so all 14 are always there.
+ * first.
+ *
+ * Every bubble opens. ESPN prunes the clips off a game page within days, so on
+ * most weeks most managers have no clip and ten of the fourteen rings were
+ * dark and unpressable. His week as a card is the last slide of every story
+ * and the whole story for a manager with no clips, so there is always
+ * something true behind the ring.
  */
 
 export type StoryManager = {
@@ -24,24 +30,26 @@ export type StoryManager = {
 
 export default function StoriesRail({ managers, week }: { managers: StoryManager[]; week: number }) {
   const [open, setOpen] = useState<StoryManager | null>(null);
-  const ordered = [...managers].sort((a, b) => Number(b.clips.length > 0) - Number(a.clips.length > 0));
+  const videos = (manager: StoryManager) => manager.clips.filter((clip) => !clip.card).length;
+  const ordered = [...managers].sort((a, b) => videos(b) - videos(a));
 
   return (
     <>
       <div className="snffl-stories-rail">
         {ordered.map((manager) => {
-          const has = manager.clips.length > 0;
+          const reels = videos(manager);
+          const has = reels > 0;
           return (
             <div className="snffl-story-bubble" key={manager.rosterId}>
               <button
                 type="button"
                 className="snffl-story-button"
-                disabled={!has}
+                disabled={!manager.clips.length}
                 onClick={() => setOpen(manager)}
                 aria-label={
                   has
-                    ? `${manager.firstName}'s Week ${week} story, ${manager.clips.length} clips`
-                    : `${manager.firstName} has no clips from Week ${week}`
+                    ? `${manager.firstName}'s Week ${week} story, ${reels} ${reels === 1 ? 'clip' : 'clips'}`
+                    : `${manager.firstName}'s week in numbers`
                 }
               >
                 <div className={`snffl-story-ring${has ? ' snffl-story-ring-live' : ''}`}>
@@ -60,19 +68,22 @@ export default function StoriesRail({ managers, week }: { managers: StoryManager
                 {manager.firstName}
               </ManagerLink>
               <span className="snffl-story-count">
-                {has ? `${manager.clips.length} ${manager.clips.length === 1 ? 'CLIP' : 'CLIPS'}` : 'NO CLIPS'}
+                {has ? `${reels} ${reels === 1 ? 'CLIP' : 'CLIPS'}` : 'HIS WEEK'}
               </span>
             </div>
           );
         })}
       </div>
 
+      {/* No week in the story header: a story can hold clips from the week in
+          progress and a card from the week before, and every slide names its
+          own week underneath. */}
       {open ? (
         <ReelPlayer
           variant="story"
           clips={open.clips}
           start={0}
-          title={`${open.firstName}, Week ${week}`}
+          title={open.firstName}
           avatar={open.avatarUrl}
           onClose={() => setOpen(null)}
         />

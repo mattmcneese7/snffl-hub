@@ -157,9 +157,9 @@ export default function ReelPlayer({
               slides.current[index] = node;
             }}
           >
-            {variant === 'story' ? (
+            {variant === 'story' && clip.still ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img className="snffl-story-backdrop" src={clip.still ?? ''} alt="" aria-hidden />
+              <img className="snffl-story-backdrop" src={clip.still} alt="" aria-hidden />
             ) : null}
             {variant === 'story' ? (
               <>
@@ -177,8 +177,33 @@ export default function ReelPlayer({
                 />
               </>
             ) : null}
-            <div className="snffl-reel-frame">
-              {index === active && clip.embed ? (
+            <div className={`snffl-reel-frame${clip.card ? ' snffl-reel-frame-card' : ''}`}>
+              {clip.card ? (
+                <div className="snffl-story-card">
+                  <p className="snffl-story-card-head">{clip.card.headline}</p>
+                  <p className="snffl-story-card-score">{clip.card.score}</p>
+                  {clip.card.player ? (
+                    <div className="snffl-story-card-player">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={clip.card.player.headshot} alt="" loading="lazy" />
+                      <span>
+                        <strong>{clip.card.player.name}</strong>
+                        <em>
+                          {clip.card.player.slot}, {clip.card.player.points}
+                        </em>
+                      </span>
+                    </div>
+                  ) : null}
+                  <dl className="snffl-story-card-lines">
+                    {clip.card.lines.map((line) => (
+                      <div key={line.label}>
+                        <dt>{line.label}</dt>
+                        <dd>{line.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              ) : index === active && clip.embed ? (
                 <iframe
                   src={clip.embed}
                   title={clip.title}
@@ -190,7 +215,7 @@ export default function ReelPlayer({
               ) : null}
               {/* The NFL blocks its YouTube clips on outside sites, so those
                   open in YouTube, which on a phone is the YouTube app. */}
-              {!clip.embed ? (
+              {!clip.embed && !clip.card ? (
                 <a
                   className="snffl-reel-external"
                   href={clip.sourceUrl}
@@ -216,11 +241,21 @@ export default function ReelPlayer({
                   ))}
                 </div>
               ) : null}
-              <a className="snffl-reel-source" href={clip.sourceUrl} target="_blank" rel="noopener noreferrer">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={clip.source === 'espn' ? '/sources/espn.png' : '/sources/youtube.svg'} alt="" />
-                {clip.source === 'espn' ? 'Video via ESPN' : 'Video via NFL on YouTube'}
-              </a>
+              {/* A recap card has no video, so it credits the scoring rather
+                  than claiming a source it does not have. */}
+              {clip.card ? (
+                <a className="snffl-reel-source" href={clip.sourceUrl}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/sources/sleeper.png" alt="" />
+                  Scoring via Sleeper
+                </a>
+              ) : (
+                <a className="snffl-reel-source" href={clip.sourceUrl} target="_blank" rel="noopener noreferrer">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={clip.source === 'espn' ? '/sources/espn.png' : '/sources/youtube.svg'} alt="" />
+                  {clip.source === 'espn' ? 'Video via ESPN' : 'Video via NFL on YouTube'}
+                </a>
+              )}
             </div>
           </section>
         ))}

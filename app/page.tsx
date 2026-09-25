@@ -11,7 +11,7 @@ import { getTrophyBoard } from '@/lib/trophies';
 import StoriesRail from '@/components/StoriesRail';
 import TopPlays from '@/components/TopPlays';
 import { firstNameOf } from '@/config/managers';
-import { toReelClip } from '@/lib/reel-clips';
+import { toReelClip, weekCardClip } from '@/lib/reel-clips';
 import PlayoffTitle from '@/components/PlayoffTitle';
 import RagHero from '@/components/RagHero';
 import ResultBug from '@/components/ResultBug';
@@ -45,6 +45,7 @@ import {
 import { getPlayoffOdds } from '@/lib/playoff-odds';
 import { publishedWeeks, readIssue } from '@/lib/rag';
 import { getTrades } from '@/lib/trades';
+import type { GameSide } from '@/lib/types';
 
 const QUICK_LINKS = [
   { href: '/managers', label: 'Managers', note: 'All 14 teams' },
@@ -105,6 +106,33 @@ export default async function HomePage() {
   const thisWeekClips = await playableIn(week);
   const storyWeek = thisWeekClips.length || week === 1 ? week : week - 1;
   const storyClips = storyWeek === week ? thisWeekClips : await playableIn(storyWeek);
+  // The card that closes every manager's story describes a week he has
+  // actually played. The story week can be the week in progress, where half
+  // the league has not kicked off yet, so a manager whose game has no points
+  // on it gets the week before rather than a card reading "tied, 0.00 to
+  // 0.00". The choice is per manager, because on a Sunday morning some of
+  // them have played and some have not.
+  const storyGames = storyWeek === week ? games : await getWeekGames(storyWeek);
+  const priorGames = storyWeek > 1 ? await getWeekGames(storyWeek - 1) : [];
+  const sidesOf = (list: typeof storyGames) => {
+    const out = new Map<number, { side: GameSide; opponent: GameSide }>();
+    for (const game of list) {
+      out.set(game.home.rosterId, { side: game.home, opponent: game.away });
+      out.set(game.away.rosterId, { side: game.away, opponent: game.home });
+    }
+    return out;
+  };
+  const thisWeekSides = sidesOf(storyGames);
+  const priorSides = sidesOf(priorGames);
+  const cardFor = (rosterId: number) => {
+    const current = thisWeekSides.get(rosterId);
+    if (current && (current.side.points > 0 || current.opponent.points > 0)) {
+      return { ...current, week: storyWeek };
+    }
+    const prior = priorSides.get(rosterId);
+    if (prior) return { ...prior, week: storyWeek - 1 };
+    return current ? { ...current, week: storyWeek } : null;
+  };
 
   // ESPN rather than the game status, which is derived from week arithmetic and
   // can read live on a week that merely has points on the board.
@@ -137,9 +165,18 @@ export default async function HomePage() {
               firstName: firstNameOf(team.rosterId) ?? team.manager,
               avatarUrl: team.avatarUrl,
               color: team.colors?.primary ?? '#5d6a86',
-              clips: storyClips
-                .filter((clip) => clip.ownerTeamId === String(team.rosterId))
-                .map((clip) => toReelClip(clip, firstNameOf(team.rosterId) ?? team.manager)),
+              clips: (() => {
+                const name = firstNameOf(team.rosterId) ?? team.manager;
+                const reels = storyClips
+                  .filter((clip) => clip.ownerTeamId === String(team.rosterId))
+                  .map((clip) => toReelClip(clip, name));
+                const own = cardFor(team.rosterId);
+                // His week closes the story, and is the whole of it when ESPN
+                // has no clip of anybody he started.
+                return own
+                  ? [...reels, weekCardClip(own.side, own.opponent, name, nameOf(own.opponent.rosterId), own.week)]
+                  : reels;
+              })(),
             }))}
           />
         </section>

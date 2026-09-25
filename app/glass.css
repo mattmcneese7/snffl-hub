@@ -373,22 +373,18 @@ h3,
 
 /* ---------- App mark and the opening animation ---------- */
 
-/* The official icon, small, in the header. It is also the target the intro
-   flies its logo into, which is why it keeps its own rounded black ground:
-   the image that lands here is the same image, so nothing has to be cut out. */
+/* The mark sits where the wordmark used to, centred in the header. It is also
+   the target the opening animation flies into, which is why it is a plain box
+   with known bounds rather than a loose image. */
 .snffl-header-mark {
-  flex: 0 0 auto;
-  width: 26px;
-  height: 26px;
-  border-radius: 7px;
-  overflow: hidden;
-  background: #05070d;
   display: block;
+  width: 34px;
+  height: 34px;
+  margin: 0 auto;
+  transition: width 0.18s ease, height 0.18s ease;
 }
-.snffl-header-mark img { width: 100%; height: 100%; display: block; object-fit: cover; }
-.snffl-header-section { display: flex; align-items: center; gap: 8px; min-width: 0; }
-.snffl-header-section-text { display: grid; min-width: 0; }
-.snffl-header-compact .snffl-header-mark { width: 22px; height: 22px; border-radius: 6px; }
+.snffl-header-mark img { width: 100%; height: 100%; display: block; object-fit: contain; }
+.snffl-header-compact .snffl-header-mark { width: 26px; height: 26px; }
 
 .snffl-intro {
   position: fixed;
@@ -398,25 +394,31 @@ h3,
   place-items: center;
   cursor: pointer;
 }
-/* Its own layer, so it can fade out while the logo is still flying over it. */
-.snffl-intro-curtain { position: absolute; inset: 0; background: #000000; }
-.snffl-intro-film {
+/* Its own layer, so the ground can clear while the mark is still flying. */
+.snffl-intro-curtain { position: absolute; inset: 0; background: #05070d; }
+.snffl-intro-mark {
   position: relative;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  background: #000000;
-}
-.snffl-intro-logo {
-  position: absolute;
-  left: 50%;
-  aspect-ratio: 1;
-  border-radius: 18%;
+  width: min(66vw, 40vh);
+  height: auto;
   transform-origin: center;
-  translate: -50% -50%;
   will-change: transform;
   pointer-events: none;
 }
+
+/* A thin neon edge that breathes. drop-shadow rather than a border, because
+   the mark is a droplet and a border would draw a box around it: a shadow with
+   almost no blur traces the silhouette itself, whatever shape it is. */
+.snffl-intro-pulse { animation: snffl-neon 1.9s ease-in-out infinite; }
+@keyframes snffl-neon {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 2px rgba(91, 182, 242, 0.95)) drop-shadow(0 0 9px rgba(53, 150, 255, 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 4px rgba(120, 206, 255, 1)) drop-shadow(0 0 22px rgba(53, 150, 255, 0.85));
+  }
+}
+
 .snffl-intro-skip {
   position: absolute;
   right: calc(16px + env(safe-area-inset-right, 0px));

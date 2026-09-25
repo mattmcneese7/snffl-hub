@@ -159,18 +159,17 @@ export default function SiteChrome({
           in Settings. */}
       <header className={`snffl-header${scrolled ? ' snffl-header-compact' : ''}`}>
         <span className="snffl-header-section">
-          {/* The app mark, and where the opening animation lands its logo. */}
-          <span className="snffl-header-mark" id="snffl-header-mark">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/icon-192.png" alt="" />
-          </span>
-          <span className="snffl-header-section-text">
-            <span className="snffl-header-section-name">{section}</span>
-            {sub ? <span className="snffl-header-section-sub">{sub}</span> : null}
-          </span>
+          <span className="snffl-header-section-name">{section}</span>
+          {sub ? <span className="snffl-header-section-sub">{sub}</span> : null}
         </span>
-        {/* Cropped so the drips do not overhang the tickers below. */}
-        <SnfflWordmark className="snffl-wordmark-svg" compact={scrolled} crop />
+        {/* The app mark, centred, and where the opening animation lands. It
+            replaced the wordmark here: this is an app, and an app wears its
+            icon. The wordmark still leads the desktop nav, which has the room
+            for it. */}
+        <span className="snffl-header-mark" id="snffl-header-mark">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo-mark.png" alt="Squirtnite FFL" />
+        </span>
         <span className="snffl-header-week">
           <span className="snffl-week-tag">
             <span>WEEK {week}</span>

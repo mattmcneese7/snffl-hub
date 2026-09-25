@@ -168,10 +168,13 @@
   --strip-h: 0px;
   --ticker-h: 30px;
   /* Where every tab's label sits above the bar's bottom edge. The mark button
-     hangs its week on the same line. */
-  /* Measured against where the other tabs put their labels, not guessed:
-     the week sat two pixels high and broke the row's baseline. */
-  --tab-label-bottom: 14px;
+     hangs its week on the same line.
+
+     Measured against where the other tabs actually put their labels, not
+     guessed. It is derived from the bar's height, so shortening the bar from
+     68 to 60 moved the tab labels and left the week four pixels high. If the
+     bar height changes again, measure this again. */
+  --tab-label-bottom: 10px;
   /* Two bands, read by the body padding that clears them. */
   --ticker-stack-h: calc(var(--ticker-h) * 2);
 }
@@ -352,8 +355,19 @@ body { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
   border-radius: 16px;
   background: var(--tab-on);
   border: 1px solid var(--tab-on-line);
+  /* Lit, the way the mark is, and only where you are. The mark stays the
+     brightest thing on the bar, so this sits well under it: enough for the
+     current tab to read as switched on at a glance, not enough to compete
+     with the one object that is meant to glow. */
+  box-shadow:
+    0 0 12px 1px rgba(76, 194, 255, 0.2),
+    inset 0 0 10px rgba(150, 228, 246, 0.1);
 }
-.snffl-tab-active { color: var(--ink); }
+.snffl-tab-active {
+  color: var(--ink);
+  text-shadow: 0 0 10px rgba(76, 194, 255, 0.35);
+}
+.snffl-tab-active .snffl-tab-icon { filter: drop-shadow(0 0 5px rgba(76, 194, 255, 0.45)); }
 .snffl-tab { isolation: isolate; }
 
 @media (min-width: 900px) {
@@ -575,13 +589,21 @@ h3,
 /* Set exactly as a tab label: same family, size, weight and colour, so the
    mark reads as one of the five and not as a badge with a caption. It was
    mono and upper case beside four sans, sentence case labels. */
+/* The week reads as lit from behind, in the mark's own turquoise, rather than
+   as grey text on black glass. It is the label of the one tab that glows, so
+   it should look like it belongs to it. */
 .snffl-app-week {
   font-size: var(--t-label);
   font-weight: 700;
   color: var(--ink-secondary);
   white-space: nowrap;
+  text-shadow: 0 0 10px rgba(76, 194, 255, 0.3);
 }
-.snffl-app-mark-on .snffl-app-week { color: var(--ink); }
+/* And on its own tab the backlight comes up with everything else. */
+.snffl-app-mark-on .snffl-app-week {
+  color: var(--ink);
+  text-shadow: 0 0 12px rgba(76, 194, 255, 0.55);
+}
 
 .snffl-intro {
   position: fixed;

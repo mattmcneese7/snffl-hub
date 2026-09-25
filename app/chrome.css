@@ -42,15 +42,20 @@ body { padding-bottom: 76px; }
    Set in caps, because every heading in the app is. The masthead is not a
    different kind of word from a section title and should not be cased like
    one: size, width and slant carry the hierarchy, and mixing cases on top of
-   them reads as two apps sharing a page rather than one voice. Uppercase
-   closes up at negative tracking, so this takes a little air back. */
+   them reads as two apps sharing a page rather than one voice.
+
+   A section title is a label, and caps only read as one when they are tracked
+   out and sized down. At heading scale with the tracking left near zero they
+   are a second masthead in the wrong typeface: as wide as the Rag, as loud,
+   and carrying none of the slanted condensed identity that earns the Rag its
+   size. This is the shelf label, so it sits a clear step under it. */
 .snffl-headline {
   font-family: var(--font-archivo);
   font-weight: 800;
   font-stretch: 100%;
-  font-size: var(--t-h2);
-  letter-spacing: 0.005em;
-  line-height: 1.15;
+  font-size: var(--t-h3);
+  letter-spacing: 0.1em;
+  line-height: 1.2;
   margin: 0;
   text-transform: uppercase;
 }

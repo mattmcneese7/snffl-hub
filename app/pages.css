@@ -16,10 +16,9 @@
   margin-bottom: var(--s-3);
   gap: var(--s-3);
 }
-/* A shelf label, a clear step under a masthead. This is the only place the
-   size is set: glass.css used to declare the same selector at the same
-   specificity, and being the later import it silently won. */
-.snffl-block-heading h2 { font-size: var(--t-h1); }
+/* No size here. Every h2 in a block heading carries .snffl-headline, which is
+   the one place a shelf label is sized; a second declaration on a second
+   selector is how this went wrong twice already. */
 
 /* A section link is a quiet control, not a blue word. The references all set
    this as a small neutral label with a chevron: it is a way onward, and

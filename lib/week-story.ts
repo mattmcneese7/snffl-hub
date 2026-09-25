@@ -228,7 +228,9 @@ export async function weekStory(week: number): Promise<StorySlide[]> {
       points: play.fantasyPoints ?? null,
       manager: play.ownerTeamId ? (named(Number(play.ownerTeamId)).manager ?? null) : null,
       clipId: play.id,
-      art: artOf(play),
+      // The owner's face as the floor, same as every other slide. Without it
+      // an ESPN clip with no stored thumbnail left this one slide black.
+      art: artOf(play, play.ownerTeamId ? avatarOf(Number(play.ownerTeamId)) : null),
     });
   }
 

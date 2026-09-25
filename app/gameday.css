@@ -1852,11 +1852,17 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   border: 1px solid var(--tab-on-line);
   box-shadow: 0 0 14px 1px rgba(30, 174, 156, 0.22);
   color: var(--ink);
-  font-size: var(--t-h3);
+  /* The app's own display face, set as a label rather than as body copy. It
+     was inheriting the reading font at heading weight, which belongs to
+     neither the headings nor the controls and read as a stray. */
+  font-family: var(--font-archivo);
+  font-size: var(--t-small);
   font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   cursor: pointer;
 }
-.snffl-wstory-open > [aria-hidden] { color: var(--logo-aqua); font-size: var(--t-small); }
+.snffl-wstory-open > [aria-hidden] { color: var(--logo-aqua); font-size: 9px; }
 
 /* The viewer. It borrows the reel's shell and replaces its scroller, because
    these slides are laid out rather than filmed.
@@ -2015,11 +2021,15 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
 .snffl-wstory-ribbon-in { grid-template-rows: 1fr; opacity: 1; }
 /* The button itself slides the last few pixels, so it reads as arriving from
    above rather than simply appearing at full height. */
+/* No margin of its own: .snffl-page is a grid with a 32px gap, so a margin
+   here was a second gap stacked on the first and left the ribbon floating
+   half a screen above the rail. It pulls up slightly instead, because a thin
+   ribbon does not need a full section's worth of air under it. */
 .snffl-wstory-ribbon .snffl-wstory-open {
   transform: translateY(-10px);
   transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-  margin-bottom: var(--s-4);
 }
+.snffl-wstory-ribbon-in { margin-bottom: calc(-1 * var(--s-4)); }
 .snffl-wstory-ribbon-in .snffl-wstory-open { transform: translateY(0); }
 @media (prefers-reduced-motion: reduce) {
   .snffl-wstory-ribbon,

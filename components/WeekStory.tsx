@@ -135,32 +135,35 @@ export default function WeekStory({
  */
 function Backdrop({ art }: { art: { still: string | null; espnId: string | null } }) {
   const [video, setVideo] = useState<string | null>(null);
+  // ESPN clips carry no thumbnail in our table, but the clip endpoint hands
+  // one back with the sources. Taking it means an ESPN backed slide gets a
+  // real frame of the play rather than falling all the way to an avatar.
+  const [poster, setPoster] = useState<string | null>(null);
 
   useEffect(() => {
     if (!art.espnId) return;
     let dead = false;
-    let detach: (() => void) | null = null;
     (async () => {
-      const [{ clipSource }] = await Promise.all([import('@/lib/espn-playback')]);
+      const { clipSource } = await import('@/lib/espn-playback');
       const source = await clipSource(art.espnId!).catch(() => null);
+      if (dead || !source) return;
+      if (source.poster) setPoster(source.poster);
       // The progressive file only. Scenery does not justify pulling hls.js
       // into the bundle, and a clip with no mp4 simply stays a still.
-      if (dead || !source?.mp4) return;
-      setVideo(source.mp4);
-      detach = null;
+      if (source.mp4) setVideo(source.mp4);
     })();
     return () => {
       dead = true;
-      detach?.();
     };
   }, [art.espnId]);
 
-  if (!art.still && !video) return null;
+  const still = poster ?? art.still;
+  if (!still && !video) return null;
   return (
     <>
-      {art.still ? (
+      {still ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img className="snffl-story-backdrop" src={art.still} alt="" aria-hidden />
+        <img className="snffl-story-backdrop" src={still} alt="" aria-hidden />
       ) : null}
       {video ? (
         <video

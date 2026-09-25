@@ -174,7 +174,7 @@
      guessed. It is derived from the bar's height, so shortening the bar from
      68 to 60 moved the tab labels and left the week four pixels high. If the
      bar height changes again, measure this again. */
-  --tab-label-bottom: 10px;
+  --tab-label-bottom: 7px;
   /* Two bands, read by the body padding that clears them. */
   --ticker-stack-h: calc(var(--ticker-h) * 2);
 }
@@ -549,60 +549,63 @@ h3,
   transform: translateX(-50%);
   display: grid;
   justify-items: center;
-  /* Tight to its label, like every other tab is to its icon. Nine pixels here
-     let the disc drift up away from the row and read as a thing hovering over
-     the bar rather than the first item in it. */
-  /* Tighter, so a bigger disc still sits deeper in the bar rather than
-     riding higher out of it. */
-  gap: 3px;
+  /* Closed up against its label.
+     The mark is anchored by its bottom edge, so the space between the disc
+     and the week is the only thing that decides how far the disc rides out of
+     the bar: every pixel here lifts it by one and leaves the label where it
+     is. At three it stood nineteen pixels proud, a third of its own height
+     above the bar, which reads as hovering rather than as part of it. */
+  gap: 0;
   text-decoration: none;
 }
 .snffl-app-mark-disc {
-  width: 52px;
-  height: 52px;
+  /* Four pixels off the disc buys four more of it sitting inside the bar. */
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   display: grid;
   place-items: center;
   background: radial-gradient(120% 120% at 50% 15%, #16243c 0%, #070c16 70%);
   border: 1px solid rgba(120, 206, 255, 0.35);
-  box-shadow:
-    /* The halo is the mark's own turquoise, not the dock's shadow. A five
-       pixel ring of scrim separated the disc from the bar but did it with
-       darkness, so the one lit object on the screen sat in a black hole. Lit
-       in the logo's colour it reads as backlighting: the disc glows through
-       the bar rather than being cut out of it. */
-    0 0 0 5px rgba(60, 186, 234, 0.16),
-    0 0 14px 2px rgba(76, 194, 255, 0.3),
-    0 8px 20px rgba(0, 0, 0, 0.5);
+  /* No halo and no ring. The disc is a clean circle with the weight of a real
+     object under it: a five pixel collar, whether dark or turquoise, only
+     ever read as a smudge around the edge of the mark. The glow on this bar
+     belongs to the selected tab, not to the logo. */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
-.snffl-app-mark-disc img { width: 34px; height: 34px; display: block; object-fit: contain; }
-/* On its own tab the backlight comes up rather than changing colour. */
+.snffl-app-mark-disc img { width: 32px; height: 32px; display: block; object-fit: contain; }
+/* On its own tab the rim brightens. That is the whole change: no halo. */
 .snffl-app-mark-on .snffl-app-mark-disc {
   border-color: rgba(140, 216, 255, 0.85);
-  box-shadow:
-    0 0 0 5px rgba(60, 186, 234, 0.26),
-    0 0 22px 3px rgba(76, 194, 255, 0.5),
-    0 8px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
 /* The week, set along the rim above the mark. */
 /* Set exactly as a tab label: same family, size, weight and colour, so the
    mark reads as one of the five and not as a badge with a caption. It was
    mono and upper case beside four sans, sentence case labels. */
-/* The week reads as lit from behind, in the mark's own turquoise, rather than
-   as grey text on black glass. It is the label of the one tab that glows, so
-   it should look like it belongs to it. */
+/* The week gets a plate of its own, directly under the disc.
+   As bare text it was the only label on the bar with nothing holding it: the
+   four tabs each sit in a column with an icon over them, and this one floated
+   under a circle that is a different shape from everything around it. A small
+   chip anchors it and makes it read as the mark button's own label rather
+   than as a caption that happens to be nearby. */
 .snffl-app-week {
+  padding: 2px 9px;
+  border-radius: var(--radius-pill);
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
   font-size: var(--t-label);
   font-weight: 700;
   color: var(--ink-secondary);
   white-space: nowrap;
-  text-shadow: 0 0 10px rgba(76, 194, 255, 0.3);
 }
-/* And on its own tab the backlight comes up with everything else. */
+/* On its own tab the plate lights like any other selected tab. */
 .snffl-app-mark-on .snffl-app-week {
   color: var(--ink);
-  text-shadow: 0 0 12px rgba(76, 194, 255, 0.55);
+  background: var(--tab-on);
+  border-color: var(--tab-on-line);
+  box-shadow: 0 0 12px 1px rgba(76, 194, 255, 0.2);
 }
 
 .snffl-intro {

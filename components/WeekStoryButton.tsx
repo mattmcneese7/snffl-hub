@@ -32,7 +32,12 @@ export default function WeekStoryButton({ slides }: { slides: StorySlide[] }) {
           status dot were furniture on something you either tap or scroll
           past. */}
       <button type="button" className="snffl-wstory-open" onClick={() => setOpen(true)}>
-        <span aria-hidden>&#9654;</span>
+        {/* Drawn, not typed. U+25B6 carries emoji presentation on iOS, so the
+            character turns into a colour glyph from the system font and the
+            button stops being ours. */}
+        <svg className="snffl-wstory-play" viewBox="0 0 10 12" aria-hidden focusable="false">
+          <path d="M0 0 L10 6 L0 12 Z" fill="currentColor" />
+        </svg>
         Week {week} in 90 seconds
       </button>
       {open ? <WeekStory slides={slides} onClose={() => setOpen(false)} /> : null}

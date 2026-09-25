@@ -75,7 +75,13 @@ export default function AppIntro() {
 
   useEffect(() => {
     if (phase !== 'flight') return;
-    const mark = document.getElementById('snffl-app-mark');
+    // The image inside the dock disc, not the button around it. The button is
+    // 64px and the mark inside it is 50 and lifted a few percent for optical
+    // centring, so flying to the button's box landed the mark too big and a
+    // little low: close enough to look like a mistake rather than a landing.
+    const mark =
+      document.querySelector<HTMLElement>('#snffl-app-mark img') ??
+      document.getElementById('snffl-app-mark');
     const element = logo.current;
     if (!mark || !element) {
       setPhase('done');
@@ -126,7 +132,7 @@ export default function AppIntro() {
       <img
         ref={logo}
         className={`snffl-intro-mark${phase === 'hold' ? ' snffl-intro-pulse' : ''}`}
-        src="/logo-mark-v4.png"
+        src="/logo-mark-v4-1024.png"
         alt=""
       />
     </div>

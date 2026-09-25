@@ -1862,7 +1862,12 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   text-transform: uppercase;
   cursor: pointer;
 }
-.snffl-wstory-open > [aria-hidden] { color: var(--logo-aqua); font-size: 9px; }
+.snffl-wstory-play {
+  width: 9px;
+  height: 11px;
+  flex: 0 0 auto;
+  color: var(--logo-aqua);
+}
 
 /* The viewer. It borrows the reel's shell and replaces its scroller, because
    these slides are laid out rather than filmed.
@@ -1952,6 +1957,7 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
 .snffl-wstory-mover { display: grid; gap: 1px; min-width: 0; }
 .snffl-wstory-mover strong { font-size: var(--t-h3); }
 .snffl-wstory-mover span { font-size: var(--t-small); color: var(--ink-secondary); }
+.snffl-wstory-arrow { width: 12px; height: 10px; flex: 0 0 auto; }
 .snffl-wstory-arrow.up { color: var(--win); }
 .snffl-wstory-arrow.down { color: var(--marker-ink); }
 
@@ -1989,20 +1995,33 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   from { opacity: 0; }
   to { opacity: 1; }
 }
-/* Darker behind a moving picture than behind a still: footage carries more
-   bright frames, and the numbers on top have to hold through all of them. */
+/* The scrim sits under the words rather than over the picture.
+   A flat wash across the whole stage kept the type legible by hiding the
+   football behind it, which is the one thing the slide is for. This is a
+   pool centred on the copy that fades out well before the edges, so the
+   frame reads at the corners and the numbers still hold in the middle. */
 .snffl-wstory-stage::after {
   content: '';
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    rgba(4, 7, 13, 0.82) 0%,
-    rgba(4, 7, 13, 0.62) 40%,
-    rgba(4, 7, 13, 0.88) 100%
-  );
+  background:
+    radial-gradient(
+      ellipse 78% 46% at 50% 52%,
+      rgba(4, 7, 13, 0.88) 0%,
+      rgba(4, 7, 13, 0.72) 38%,
+      rgba(4, 7, 13, 0.34) 66%,
+      transparent 84%
+    ),
+    /* Just enough at the very top and bottom to keep the chrome readable. */
+    linear-gradient(
+      180deg,
+      rgba(4, 7, 13, 0.6) 0%,
+      transparent 18%,
+      transparent 82%,
+      rgba(4, 7, 13, 0.6) 100%
+    );
 }
 
 /* The ribbon drops in from under the crawl and the column moves down to take
@@ -2148,4 +2167,17 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   .snffl-wstory-star-face,
   .snffl-wstory-shart { animation: none; }
   .snffl-gems, .snffl-stink { display: none; }
+}
+
+/* The drawn triangles. Sized where they are used, coloured by their context,
+   and vertically set on the text they sit beside rather than on its box. */
+.snffl-top-play-button,
+.snffl-clip-play,
+.snffl-reel-external-play { width: 12px; height: 15px; }
+.snffl-margin-arrow,
+.snffl-rank-arrow {
+  width: 8px;
+  height: 7px;
+  display: inline-block;
+  vertical-align: baseline;
 }

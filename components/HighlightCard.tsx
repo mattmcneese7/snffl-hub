@@ -1,5 +1,6 @@
 'use client';
 
+import { PlayMark } from './Marks';
 import type { Highlight } from '@/lib/highlights';
 import ManagerLink from './ManagerLink';
 import SleeperActionButton from './SleeperAction';
@@ -44,9 +45,7 @@ export default function HighlightCard({
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         {thumbnail(highlight) ? <img src={thumbnail(highlight)!} alt="" loading="lazy" /> : null}
-        <span className="snffl-clip-play" aria-hidden>
-          ▶
-        </span>
+        <PlayMark className="snffl-clip-play" />
       </button>
 
       <div className="snffl-clip-body">

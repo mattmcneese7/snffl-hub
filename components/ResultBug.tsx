@@ -1,3 +1,4 @@
+import { UpMark } from './Marks';
 import Link from 'next/link';
 import { teamByRoster } from '@/lib/league';
 import type { Game, GameSide } from '@/lib/types';
@@ -121,7 +122,7 @@ export default function ResultBug({ game, outlook }: { game: Game; outlook?: Bug
                 {/* Color never works alone, so a close game says so in words. */}
                 <span className="snffl-margin-chip">
                   <span>
-                    &#9650; {game.margin.toFixed(2)}
+                    <UpMark className="snffl-margin-arrow" /> {game.margin.toFixed(2)}
                     {close ? ' · CLOSE' : ''}
                   </span>
                 </span>

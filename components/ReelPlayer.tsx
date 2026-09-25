@@ -1,5 +1,6 @@
 'use client';
 
+import { PlayMark } from './Marks';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import ClipVideo from './ClipVideo';
@@ -219,9 +220,7 @@ export default function ReelPlayer({
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <span className="snffl-reel-external-play" aria-hidden>
-                    ▶
-                  </span>
+                  <PlayMark className="snffl-reel-external-play" />
                   Watch on YouTube
                 </a>
               ) : null}

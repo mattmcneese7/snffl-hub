@@ -1,14 +1,26 @@
 import type { PowerRank } from '@/lib/league';
 import ManagerLink from './ManagerLink';
+import { DownMark, UpMark } from './Marks';
 
 /** Top 3 solid, the rest outlined, movement in a fixed right column. */
 export default function PowerRankRow({ entry }: { entry: PowerRank }) {
   const { rank, movement, team, blurb } = entry;
 
-  const movementLabel =
-    movement == null || movement === 0
-      ? movement === 0 ? 'even' : 'new'
-      : `${movement > 0 ? '▲' : '▼'} ${Math.abs(movement)}`;
+  // A node rather than a string, because the arrows are drawn. Typed as
+  // characters they were emoji on iOS.
+  const moved = movement != null && movement !== 0;
+  const movementLabel = !moved ? (
+    movement === 0 ? 'even' : 'new'
+  ) : (
+    <>
+      {movement! > 0 ? (
+        <UpMark className="snffl-rank-arrow" />
+      ) : (
+        <DownMark className="snffl-rank-arrow" />
+      )}{' '}
+      {Math.abs(movement!)}
+    </>
+  );
 
   const movementClass =
     movement == null || movement === 0

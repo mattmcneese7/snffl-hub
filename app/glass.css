@@ -679,22 +679,23 @@ h3,
 .snffl-intro-curtain { position: absolute; inset: 0; background: #05070d; }
 .snffl-intro-mark {
   position: relative;
-  width: min(66vw, 40vh);
+  /* Smaller, and drawn from the 1024 asset, so it is never scaled up. At two
+     thirds of the viewport it was asking more of the artwork than the
+     artwork has. */
+  width: min(46vw, 30vh);
   height: auto;
   transform-origin: center;
   will-change: transform;
   pointer-events: none;
 }
 
-/* A thin neon edge that breathes. drop-shadow rather than a border, because
-   the mark is a droplet and a border would draw a box around it: a shadow with
-   almost no blur traces the silhouette itself, whatever shape it is.
-   
-   Two tight shadows and no third. An earlier pass added a 22px bloom, which
-   read as fog around the mark rather than as an edge on it: the further a
-   shadow spreads the less it looks drawn and the more it looks like the image
-   is leaking. The pulse now moves opacity and one small radius, so the edge
-   stays a line the whole way through. */
+/* A lit edge over a big bloom, breathing.
+   drop-shadow rather than a border, because the mark is a droplet and a
+   border would draw a box around it: a shadow traces the silhouette itself,
+   whatever shape it is. An earlier pass kept every radius tiny to stop the
+   mark looking like it was leaking, which held the edge crisp but made the
+   whole thing dim. The line is still there, at one pixel; the difference is
+   the two wide shadows under it, which is where the light comes from. */
 /* Entrance first, then the pulse, as one animation list. Two rules each
    setting `animation` meant the later one silently replaced the other, and the
    neon never ran at all. */
@@ -706,10 +707,16 @@ h3,
 @keyframes snffl-neon {
   0%,
   100% {
-    filter: drop-shadow(0 0 1px rgba(140, 216, 255, 0.85)) drop-shadow(0 0 4px rgba(76, 194, 255, 0.35));
+    filter:
+      drop-shadow(0 0 1px rgba(190, 240, 255, 0.95))
+      drop-shadow(0 0 18px rgba(90, 224, 255, 0.85))
+      drop-shadow(0 0 54px rgba(35, 178, 255, 0.6));
   }
   50% {
-    filter: drop-shadow(0 0 1.5px rgba(180, 232, 255, 1)) drop-shadow(0 0 8px rgba(76, 194, 255, 0.7));
+    filter:
+      drop-shadow(0 0 2px rgba(225, 250, 255, 1))
+      drop-shadow(0 0 34px rgba(140, 238, 255, 1))
+      drop-shadow(0 0 104px rgba(53, 214, 255, 0.85));
   }
 }
 

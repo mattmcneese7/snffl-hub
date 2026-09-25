@@ -1,5 +1,6 @@
 'use client';
 
+import { PlayMark } from './Marks';
 import { useState } from 'react';
 import type { ReelClip } from '@/lib/reel-clips';
 import ReelPlayer from './ReelPlayer';
@@ -27,9 +28,7 @@ export default function TopPlays({ clips, week }: { clips: ReelClip[]; week: num
             <span className="snffl-top-play-art">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               {clip.still ? <img src={clip.still} alt="" loading="lazy" /> : null}
-              <span className="snffl-top-play-button" aria-hidden>
-                ▶
-              </span>
+              <PlayMark className="snffl-top-play-button" />
             </span>
             <span className="snffl-top-play-title">{clip.title}</span>
             {clip.tags.length ? <span className="snffl-top-play-tags">{clip.tags.join(' · ')}</span> : null}

@@ -1,5 +1,6 @@
 'use client';
 
+import { DownMark, UpMark } from './Marks';
 import { useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { StorySlide } from '@/lib/week-story';
@@ -316,9 +317,12 @@ function Slide({ slide }: { slide: StorySlide }) {
               const up = m.to < m.from;
               return (
                 <li key={m.rosterId}>
-                  <span className={`snffl-wstory-arrow${up ? ' up' : ' down'}`} aria-hidden>
-                    {up ? '▲' : '▼'}
-                  </span>
+                  {/* Also drawn: the solid triangles are emoji on iOS too. */}
+                  {up ? (
+                    <UpMark className="snffl-wstory-arrow up" />
+                  ) : (
+                    <DownMark className="snffl-wstory-arrow down" />
+                  )}
                   <span className="snffl-wstory-mover">
                     <strong>{m.team}</strong>
                     <span>{m.manager}</span>

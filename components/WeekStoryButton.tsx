@@ -32,6 +32,7 @@ export default function WeekStoryButton({ slides }: { slides: StorySlide[] }) {
           status dot were furniture on something you either tap or scroll
           past. */}
       <button type="button" className="snffl-wstory-open" onClick={() => setOpen(true)}>
+        <span className="snffl-frost" aria-hidden />
         {/* Drawn, not typed. U+25B6 carries emoji presentation on iOS, so the
             character turns into a colour glyph from the system font and the
             button stops being ours. */}

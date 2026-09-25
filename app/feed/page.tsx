@@ -4,6 +4,8 @@ import { PageSources } from '@/components/SourceMark';
 import Chrome from '@/components/Chrome';
 import FeedStream from '@/components/FeedStream';
 import PageHead from '@/components/PageHead';
+import StoriesRail from '@/components/StoriesRail';
+import { storiesRail } from '@/lib/stories-rail';
 import { getFeedPosts } from '@/lib/feed';
 import { getHighlights, isEspnClip, isRelevantClip } from '@/lib/highlights';
 import { allPlayers, scoredWeek, teams } from '@/lib/league';
@@ -33,6 +35,7 @@ export default async function FeedPage() {
   // described in a sentence underneath the title.
   const playableCount = highlights.filter((clip) => isEspnClip(clip.id) && clip.thumbnail).length;
   const week = await scoredWeek();
+  const rail = await storiesRail(week).catch(() => ({ week, managers: [] }));
   const thisWeekCount =
     posts.filter((post) => post.week === week).length +
     highlights.filter((clip) => clip.week === week).length;
@@ -48,6 +51,12 @@ export default async function FeedPage() {
       <Chrome section="The Feed" />
       <main className="snffl-page">
         <PageHead title="The Feed" compact />
+
+        {/* The manager stories, which used to sit on Home. They are clips, and
+            this is the page about clips. */}
+        <section className="snffl-home-section">
+          <StoriesRail week={rail.week} managers={rail.managers} />
+        </section>
 
         <FeedStream
           posts={posts}

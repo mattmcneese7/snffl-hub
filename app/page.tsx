@@ -7,10 +7,7 @@ import ManagerLink from '@/components/ManagerLink';
 import ShartZone from '@/components/ShartZone';
 import { HardwareStrip } from '@/components/TrophyBits';
 import { getTrophyBoard } from '@/lib/trophies';
-import StoriesRail from '@/components/StoriesRail';
-import TopPlays from '@/components/TopPlays';
 import { firstNameOf } from '@/config/managers';
-import { toReelClip, weekCardClip } from '@/lib/reel-clips';
 import ChugReplay from '@/components/ChugReplay';
 import RagHero from '@/components/RagHero';
 import ResultBug from '@/components/ResultBug';
@@ -100,56 +97,12 @@ export default async function HomePage() {
     }));
   const firstNames = Object.fromEntries(teams.map((t) => [t.rosterId, nameOf(t.rosterId)]));
 
-  // Stories and Top Plays show only clips that play inside the site, ESPN's
-  // syndicated ones. The NFL's YouTube clips can only link out, so they stay
-  // in the Feed. The week in progress leads as soon as it has playable clips,
-  // which makes the stories live game highlights on a Sunday; otherwise the
-  // week before.
-  const fantasyIds = new Set(
-    allPlayers()
-      .filter((player) => ['QB', 'RB', 'WR', 'TE', 'K'].includes(player.position))
-      .map((player) => player.id)
-  );
-  const playableIn = async (w: number) =>
-    (await getHighlights(w, 200)).filter(
-      (clip) => isEspnClip(clip.id) && isRelevantClip(clip, (id) => fantasyIds.has(id))
-    );
-  const thisWeekClips = await playableIn(week);
-  const storyWeek = thisWeekClips.length || week === 1 ? week : week - 1;
-  const storyClips = storyWeek === week ? thisWeekClips : await playableIn(storyWeek);
   // The story is about a week that is over, so this walks back from the week
   // the league is in until it finds one with trophies handed out. Pointing it
   // at the clip driven story week meant no story at all during a live week,
   // which is precisely when somebody wants last week's.
   const storySlides = await latestWeekStory(week).catch(() => []);
   const chug = latestChug(week);
-  // The card that closes every manager's story prefers his last finished
-  // matchup, per manager. A week in progress is not a result: a card reading
-  // "beat Adam 35.30 to 18.48" off one running back is a scoreboard mid
-  // quarter dressed up as a verdict. If nothing of his is final yet, the card
-  // says who is ahead and says it is still being played.
-  const storyGames = storyWeek === week ? games : await getWeekGames(storyWeek);
-  const priorGames = storyWeek > 1 ? await getWeekGames(storyWeek - 1) : [];
-  type CardSide = { side: GameSide; opponent: GameSide; status: Game['status']; week: number };
-  const sidesOf = (list: typeof storyGames, atWeek: number) => {
-    const out = new Map<number, CardSide>();
-    for (const game of list) {
-      out.set(game.home.rosterId, { side: game.home, opponent: game.away, status: game.status, week: atWeek });
-      out.set(game.away.rosterId, { side: game.away, opponent: game.home, status: game.status, week: atWeek });
-    }
-    return out;
-  };
-  const thisWeekSides = sidesOf(storyGames, storyWeek);
-  const priorSides = sidesOf(priorGames, storyWeek - 1);
-  const cardFor = (rosterId: number): CardSide | null => {
-    const current = thisWeekSides.get(rosterId) ?? null;
-    const prior = priorSides.get(rosterId) ?? null;
-    if (current?.status === 'final') return current;
-    if (prior?.status === 'final') return prior;
-    // Nothing finished yet, so his game in progress is the honest card.
-    if (current && (current.side.points > 0 || current.opponent.points > 0)) return current;
-    return prior ?? current;
-  };
 
   // ESPN rather than the game status, which is derived from week arithmetic and
   // can read live on a week that merely has points on the board.
@@ -176,42 +129,12 @@ export default async function HomePage() {
       <Chrome section="Home" week={week} />
       <LiveRefresh live={liveNow} week={week} />
       <main className="snffl-page">
-        {/* The week's story arrives as a ribbon rather than a widget: it drops
-            in from under the crawl a couple of seconds after the page settles
-            and pushes everything below it down to make room, so it reads as
-            something that just landed rather than another row in the column. */}
+
+        {/* Both ribbons drop in a couple of seconds after the page settles and
+            push everything below them down. The Rag is the first thing on the
+            page until they land, which is the point: they read as things that
+            arrived rather than as rows that were always there. */}
         <WeekStoryButton slides={storySlides} />
-
-        {/* Manager stories: each manager's clips from the last finished week,
-            played as a vertical story. */}
-        <section className="snffl-home-section">
-          <StoriesRail
-            week={storyWeek}
-            managers={teams.map((team) => ({
-              rosterId: team.rosterId,
-              firstName: firstNameOf(team.rosterId) ?? team.manager,
-              avatarUrl: team.avatarUrl,
-              color: team.colors?.primary ?? '#5d6a86',
-              clips: (() => {
-                const name = firstNameOf(team.rosterId) ?? team.manager;
-                const reels = storyClips
-                  .filter((clip) => clip.ownerTeamId === String(team.rosterId))
-                  .map((clip) => toReelClip(clip, name));
-                const own = cardFor(team.rosterId);
-                // His week closes the story, and is the whole of it when ESPN
-                // has no clip of anybody he started.
-                return own
-                  ? [
-                      ...reels,
-                      weekCardClip(own.side, own.opponent, name, nameOf(own.opponent.rosterId), own.week, own.status),
-                    ]
-                  : reels;
-              })(),
-            }))}
-          />
-        </section>
-
-        {/* The gap under the reels, where the week's chug can be had again. */}
         {chug ? <ChugReplay week={chug.week} /> : null}
 
         <HomeWidget
@@ -231,20 +154,6 @@ export default async function HomePage() {
             )}
           />
         </HomeWidget>
-
-        {storyClips.length ? (
-          <HomeWidget title="Top Plays" href="/feed" linkLabel="All highlights">
-            <TopPlays
-              week={storyWeek}
-              clips={storyClips.slice(0, 12).map((clip) =>
-                toReelClip(
-                  clip,
-                  clip.ownerTeamId ? (firstNameOf(Number(clip.ownerTeamId)) ?? null) : 'Free agent'
-                )
-              )}
-            />
-          </HomeWidget>
-        ) : null}
 
         {feature ? (
           <HomeWidget title="Featured" href={`/matchups/${week}`} linkLabel="Full scoreboard">

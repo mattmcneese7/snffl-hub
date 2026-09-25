@@ -1839,7 +1839,13 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
 
 /* ---------- The week in 90 seconds, Checkpoint 10 ---------- */
 
+/* The same glass the dock and the crawl are made of: a frost layer with its
+   own sheen and lit rim, not a flat tint. And the widget radius rather than a
+   pill, because every other panel on the page is rounded that way and a
+   lozenge among them reads as a different kit. */
 .snffl-wstory-open {
+  position: relative;
+  isolation: isolate;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1847,14 +1853,11 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   width: 100%;
   min-height: var(--tap);
   padding: 0 var(--s-4);
-  border-radius: var(--radius-pill);
-  background: var(--tab-on);
-  border: 1px solid var(--tab-on-line);
-  box-shadow: 0 0 14px 1px rgba(30, 174, 156, 0.22);
+  border-radius: var(--radius);
+  background: transparent;
+  border: 0;
+  overflow: hidden;
   color: var(--ink);
-  /* The app's own display face, set as a label rather than as body copy. It
-     was inheriting the reading font at heading weight, which belongs to
-     neither the headings nor the controls and read as a stray. */
   font-family: var(--font-archivo);
   font-size: var(--t-small);
   font-weight: 800;
@@ -1862,6 +1865,8 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   text-transform: uppercase;
   cursor: pointer;
 }
+/* The accent is the mark and a hint of colour in the glass, not a fill. */
+.snffl-wstory-open .snffl-frost { background: var(--tab-on), var(--glass-bar); }
 .snffl-wstory-play {
   width: 9px;
   height: 11px;
@@ -2089,15 +2094,38 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
    here was a second gap stacked on the first and left the ribbon floating
    half a screen above the rail. It pulls up slightly instead, because a thin
    ribbon does not need a full section's worth of air under it. */
-.snffl-wstory-ribbon .snffl-wstory-open {
-  transform: translateY(-10px);
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+.snffl-wstory-ribbon .snffl-wstory-open,
+.snffl-wstory-ribbon .snffl-chugreplay-button {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  width: 100%;
+  min-height: var(--tap);
+  padding: 0 var(--s-4);
+  border-radius: var(--radius);
+  background: transparent;
+  border: 0;
+  overflow: hidden;
+  color: var(--tint-amber-ink);
+  font-family: var(--font-archivo);
+  font-size: var(--t-small);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
 }
+/* Amber glass: this is the beer, and the Chug Meter already owns that hue. */
+.snffl-chugreplay-button .snffl-frost { background: var(--tint-amber), var(--glass-bar); }
 .snffl-wstory-ribbon-in { margin-bottom: calc(-1 * var(--s-4)); }
-.snffl-wstory-ribbon-in .snffl-wstory-open { transform: translateY(0); }
+.snffl-wstory-ribbon-in .snffl-wstory-open,
+.snffl-wstory-ribbon-in .snffl-chugreplay-button { transform: translateY(0); }
 @media (prefers-reduced-motion: reduce) {
   .snffl-wstory-ribbon,
-  .snffl-wstory-ribbon .snffl-wstory-open { transition: none; }
+  .snffl-wstory-ribbon .snffl-wstory-open,
+  .snffl-wstory-ribbon .snffl-chugreplay-button { transition: none; }
 }
 
 /* ---------- The champ's slide ---------- */
@@ -2330,7 +2358,6 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
 /* The way back to the week's chug, in the gap under the reels. Amber rather
    than the app's turquoise: this is the beer, and the Chug Meter and the
    Shartzone already own that colour. */
-.snffl-chugreplay { display: grid; }
 .snffl-chugreplay-button {
   display: inline-flex;
   align-items: center;

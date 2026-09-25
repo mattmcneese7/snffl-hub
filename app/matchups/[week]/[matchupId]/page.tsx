@@ -7,7 +7,6 @@ import MatchupLineup from '@/components/MatchupLineup';
 import NflSlate from '@/components/NflSlate';
 import { SleeperActions } from '@/components/SleeperAction';
 import { SourceStrip } from '@/components/SourceMark';
-import PageHead from '@/components/PageHead';
 import { Figure } from '@/components/Stat';
 import { toFeature } from '@/lib/feature';
 import { getWeekGames } from '@/lib/league';
@@ -50,23 +49,26 @@ export default async function MatchupDetail({
 
   return (
     <>
-      <Chrome section="Matchups" sub={`Week ${week}`} week={week} />
+      <Chrome section="Scoreboard" sub={`Week ${week}`} week={week} />
       <LiveRefresh live={ctx.nfl.some((g) => g.state === 'in')} week={week} />
       <main className="snffl-page">
         <Link className="snffl-back" href={`/matchups/${week}`}>
           <span aria-hidden>&lsaquo;</span> Week {week}
         </Link>
 
-        <PageHead
-          title={`${nameOf(live.away.rosterId, live.away.manager)} vs ${nameOf(
-            live.home.rosterId,
-            live.home.manager
-          )}`}
-        />
+        {/* The scoreboard below is this page's title: both teams, both
+            managers, both records, both scores. Printing their names again
+            above it in display type said nothing the card does not, so the
+            heading stays for anyone listening to the page and stops taking a
+            third of the screen from anyone looking at it. */}
+        <h1 className="snffl-visually-hidden">
+          {nameOf(live.away.rosterId, live.away.manager)} vs{' '}
+          {nameOf(live.home.rosterId, live.home.manager)}
+        </h1>
 
         <div className="snffl-matchup-detail">
           <div className="snffl-matchup-detail-main">
-            <FeatureMatchup data={toFeature(game, `Week ${week}`, live)} size="lg" link={false} />
+            <FeatureMatchup data={toFeature(game, '', live)} size="lg" link={false} />
             {/* Opens whoever taps it on their own team in Sleeper: Sleeper
                 knows who is logged in, the site does not need to. */}
             {game.status !== 'final' ? <SleeperActions actions={['lineup', 'matchup']} /> : null}

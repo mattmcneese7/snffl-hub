@@ -226,7 +226,7 @@ export default async function HomePage() {
 
 
         {feature ? (
-          <HomeWidget title="Featured" href={`/matchups/${week}`} linkLabel="All matchups">
+          <HomeWidget title="Featured" href={`/matchups/${week}`} linkLabel="Full scoreboard">
             <FeatureMatchup
               data={toFeature(feature, 'Closest Game', models.get(feature.matchupId))}
             />
@@ -249,7 +249,7 @@ export default async function HomePage() {
           <div>
             <HomeWidget title="Your Game">
               <YourMatchup
-                options={games.map((g) => toFeature(g, 'Your Matchup', models.get(g.matchupId)))}
+                options={games.map((g) => toFeature(g, '', models.get(g.matchupId)))}
                 teams={teams.map((t) => ({
                   rosterId: t.rosterId,
                   teamName: t.teamName,

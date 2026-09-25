@@ -284,7 +284,7 @@
 
 /* ---------- Floating tab bar ---------- */
 
-body { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
+body { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
 
 /* The dock is a scrim, not a card. The page runs under it and fades out into
    it, so navigation belongs to the screen rather than hovering over it as a
@@ -339,12 +339,18 @@ body { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
   left: 50%;
   top: 50%;
   z-index: -1;
-  width: calc(100% - 8px);
+  width: calc(100% - 4px);
   height: calc(100% - 10px);
   transform: translate(-50%, -50%);
-  border-radius: var(--radius-pill);
-  background: var(--glass);
-  border: 1px solid var(--glass-line);
+  /* Concentric with the bar, not a stadium sitting inside it. The dock is
+     rounded 22px and this sits about five pixels in from that edge, so its
+     own corner has to be 22 minus that gap or the two curves fight: a pill
+     radius on a 58px tall highlight draws a 29px corner, rounder than the
+     bar containing it, which is what made the first and last tab look stuck
+     on rather than cut out of the glass. */
+  border-radius: 16px;
+  background: var(--tab-on);
+  border: 1px solid var(--tab-on-line);
 }
 .snffl-tab-active { color: var(--ink); }
 .snffl-tab { isolation: isolate; }

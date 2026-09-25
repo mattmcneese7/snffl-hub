@@ -12,6 +12,7 @@ export type BugOutlook = {
 import { LiveTeamPoints } from './LiveScores';
 import ManagerLink from './ManagerLink';
 import TeamAvatar from './TeamAvatar';
+import WinBar from './WinBar';
 
 /**
  * WIN or LOSE, inline to the left of the team's avatar.
@@ -94,18 +95,23 @@ export default function ResultBug({ game, outlook }: { game: Game; outlook?: Bug
           <Side side={game.away} game={game} projected={outlook?.awayProjected} />
           <Side side={game.home} game={game} projected={outlook?.homeProjected} />
           {outlook && game.status !== 'final' ? (
-            <div
-              className="snffl-bug-prob"
-              role="img"
-              aria-label={`Win probability ${Math.round(outlook.awayWin * 100)} to ${Math.round(outlook.homeWin * 100)}`}
-            >
-              <span>{Math.round(outlook.awayWin * 100)}%</span>
-              <span className="snffl-bug-prob-bar">
-                <i style={{ width: `${outlook.awayWin * 100}%` }} />
-                <i style={{ width: `${outlook.homeWin * 100}%` }} />
-              </span>
-              <span>{Math.round(outlook.homeWin * 100)}%</span>
-            </div>
+            // The same bar the matchup page draws, in the same two team
+            // colours. This row used to paint itself blue against red whoever
+            // was playing, so the colour said nothing and contradicted the
+            // card you reached by tapping it.
+            <WinBar
+              compact
+              away={{
+                pct: outlook.awayWin,
+                primary: teamByRoster(game.away.rosterId)?.colors?.primary ?? '#72809f',
+                name: teamByRoster(game.away.rosterId)?.teamName ?? game.away.team,
+              }}
+              home={{
+                pct: outlook.homeWin,
+                primary: teamByRoster(game.home.rosterId)?.colors?.primary ?? '#72809f',
+                name: teamByRoster(game.home.rosterId)?.teamName ?? game.home.team,
+              }}
+            />
           ) : null}
           <div className="snffl-bug-meta">
             {game.status === 'pending' ? (

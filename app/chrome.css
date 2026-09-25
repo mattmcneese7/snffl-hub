@@ -21,7 +21,11 @@
   --strip-h: 28px;
   /* Two bands of 28. Read by the body padding and the ticker's own offset. */
   --ticker-stack-h: 56px;
-  --tabbar-h: 68px;
+  /* Shorter, so the mark stands out of the bar instead of mostly in it. The
+     tabs need about 56px for a 22px icon over its label, so this is close to
+     the floor; the eight pixels come off the dead glass above the row, which
+     is what the disc was competing with. */
+  --tabbar-h: 60px;
 }
 
 
@@ -278,12 +282,21 @@ body { padding-bottom: 76px; }
    stretched the row to 96 pixels around 60 pixels of tabs, and the disc
    floated somewhere inside that dead space. */
 .snffl-tabbar {
-  --tabbar-h: 68px;
+  /* Height comes from the one declaration in :root. This used to redeclare it
+     here at the same value, so the root copy was dead and changing it did
+     nothing. */
   position: relative;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  /* The middle column only has to keep the tabs clear of the mark, which is
+     absolutely positioned and centred on the bar regardless. Giving it a
+     full fifth of the width spent seventy pixels on a fifty two pixel disc
+     while Scoreboard, the longest label, had four pixels either side of it.
+     The reclaimed width goes to the four real tabs. */
+  grid-template-columns: repeat(2, 1fr) 60px repeat(2, 1fr);
   align-items: center;
   height: var(--tabbar-h);
+  /* And the end tabs stop short of the bar's rounded corners. */
+  padding: 0 8px;
   background: transparent;
 }
 .snffl-tabbar > :nth-child(1) { grid-column: 1; }
@@ -313,6 +326,22 @@ body { padding-bottom: 76px; }
   transform: skewX(calc(-1 * var(--slant)));
 }
 .snffl-tab-icon { width: 22px; height: 22px; display: block; }
+
+/* Two helmets meeting in the middle. The second is mirrored to face the
+   first and they overlap where they clash, so the pair reads as one mark at
+   22px rather than as two small icons side by side. */
+.snffl-clash {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Two classes, to beat .snffl-tab-icon's own 22px box. The pair needs to be
+   wider than one icon or the helmets get crushed into a single slot and read
+   as one small smudge, which is exactly what a 22px square did to them. */
+.snffl-clash.snffl-tab-icon { width: auto; height: 22px; }
+.snffl-clash svg { width: 22px; height: 22px; display: block; }
+.snffl-clash svg:first-child { margin-right: -5px; }
+.snffl-clash-away { transform: scaleX(-1); }
 
 /* ---------- Page shell ---------- */
 

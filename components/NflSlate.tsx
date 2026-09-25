@@ -1,5 +1,6 @@
 import { formatMoneyline, impliedTeamTotal, type GameLines, type NflGame, type NflSide } from '@/lib/gameday';
 import SourceMark from './SourceMark';
+import WinBar from './WinBar';
 
 /**
  * The NFL week as a board of games: logos, records, score or kickoff, the
@@ -95,19 +96,25 @@ function GameCard({
       <TeamRow side={game.home} game={game} lines={lines} home winning={homeScore > awayScore} />
 
       {awayWin != null && game.state !== 'post' ? (
-        <div
-          className="snffl-slate-prob"
-          role="img"
-          aria-label={`${game.away.abbr} ${Math.round(awayWin * 100)} percent, ${game.home.abbr} ${Math.round((1 - awayWin) * 100)} percent`}
-        >
-          <span className="snffl-slate-prob-bar">
-            <i style={{ width: `${awayWin * 100}%` }} />
-            <i style={{ width: `${(1 - awayWin) * 100}%` }} />
-          </span>
-          <span className="snffl-slate-prob-legend">
-            <span>{Math.round(awayWin * 100)}%</span>
-            <span className="snffl-label">{game.state === 'in' ? 'Live win prob' : 'Implied'}</span>
-            <span>{Math.round((1 - awayWin) * 100)}%</span>
+        <div className="snffl-slate-prob">
+          {/* ESPN gives each club its primary colour, so an NFL game gets the
+              same treatment a fantasy one does instead of a grey bar against a
+              blue one. */}
+          <WinBar
+            compact
+            away={{
+              pct: awayWin,
+              primary: game.away.color ?? 'var(--muted)',
+              name: game.away.abbr,
+            }}
+            home={{
+              pct: 1 - awayWin,
+              primary: game.home.color ?? 'var(--ink-secondary)',
+              name: game.home.abbr,
+            }}
+          />
+          <span className="snffl-slate-prob-caption snffl-label">
+            {game.state === 'in' ? 'Live win prob' : 'Implied'}
           </span>
         </div>
       ) : null}

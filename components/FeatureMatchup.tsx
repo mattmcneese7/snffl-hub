@@ -130,30 +130,41 @@ export default function FeatureMatchup({
   size?: 'md' | 'lg';
   link?: boolean;
 }) {
-  const { away, home, label, status, margin, week, matchupId } = data;
-  const statusText = status === 'pending' ? 'Not started' : status === 'live' ? 'Live' : 'Final';
+  const { away, home, label, status, week, matchupId } = data;
   const awayLead = status !== 'pending' && away.points > home.points;
   const homeLead = status !== 'pending' && home.points > away.points;
   const hasModel = away.winProb != null && home.winProb != null;
 
   const body = (
     <>
-      <div className="snffl-board-top">
-        <span className="snffl-label">
-          {label}
-          {status === 'live' ? null : ` · ${statusText}`}
-          {status === 'pending' ? '' : ` · Margin ${margin.toFixed(2)}`}
-        </span>
-        {status === 'live' ? (
-          <span className="snffl-live-pill">
-            <span className="snffl-live-pill-dot" aria-hidden />
-            LIVE
-          </span>
-        ) : null}
-      </div>
+      {/* The header says why this card is here and stops. It used to append the
+          status and then the margin: the status was already a pill an inch to
+          the right, and the margin is the difference between two numbers set
+          in the largest type on the screen. An empty label drops the row
+          entirely, for the cards that sit directly under a section heading
+          saying the same words. */}
+      {label ? (
+        <div className="snffl-board-top">
+          <span className="snffl-label">{label}</span>
+        </div>
+      ) : null}
 
       <div className="snffl-board-sides">
         <Side side={away} align="left" leading={awayLead} status={status} week={week} />
+        {/* Where a scoreboard keeps the clock. Floating it off to the right of
+            the header left it attached to nothing. */}
+        <span className={`snffl-board-mid snffl-board-mid-${status}`}>
+          {status === 'live' ? (
+            <>
+              <span className="snffl-live-pill-dot" aria-hidden />
+              LIVE
+            </>
+          ) : status === 'final' ? (
+            'FINAL'
+          ) : (
+            'VS'
+          )}
+        </span>
         <Side side={home} align="right" leading={homeLead} status={status} week={week} />
       </div>
 

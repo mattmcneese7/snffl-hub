@@ -9,6 +9,7 @@ import {
   MonitorPlay,
   NewspaperClipping,
   Strategy,
+  type IconWeight,
 } from '@phosphor-icons/react';
 import SnfflWordmark from './SnfflWordmark';
 
@@ -24,9 +25,30 @@ type SiteChromeProps = {
   nflTicker?: TickerItem[];
 };
 
+/**
+ * Two helmets meeting, for the Scoreboard.
+ *
+ * Built from the same Phosphor helmet the tab already used rather than drawn
+ * by hand, so it carries the set's own weights and corners: one helmet facing
+ * right, one mirrored to face it, overlapping where they meet. A single
+ * helmet said football; two of them say a game between two teams, which is
+ * what the tab opens.
+ */
+function HelmetClash({ weight, className }: { weight?: IconWeight; className?: string }) {
+  return (
+    <span className={`snffl-clash${className ? ` ${className}` : ''}`} aria-hidden>
+      <FootballHelmet weight={weight} />
+      <FootballHelmet weight={weight} className="snffl-clash-away" />
+    </span>
+  );
+}
+
+/** What a tab needs of an icon, which both Phosphor's and ours satisfy. */
+type TabIcon = (props: { weight?: IconWeight; className?: string }) => React.ReactNode;
+
 /* Four labelled tabs, two either side of the mark, which is Home. */
-const TABS = [
-  { label: 'Matchups', href: '/matchups', Icon: FootballHelmet },
+const TABS: { label: string; href: string; Icon: TabIcon }[] = [
+  { label: 'Scoreboard', href: '/matchups', Icon: HelmetClash },
   { label: 'Feed', href: '/feed', Icon: MonitorPlay },
   { label: 'The Rag', href: '/rag', Icon: NewspaperClipping },
   { label: 'More', href: '/more', Icon: Strategy },
@@ -36,7 +58,7 @@ function Tab({
   tab,
   pathname,
 }: {
-  tab: { label: string; href: string; Icon: typeof Football };
+  tab: { label: string; href: string; Icon: TabIcon };
   pathname: string;
 }) {
   const active = tab.href === '/' ? pathname === '/' : pathname.startsWith(tab.href);
@@ -49,7 +71,10 @@ function Tab({
 }
 
 /* The desktop bar still names every destination, Home included. */
-const DESKTOP_TABS = [{ label: 'Home', href: '/', Icon: Football }, ...TABS];
+const DESKTOP_TABS: { label: string; href: string; Icon: TabIcon }[] = [
+  { label: 'Home', href: '/', Icon: Football },
+  ...TABS,
+];
 
 // The header shrinks on scroll: wordmark 160px down to about 92px.
 function useScrolled(threshold = 24) {

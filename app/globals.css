@@ -117,6 +117,14 @@
 
   /* Brand, never used for status */
   --logo-red: #e3182d;
+  /* The mark's own turquoise, sampled off the logo rather than guessed: the
+     pale highlight on the droplet and the mid tone under it. */
+  --logo-aqua: #96e4f6;
+  --logo-aqua-deep: #3cbaea;
+  /* The active tab, lit in the logo's colour instead of plain white glass. */
+  --tab-on: linear-gradient(135deg, rgba(150, 228, 246, 0.22) 0%, rgba(60, 186, 234, 0.1) 100%);
+  --tab-on-line: rgba(150, 228, 246, 0.42);
+
   --water-light: #c9eeff;
   --water-mid: #5bb6f2;
   --water-deep: #1f74c9;

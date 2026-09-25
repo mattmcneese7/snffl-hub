@@ -150,9 +150,34 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
 
 .snffl-board-sides {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  /* Three columns, because the middle one is the clock. */
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   gap: 12px;
 }
+/* The status, where a scoreboard puts it: between the two sides, level with
+   the scores rather than aligned to the top of the card. */
+.snffl-board-mid {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--glass-line);
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
+  font: 700 10px/1 var(--mono);
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  color: var(--ink-secondary);
+}
+.snffl-board-mid-live {
+  background: var(--tint-red);
+  border-color: var(--tint-red-line);
+  color: var(--tint-red-ink);
+}
+.snffl-board-mid-final { color: var(--ink); }
 .snffl-board-side {
   display: grid;
   /* Name block on top, score and projection pinned to the bottom, so both
@@ -672,17 +697,8 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
 .snffl-slate-tt { color: var(--ink-secondary); }
 
 .snffl-slate-prob { display: grid; gap: 4px; }
-.snffl-slate-prob-bar { display: flex; height: 6px; border-radius: var(--radius-pill); overflow: hidden; background: var(--line); }
-.snffl-slate-prob-bar i:first-child { background: var(--ink-secondary); }
-.snffl-slate-prob-bar i:last-child { background: var(--water-deep); }
-.snffl-slate-prob-legend {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font: 700 10px/1 var(--mono);
-  font-variant-numeric: tabular-nums;
-}
-.snffl-slate-prob-legend .snffl-label { font-size: 8.5px; }
+.snffl-slate-prob-caption { text-align: center; }
+
 
 .snffl-slate-foot {
   display: flex;
@@ -1607,3 +1623,15 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
 .snffl-winbar-fill { display: block; height: 100%; transition: width 0.4s ease; }
 /* A hairline where the two colours meet, so neither bleeds into the other. */
 .snffl-winbar-fill-right { box-shadow: inset 1px 0 0 rgba(0, 0, 0, 0.45); }
+
+/* The list size: percentages either side of the bar on one line. */
+.snffl-winbar-compact {
+  grid-template-columns: 30px minmax(0, 1fr) 30px;
+  align-items: center;
+  gap: var(--s-2);
+  font: 700 10px/1 var(--mono);
+  color: var(--ink-secondary);
+}
+.snffl-winbar-compact { display: grid; }
+.snffl-winbar-compact > b:last-of-type { text-align: right; }
+.snffl-winbar-compact .snffl-winbar-track { height: 6px; background: var(--line); }

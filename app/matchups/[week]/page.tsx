@@ -51,10 +51,10 @@ export default async function WeekPage({ params }: { params: Promise<{ week: str
 
   return (
     <>
-      <Chrome section="Matchups" week={week} />
+      <Chrome section="Scoreboard" week={week} />
       <LiveRefresh live={live} week={week} />
       <main className="snffl-page">
-        <PageHead title="Matchups" compact />
+        <PageHead title="Scoreboard" compact />
 
         <section>
           <WeekSelector active={week} hrefFor={(w) => `/matchups/${w}`} />
@@ -69,7 +69,7 @@ export default async function WeekPage({ params }: { params: Promise<{ week: str
             <span className="snffl-block-heading-link">Week {week}</span>
           </div>
           <YourMatchup
-            options={games.map((game) => toFeature(game, 'Your game', models.get(game.matchupId)))}
+            options={games.map((game) => toFeature(game, '', models.get(game.matchupId)))}
             teams={teams.map((team) => ({
               rosterId: team.rosterId,
               teamName: team.teamName,

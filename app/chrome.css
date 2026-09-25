@@ -420,7 +420,7 @@ body { padding-bottom: 76px; }
     gap: 24px;
     height: 62px;
     padding: 0 26px;
-    background: var(--card);
+    background: var(--panel);
     border-bottom: 1px solid var(--line);
   }
   .snffl-desktop-nav .snffl-wordmark-svg { width: 132px; margin: 0; }

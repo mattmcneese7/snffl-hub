@@ -45,33 +45,33 @@ const ratio = (a, b) => {
 // [foreground token, background token, minimum, label]
 const PAIRS = [
   ['ink', 'bg', 4.5, 'body text on background'],
-  ['ink', 'card', 4.5, 'body text on card'],
+  ['ink', 'panel', 4.5, 'body text on panel'],
   ['ink', 'surface', 4.5, 'body text on surface'],
   ['ink-secondary', 'bg', 4.5, 'secondary text on background'],
-  ['ink-secondary', 'card', 4.5, 'secondary text on card'],
+  ['ink-secondary', 'panel', 4.5, 'secondary text on panel'],
   ['ink-secondary', 'surface', 4.5, 'secondary text on surface'],
   ['link', 'bg', 4.5, 'link on background'],
-  ['link', 'card', 4.5, 'link on card'],
-  ['good', 'card', 3, 'good score on card'],
-  ['bad', 'card', 3, 'bad score on card'],
-  ['live', 'card', 3, 'live score on card'],
-  ['pending', 'card', 3, 'pending state on card'],
-  ['muted', 'card', 3, 'muted bar on card'],
+  ['link', 'panel', 4.5, 'link on panel'],
+  ['good', 'panel', 3, 'good score on panel'],
+  ['bad', 'panel', 3, 'bad score on panel'],
+  ['live', 'panel', 3, 'live score on panel'],
+  ['pending', 'panel', 3, 'pending state on panel'],
+  ['muted', 'panel', 3, 'muted bar on panel'],
   ['good', 'bg', 3, 'good score on background'],
   ['bad', 'bg', 3, 'bad score on background'],
   // --marker-red carries the caret at 22px bold and marker shapes, so 3:1.
   ['marker-red', 'bg', 3, 'marker caret on background'],
-  ['marker-red', 'card', 3, 'marker caret on card'],
+  ['marker-red', 'panel', 3, 'marker caret on panel'],
   // The scribble is 18px at normal weight, which is small text, not large.
   ['marker-ink', 'bg', 4.5, 'marker scribble on background'],
-  ['marker-ink', 'card', 4.5, 'marker scribble on card'],
+  ['marker-ink', 'panel', 4.5, 'marker scribble on panel'],
   // The LIVE label is 9px, so it is small text and needs the higher floor.
-  ['marker-red', 'card', 4.5, 'LIVE badge on card'],
-  ['rag-category', 'card', 4.5, 'Rag category label on card'],
+  ['marker-red', 'panel', 4.5, 'LIVE badge on panel'],
+  ['rag-category', 'panel', 4.5, 'Rag category label on panel'],
   ['rag-category', 'bg', 4.5, 'Rag category label on background'],
   ['on-chip', 'logo-red', 4.5, 'THE tag on the masthead'],
   ['bg', 'ink', 4.5, 'knocked out masthead type on ink'],
-  ['beer-dark', 'card', 3, 'beer glass outline on card'],
+  ['beer-dark', 'panel', 3, 'beer glass outline on panel'],
   ['beer-dark', 'surface', 3, 'beer glass outline on surface'],
   ['on-chip', 'good-chip', 4.5, 'white on good chip'],
   ['on-chip', 'bad-chip', 4.5, 'white on bad chip'],
@@ -97,17 +97,17 @@ const PAIRS = [
   // The NFL score column's live label is 11px, and a live row sits on
   // --surface while the rest sit on --card, so both backgrounds are checked.
   ['marker-ink', 'surface', 4.5, 'NFL live label on a live row'],
-  ['marker-ink', 'card', 4.5, 'NFL live label on a card row'],
+  ['marker-ink', 'panel', 4.5, 'NFL live label on a card row'],
   // Night Glass, Checkpoint 12a.
-  ['ink', 'card-strong', 4.5, 'text on the strong glass of the chrome'],
-  ['ink-secondary', 'card-strong', 4.5, 'secondary text on the chrome'],
-  ['win', 'card', 4.5, 'winning score and win probability on glass'],
+  ['ink', 'panel', 4.5, 'text on the strong glass of the chrome'],
+  ['ink-secondary', 'panel', 4.5, 'secondary text on the chrome'],
+  ['win', 'panel', 4.5, 'winning score and win probability on glass'],
   ['win', 'surface', 4.5, 'winning score on an inner fill'],
   ['link', 'surface', 4.5, 'link on an inner fill'],
   ['muted', 'bg', 3, 'muted rule on the ground'],
-  ['bad-chip', 'card', 3, 'loss chip edge on glass'],
-  ['good-chip', 'card', 3, 'win chip edge on glass'],
-  ['marker-ink', 'card-strong', 4.5, 'LIVE pill label'],
+  ['bad-chip', 'panel', 3, 'loss chip edge on glass'],
+  ['good-chip', 'panel', 3, 'win chip edge on glass'],
+  ['marker-ink', 'panel', 4.5, 'LIVE pill label'],
   ['ink-secondary', 'surface', 4.5, 'projection under a player score'],
 ];
 
@@ -118,7 +118,7 @@ let failures = 0;
 // its peak, and the worst of the four is the one that has to pass. Cards are
 // composited onto that ground, and inner fills (--surface) onto the card, which
 // is the order they actually stack in on the page.
-const LAYERED_ON_CARD = new Set(['surface']);
+const LAYERED_ON_PANEL = new Set(['surface']);
 function groundsFor(tokens) {
   const base = parse(tokens.bg);
   const out = [{ name: 'ground', rgb: base.slice(0, 3) }];
@@ -130,8 +130,8 @@ function groundsFor(tokens) {
 function flatten(tokens, key, ground) {
   const raw = parse(tokens[key]);
   if (key === 'bg') return ground;
-  if (LAYERED_ON_CARD.has(key)) {
-    const card = flatten(tokens, 'card', ground);
+  if (LAYERED_ON_PANEL.has(key)) {
+    const card = flatten(tokens, 'panel', ground);
     return raw[3] < 1 ? over(raw, card) : raw.slice(0, 3);
   }
   return raw[3] < 1 ? over(raw, ground) : raw.slice(0, 3);

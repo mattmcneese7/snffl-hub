@@ -49,13 +49,13 @@ a.snffl-source:hover .snffl-source-text strong { text-decoration: underline; }
   border-radius: var(--radius-xs);
 }
 .snffl-source-tile img { width: 12px; height: auto; }
-.snffl-source-tile-ds { background: #0b1a2e; }
+.snffl-source-tile-ds { background: #0e2e3c; }
 /* Our own mark gets the same dark tile DraftSharks sits on, so the row reads
    as one set of credits rather than one logo and one badge. The mark is
    drawn a touch larger than the others because it is a drop on a square
    canvas: at the shared 12px its silhouette is only nine pixels tall and it
    disappears next to a full bleed logo. */
-.snffl-source-tile-snffl { background: #0b1a2e; }
+.snffl-source-tile-snffl { background: #0e2e3c; }
 .snffl-source-tile-snffl img { width: 15px; }
 
 /* ---------- Live pill ---------- */
@@ -67,7 +67,7 @@ a.snffl-source:hover .snffl-source-text strong { text-decoration: underline; }
   padding: 5px 10px;
   border-radius: var(--radius-pill);
   border: 1px solid var(--line);
-  background: var(--card-strong);
+  background: var(--panel);
   color: var(--marker-ink);
   font: 700 10px/1 var(--mono);
   letter-spacing: 0.12em;
@@ -341,7 +341,7 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   background: var(--surface);
   border: 1px solid var(--line);
 }
-.snffl-mu-face > img.snffl-mu-face-logo { object-fit: contain; padding: 6px; background: var(--card-strong); }
+.snffl-mu-face > img.snffl-mu-face-logo { object-fit: contain; padding: 6px; background: var(--panel); }
 .snffl-mu-badge {
   position: absolute;
   right: -5px;
@@ -350,7 +350,7 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   height: 20px;
   object-fit: contain;
   border-radius: 50%;
-  background: var(--card-strong);
+  background: var(--panel);
   border: 1px solid var(--line);
   padding: 2px;
 }
@@ -663,7 +663,7 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   gap: 8px;
   padding: 12px;
   border-radius: var(--radius);
-  background: var(--card);
+  background: var(--panel);
   border: 1px solid var(--line);
   box-shadow: inset 0 1px 0 var(--glass-shine);
 }
@@ -777,7 +777,7 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   object-fit: contain;
   padding: 2px;
   border-radius: 50%;
-  background: var(--card-strong);
+  background: var(--panel);
   border: 1px solid var(--line);
 }
 
@@ -808,7 +808,7 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   padding: 0 14px 0 6px;
   border-radius: var(--radius-pill);
   border: 1px solid var(--glass-edge);
-  background: var(--card-strong);
+  background: var(--panel);
   color: var(--ink);
   font-size: var(--t-body);
   font-weight: 800;
@@ -902,7 +902,7 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   max-width: min(1100px, calc((100dvh - 260px) * 16 / 9));
   margin: 0 auto;
   aspect-ratio: 16 / 9;
-  background: #0b0f18;
+  background: #0e2428;
   overflow: hidden;
 }
 .snffl-reel-frame iframe,
@@ -1060,7 +1060,7 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
 .snffl-story-ring-live {
   border-color: transparent;
   background:
-    linear-gradient(var(--card), var(--card)) padding-box,
+    linear-gradient(var(--panel), var(--panel)) padding-box,
     conic-gradient(from 200deg, var(--water-mid), var(--logo-red), var(--beer-light), var(--water-mid)) border-box;
   border: 3px solid transparent;
 }
@@ -1085,7 +1085,7 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   padding: 0 0 12px;
   border-radius: var(--radius);
   border: 1px solid var(--glass-edge);
-  background: var(--card);
+  background: var(--panel);
   box-shadow: inset 0 1px 0 var(--glass-shine), var(--shadow);
   color: var(--ink);
   text-align: left;
@@ -1271,7 +1271,7 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   text-align: center;
   border-radius: var(--radius);
   border: 1px solid var(--glass-edge);
-  background: var(--card);
+  background: var(--panel);
   box-shadow: inset 0 1px 0 var(--glass-shine), var(--shadow);
 }
 .snffl-hardware-name {
@@ -1304,7 +1304,7 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   text-align: center;
   border-radius: var(--radius);
   border: 1px solid var(--glass-edge);
-  background: var(--card);
+  background: var(--panel);
 }
 .snffl-trophy-slot-art { position: relative; }
 .snffl-trophy-slot-count {
@@ -1456,7 +1456,7 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
 .snffl-reel-frame-card {
   aspect-ratio: 9 / 16;
   max-width: min(460px, calc((100dvh - 240px) * 9 / 16));
-  background: linear-gradient(170deg, #121a2b 0%, #0b0f18 62%, #14100b 100%);
+  background: linear-gradient(170deg, #142e3a 0%, #0e2428 62%, #14100b 100%);
   border: 1px solid rgba(255, 255, 255, 0.14);
 }
 .snffl-story-card {
@@ -1759,9 +1759,9 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(8, 13, 24, 0.68) 0%,
-    rgba(8, 13, 24, 0.82) 42%,
-    rgba(8, 13, 24, 0.95) 100%
+    rgba(11, 34, 40, 0.68) 0%,
+    rgba(11, 34, 40, 0.82) 42%,
+    rgba(11, 34, 40, 0.95) 100%
   );
 }
 .snffl-nflg-venue {
@@ -2358,7 +2358,7 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   border-radius: var(--radius-pill);
   background: var(--logo-aqua);
   border: 0;
-  color: #06121a;
+  color: #0a262a;
   font-family: var(--font-archivo);
   font-size: var(--t-small);
   font-weight: 800;

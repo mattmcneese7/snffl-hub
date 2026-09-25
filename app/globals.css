@@ -50,10 +50,7 @@
      ground, which is a fixed gradient that never moves, so blurring it would
      cost a phone real frames to arrive at the same smooth gradient. Blur is
      for the chrome, where the page really does scroll underneath. */
-  --panel: rgba(44, 96, 106, 0.32);
-  --panel-solid: #112933;
-  --panel-raised: #16303e;
-  --panel-sunken: #0d252c;
+  --panel: rgba(10, 26, 31, 0.52);
   /* A panel's own rim and the light along its top edge. Quieter than the
      chrome's, because a page holds many panels and one dock. */
   --panel-line: rgba(255, 255, 255, 0.08);
@@ -86,12 +83,10 @@
      has to survive. A third of the backdrop comes through. */
   /* The menu bar's own glass: a defined surface rather than a wash, so it
      carries slightly more tint than the crawl does. */
-  --glass-bar: rgba(13, 19, 32, 0.72);
-  --scrim: rgba(8, 13, 24, 0.68);
-  --scrim-soft: rgba(8, 13, 24, 0.42);
+  --glass-bar: rgba(16, 39, 48, 0.72);
+  --scrim: rgba(11, 34, 40, 0.68);
+  --scrim-soft: rgba(11, 34, 40, 0.42);
 
-  --card: rgba(16, 22, 36, 0.76);
-  --card-strong: rgba(20, 28, 46, 0.9);
   /* Inner fills: score boxes, table heads. Laid over a card, not the ground. */
   --surface: rgba(255, 255, 255, 0.06);
   --ink: #f2f5fa;
@@ -106,9 +101,9 @@
      into a patch bright enough to drop the won and lost colours below 3:1 on
      it. Status colours are not brand colours and do not get retuned to suit a
      background, so the redundant light gave way instead. */
-  --glow-a: rgba(30, 174, 156, 0.18);
+  --glow-a: rgba(30, 174, 156, 0.12);
   --glow-b: rgba(227, 24, 45, 0.26);
-  --glow-c: rgba(0, 90, 180, 0.42);
+  --glow-c: rgba(0, 90, 180, 0.22);
 
   /* Formerly theme-aware, now simply the values. */
   --shart: #c4946e;
@@ -164,11 +159,11 @@
   --water-abyss: var(--logo-blue);
   --red-deep: #9f0e1f;
   --beer-light: #f7c04a;
-  --beer-dark: #b85f10;
+  --beer-dark: #c0712a;
   --beer-foam: #fff3d6;
   /* Ticker capsules stay dark in both themes, so their text is fixed. */
-  --ticker-band-a: #0c1322;
-  --ticker-band-b: #080d18;
+  --ticker-band-a: #0f2732;
+  --ticker-band-b: #0b2228;
   --ticker-ink: #f2f5fa;
   --ticker-ink-secondary: #aab4c6;
   --ticker-good: #4cd08a;

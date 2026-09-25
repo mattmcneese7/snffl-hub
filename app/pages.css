@@ -3,7 +3,7 @@
    manager-colors.css. Class names stay long and specific on purpose. */
 
 .snffl-card {
-  background: var(--card);
+  background: var(--panel);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   overflow: hidden;
@@ -210,7 +210,7 @@
   min-width: 0;
   min-height: var(--tap);
   padding: 0 10px;
-  background: var(--card);
+  background: var(--panel);
   color: var(--ink);
   border: 1px solid var(--line);
   font: inherit;
@@ -241,7 +241,7 @@
   margin-top: 10px;
   width: 100%;
   min-height: var(--tap);
-  background: var(--card);
+  background: var(--panel);
   color: var(--ink);
   border: 1px solid var(--line);
   font: inherit;
@@ -258,7 +258,7 @@
   width: 100%;
   min-width: 0;
   padding: 0 10px;
-  background: var(--card);
+  background: var(--panel);
   color: var(--ink);
   border: 1px solid var(--line);
   font: inherit;
@@ -544,7 +544,7 @@
 
 .snffl-performer-card {
   flex: 0 0 116px;
-  background: var(--card);
+  background: var(--panel);
   border: 1px solid var(--line);
   padding: 10px;
   display: grid;
@@ -576,7 +576,7 @@
   display: grid;
   place-items: center;
   padding: 0 12px;
-  background: var(--card);
+  background: var(--panel);
   border: 1px solid var(--line);
   color: var(--ink);
   font-weight: 800;

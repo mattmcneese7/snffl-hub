@@ -178,7 +178,7 @@
 .snffl-theme-choice {
   min-height: var(--tap);
   padding: 0 12px;
-  background: var(--card);
+  background: var(--panel);
   border: 1px solid var(--line);
   color: var(--ink);
   font: inherit;
@@ -251,7 +251,7 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: rgba(8, 12, 20, 0.72);
+  background: rgba(11, 33, 37, 0.72);
   color: #ffffff;
   font-size: var(--t-h3);
 }
@@ -337,7 +337,7 @@
 .snffl-feed-day-label span {
   padding: 2px 7px;
   border-radius: var(--radius-pill);
-  background: var(--panel-raised);
+  background: var(--panel);
   color: var(--ink-secondary);
 }
 
@@ -377,7 +377,7 @@
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: var(--panel-raised);
+  background: var(--panel);
   box-shadow: 0 0 0 3px var(--bg);
 }
 .snffl-feed-row-touchdown::before { background: var(--win); }
@@ -516,7 +516,7 @@
   flex: 0 0 auto;
   min-height: var(--tap);
   padding: 0 12px;
-  background: var(--card);
+  background: var(--panel);
   color: var(--ink);
   border: 1px solid var(--line);
   font: inherit;
@@ -703,7 +703,7 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: radial-gradient(120% 120% at 50% 15%, #16243c 0%, #070c16 70%);
+  background: radial-gradient(120% 120% at 50% 15%, #183749 0%, #0a2127 70%);
   border: 1px solid rgba(120, 206, 255, 0.3);
   box-shadow: 0 0 16px rgba(76, 194, 255, 0.22);
 }

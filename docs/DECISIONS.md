@@ -498,3 +498,41 @@ Sleeper, ESPN and nflverse are keyless and free. Supabase and Vercel are on
 free tiers. The share images are generated on demand but the route carries
 `revalidate = 3600`, so a fourteen person league reading the same week's image
 costs one render an hour rather than one a request.
+
+---
+
+## One surface, not nine
+
+Matt spotted it on the home screen: the team picker was a solid navy box
+sitting next to a scoreboard made of glass, and the difference between them
+was not a design decision anybody had made.
+
+The cause was two parallel vocabularies for the same thing. `--panel`,
+`--panel-solid`, `--panel-raised` and `--panel-sunken` were documented as the
+app's materials; `--card` and `--card-strong` were what the CSS actually used.
+Counted: `--card` had 22 uses and `--panel` had 3, `--panel-solid` had none at
+all. Each carried its own alpha, so which surface a component got depended on
+which word its author happened to reach for, and a change to one never reached
+the other. That is what made the background change so painful: the ground
+moved and only half the surfaces moved with it.
+
+There is now one token. Every box on the site, card, picker, inner row, tile,
+is `--panel`, `rgba(10, 26, 31, 0.52)`, real glass over the ground with the
+glows coming through it. `--card`, `--card-strong`, `--panel-solid`,
+`--panel-raised` and `--panel-sunken` are gone rather than aliased, so nothing
+can drift back onto them.
+
+**Why the glass is darker than the ground.** A lighter ground costs every
+layer above it contrast headroom, and two pairs collide head on: a status chip
+has to clear 3:1 against the surface it sits on while carrying white text at
+4.5:1, which pins its luminance into a window about six thousandths wide.
+Lifting the panel closed that window. Dimming it opens it, and a panel that
+darkens what is behind it is still glass: the glows still modulate it, they
+just do it under a tinted pane instead of over one.
+
+Two colours moved with it, both keeping their hue: the teal glow dropped from
+0.28 to 0.12, because it is teal light on a teal ground now, and the beer glass
+outline lifted from `#b85f10` to `#c0712a`. The blue glow went to 0.22.
+
+`npm run contrast` was updated to test the consolidated token and passes every
+pair.

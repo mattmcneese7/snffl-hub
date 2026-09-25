@@ -50,14 +50,13 @@ a.snffl-source:hover .snffl-source-text strong { text-decoration: underline; }
 }
 .snffl-source-tile img { width: 12px; height: auto; }
 .snffl-source-tile-ds { background: #0b1a2e; }
-.snffl-source-tile-snffl {
-  background: linear-gradient(160deg, var(--water-deep), var(--water-abyss));
-  color: #ffffff;
-  font-family: var(--font-archivo);
-  font-style: italic;
-  font-weight: 900;
-  font-size: var(--t-small);
-}
+/* Our own mark gets the same dark tile DraftSharks sits on, so the row reads
+   as one set of credits rather than one logo and one badge. The mark is
+   drawn a touch larger than the others because it is a drop on a square
+   canvas: at the shared 12px its silhouette is only nine pixels tall and it
+   disappears next to a full bleed logo. */
+.snffl-source-tile-snffl { background: #0b1a2e; }
+.snffl-source-tile-snffl img { width: 15px; }
 
 /* ---------- Live pill ---------- */
 

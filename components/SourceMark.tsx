@@ -19,7 +19,7 @@ const SOURCES: Record<Source, { name: string; href: string | null }> = {
   // ad nobody asked to run.
   draftkings: { name: 'DraftKings', href: null },
   youtube: { name: 'YouTube', href: 'https://www.youtube.com/@NFL' },
-  snffl: { name: 'SNFFL model', href: null },
+  snffl: { name: 'SQUIRT modeling', href: null },
 };
 
 function Mark({ source }: { source: Source }) {
@@ -50,7 +50,15 @@ function Mark({ source }: { source: Source }) {
       // eslint-disable-next-line @next/next/no-img-element
       return <img className="snffl-source-logo" src="/sources/youtube.svg" alt="" />;
     case 'snffl':
-      return <span className="snffl-source-tile snffl-source-tile-snffl" aria-hidden>S</span>;
+      // The app's own mark, on the same dark disc the others get. It was a
+      // capital S in a blue square, which beside four real logos read as a
+      // placeholder for the one source we actually own.
+      return (
+        <span className="snffl-source-tile snffl-source-tile-snffl" aria-hidden>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo-mark-v4-128.png" alt="" />
+        </span>
+      );
   }
 }
 

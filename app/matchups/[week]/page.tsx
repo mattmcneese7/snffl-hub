@@ -2,7 +2,7 @@ import Chrome from '@/components/Chrome';
 import LiveRefresh from '@/components/LiveRefresh';
 import NflSlate from '@/components/NflSlate';
 import ResultBug from '@/components/ResultBug';
-import { SourceStrip } from '@/components/SourceMark';
+import { PageSources } from '@/components/SourceMark';
 import SquirtSays from '@/components/SquirtSays';
 import PageHead from '@/components/PageHead';
 import WeekSelector from '@/components/WeekSelector';
@@ -86,13 +86,6 @@ export default async function WeekPage({ params }: { params: Promise<{ week: str
             <div className="snffl-card">
               <SquirtSays verdicts={sayings} week={week} collapsible />
             </div>
-            <SourceStrip
-              items={[
-                { source: 'sleeper', label: 'Projections' },
-                { source: 'draftsharks', label: 'Floors and ceilings' },
-                { source: 'draftkings', label: 'Game totals' },
-              ]}
-            />
           </section>
         ) : null}
 
@@ -114,13 +107,6 @@ export default async function WeekPage({ params }: { params: Promise<{ week: str
                   </div>
                 ))}
               </div>
-              <SourceStrip
-                items={[
-                  { source: 'snffl', label: 'Win probability' },
-                  { source: 'sleeper', label: 'Projections' },
-                  { source: 'draftsharks', label: 'Ranges' },
-                ]}
-              />
             </>
           ) : (
             <div className="snffl-placeholder">
@@ -139,6 +125,15 @@ export default async function WeekPage({ params }: { params: Promise<{ week: str
           </div>
           <NflSlate games={ctx.nfl} lines={ctx.lines} startersByTeam={startersByNflTeam(games)} />
         </section>
+        <PageSources
+          items={[
+            { source: 'sleeper', label: 'Projections' },
+            { source: 'draftsharks', label: 'Floors and ceilings' },
+            { source: 'draftkings', label: 'Game totals' },
+            { source: 'snffl', label: 'Win probability' },
+            { source: 'draftsharks', label: 'Ranges' },
+          ]}
+        />
       </main>
     </>
   );

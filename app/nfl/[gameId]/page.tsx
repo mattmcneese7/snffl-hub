@@ -2,15 +2,19 @@ import Link from 'next/link';
 import Chrome from '@/components/Chrome';
 import LiveRefresh from '@/components/LiveRefresh';
 import ManagerLink from '@/components/ManagerLink';
-import { SourceStrip } from '@/components/SourceMark';
+import { PageSources } from '@/components/SourceMark';
 import WinBar from '@/components/WinBar';
-import { getWeekGames, scoredWeek, teamByRoster } from '@/lib/league';
+import { league, getWeekGames, scoredWeek, teamByRoster } from '@/lib/league';
+import { getWeekProjections } from '@/lib/projections';
 import {
+  getGameExtras,
   getGameLines,
   getNflGames,
   impliedTeamTotal,
   leagueEntriesInGame,
+  weatherIcon,
   type GameLines,
+  type GameWeather,
   type NflGame,
   type NflSide,
 } from '@/lib/gameday';
@@ -27,9 +31,11 @@ import {
  */
 export const revalidate = 60;
 
+/** "Sun, Sep 27, 12:00 PM". Short weekday, because the long one was the word
+ *  that pushed this line onto a second row. */
 function kickoff(iso: string): string {
   return new Intl.DateTimeFormat('en-US', {
-    weekday: 'long',
+    weekday: 'short',
     month: 'short',
     day: 'numeric',
     hour: 'numeric',
@@ -39,6 +45,57 @@ function kickoff(iso: string): string {
 }
 
 const money = (n: number | null) => (n == null ? null : n > 0 ? `+${n}` : `${n}`);
+
+const GLYPH: Record<string, string> = {
+  sun: '\u2600\uFE0E',
+  clear: '\u263D',
+  partly: '\u26C5\uFE0E',
+  cloud: '\u2601\uFE0E',
+  rain: '\u2614\uFE0E',
+  snow: '\u2744\uFE0E',
+  wind: '\uD83C\uDF2C\uFE0F',
+};
+
+/**
+ * Kickoff conditions, which in football are not decoration: a twenty mile an
+ * hour wind is the difference between a kicker and a liability, and rain is
+ * why your receiver caught three of nine. Shown only for a game not yet
+ * played, outdoors.
+ */
+function Forecast({ weather }: { weather: GameWeather }) {
+  const icon = weatherIcon(weather.conditionId, weather.windSpeed);
+  return (
+    <div className="snffl-nflg-wx">
+      <span className="snffl-nflg-wx-icon" aria-hidden>
+        {GLYPH[icon] ?? GLYPH.cloud}
+      </span>
+      <div className="snffl-nflg-wx-facts">
+        {weather.temperature != null ? (
+          <span>
+            <b className="snffl-numeric">{weather.temperature}&deg;</b>
+            <span className="snffl-label">Temp</span>
+          </span>
+        ) : null}
+        {weather.windSpeed != null ? (
+          <span>
+            <b className="snffl-numeric">
+              {weather.windSpeed}
+              <small> mph</small>
+            </b>
+            <span className="snffl-label">Wind {weather.windDirection ?? ''}</span>
+          </span>
+        ) : null}
+        {weather.precipitation != null ? (
+          <span>
+            <b className="snffl-numeric">{weather.precipitation}%</b>
+            <span className="snffl-label">Precip</span>
+          </span>
+        ) : null}
+      </div>
+      {weather.summary ? <p className="snffl-nflg-wx-note">{weather.summary} at kickoff</p> : null}
+    </div>
+  );
+}
 
 function Side({ side, lines, home }: { side: NflSide; lines: GameLines | null; home: boolean }) {
   const total = impliedTeamTotal(lines ?? undefined, home);
@@ -90,9 +147,15 @@ export default async function NflGamePage({ params }: { params: Promise<{ gameId
     );
   }
 
-  const [lines, weekGames] = await Promise.all([
+  const [lines, weekGames, extras, projections] = await Promise.all([
     getGameLines(game.id, game.state === 'in').catch(() => null),
     getWeekGames(week).catch(() => []),
+    getGameExtras(game.id, game.state === 'in').catch(() => ({
+      venue: null,
+      weather: null,
+      attendance: null,
+    })),
+    getWeekProjections(league.season, week).catch(() => ({}) as Record<string, number>),
   ]);
 
   const entries = leagueEntriesInGame(weekGames, [game.away.abbr, game.home.abbr]);
@@ -131,20 +194,40 @@ export default async function NflGamePage({ params }: { params: Promise<{ gameId
         </h1>
 
         <article className="snffl-card snffl-nflg">
+          {/* The ground it is played on, behind the score. A row of numbers
+              tells you nothing about why a Sunday at Lambeau in December is
+              different from one in a dome, and ESPN keeps a photograph of
+              every stadium. It sits under a heavy scrim because the score has
+              to stay readable over whatever the picture is doing. */}
+          <div
+            className={`snffl-nflg-art${extras.venue?.image ? '' : ' snffl-nflg-art-bare'}`}
+            style={{ ['--home' as string]: game.home.color ?? '#1b2740' }}
+            aria-hidden
+          >
+            {extras.venue?.image ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={extras.venue.image} alt="" />
+            ) : null}
+          </div>
+          {/* One line, in the interface face rather than tracked out mono.
+              This was two columns of letter spaced capitals that each wrapped
+              onto a second row, and the venue was in it twice: once here and
+              again under the board, where it belongs with the city. */}
           <header className="snffl-nflg-head">
             {game.state === 'in' ? (
               <span className="snffl-live-pill snffl-live-pill-sm">
                 <span className="snffl-live-pill-dot" aria-hidden />
                 {game.period && game.period > 4 ? 'OT' : `Q${game.period ?? 1}`} {game.clock}
               </span>
-            ) : (
-              <span className="snffl-label">
-                {game.state === 'pre' ? kickoff(game.kickoff) : 'Final'}
-              </span>
-            )}
-            <span className="snffl-label">
-              {[game.broadcast, game.venue].filter(Boolean).join(' · ')}
-            </span>
+            ) : null}
+            <p className="snffl-nflg-when">
+              {[
+                game.state === 'pre' ? kickoff(game.kickoff) : game.state === 'post' ? 'Final' : '',
+                game.broadcast,
+              ]
+                .filter(Boolean)
+                .join(' \u00B7 ')}
+            </p>
           </header>
 
           <div className="snffl-nflg-sides">
@@ -156,6 +239,16 @@ export default async function NflGamePage({ params }: { params: Promise<{ gameId
             <p className="snffl-nflg-situation">{game.situation}</p>
           ) : null}
 
+          {extras.venue ? (
+            <p className="snffl-nflg-venue">
+              {extras.venue.name}
+              {extras.venue.city ? ` \u00B7 ${extras.venue.city}` : ''}
+              {extras.venue.state ? `, ${extras.venue.state}` : ''}
+              {extras.venue.indoor ? ' \u00B7 Indoors' : ''}
+              {extras.attendance ? ` \u00B7 ${extras.attendance.toLocaleString()} in` : ''}
+            </p>
+          ) : null}
+
           {awayWin != null && game.state !== 'post' ? (
             <WinBar
               away={{ pct: awayWin, primary: game.away.color ?? '#72809f', name: game.away.name }}
@@ -164,10 +257,21 @@ export default async function NflGamePage({ params }: { params: Promise<{ gameId
                 primary: game.home.color ?? '#9aa7bd',
                 name: game.home.name,
               }}
-              caption={game.state === 'in' ? 'Live win probability' : 'Implied by the moneyline'}
+              caption={game.state === 'in' ? 'Live win prob' : 'Moneyline'}
             />
           ) : null}
         </article>
+
+        {game.state === 'pre' && extras.weather ? (
+          <section>
+            <div className="snffl-block-heading">
+              <h2 className="snffl-headline">At Kickoff</h2>
+            </div>
+            <div className="snffl-card">
+              <Forecast weather={extras.weather} />
+            </div>
+          </section>
+        ) : null}
 
         <section>
           <div className="snffl-block-heading">
@@ -234,11 +338,45 @@ export default async function NflGamePage({ params }: { params: Promise<{ gameId
                     <ul className="snffl-nflg-players">
                       {list.map((entry) => (
                         <li key={`${rosterId}-${entry.playerId}`}>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            className="snffl-nflg-face"
+                            src={entry.headshot}
+                            alt=""
+                            loading="lazy"
+                          />
                           <Link href={`/players/${entry.playerId}`}>{entry.name}</Link>
                           <span className="snffl-menu-note">
-                            {entry.slot ?? 'Bench'} · {entry.position} · {entry.nflTeam}
+                            {entry.slot ?? 'Bench'} &middot; {entry.position} &middot;{' '}
+                            {entry.nflTeam}
+                            {projections[entry.playerId] != null
+                              ? ` \u00B7 Proj ${projections[entry.playerId].toFixed(1)}`
+                              : ''}
                           </span>
-                          <b className="snffl-numeric">{entry.points.toFixed(2)}</b>
+                          {/* Before kickoff the projection is the only number
+                              there is, so it is the number. Afterwards it moves
+                              to the line under the name and what he actually
+                              did takes its place, green when he cleared it.
+                              Both at full size squeezed the name into two
+                              lines on a phone. */}
+                          {game.state === 'pre' ? (
+                            <b className="snffl-numeric snffl-nflg-pending">
+                              {projections[entry.playerId] != null
+                                ? projections[entry.playerId].toFixed(1)
+                                : '-'}
+                            </b>
+                          ) : (
+                            <b
+                              className={`snffl-numeric${
+                                projections[entry.playerId] != null &&
+                                entry.points >= projections[entry.playerId]
+                                  ? ' snffl-nflg-beat'
+                                  : ''
+                              }`}
+                            >
+                              {entry.points.toFixed(2)}
+                            </b>
+                          )}
                         </li>
                       ))}
                     </ul>
@@ -256,7 +394,7 @@ export default async function NflGamePage({ params }: { params: Promise<{ gameId
           )}
         </section>
 
-        <SourceStrip
+        <PageSources
           items={[
             { source: 'espn', label: 'Scores and win probability' },
             { source: 'draftkings', label: 'Lines' },

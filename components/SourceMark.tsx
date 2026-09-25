@@ -90,3 +90,35 @@ export function SourceStrip({ items }: { items: { source: Source; label: string 
     </div>
   );
 }
+
+/**
+ * Every credit a page owes, once, at the bottom of it.
+ *
+ * These used to sit under whichever panel used the number, which put a row of
+ * third party logos between two widgets several times down a page, breaking
+ * the reading for a line of small print nobody came for. The obligation is to
+ * say where the numbers came from, not to say it next to each one, so the
+ * page carries a single footer and the sections stay uninterrupted.
+ *
+ * Duplicates collapse: three panels on Sleeper data credit Sleeper once.
+ */
+export function PageSources({ items }: { items: { source: Source; label: string }[] }) {
+  const seen = new Set<string>();
+  const unique = items.filter((item) => {
+    const key = `${item.source}-${item.label}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  if (!unique.length) return null;
+  return (
+    <footer className="snffl-page-sources">
+      <span className="snffl-label">Sources</span>
+      <div className="snffl-source-strip">
+        {unique.map((item) => (
+          <SourceMark key={`${item.source}-${item.label}`} source={item.source} label={item.label} />
+        ))}
+      </div>
+    </footer>
+  );
+}

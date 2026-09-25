@@ -1,5 +1,5 @@
 import ManagerLink from '@/components/ManagerLink';
-import { SourceStrip } from '@/components/SourceMark';
+import { PageSources } from '@/components/SourceMark';
 import Link from 'next/link';
 import Bracket from '@/components/Bracket';
 import Chrome from '@/components/Chrome';
@@ -31,7 +31,7 @@ const TAG_CLASS: Record<string, string> = {
 };
 
 const SECTIONS = [
-  { id: 'table', label: 'The Table' },
+  { id: 'table', label: 'Standings' },
   { id: 'power', label: 'Power' },
   { id: 'playoffs', label: 'Playoffs' },
 ];
@@ -71,16 +71,14 @@ export default async function StandingsPage() {
         </nav>
 
         <section id="table" className="snffl-anchor">
-          <div className="snffl-block-heading">
-            <h2 className="snffl-headline">The Table</h2>
-            <span className="snffl-block-heading-link">Top {league.playoffTeams} qualify</span>
-          </div>
+        {/* No heading: the masthead above already says Standings, and giving
+            this section a second name only to avoid repeating the first one is
+            how you end up calling a league table The Table. */}
           <StandingsTable standings={standings} pickups={pickups} holders={trophies.holders} />
           <p className="snffl-chug-axis-note">
-            PF is points for, PA is points against. Adds counts waiver claims and free agent
-            pickups, {totalAdds} across the league so far.
+            Top {league.playoffTeams} qualify. PF is points for, PA is points against. Adds
+            counts waiver claims and free agent pickups, {totalAdds} across the league so far.
           </p>
-          <SourceStrip items={[{ source: 'sleeper', label: 'Records and points' }]} />
         </section>
 
         <section id="power" className="snffl-anchor">
@@ -93,12 +91,6 @@ export default async function StandingsPage() {
               <PowerRankRow key={entry.team.rosterId} entry={entry} />
             ))}
           </div>
-          <SourceStrip
-            items={[
-              { source: 'snffl', label: 'Rankings' },
-              { source: 'sleeper', label: 'Scores' },
-            ]}
-          />
         </section>
 
         <section id="playoffs" className="snffl-anchor">
@@ -196,13 +188,16 @@ export default async function StandingsPage() {
             </div>
           ) : null}
 
-          <SourceStrip
-            items={[
-              { source: 'snffl', label: 'Playoff odds' },
-              { source: 'sleeper', label: 'Schedule and results' },
-            ]}
-          />
         </section>
+        <PageSources
+          items={[
+            { source: 'sleeper', label: 'Records and points' },
+            { source: 'snffl', label: 'Rankings' },
+            { source: 'sleeper', label: 'Scores' },
+            { source: 'snffl', label: 'Playoff odds' },
+            { source: 'sleeper', label: 'Schedule and results' },
+          ]}
+        />
       </main>
     </>
   );

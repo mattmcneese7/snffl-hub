@@ -1,6 +1,6 @@
 import { managerNames } from '@/lib/manager-names';
 import { firstNameOf } from '@/config/managers';
-import { SourceStrip } from '@/components/SourceMark';
+import { PageSources } from '@/components/SourceMark';
 import Chrome from '@/components/Chrome';
 import FeedStream from '@/components/FeedStream';
 import PageHead from '@/components/PageHead';
@@ -55,7 +55,7 @@ export default async function FeedPage() {
           managers={managers}
           names={managerNames()}
         />
-        <SourceStrip
+        <PageSources
           items={[
             { source: 'espn', label: 'Plays' },
             { source: 'youtube', label: 'Highlights' },

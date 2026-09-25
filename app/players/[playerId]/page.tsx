@@ -8,7 +8,7 @@ import { getPlayerSeason } from '@/lib/players';
 import HighlightList from '@/components/HighlightList';
 import { getHighlightsForPlayer } from '@/lib/highlights';
 import SleeperActionButton from '@/components/SleeperAction';
-import SourceMark, { SourceStrip } from '@/components/SourceMark';
+import SourceMark, { PageSources } from '@/components/SourceMark';
 import { dsRos, dsWeekly } from '@/lib/draftsharks';
 import {
   formatMoneyline,
@@ -121,7 +121,6 @@ export default async function PlayerPage({
                 </div>
               ))}
             </div>
-            <SourceStrip items={[{ source: 'sleeper', label: 'Season stats' }]} />
           </section>
         ) : null}
 
@@ -262,7 +261,6 @@ export default async function PlayerPage({
               managers={owner ? { [String(owner.rosterId)]: firstNameOf(owner.rosterId) ?? owner.manager } : {}}
               title={`${player.name} Highlights`}
             />
-            <SourceStrip items={[{ source: 'youtube', label: 'Highlights' }]} />
           </section>
         ) : null}
 
@@ -330,6 +328,12 @@ export default async function PlayerPage({
             )}
           </div>
         </section>
+        <PageSources
+          items={[
+            { source: 'sleeper', label: 'Season stats' },
+            { source: 'youtube', label: 'Highlights' },
+          ]}
+        />
       </main>
     </>
   );

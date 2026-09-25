@@ -16,7 +16,7 @@ import ResultBug from '@/components/ResultBug';
 import YourMatchup from '@/components/YourMatchup';
 import { getChugCounts } from '@/lib/awards';
 import NflSlate from '@/components/NflSlate';
-import { SourceStrip } from '@/components/SourceMark';
+import { PageSources } from '@/components/SourceMark';
 import { anyGameLive, ESPN_TEAM_LOGO, getNflScoreboard } from '@/lib/espn';
 import { toFeature } from '@/lib/feature';
 import { getFeedPosts } from '@/lib/feed';
@@ -222,7 +222,6 @@ export default async function HomePage() {
           </HomeWidget>
         ) : null}
 
-
         {feature ? (
           <HomeWidget title="Featured" href={`/matchups/${week}`} linkLabel="Full scoreboard">
             <FeatureMatchup
@@ -266,12 +265,6 @@ export default async function HomePage() {
                   />
                 ))}
               </div>
-              <SourceStrip
-                items={[
-                  { source: 'snffl', label: 'Win probability' },
-                  { source: 'sleeper', label: 'Projections' },
-                ]}
-              />
             </HomeWidget>
 
             <HomeWidget title="Top Scorers" href={`/players`} linkLabel="All players">
@@ -329,13 +322,6 @@ export default async function HomePage() {
               <div className="snffl-card">
                 <SquirtSays verdicts={sayings} week={week} limit={4} head={false} />
               </div>
-              <SourceStrip
-                items={[
-                  { source: 'sleeper', label: 'Projections' },
-                  { source: 'draftsharks', label: 'Floors and ceilings' },
-                  { source: 'draftkings', label: 'Game totals' },
-                ]}
-              />
             </HomeWidget>
 
             {/* One section for where everyone stands, holding the three
@@ -345,7 +331,7 @@ export default async function HomePage() {
               <div className="snffl-stack">
                 <div>
                   <Link className="snffl-sub-head" href="/standings#table">
-                    The Table
+                    Standings
                   </Link>
                   <div className="snffl-card">
                     {standings.slice(0, 4).map((team) => (
@@ -391,29 +377,10 @@ export default async function HomePage() {
                   </div>
                 </div>
 
-                <div>
-                  <Link className="snffl-sub-head" href="/standings#playoffs">
-                    Playoff Picture
-                  </Link>
-                  <div className="snffl-card">
-                    {odds.slice(0, 4).map((row) => (
-                      <Link
-                        className={`snffl-mini-row mgr-${row.team.userId}`}
-                        href={`/managers/${row.rosterId}`}
-                        key={row.rosterId}
-                      >
-                        <span className="snffl-standings-colorbar" />
-                        <span className="snffl-mini-body">
-                          <span className="snffl-standings-team-name">{row.team.teamName}</span>
-                          <span className="snffl-standings-manager">{row.tag}</span>
-                        </span>
-                        <span className="snffl-mini-value snffl-numeric">
-                          {row.makePlayoffs.toFixed(0)}%
-                        </span>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
+                <Link className="snffl-module-button" href="/standings#playoffs">
+                  <span>Playoff Picture</span>
+                  <span className="snffl-module-button-note">Odds for all {odds.length}</span>
+                </Link>
               </div>
             </HomeWidget>
 
@@ -512,6 +479,14 @@ export default async function HomePage() {
             ))}
           </div>
         </HomeWidget>
+        <PageSources
+          items={[
+            { source: 'snffl', label: 'Win probability' },
+            { source: 'sleeper', label: 'Projections' },
+            { source: 'draftsharks', label: 'Floors and ceilings' },
+            { source: 'draftkings', label: 'Game totals' },
+          ]}
+        />
       </main>
     </>
   );

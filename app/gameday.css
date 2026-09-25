@@ -1642,8 +1642,19 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
 .snffl-nflg-head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--s-3);
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-3);
+}
+/* The interface face, sentence case, no tracking: this is a sentence about
+   when the game is, not a label on a control, and setting it as one turned
+   twelve words into four wrapped lines. */
+.snffl-nflg-when {
+  margin: 0;
+  font-size: var(--t-small);
+  font-weight: 700;
+  color: var(--ink-secondary);
+  text-align: center;
 }
 .snffl-nflg-sides {
   display: grid;
@@ -1710,11 +1721,93 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   border-bottom: 1px solid var(--line);
 }
 .snffl-nflg-players li:last-child { border-bottom: 0; }
-.snffl-nflg-players a { color: inherit; font-weight: 700; text-decoration: none; }
-.snffl-nflg-players .snffl-menu-note { grid-column: 1; }
-.snffl-nflg-players b { grid-row: 1 / span 2; grid-column: 2; font-size: var(--t-h3); }
+.snffl-nflg-players a { color: inherit; font-weight: 700; text-decoration: none; grid-column: 2; }
+.snffl-nflg-players .snffl-menu-note { grid-column: 2; }
+.snffl-nflg-players b {
+  grid-row: 1 / span 2;
+  grid-column: 3;
+  align-self: center;
+  font-size: var(--t-h3);
+}
 
 @media (min-width: 700px) {
   .snffl-nflg-book-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .snffl-nflg-managers { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* The stadium, behind the score. ESPN's venue shots are 2000x1125 daylight
+   photographs, which is far too much contrast to put behind a scoreboard, so
+   they sit dimmed under a gradient that goes almost solid at the bottom where
+   the scores and the book actually are. */
+.snffl-nflg { position: relative; isolation: isolate; overflow: hidden; }
+.snffl-nflg-art { position: absolute; inset: 0; z-index: -1; }
+.snffl-nflg-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0.42;
+}
+/* ESPN has a photograph of most grounds but not all: a brand new stadium or
+   a game played abroad comes back with an empty image list. Those fall back
+   to the home club's colour washed across the card, so the board still reads
+   as a place rather than as the one flat card in the set. */
+.snffl-nflg-art-bare {
+  background: radial-gradient(120% 90% at 50% 0%, var(--home) 0%, transparent 72%);
+  opacity: 0.55;
+}
+.snffl-nflg-art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 13, 24, 0.68) 0%,
+    rgba(8, 13, 24, 0.82) 42%,
+    rgba(8, 13, 24, 0.95) 100%
+  );
+}
+.snffl-nflg-venue {
+  margin: 0;
+  text-align: center;
+  font-size: var(--t-small);
+  color: var(--ink-secondary);
+}
+
+/* Kickoff conditions. Wind gets the same weight as temperature, because in
+   football it is the one that changes how a game is played. */
+.snffl-nflg-wx {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--s-3) var(--s-4);
+  padding: var(--s-4);
+}
+.snffl-nflg-wx-icon { font-size: 34px; line-height: 1; }
+.snffl-nflg-wx-facts { display: flex; flex-wrap: wrap; gap: var(--s-4); }
+.snffl-nflg-wx-facts > span { display: grid; gap: 2px; }
+.snffl-nflg-wx-facts b { font-size: var(--t-h2); line-height: 1; }
+.snffl-nflg-wx-facts b small { font-size: var(--t-small); font-weight: 700; }
+.snffl-nflg-wx-note {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: var(--t-small);
+  color: var(--ink-secondary);
+}
+
+/* A face against a name: a list of nine players reads as a roster dump
+   without them, and the headshots are already on every player row elsewhere. */
+.snffl-nflg-players li { grid-template-columns: 34px minmax(0, 1fr) auto; }
+.snffl-nflg-face {
+  grid-row: 1 / span 2;
+  grid-column: 1;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--surface);
+}
+/* He cleared what the model asked of him. */
+.snffl-nflg-beat { color: var(--tint-green-ink); }
+/* Nothing has happened yet, so the projection reads as provisional. */
+.snffl-nflg-pending { color: var(--ink-secondary); }

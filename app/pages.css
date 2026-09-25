@@ -85,6 +85,16 @@
 }
 .snffl-sub-head::after { content: ' \203A'; }
 
+/* The page's credits, once, at the foot of it. */
+.snffl-page-sources {
+  margin-top: var(--s-6);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: var(--s-2);
+}
+.snffl-page-sources .snffl-source-strip { margin-top: 0; }
+
 /* ---------- Horizontal rails ---------- */
 
 .snffl-stories-rail,

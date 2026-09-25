@@ -6,7 +6,7 @@ import LiveRefresh from '@/components/LiveRefresh';
 import MatchupLineup from '@/components/MatchupLineup';
 import NflSlate from '@/components/NflSlate';
 import { SleeperActions } from '@/components/SleeperAction';
-import { SourceStrip } from '@/components/SourceMark';
+import { PageSources } from '@/components/SourceMark';
 import { Figure } from '@/components/Stat';
 import { toFeature } from '@/lib/feature';
 import { getWeekGames } from '@/lib/league';
@@ -100,14 +100,6 @@ export default async function MatchupDetail({
                 <h2 className="snffl-headline">Lineups</h2>
               </div>
               <MatchupLineup matchup={live} />
-              <SourceStrip
-                items={[
-                  { source: 'sleeper', label: 'Stats and projections' },
-                  { source: 'draftsharks', label: 'Floor and ceiling' },
-                  { source: 'espn', label: 'Game status' },
-                  { source: 'draftkings', label: 'Lines' },
-                ]}
-              />
             </section>
           </div>
 
@@ -123,6 +115,14 @@ export default async function MatchupDetail({
             </section>
           </aside>
         </div>
+        <PageSources
+          items={[
+            { source: 'sleeper', label: 'Stats and projections' },
+            { source: 'draftsharks', label: 'Floor and ceiling' },
+            { source: 'espn', label: 'Game status' },
+            { source: 'draftkings', label: 'Lines' },
+          ]}
+        />
       </main>
     </>
   );

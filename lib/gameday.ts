@@ -297,3 +297,124 @@ export function leagueEntriesInGame(
     return b.points - a.points;
   });
 }
+
+const CORE = 'https://sports.core.api.espn.com/v2/sports/football/leagues/nfl';
+
+export type GameWeather = {
+  /** ESPN's own words: "Intermittent clouds". */
+  summary: string;
+  temperature: number | null;
+  /** Chance of precipitation as a percentage. */
+  precipitation: number | null;
+  windSpeed: number | null;
+  /** Compass point, "NNE". */
+  windDirection: string | null;
+  /** ESPN's numeric condition code, mapped for the icon. */
+  conditionId: string | null;
+};
+
+export type GameVenue = {
+  name: string;
+  city: string | null;
+  state: string | null;
+  /** 2000x1125 exterior and interior shots from ESPN's venue library. */
+  image: string | null;
+  interior: string | null;
+  indoor: boolean;
+  grass: boolean | null;
+};
+
+export type GameExtras = {
+  venue: GameVenue | null;
+  /** Null for a dome, and for any game already played. */
+  weather: GameWeather | null;
+  attendance: number | null;
+};
+
+/**
+ * The things that make a game feel like a place rather than a row: the
+ * stadium, the forecast at kickoff, the wind.
+ *
+ * Three calls, because ESPN splits them. The site summary carries the venue
+ * and its photographs, the core competition carries wind speed and direction
+ * which the site one drops, and the core venue carries the indoor flag, which
+ * matters because ESPN happily reports a forecast for a domed stadium and
+ * reporting wind inside Ford Field would be nonsense.
+ *
+ * Every one of them is unofficial and public, so each degrades to null on its
+ * own rather than taking the page down with it, per Brief Section 9.
+ */
+export async function getGameExtras(eventId: string, live = false): Promise<GameExtras> {
+  const revalidate = live ? 60 : 900;
+  const grab = async (url: string): Promise<Json | null> => {
+    try {
+      const res = await fetch(url, { next: { revalidate } } as RequestInit);
+      return res.ok ? await res.json() : null;
+    } catch {
+      return null;
+    }
+  };
+
+  const [summary, competition] = await Promise.all([
+    grab(`${SITE}/summary?event=${eventId}`),
+    grab(`${CORE}/events/${eventId}/competitions/${eventId}`),
+  ]);
+
+  const raw = summary?.gameInfo?.venue ?? null;
+  const venueId = raw?.id ?? null;
+  const detail = venueId ? await grab(`${CORE}/venues/${venueId}`) : null;
+
+  const images: Json[] = raw?.images ?? [];
+  const pick = (interior: boolean) =>
+    images.find((i) => (i.rel ?? []).includes('interior') === interior)?.href ?? null;
+
+  const venue: GameVenue | null = raw
+    ? {
+        name: raw.fullName ?? 'Unknown',
+        city: raw.address?.city ?? null,
+        state: raw.address?.state ?? null,
+        image: pick(false),
+        interior: pick(true),
+        indoor: detail?.indoor === true,
+        grass: typeof raw.grass === 'boolean' ? raw.grass : null,
+      }
+    : null;
+
+  const w = competition?.weather ?? null;
+  // A forecast is only worth showing for a game not yet played, outdoors.
+  const weather: GameWeather | null =
+    w && !venue?.indoor
+      ? {
+          summary: w.displayValue ?? '',
+          temperature: typeof w.temperature === 'number' ? w.temperature : null,
+          precipitation: typeof w.precipitation === 'number' ? w.precipitation : null,
+          windSpeed: typeof w.windSpeed === 'number' ? w.windSpeed : null,
+          windDirection: w.windDirection ?? null,
+          conditionId: w.conditionId ?? null,
+        }
+      : null;
+
+  return {
+    venue,
+    weather,
+    attendance:
+      typeof summary?.gameInfo?.attendance === 'number' ? summary.gameInfo.attendance : null,
+  };
+}
+
+/**
+ * ESPN's condition codes, bucketed. The full list runs to dozens of shades of
+ * cloud; a football page needs to know whether to draw a sun, a cloud, rain,
+ * snow or wind, so the codes collapse to those.
+ */
+export function weatherIcon(conditionId: string | null, windSpeed: number | null): string {
+  if (windSpeed != null && windSpeed >= 18) return 'wind';
+  const id = Number(conditionId);
+  if (!Number.isFinite(id)) return 'cloud';
+  if (id >= 22 && id <= 31) return 'snow';
+  if (id >= 12 && id <= 21) return 'rain';
+  if (id >= 32 && id <= 38) return 'clear';
+  if (id <= 2 || id === 33 || id === 34) return 'sun';
+  if (id <= 6) return 'partly';
+  return 'cloud';
+}

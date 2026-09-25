@@ -16,6 +16,8 @@ import {
 } from './highlights.ts';
 import { getSeasonResults, getWeekGames, teamByRoster, teams } from './league.ts';
 import { awardsForWeek, type Award } from './trophies.ts';
+import { photosForWeek, type GamePhoto } from './game-photos.ts';
+import { clipSource } from './espn-playback.ts';
 
 /**
  * The picture behind a slide.
@@ -71,6 +73,8 @@ export type StorySlide =
       points: number | null;
       manager: string | null;
       clipId: string;
+      /** Resolved server side. The slide does not exist without it. */
+      video: string;
       art: Backdrop;
     }
   | {
@@ -106,15 +110,23 @@ const named = (rosterId: number) => {
 };
 
 /**
- * A slide's picture, with the manager's own face as the floor.
+ * A slide's picture, in the order of what is actually worth looking at.
  *
- * Clips are the good case but the league does not always have one: ESPN
- * prunes them within days and some weeks yield none at all. A slide with no
- * football behind it falls back to the manager's avatar, blown up and blurred
- * by the viewer, which is still something about him rather than black.
+ * A wire photograph of this manager's own player first. These are the same
+ * ranked, captioned stadium shots the Rag leads with, already collected for
+ * the week and tagged with the Sleeper ids named in each caption, so a slide
+ * about somebody's week can show a player he actually started.
+ *
+ * Then a clip still, then the manager's avatar as a last resort. The avatar
+ * is a passport photo blown up: it says whose slide this is and nothing about
+ * the football, so it is the floor rather than the plan.
  */
-const artOf = (clip: Highlight | null | undefined, avatar: string | null = null): Backdrop => ({
-  still: (clip ? stillFor(clip) : null) ?? avatar,
+const artOf = (
+  photo: GamePhoto | null,
+  clip: Highlight | null | undefined,
+  avatar: string | null = null
+): Backdrop => ({
+  still: photo?.url ?? (clip ? stillFor(clip) : null) ?? avatar,
   espnId: clip && isEspnClip(clip.id) ? espnClipId(clip.id) : null,
 });
 
@@ -144,12 +156,39 @@ function bestPlay(clips: Highlight[]): Highlight | null {
 }
 
 /**
+ * The best play of the week that can actually be played.
+ *
+ * A slide promising a highlight and showing a photograph of one is worse than
+ * no slide. ESPN prunes clips within days, so being in our table is not proof
+ * the video still exists: each candidate is resolved, best first, and the
+ * first one that hands back a file wins. If none do, the week has no top play
+ * slide, which is the honest outcome.
+ *
+ * Capped at six attempts. A week where the top six are all dead is a week
+ * with no playable footage, and the seventh is not going to save it.
+ */
+async function bestPlayable(
+  clips: Highlight[]
+): Promise<{ clip: Highlight; video: string } | null> {
+  const candidates = clips
+    .filter((clip) => isEspnClip(clip.id))
+    .sort((a, b) => (b.fantasyPoints ?? 0) - (a.fantasyPoints ?? 0))
+    .slice(0, 6);
+
+  for (const clip of candidates) {
+    const source = await clipSource(espnClipId(clip.id)).catch(() => null);
+    if (source?.mp4) return { clip, video: source.mp4 };
+  }
+  return null;
+}
+
+/**
  * Build the week's story, or an empty list while the week is still being
  * played. A story about a week in progress would be wrong by Sunday night,
  * and awardsForWeek already refuses to hand out trophies before every game is
  * final, so an empty award list is the signal to stay quiet.
  */
-export async function weekStory(week: number): Promise<StorySlide[]> {
+export async function weekStory(week: number, taken: Iterable<string> = []): Promise<StorySlide[]> {
   if (week < 1) return [];
 
   const [awards, results, clips, games] = await Promise.all([
@@ -166,13 +205,58 @@ export async function weekStory(week: number): Promise<StorySlide[]> {
   // The week's best clip, used wherever a slide has no manager of its own.
   const house = bestPlay(clips);
 
+  // The week's wire photographs, ranked, and a way to find the best one
+  // showing somebody this manager actually started. A photo of his own player
+  // beats the league's best photo, which beats nothing.
+  const photos = photosForWeek(week);
+  const startersOf = (rosterId: number): Set<string> => {
+    for (const game of games) {
+      for (const side of [game.away, game.home]) {
+        if (side.rosterId === rosterId) return new Set(side.lineup.map((slot) => slot.id));
+      }
+    }
+    return new Set();
+  };
+
+  /**
+   * One photograph, once, anywhere on the site.
+   *
+   * The pool for a week is a dozen or so pictures and several things want
+   * one, so a photo handed out twice is not a near miss, it is the same
+   * picture appearing twice on one screen. Whatever the Rag has already
+   * claimed arrives in `taken`, every slide adds its own pick to it, and a
+   * picture is never reused.
+   *
+   * Preference in order: a photograph naming somebody this manager actually
+   * started, then the best unclaimed one left, then nothing, which is a
+   * clean fall through to a clip still rather than a repeat.
+   */
+  const used = new Set<string>(taken);
+  const photoFor = (rosterId: number): GamePhoto | null => {
+    const mine = startersOf(rosterId);
+    const free = photos.filter((photo) => !used.has(photo.url));
+    // Ranked already, so the first match is the best one left.
+    const pick = free.find((photo) => photo.playerIds.some((id) => mine.has(id))) ?? free[0] ?? null;
+    if (pick) used.add(pick.url);
+    return pick;
+  };
+  const anyPhoto = (): GamePhoto | null => {
+    const pick = photos.find((photo) => !used.has(photo.url)) ?? null;
+    if (pick) used.add(pick.url);
+    return pick;
+  };
+
   slides.push({
     kind: 'intro',
     week,
     games: thisWeek.length / 2,
     topScore: top?.points ?? 0,
     topTeam: top ? named(top.rosterId).team : '',
-    art: artOf(top ? (clipFor(clips, top.rosterId) ?? house) : house, top ? avatarOf(top.rosterId) : null),
+    art: artOf(
+      top ? photoFor(top.rosterId) : anyPhoto(),
+      top ? (clipFor(clips, top.rosterId) ?? house) : house,
+      top ? avatarOf(top.rosterId) : null
+    ),
   });
 
   // The top starter on a roster this week, which is who a celebration is
@@ -198,7 +282,11 @@ export async function weekStory(week: number): Promise<StorySlide[]> {
         ...named(award.rosterId),
         value: award.value,
         detail: award.detail,
-        art: artOf(clipFor(clips, award.rosterId) ?? house, avatarOf(award.rosterId)),
+        art: artOf(
+          photoFor(award.rosterId),
+          clipFor(clips, award.rosterId) ?? house,
+          avatarOf(award.rosterId)
+        ),
         avatar: avatarOf(award.rosterId),
         star: starFor(award.rosterId),
       });
@@ -211,26 +299,36 @@ export async function weekStory(week: number): Promise<StorySlide[]> {
         ...named(award.rosterId),
         value: award.value,
         detail: award.detail,
-        art: artOf(clipFor(clips, award.rosterId) ?? house, avatarOf(award.rosterId)),
+        art: artOf(
+          photoFor(award.rosterId),
+          clipFor(clips, award.rosterId) ?? house,
+          avatarOf(award.rosterId)
+        ),
         avatar: avatarOf(award.rosterId),
         star: starFor(award.rosterId),
       });
     }
   }
 
-  const play = bestPlay(clips);
-  if (play) {
+  const playable = await bestPlayable(clips);
+  if (playable) {
+    const play = playable.clip;
     slides.push({
       kind: 'play',
       week,
       headline: play.title,
+      video: playable.video,
       still: stillFor(play),
       points: play.fantasyPoints ?? null,
       manager: play.ownerTeamId ? (named(Number(play.ownerTeamId)).manager ?? null) : null,
       clipId: play.id,
       // The owner's face as the floor, same as every other slide. Without it
       // an ESPN clip with no stored thumbnail left this one slide black.
-      art: artOf(play, play.ownerTeamId ? avatarOf(Number(play.ownerTeamId)) : null),
+      art: artOf(
+        play.ownerTeamId ? photoFor(Number(play.ownerTeamId)) : anyPhoto(),
+        play,
+        play.ownerTeamId ? avatarOf(Number(play.ownerTeamId)) : null
+      ),
     });
   }
 
@@ -253,7 +351,11 @@ export async function weekStory(week: number): Promise<StorySlide[]> {
       kind: 'shakeup',
       week,
       movers,
-      art: artOf(clipFor(clips, movers[0].rosterId) ?? house, avatarOf(movers[0].rosterId)),
+      art: artOf(
+        photoFor(movers[0].rosterId),
+        clipFor(clips, movers[0].rosterId) ?? house,
+        avatarOf(movers[0].rosterId)
+      ),
     });
   }
 

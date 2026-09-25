@@ -98,9 +98,24 @@ export default function WeekStory({
 
       <div className="snffl-wstory-stage">
         {/* Real football behind every slide, picked for the manager it is
-            about. The clip runs where ESPN has a playable one and the still
-            stands in otherwise, so a slide never falls back to black. */}
-        <Backdrop art={slide.art} key={`${slide.kind}-${active}`} />
+            about. The top play slide runs its own footage, resolved on the
+            server so the slide only exists when the video does; the rest take
+            a wire photograph of somebody that manager started. */}
+        {slide.kind === 'play' ? (
+          <video
+            key={`play-${active}`}
+            className="snffl-story-backdrop snffl-wstory-video"
+            src={slide.video}
+            poster={slide.art.still ?? undefined}
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden
+          />
+        ) : (
+          <Backdrop art={slide.art} key={`${slide.kind}-${active}`} />
+        )}
 
         <button
           type="button"

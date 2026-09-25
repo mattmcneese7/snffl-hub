@@ -1988,40 +1988,81 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
 /* The clip fades in over its own still, so the slide is never empty while a
    video negotiates, and never flashes black between the two. */
 .snffl-wstory-video {
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  filter: none;
   animation: snffl-wstory-fade 0.5s ease-out both;
 }
+/* The top play slide is the footage. Its pool sits lower and lighter, because
+   the copy is two short lines and covering the play defeats the slide. */
+.snffl-wstory-stage:has(.snffl-wstory-play)::after {
+  -webkit-mask-image: radial-gradient(ellipse 80% 26% at 50% 76%, #000 0%, #000 34%, transparent 82%);
+  mask-image: radial-gradient(ellipse 80% 26% at 50% 76%, #000 0%, #000 34%, transparent 82%);
+}
+.snffl-wstory-play { align-self: end; margin-bottom: 4vh; }
 @keyframes snffl-wstory-fade {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-/* The scrim sits under the words rather than over the picture.
-   A flat wash across the whole stage kept the type legible by hiding the
-   football behind it, which is the one thing the slide is for. This is a
-   pool centred on the copy that fades out well before the edges, so the
-   frame reads at the corners and the numbers still hold in the middle. */
+/* The photograph is shown, not used as wallpaper.
+   The reel blurs its backdrop on purpose, because there it is filling the
+   sides of a vertical video and the video is the subject. Here the picture is
+   the subject, so it is sharp. */
+.snffl-wstory .snffl-story-backdrop {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: none;
+}
+
+/* The blur and the darkening are a pool under the words, and nothing outside
+   it. Both are masked to the same soft ellipse, so they fade out together and
+   the rest of the frame is left alone: sharp at the corners, legible in the
+   middle. A flat wash across the whole stage kept the type readable by hiding
+   the football behind it, which is the one thing the slide is for. */
 .snffl-wstory-stage::after {
   content: '';
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background:
-    radial-gradient(
-      ellipse 78% 46% at 50% 52%,
-      rgba(4, 7, 13, 0.88) 0%,
-      rgba(4, 7, 13, 0.72) 38%,
-      rgba(4, 7, 13, 0.34) 66%,
-      transparent 84%
-    ),
-    /* Just enough at the very top and bottom to keep the chrome readable. */
-    linear-gradient(
-      180deg,
-      rgba(4, 7, 13, 0.6) 0%,
-      transparent 18%,
-      transparent 82%,
-      rgba(4, 7, 13, 0.6) 100%
-    );
+  background: rgba(4, 7, 13, 0.7);
+  -webkit-backdrop-filter: blur(18px) saturate(115%);
+  backdrop-filter: blur(18px) saturate(115%);
+  -webkit-mask-image: radial-gradient(
+    ellipse 74% 42% at 50% 52%,
+    #000 0%,
+    #000 30%,
+    rgba(0, 0, 0, 0.72) 55%,
+    rgba(0, 0, 0, 0.3) 74%,
+    transparent 88%
+  );
+  mask-image: radial-gradient(
+    ellipse 74% 42% at 50% 52%,
+    #000 0%,
+    #000 30%,
+    rgba(0, 0, 0, 0.72) 55%,
+    rgba(0, 0, 0, 0.3) 74%,
+    transparent 88%
+  );
+}
+/* Just enough at the very top and bottom for the chrome to read over a bright
+   frame, kept off the picture in the middle. */
+.snffl-wstory-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(4, 7, 13, 0.72) 0%,
+    transparent 16%,
+    transparent 84%,
+    rgba(4, 7, 13, 0.72) 100%
+  );
 }
 
 /* The ribbon drops in from under the crawl and the column moves down to take

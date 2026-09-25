@@ -1,0 +1,486 @@
+{
+  "1": [
+    {
+      "url": "https://a.espncdn.com/photo/2026/0920/r1719791_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Jaxon Smith-Njigba found the end zone three times against the Cardinals.",
+      "gameId": "401872925",
+      "week": 1,
+      "playerIds": [
+        "9488"
+      ],
+      "score": 13.28
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0913/94e9c638-3c5e-456a-b8a9-285a8f3326e5/94e9c638-3c5e-456a-b8a9-285a8f3326e5.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Bijan Robinson scores first Falcons TD",
+      "gameId": "401872658",
+      "week": 1,
+      "playerIds": [
+        "9509"
+      ],
+      "score": 10.91
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2025/1018/r1561966_1296x864_3-2.jpg",
+      "width": 1296,
+      "height": 864,
+      "caption": "Bijan Robinson, the No. 2 overall pick on average in fantasy leagues, delivered on those expectations on Thursday night.",
+      "gameId": "401872925",
+      "week": 1,
+      "playerIds": [
+        "9509"
+      ],
+      "score": 9.91
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0921/r1720009_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Travis Etienne Jr. of the New Orleans Saints was started in 78.2% of ESPN leagues.",
+      "gameId": "401872925",
+      "week": 1,
+      "playerIds": [
+        "7543"
+      ],
+      "score": 8.85
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0913/bda875f2-806a-4e7b-9d2a-a98212517757/bda875f2-806a-4e7b-9d2a-a98212517757.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Derrick Henry runs in for his 3rd TD of the game for the Ravens",
+      "gameId": "401872659",
+      "week": 1,
+      "playerIds": [
+        "3198"
+      ],
+      "score": 8
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0914/f40fff6ad7c84d64b5344d7a030cf9921411/f40fff6ad7c84d64b5344d7a030cf9921411.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Bo Nix's out-of-control scramble results in a sack",
+      "gameId": "401872931",
+      "week": 1,
+      "playerIds": [
+        "11563"
+      ],
+      "score": 7.68
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0913/7e2157ef-ca97-4e2f-987d-8d31346053ae/7e2157ef-ca97-4e2f-987d-8d31346053ae.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "David Montgomery punches in Texans' TD",
+      "gameId": "401872660",
+      "week": 1,
+      "playerIds": [
+        "5892"
+      ],
+      "score": 7.61
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0913/3525824f5e0c4ea3b35c35162f8c958c1425/3525824f5e0c4ea3b35c35162f8c958c1425.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Jaxson Dart finds Isaiah Likely for the duo's 2nd TD",
+      "gameId": "401872930",
+      "week": 1,
+      "playerIds": [
+        "8131",
+        "12508"
+      ],
+      "score": 7.48
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0921/r1720117_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "The Minnesota Vikings announced that Kyler Murray will start in Week 3.",
+      "gameId": "401872925",
+      "week": 1,
+      "playerIds": [
+        "5849"
+      ],
+      "score": 6.95
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0924/r1721380_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "C.J. Stroud of the Houston Texans is available in more than 60% of ESPN leagues.",
+      "gameId": "401872925",
+      "week": 1,
+      "playerIds": [
+        "9758"
+      ],
+      "score": 6.06
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0913/688b3c3ab08f46ceb5270ee7ef3a71811201/688b3c3ab08f46ceb5270ee7ef3a71811201.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Stefon Diggs hauls in his 1st TD as a Commander",
+      "gameId": "401872929",
+      "week": 1,
+      "playerIds": [
+        "2449"
+      ],
+      "score": 5.94
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0913/61de66ee-435d-4dc4-91ed-9406828b5c0b/61de66ee-435d-4dc4-91ed-9406828b5c0b.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Joe Burrow connects with Mike Gesicki for a Bengals TD",
+      "gameId": "401872925",
+      "week": 1,
+      "playerIds": [
+        "6770"
+      ],
+      "score": 5.77
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0924/r1721329_576x324_16-9.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Will Aaron Jones Sr. suit up for the Vikings this weekend?",
+      "gameId": "401872925",
+      "week": 1,
+      "playerIds": [
+        "4199"
+      ],
+      "score": 5.25
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0923/r1720827_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "If injuries have upended the quarterback position on your fantasy roster, consider picking up Lions QB Jared Goff.",
+      "gameId": "401872925",
+      "week": 1,
+      "playerIds": [
+        "3163"
+      ],
+      "score": 3.06
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0913/dm_260913_NFL/dm_260913_NFL.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Saints score TD in overtime, but fall when 2-point conversion fails",
+      "gameId": "401872923",
+      "week": 1,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0913/fc6b598489a7470cb56c7dd1e7a063be1156/fc6b598489a7470cb56c7dd1e7a063be1156.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Carson Wentz throws a dart in the end zone to T.J. Hockenson",
+      "gameId": "401872927",
+      "week": 1,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0924/r1721426_1296x864_3-2.jpg",
+      "width": 1296,
+      "height": 864,
+      "caption": "Malik Nabers hurt a shoulder Monday night but expects to be available Sunday against the Titans.",
+      "gameId": "401872925",
+      "week": 1,
+      "playerIds": [
+        "11632"
+      ],
+      "score": 2.61
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0922/r1720392_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "Malik Nabers and the rest of the Giants' skill position players take a hit with Jaxson Dart injured.",
+      "gameId": "401872925",
+      "week": 1,
+      "playerIds": [
+        "11632",
+        "12508"
+      ],
+      "score": 2.33
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0923/r1720860_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "With Panthers RB Jonathon Brooks on IR, fantasy managers should pivot their attention to Chuba Hubbard.",
+      "gameId": "401872925",
+      "week": 1,
+      "playerIds": [
+        "7594",
+        "11583"
+      ],
+      "score": 0.96
+    }
+  ],
+  "2": [
+    {
+      "url": "https://a.espncdn.com/photo/2026/0920/r1719791_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Jaxon Smith-Njigba found the end zone three times against the Cardinals.",
+      "gameId": "401872945",
+      "week": 2,
+      "playerIds": [
+        "9488"
+      ],
+      "score": 14
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0920/a26c6c8b-bf2f-4d9e-94a2-6043a4a191d5/a26c6c8b-bf2f-4d9e-94a2-6043a4a191d5.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Lamar Jackson picked off late to seal Saints win ",
+      "gameId": "401872938",
+      "week": 2,
+      "playerIds": [
+        "4881"
+      ],
+      "score": 8.85
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0918/ss_20260918_082552050_3664378/ss_20260918_082552050_3664378.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Is Josh Allen already the MVP front-runner?",
+      "gameId": "401872932",
+      "week": 2,
+      "playerIds": [
+        "4984"
+      ],
+      "score": 8
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0921/r1720009_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Travis Etienne Jr. of the New Orleans Saints was started in 78.2% of ESPN leagues.",
+      "gameId": "401872945",
+      "week": 2,
+      "playerIds": [
+        "7543"
+      ],
+      "score": 7.89
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2025/1018/r1561966_1296x864_3-2.jpg",
+      "width": 1296,
+      "height": 864,
+      "caption": "Bijan Robinson, the No. 2 overall pick on average in fantasy leagues, delivered on those expectations on Thursday night.",
+      "gameId": "401872945",
+      "week": 2,
+      "playerIds": [
+        "9509"
+      ],
+      "score": 7.39
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0924/r1721380_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "C.J. Stroud of the Houston Texans is available in more than 60% of ESPN leagues.",
+      "gameId": "401872945",
+      "week": 2,
+      "playerIds": [
+        "9758"
+      ],
+      "score": 6.13
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0921/bba56cdbbfcc451599b7046dd298af5f5/bba56cdbbfcc451599b7046dd298af5f5.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Chiefs win as time expires in OT on Harrison Butker's 40-yard FG",
+      "gameId": "401872945",
+      "week": 2,
+      "playerIds": [
+        "4227"
+      ],
+      "score": 6
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0920/237e98d775384dd192c4bdb229ad207f1015/237e98d775384dd192c4bdb229ad207f1015.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Drake Maye launches 63-yard pass to Romeo Doubs",
+      "gameId": "401872946",
+      "week": 2,
+      "playerIds": [
+        "8121",
+        "11564"
+      ],
+      "score": 5.58
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0924/r1721329_576x324_16-9.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Will Aaron Jones Sr. suit up for the Vikings this weekend?",
+      "gameId": "401872945",
+      "week": 2,
+      "playerIds": [
+        "4199"
+      ],
+      "score": 5.31
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0923/r1720827_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "If injuries have upended the quarterback position on your fantasy roster, consider picking up Lions QB Jared Goff.",
+      "gameId": "401872945",
+      "week": 2,
+      "playerIds": [
+        "3163"
+      ],
+      "score": 4.72
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0921/r1720117_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "The Minnesota Vikings announced that Kyler Murray will start in Week 3.",
+      "gameId": "401872945",
+      "week": 2,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0924/r1721426_1296x864_3-2.jpg",
+      "width": 1296,
+      "height": 864,
+      "caption": "Malik Nabers hurt a shoulder Monday night but expects to be available Sunday against the Titans.",
+      "gameId": "401872945",
+      "week": 2,
+      "playerIds": [
+        "11632"
+      ],
+      "score": 1.14
+    }
+  ],
+  "3": [
+    {
+      "url": "https://a.espncdn.com/photo/2025/1018/r1561966_1296x864_3-2.jpg",
+      "width": 1296,
+      "height": 864,
+      "caption": "Bijan Robinson, the No. 2 overall pick on average in fantasy leagues, delivered on those expectations on Thursday night.",
+      "gameId": "401872948",
+      "week": 3,
+      "playerIds": [
+        "9509"
+      ],
+      "score": 10
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0920/r1719791_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Jaxon Smith-Njigba found the end zone three times against the Cardinals.",
+      "gameId": "401872948",
+      "week": 3,
+      "playerIds": [
+        "9488"
+      ],
+      "score": 10
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0921/r1720117_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "The Minnesota Vikings announced that Kyler Murray will start in Week 3.",
+      "gameId": "401872948",
+      "week": 3,
+      "playerIds": [
+        "5849"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0921/r1720009_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Travis Etienne Jr. of the New Orleans Saints was started in 78.2% of ESPN leagues.",
+      "gameId": "401872948",
+      "week": 3,
+      "playerIds": [
+        "7543"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0924/r1721329_576x324_16-9.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Will Aaron Jones Sr. suit up for the Vikings this weekend?",
+      "gameId": "401872948",
+      "week": 3,
+      "playerIds": [
+        "4199"
+      ],
+      "score": 4
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0924/r1721380_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "C.J. Stroud of the Houston Texans is available in more than 60% of ESPN leagues.",
+      "gameId": "401872948",
+      "week": 3,
+      "playerIds": [
+        "9758"
+      ],
+      "score": 4
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0924/r1721426_1296x864_3-2.jpg",
+      "width": 1296,
+      "height": 864,
+      "caption": "Malik Nabers hurt a shoulder Monday night but expects to be available Sunday against the Titans.",
+      "gameId": "401872948",
+      "week": 3,
+      "playerIds": [
+        "11632"
+      ],
+      "score": 1
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0923/r1720827_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "If injuries have upended the quarterback position on your fantasy roster, consider picking up Lions QB Jared Goff.",
+      "gameId": "401872948",
+      "week": 3,
+      "playerIds": [
+        "3163"
+      ],
+      "score": 1
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0922/ss_20260922_104345041_3670809/ss_20260922_104345041_3670809.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Is Adonai Mitchell worth adding off the waiver wire?",
+      "gameId": "401872948",
+      "week": 3,
+      "playerIds": [
+        "11625"
+      ],
+      "score": 1
+    }
+  ]
+}

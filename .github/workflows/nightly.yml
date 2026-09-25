@@ -27,6 +27,13 @@ jobs:
           SLEEPER_LEAGUE_ID: ${{ secrets.SLEEPER_LEAGUE_ID }}
         run: node scripts/nightly-refresh.ts
 
+      # Real photographs of the week for the Rag's lead art. ESPN attaches
+      # these to each game and prunes them, so they are collected while fresh.
+      - name: Pull game photographs
+        env:
+          SLEEPER_LEAGUE_ID: ${{ secrets.SLEEPER_LEAGUE_ID }}
+        run: node scripts/photos-pull.ts
+
       # Manager colors carry white text, so a palette that slipped below 4.5:1
       # should fail the job rather than ship.
       - run: npm run contrast

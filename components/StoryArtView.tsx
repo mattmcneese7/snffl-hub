@@ -9,7 +9,9 @@ export default function StoryArtView({ art, size = 'md' }: { art?: StoryArt; siz
   if (!art) return null;
   if (art.kind === 'photo') {
     // eslint-disable-next-line @next/next/no-img-element
-    return <img className="snffl-story-art-photo" src={art.src} alt="" loading="lazy" />;
+    return (
+      <img className="snffl-story-art-photo" src={art.src} alt={art.caption ?? ''} loading="lazy" />
+    );
   }
   return (
     <span

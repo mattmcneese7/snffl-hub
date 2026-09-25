@@ -5,6 +5,7 @@ import WeekSelector from '@/components/WeekSelector';
 import { getHighlights } from '@/lib/highlights';
 import { teams } from '@/lib/league';
 import StoryArtView from '@/components/StoryArtView';
+import { photosForWeek } from '@/lib/game-photos';
 import { artForArticles, featuredPlayers } from '@/lib/story-images';
 import { publishDateFor, publishedWeeks, readIssue } from '@/lib/rag';
 
@@ -30,14 +31,16 @@ export default async function RagWeek({ params }: { params: Promise<{ week: stri
   const lead = issue?.articles[0];
   const rest = issue?.articles.slice(1) ?? [];
 
-  // Lead art per Brief Section 2: a real highlight still where the story's
-  // manager has a clip, else his top scorer drawn from the week's data.
+  // Lead art per Brief Section 2: a real photograph of the week where one
+  // exists of the story's manager, else a highlight still, else his top scorer
+  // drawn from the week's data.
   const [clips, featured] = await Promise.all([getHighlights(week, 200), featuredPlayers(week)]);
   const stills = artForArticles(
     issue?.articles ?? [],
     clips,
     Object.fromEntries(teams.map((team) => [String(team.rosterId), team.manager])),
-    featured
+    featured,
+    photosForWeek(week)
   );
 
   return (

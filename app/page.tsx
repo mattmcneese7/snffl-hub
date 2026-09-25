@@ -45,6 +45,7 @@ import {
 import { getPlayoffOdds } from '@/lib/playoff-odds';
 import { publishedWeeks, readIssue } from '@/lib/rag';
 import { getTrades } from '@/lib/trades';
+import { photosForWeek } from '@/lib/game-photos';
 import type { Game, GameSide } from '@/lib/types';
 
 const QUICK_LINKS = [
@@ -196,7 +197,8 @@ export default async function HomePage() {
               ragIssue?.articles ?? [],
               ragClips,
               Object.fromEntries(teams.map((t) => [String(t.rosterId), t.manager])),
-              ragFeatured
+              ragFeatured,
+              latestRagWeek ? photosForWeek(latestRagWeek) : []
             )}
           />
         </HomeWidget>

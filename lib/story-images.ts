@@ -2,10 +2,12 @@
 //
 // Two sources, so a story never depends on video to have a picture:
 //
-//   photo    a real still from a highlight clip: ESPN's own image for ESPN
-//            clips, YouTube's thumbnail for the older NFL uploads. Built from
-//            the clip's stored still, never by pasting an id into a YouTube
-//            URL, which is what broke once ESPN clips (espn:<id>) arrived.
+//   photo    a real photograph of the week, ranked in lib/game-photos.ts, or
+//            failing that a still from a highlight clip: ESPN's own image for
+//            ESPN clips, YouTube's thumbnail for the older NFL uploads. Built
+//            from the clip's stored still, never by pasting an id into a
+//            YouTube URL, which is what broke once ESPN clips (espn:<id>)
+//            arrived.
 //   player   a card drawn from the week's data: the featured manager's top
 //            scorer as an ESPN cutout over his team's color and logo. Needs
 //            no clip at all, so every story gets art every week.
@@ -16,6 +18,7 @@
 // is never four copies of the same frame.
 
 import { firstNameOf } from '../config/managers.ts';
+import type { GamePhoto } from './game-photos.ts';
 import { ESPN_CUTOUT, ESPN_TEAM_LOGO } from './espn.ts';
 import type { Highlight } from './highlights.ts';
 import { getWeekGames } from './league.ts';
@@ -23,11 +26,12 @@ import type { Article } from './rag.ts';
 import { teamPaint } from '../config/nfl-colors.ts';
 
 export type StoryArt =
-  | { kind: 'photo'; src: string }
+  | { kind: 'photo'; src: string; caption?: string }
   | { kind: 'player'; cutout: string; logo: string | null; color: string; name: string; points: number };
 
 export type FeaturedPlayer = {
   rosterId: number;
+  id: string;
   name: string;
   team: string | null;
   cutout: string;
@@ -57,6 +61,7 @@ export async function featuredPlayers(week: number): Promise<FeaturedPlayer[]> {
       if (!best) continue;
       out.push({
         rosterId: side.rosterId,
+        id: best.id,
         name: best.name,
         team: best.team ?? null,
         cutout: best.espnId ? ESPN_CUTOUT(best.espnId) : best.headshot,
@@ -84,13 +89,25 @@ export function artForArticles(
   articles: Article[],
   highlights: Highlight[],
   managerByRoster: Record<string, string>,
-  featured: FeaturedPlayer[] = []
+  featured: FeaturedPlayer[] = [],
+  photos: GamePhoto[] = []
 ): Record<string, StoryArt> {
   const out: Record<string, StoryArt> = {};
   if (!articles.length) return out;
 
   const usedClips = new Set<string>();
   const usedPlayers = new Set<number>();
+  const usedPhotos = new Set<string>();
+  // Ranked already, so the first unused one is always the best one left.
+  const ranked = [...photos].sort((a, b) => b.score - a.score);
+  const photoOf = (playerId: string | null) =>
+    ranked.find(
+      (photo) => !usedPhotos.has(photo.url) && (playerId ? photo.playerIds.includes(playerId) : true)
+    );
+  const takePhoto = (photo: GamePhoto): StoryArt => {
+    usedPhotos.add(photo.url);
+    return { kind: 'photo', src: photo.url, caption: photo.caption };
+  };
   // Owned clips with a real still first: a story is about somebody here.
   const pool = highlights
     .filter((clip) => stillOf(clip))
@@ -103,6 +120,18 @@ export function artForArticles(
 
   for (const article of articles) {
     const haystack = haystackOf(article);
+
+    // A real photograph of the manager's own best player beats everything.
+    const hisPlayer = featured.find(
+      (p) => !usedPlayers.has(p.rosterId) && namesOf(String(p.rosterId)).some((name) => mentions(haystack, name))
+    );
+    const hisPhoto = hisPlayer ? photoOf(hisPlayer.id) : undefined;
+    if (hisPlayer && hisPhoto) {
+      out[article.slug] = takePhoto(hisPhoto);
+      usedPlayers.add(hisPlayer.rosterId);
+      continue;
+    }
+
     const clip = pool.find(
       (c) =>
         !usedClips.has(c.id) &&
@@ -114,9 +143,17 @@ export function artForArticles(
       usedClips.add(clip.id);
       continue;
     }
-    const player = featured.find(
-      (p) => !usedPlayers.has(p.rosterId) && namesOf(String(p.rosterId)).some((name) => mentions(haystack, name))
-    );
+    // Then any photograph left. Every one that survives ranking names a
+    // player somebody in this league rosters, so a real picture of the week
+    // beats a headshot on a coloured card every time.
+    const anyPhoto = photoOf(null);
+    if (anyPhoto) {
+      out[article.slug] = takePhoto(anyPhoto);
+      if (hisPlayer) usedPlayers.add(hisPlayer.rosterId);
+      continue;
+    }
+
+    const player = hisPlayer;
     if (player) {
       out[article.slug] = playerArt(player);
       usedPlayers.add(player.rosterId);
@@ -125,6 +162,11 @@ export function artForArticles(
 
   for (const article of articles) {
     if (out[article.slug]) continue;
+    const photo = photoOf(null);
+    if (photo) {
+      out[article.slug] = takePhoto(photo);
+      continue;
+    }
     const clip = pool.find((c) => !usedClips.has(c.id));
     if (clip) {
       out[article.slug] = { kind: 'photo', src: stillOf(clip)! };

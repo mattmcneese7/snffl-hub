@@ -1139,22 +1139,30 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
     radial-gradient(120% 90% at 80% 10%, rgba(255, 255, 255, 0.22), transparent 60%),
     linear-gradient(150deg, var(--team), #05070d 130%);
 }
-.snffl-story-art-logo {
+.snffl-story-art-player .snffl-story-art-logo {
   position: absolute;
   left: -8%;
   top: 50%;
   width: 62%;
+  height: auto;
   transform: translateY(-50%);
+  object-fit: contain;
   opacity: 0.22;
   filter: saturate(1.2);
 }
-.snffl-story-art-cutout {
+/* Two class names deep on purpose. The card is dropped inside .snffl-rag-lead-art,
+   .snffl-rag-thumb and .snffl-clip-art, each of which styles a bare img with
+   cover and a full height, and those beat a single class. That is what cropped
+   every player's head off: a head and shoulders headshot filled to a wide short
+   frame from the bottom right, so the top of the head was outside the box. */
+.snffl-story-art-player .snffl-story-art-cutout {
   position: absolute;
   right: 4%;
   bottom: 0;
-  height: 108%;
+  top: auto;
+  height: 96%;
   width: auto;
-  max-width: 70%;
+  max-width: 62%;
   object-fit: contain;
   object-position: bottom right;
   filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.45));

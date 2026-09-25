@@ -324,11 +324,26 @@ export type GameVenue = {
   grass: boolean | null;
 };
 
+/** A club's season to date, as the standings have it. */
+export type SeasonLine = {
+  /** Sleeper code, so it matches the rest of the site. */
+  abbr: string;
+  wins: number;
+  losses: number;
+  ties: number;
+  pointsFor: number;
+  pointsAgainst: number;
+  /** Games played, which is what turns the totals into averages. */
+  played: number;
+};
+
 export type GameExtras = {
   venue: GameVenue | null;
   /** Null for a dome, and for any game already played. */
   weather: GameWeather | null;
   attendance: number | null;
+  /** Both clubs' seasons so far, away first. Empty when ESPN omits them. */
+  season: SeasonLine[];
 };
 
 /**
@@ -399,7 +414,52 @@ export async function getGameExtras(eventId: string, live = false): Promise<Game
     weather,
     attendance:
       typeof summary?.gameInfo?.attendance === 'number' ? summary.gameInfo.attendance : null,
+    season: seasonLines(summary),
   };
+}
+
+/**
+ * Each club's season to date, lifted out of the standings block ESPN already
+ * ships inside the game summary.
+ *
+ * It arrives as division tables rather than as two rows, so the two clubs in
+ * this game are found by id across every group: they are usually in different
+ * divisions, and matching on name would break the moment a club moved.
+ */
+function seasonLines(summary: Json | null): SeasonLine[] {
+  const competitors: Json[] = summary?.header?.competitions?.[0]?.competitors ?? [];
+  const groups: Json[] = summary?.standings?.groups ?? [];
+  const entries: Json[] = groups.flatMap((g) => g?.standings?.entries ?? []);
+  if (!competitors.length || !entries.length) return [];
+
+  const read = (row: Json, name: string): number => {
+    const stat = (row?.stats ?? []).find((s: Json) => s?.name === name);
+    return typeof stat?.value === 'number' ? stat.value : 0;
+  };
+
+  // Away first, which is the order the board reads in.
+  const ordered = [...competitors].sort((a, b) =>
+    a?.homeAway === b?.homeAway ? 0 : a?.homeAway === 'away' ? -1 : 1
+  );
+
+  const out: SeasonLine[] = [];
+  for (const side of ordered) {
+    const row = entries.find((e) => String(e?.id) === String(side?.team?.id));
+    if (!row) continue;
+    const wins = read(row, 'wins');
+    const losses = read(row, 'losses');
+    const ties = read(row, 'ties');
+    out.push({
+      abbr: toSleeperTeam(side?.team?.abbreviation ?? ''),
+      wins,
+      losses,
+      ties,
+      pointsFor: read(row, 'pointsFor'),
+      pointsAgainst: read(row, 'pointsAgainst'),
+      played: wins + losses + ties,
+    });
+  }
+  return out;
 }
 
 /**

@@ -1809,3 +1809,30 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
 .snffl-nflg-beat { color: var(--tint-green-ink); }
 /* Nothing has happened yet, so the projection reads as provisional. */
 .snffl-nflg-pending { color: var(--ink-secondary); }
+
+/* Season to date, the two clubs facing each other down a centre column of
+   labels. Reads the same way the scoreboard above it does. */
+.snffl-season { padding: var(--s-3) var(--s-4) var(--s-4); }
+.snffl-season-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--s-3);
+  padding: var(--s-3) 0;
+  border-bottom: 1px solid var(--line);
+}
+.snffl-season-row:last-child { border-bottom: 0; }
+.snffl-season-row > :first-child { text-align: left; font-size: var(--t-h3); font-weight: 800; }
+.snffl-season-row > :last-child { text-align: right; font-size: var(--t-h3); font-weight: 800; }
+.snffl-season-row .snffl-label { text-align: center; white-space: nowrap; }
+.snffl-season-head {
+  padding-top: 0;
+  border-bottom: 1px solid var(--glass-line);
+}
+.snffl-season-head > :first-child,
+.snffl-season-head > :last-child {
+  font-family: var(--mono);
+  font-size: var(--t-small);
+  letter-spacing: 0.12em;
+  color: var(--ink-secondary);
+}

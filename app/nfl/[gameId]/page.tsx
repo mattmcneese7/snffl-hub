@@ -15,6 +15,7 @@ import {
   weatherIcon,
   type GameLines,
   type GameWeather,
+  type SeasonLine,
   type NflGame,
   type NflSide,
 } from '@/lib/gameday';
@@ -154,6 +155,7 @@ export default async function NflGamePage({ params }: { params: Promise<{ gameId
       venue: null,
       weather: null,
       attendance: null,
+      season: [],
     })),
     getWeekProjections(league.season, week).catch(() => ({}) as Record<string, number>),
   ]);
@@ -269,6 +271,56 @@ export default async function NflGamePage({ params }: { params: Promise<{ gameId
             </div>
             <div className="snffl-card">
               <Forecast weather={extras.weather} />
+            </div>
+          </section>
+        ) : null}
+
+        {/* Where both clubs actually are, not just today's score. Averages
+            rather than totals, because a team that has played one more game
+            than the other looks better on totals for no reason. */}
+        {extras.season.length === 2 ? (
+          <section>
+            <div className="snffl-block-heading">
+              <h2 className="snffl-headline">Season So Far</h2>
+              <span className="snffl-block-heading-link">Per game</span>
+            </div>
+            <div className="snffl-card snffl-season">
+              <div className="snffl-season-row snffl-season-head">
+                <span>{extras.season[0].abbr}</span>
+                <span className="snffl-label" />
+                <span>{extras.season[1].abbr}</span>
+              </div>
+              {(
+                [
+                  ['Record', (t: SeasonLine) => `${t.wins}-${t.losses}${t.ties ? `-${t.ties}` : ''}`],
+                  [
+                    'Scored',
+                    (t: SeasonLine) => (t.played ? (t.pointsFor / t.played).toFixed(1) : '-'),
+                  ],
+                  [
+                    'Allowed',
+                    (t: SeasonLine) => (t.played ? (t.pointsAgainst / t.played).toFixed(1) : '-'),
+                  ],
+                  [
+                    'Margin',
+                    (t: SeasonLine) => {
+                      if (!t.played) return '-';
+                      const d = (t.pointsFor - t.pointsAgainst) / t.played;
+                      return `${d > 0 ? '+' : ''}${d.toFixed(1)}`;
+                    },
+                  ],
+                ] as [string, (t: SeasonLine) => string][]
+              ).map(([label, read]) => {
+                const a = read(extras.season[0]);
+                const b = read(extras.season[1]);
+                return (
+                  <div className="snffl-season-row" key={label}>
+                    <span className="snffl-numeric">{a}</span>
+                    <span className="snffl-label">{label}</span>
+                    <span className="snffl-numeric">{b}</span>
+                  </div>
+                );
+              })}
             </div>
           </section>
         ) : null}

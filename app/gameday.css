@@ -625,7 +625,7 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
 
 .snffl-bug-prob {
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr) 34px;
+  grid-template-columns: 30px minmax(0, 1fr) 30px;
   align-items: center;
   gap: 8px;
   font: 700 10px/1 var(--mono);
@@ -763,7 +763,6 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
 /* No WIN or LOSE column until a game is final, so a live row spends that
    width on the team name instead. */
 .snffl-bug-side-open { grid-template-columns: 26px minmax(0, 1fr) auto; }
-.snffl-bug-prob { grid-template-columns: 30px minmax(0, 1fr) 30px; }
 
 /* ---------- Top performers, with the team mark ---------- */
 

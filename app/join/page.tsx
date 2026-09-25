@@ -15,7 +15,10 @@ import InstallInvite from '@/components/InstallInvite';
  * reachable by anyone holding the link and by nobody searching.
  */
 export const metadata: Metadata = {
-  title: 'Join',
+  // Absolute, so it escapes the "%s, SQUIRT" template every other page uses.
+  // That template is right for a section of the app and wrong for this: the
+  // invite is an instruction, not a place.
+  title: { absolute: 'Join SQUIRT!' },
   description: 'Put SQUIRT on your home screen.',
   // What the card in the group chat says. The page title is "Join, SQUIRT",
   // which is right for a browser tab and useless as the first thing thirteen

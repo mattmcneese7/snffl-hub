@@ -212,13 +212,21 @@
 
 /* ---------- Ticker bands ---------- */
 
+/* The bands carry no ground of their own: the frost behind the stack paints
+   it, exactly as it does inside the dock. A fill here is what made the crawl
+   read as a painted slab while the dock read as glass.
+
+   This used to be two rules, one giving the row a panel fill, a blur and a
+   top rule, and another further down taking all three back off. The blur
+   never reached the screen; it just took a second rule to say so, and left a
+   backdrop-filter in the file that a reader would reasonably believe was
+   running on every scroll frame. */
 .snffl-ticker-row {
   height: var(--ticker-h);
   align-items: center;
-  background: var(--panel);
-  -webkit-backdrop-filter: blur(28px) saturate(170%);
-  backdrop-filter: blur(28px) saturate(170%);
-  border-top: 1px solid var(--line);
+  background: transparent;
+  border-top: 0;
+  border-bottom: 0;
 }
 /* No fill on the bands: the frost behind them is the surface. A 90 percent
    opaque card colour here is what made the crawl read as a painted slab while
@@ -319,14 +327,6 @@ body { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
    it, exactly as it does inside the dock. */
 /* Same trick at the top of the screen, grown downward over the page. */
 
-/* The bands carry no fill or rule of their own; the scrim is the background. */
-.snffl-ticker-row {
-  background: transparent;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-  border-top: 0;
-  border-bottom: 0;
-}
 .snffl-tabbar { padding-bottom: 0; background: transparent; }
 .snffl-tab { padding: 10px 0 9px; }
 /* The active tab is a solid pill holding its icon and label, the way every

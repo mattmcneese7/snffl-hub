@@ -131,7 +131,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--s-3);
   min-height: var(--tap);
   padding: 10px 12px;
   border-bottom: 1px solid var(--line);
@@ -144,7 +144,6 @@
 /* The row is icon, text, chevron. Without a flexible middle the label block
    centred itself between the two, which is how a menu ends up looking like a
    list of buttons. */
-.snffl-menu-row { gap: var(--s-3); }
 .snffl-menu-row > span:not(.snffl-icon-chip):not(.snffl-menu-arrow) {
   flex: 1 1 auto;
   min-width: 0;

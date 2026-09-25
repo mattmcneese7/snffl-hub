@@ -36,6 +36,7 @@ const martianMono = Martian_Mono({
   display: 'swap',
 });
 
+/* The Rag's reading voice. Italic is the deck; both are real usage. */
 const sourceSerif = Source_Serif_4({
   subsets: ['latin'],
   style: ['normal', 'italic'],
@@ -43,11 +44,19 @@ const sourceSerif = Source_Serif_4({
   display: 'swap',
 });
 
+/*
+ * The Shartzone's hand, and one label on a profile. Two uses, about fifty
+ * kilobytes, and neither is above the fold on any screen, so it is not
+ * preloaded: next/font preloads every face by default, which had this one
+ * competing for bandwidth with the fonts the first paint actually needs.
+ * It still loads, just after the page that does not use it has drawn.
+ */
 const permanentMarker = Permanent_Marker({
   subsets: ['latin'],
   weight: '400',
   variable: '--font-marker',
   display: 'swap',
+  preload: false,
 });
 
 export const metadata: Metadata = {

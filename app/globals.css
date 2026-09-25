@@ -254,3 +254,46 @@ a {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* ---------- Reduced motion, once, for everything ---------- */
+
+/*
+ * Thirty six things on this site animate and eight of them were guarded, so
+ * the audit for Checkpoint 11 found twenty eight that ignored the setting:
+ * pulsing live dots, the crawl, the Shartzone's flies, every tube and tick.
+ * Guarding them one at a time is how it got to twenty eight in the first
+ * place, because the rule has to be remembered every time something new is
+ * animated and it never is.
+ *
+ * So it is a blanket. Animations run once and finish immediately rather than
+ * being removed, which keeps anything that animates into position visible in
+ * its final state instead of stuck at its first frame.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /*
+   * The crawl is the exception worth making. Its animation is not decoration,
+   * it is how the rest of the scores arrive: stopping it dead leaves a reader
+   * with whichever two games happen to be in view and no way to reach the
+   * others. Frozen, it becomes something you can swipe instead.
+   */
+  .snffl-ticker-row {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .snffl-ticker-row::-webkit-scrollbar {
+    display: none;
+  }
+  .snffl-ticker-track {
+    animation: none !important;
+    transform: none !important;
+  }
+}

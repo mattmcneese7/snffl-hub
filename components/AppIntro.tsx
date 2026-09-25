@@ -32,11 +32,37 @@ const SEEN = 'snffl.intro.seen';
 /** How long the mark holds before it goes to the header. */
 const HOLD_MS = 4000;
 
+/*
+ * Whether the mark is still on screen, published where anything that has to
+ * wait for it can ask.
+ *
+ * sessionStorage cannot answer this. The intro marks itself seen the moment
+ * it starts, so anything mounting a beat later reads "seen" while the mark is
+ * still mid flight, and treats a running animation as one that already
+ * finished. This is the state itself rather than a record of having played.
+ */
+type IntroState = 'running' | 'done';
+const store = () => window as unknown as { __snfflIntro?: IntroState };
+const setIntroState = (state: IntroState) => {
+  store().__snfflIntro = state;
+};
+
+/**
+ * True until the mark has landed on the Home button.
+ *
+ * Unknown counts as running: the intro mounts above every caller in the
+ * layout, so an absent answer means it has not reported yet, and waiting on
+ * an event with a failsafe is the safe way to be wrong.
+ */
+export function introRunning(): boolean {
+  return store().__snfflIntro !== 'done';
+}
+
 type Phase = 'hold' | 'flight' | 'done';
 
 export default function AppIntro() {
   const [phase, setPhase] = useState<Phase | null>(null);
-  const logo = useRef<HTMLImageElement>(null);
+  const logo = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     let seen = true;
@@ -47,9 +73,11 @@ export default function AppIntro() {
       seen = false;
     }
     if (seen || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setIntroState('done');
       setPhase('done');
       return;
     }
+    setIntroState('running');
     try {
       sessionStorage.setItem(SEEN, '1');
     } catch {
@@ -84,7 +112,9 @@ export default function AppIntro() {
       document.getElementById('snffl-app-mark');
     const element = logo.current;
     if (!mark || !element) {
+      setIntroState('done');
       setPhase('done');
+      window.dispatchEvent(new Event('snffl:intro-done'));
       return;
     }
 
@@ -115,7 +145,14 @@ export default function AppIntro() {
         fill: 'forwards',
       });
 
-    const finish = () => setPhase('done');
+    const finish = () => {
+      setIntroState('done');
+      setPhase('done');
+      // The chug waits on this rather than on a number. The flight is 760ms
+      // after a four second hold, and anything timed to that by hand is a
+      // guess that drifts the moment either changes.
+      window.dispatchEvent(new Event('snffl:intro-done'));
+    };
     flight.addEventListener('finish', finish);
     return () => {
       flight.removeEventListener('finish', finish);
@@ -128,13 +165,19 @@ export default function AppIntro() {
   return (
     <div className="snffl-intro" role="presentation" onClick={land} aria-hidden>
       <div className="snffl-intro-curtain" id="snffl-intro-curtain" />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        ref={logo}
-        className={`snffl-intro-mark${phase === 'hold' ? ' snffl-intro-pulse' : ''}`}
-        src="/logo-mark-v4-1024.png"
-        alt=""
-      />
+      {/* The mark and the light behind its eyes fly as one thing. The glow is
+          a layer under the artwork, showing through the holes knocked in it,
+          exactly as it works on the Home button this lands on: the logo is
+          lit the whole way in, and what you are looking at during the open is
+          the same object you end up pressing. */}
+      <span ref={logo} className="snffl-intro-mark-eyes">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          className={`snffl-intro-mark${phase === 'hold' ? ' snffl-intro-pulse' : ''}`}
+          src="/logo-mark-v4-1024.png"
+          alt=""
+        />
+      </span>
     </div>
   );
 }

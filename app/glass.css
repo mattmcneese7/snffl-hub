@@ -595,19 +595,22 @@ h3,
    68.2 percent across and 58.4 percent down, and run 15 percent of its width
    by 11 of its height. Re-measure these whenever the artwork changes; the
    wider final drop moved them well past a pixel. */
-.snffl-app-mark-disc::after {
+/* One recipe, two places: the button in the dock and the mark in the opening
+   animation, which is the same object arriving. Written once as a selector
+   list rather than copied, because the eye positions are measured off the
+   artwork and a second copy is a second thing to re-measure. Both assets are
+   square, so the percentages carry from one to the other unchanged.
+
+   Bright, because the eye holes are not fully clear: they sit at about a
+   quarter opacity, so anything gentle behind them barely tints through. White
+   hot at the centre falling to cyan, which is what reads as a lit eye rather
+   than a blue patch. */
+.snffl-app-mark-disc::after,
+.snffl-intro-mark-eyes::after {
   content: '';
   position: absolute;
-  width: var(--mark-img);
-  height: var(--mark-img);
   z-index: 0;
-  opacity: 0;
   pointer-events: none;
-  transform: translateY(calc(-1 * var(--mark-lift)));
-  /* Bright, because the eye holes are not fully clear: they sit at about a
-     quarter opacity, so anything gentle behind them barely tints through.
-     White hot at the centre falling to cyan, which is what reads as a lit
-     eye rather than a blue patch. */
   background-image:
     radial-gradient(
       ellipse 13% 10% at 31.7% 58.4%,
@@ -625,6 +628,12 @@ h3,
       rgba(53, 214, 255, 0.65) 80%,
       transparent 95%
     );
+}
+.snffl-app-mark-disc::after {
+  width: var(--mark-img);
+  height: var(--mark-img);
+  opacity: 0;
+  transform: translateY(calc(-1 * var(--mark-lift)));
   /* And a real bloom around them, so the light spills onto the drop. */
   filter: drop-shadow(0 0 6px rgba(70, 220, 255, 0.85));
 }
@@ -677,16 +686,52 @@ h3,
 }
 /* Its own layer, so the ground can clear while the mark is still flying. */
 .snffl-intro-curtain { position: absolute; inset: 0; background: #05070d; }
-.snffl-intro-mark {
+/* The box the mark occupies, and the thing the flight actually animates: the
+   glow has to travel with the artwork, so the two move as one element rather
+   than as an image with a light left behind it. Sized here, since this is now
+   what the FLIP measures. */
+.snffl-intro-mark-eyes {
   position: relative;
+  display: block;
   /* Smaller, and drawn from the 1024 asset, so it is never scaled up. At two
      thirds of the viewport it was asking more of the artwork than the
      artwork has. */
   width: min(46vw, 30vh);
-  height: auto;
+  aspect-ratio: 1;
   transform-origin: center;
   will-change: transform;
   pointer-events: none;
+}
+/* Lit from the first frame and breathing, the same as the Home button. The
+   bloom is far wider than the button's because the mark is three times the
+   size here and a six pixel spill at this scale is a rim, not a glow. */
+.snffl-intro-mark-eyes::after {
+  inset: 0;
+  animation: snffl-intro-eyes 2.1s ease-in-out infinite;
+}
+@keyframes snffl-intro-eyes {
+  0%,
+  100% {
+    opacity: 0.85;
+    filter:
+      drop-shadow(0 0 10px rgba(120, 235, 255, 0.9))
+      drop-shadow(0 0 34px rgba(53, 214, 255, 0.7));
+  }
+  50% {
+    opacity: 1;
+    filter:
+      drop-shadow(0 0 20px rgba(190, 245, 255, 1))
+      drop-shadow(0 0 70px rgba(70, 220, 255, 0.9));
+  }
+}
+.snffl-intro-mark {
+  position: relative;
+  /* Over the light, so the artwork stays sharp and only its holes let it
+     through. */
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 /* A lit edge over a big bloom, breathing.

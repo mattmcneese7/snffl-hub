@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { introRunning } from './AppIntro';
 
 /**
  * The week's chug, as a splash on the way in.
@@ -24,8 +25,8 @@ import { createPortal } from 'react-dom';
  * the screen.
  */
 const seenKey = (week: number) => `snffl.chug.seen.w${week}`;
-/** Long enough for the mark to have flown home. */
-const AFTER_INTRO_MS = 5200;
+/** Only a failsafe now: the intro says when it is done. */
+const AFTER_INTRO_MS = 6000;
 
 export default function ChugSplash({ week, src }: { week: number; src: string }) {
   const [open, setOpen] = useState(false);
@@ -53,17 +54,25 @@ export default function ChugSplash({ week, src }: { week: number; src: string })
     }
     if (seen || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    // Behind the opening animation. A returning visitor in the same session
-    // has already had it, so the wait is only as long as the intro it is
-    // actually following.
-    let introRunning = false;
-    try {
-      introRunning = sessionStorage.getItem('snffl.intro.seen') !== '1';
-    } catch {
-      introRunning = false;
+    // Straight off the back of the opening animation: the mark flies home to
+    // the Home button, the app is there, and this arrives on top of it. A
+    // returning visitor in the same session gets no animation, so there is
+    // nothing to follow and it comes up almost at once.
+    if (!introRunning()) {
+      const id = setTimeout(() => setOpen(true), 500);
+      return () => clearTimeout(id);
     }
-    const id = setTimeout(() => setOpen(true), introRunning ? AFTER_INTRO_MS : 600);
-    return () => clearTimeout(id);
+
+    const show = () => setOpen(true);
+    window.addEventListener('snffl:intro-done', show, { once: true });
+    // And a floor, in case the animation never reports finishing: a browser
+    // throttles animations in a hidden tab, so the event can be late or
+    // never, and the film should not be lost with it.
+    const failsafe = setTimeout(show, AFTER_INTRO_MS);
+    return () => {
+      window.removeEventListener('snffl:intro-done', show);
+      clearTimeout(failsafe);
+    };
   }, [week]);
 
   useEffect(() => {

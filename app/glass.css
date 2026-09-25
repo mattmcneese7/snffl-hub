@@ -759,8 +759,8 @@ h3,
 /* The chrome keeps a lit edge where it meets the page, the way a pane of glass
    catches light along its rim. Without it the bar has no thickness and reads
    as a wash rather than as a surface. */
-.snffl-dock { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14); }
-.snffl-ticker-stack { box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.1); }
+/* No inset rim on either. A 1px line across the whole width is exactly the
+   stark edge the ramp exists to avoid; the frost's own gradient is the edge. */
 
 /* ---------- Progressive frost ---------- */
 
@@ -783,24 +783,113 @@ h3,
 .snffl-frost-top { top: 0; bottom: -140%; }
 .snffl-frost i { position: absolute; inset: 0; display: block; }
 
+/* Each layer fades on a multi stop ramp rather than three stops. A gradient
+   with a couple of stops is a step with soft edges: it produced a visible line
+   across the bar where the tint stopped while the blur carried on. The stops
+   below approximate an ease, so no single point along the fade is where the
+   change happens. */
 .snffl-frost i:nth-child(1) {
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
-  -webkit-mask-image: linear-gradient(0deg, #000 0%, #000 40%, transparent 58%);
-  mask-image: linear-gradient(0deg, #000 0%, #000 40%, transparent 58%);
+  -webkit-mask-image: linear-gradient(0deg, #000 0%, #000 26%, rgba(0, 0, 0, 0.88) 34%, rgba(0, 0, 0, 0.66) 41%, rgba(0, 0, 0, 0.4) 48%, rgba(0, 0, 0, 0.18) 55%, transparent 64%);
+  mask-image: linear-gradient(0deg, #000 0%, #000 26%, rgba(0, 0, 0, 0.88) 34%, rgba(0, 0, 0, 0.66) 41%, rgba(0, 0, 0, 0.4) 48%, rgba(0, 0, 0, 0.18) 55%, transparent 64%);
 }
 .snffl-frost i:nth-child(2) {
   -webkit-backdrop-filter: blur(10px) saturate(150%);
   backdrop-filter: blur(10px) saturate(150%);
-  -webkit-mask-image: linear-gradient(0deg, #000 0%, #000 37%, transparent 50%);
-  mask-image: linear-gradient(0deg, #000 0%, #000 37%, transparent 50%);
+  -webkit-mask-image: linear-gradient(0deg, #000 0%, #000 22%, rgba(0, 0, 0, 0.85) 29%, rgba(0, 0, 0, 0.6) 36%, rgba(0, 0, 0, 0.34) 43%, rgba(0, 0, 0, 0.14) 50%, transparent 58%);
+  mask-image: linear-gradient(0deg, #000 0%, #000 22%, rgba(0, 0, 0, 0.85) 29%, rgba(0, 0, 0, 0.6) 36%, rgba(0, 0, 0, 0.34) 43%, rgba(0, 0, 0, 0.14) 50%, transparent 58%);
 }
 .snffl-frost i:nth-child(3) {
   -webkit-backdrop-filter: blur(26px) saturate(180%);
   backdrop-filter: blur(26px) saturate(180%);
-  background: linear-gradient(0deg, var(--scrim) 0%, var(--scrim) 33%, var(--scrim-soft) 40%, transparent 46%);
-  -webkit-mask-image: linear-gradient(0deg, #000 0%, #000 33%, transparent 46%);
-  mask-image: linear-gradient(0deg, #000 0%, #000 33%, transparent 46%);
+  background: linear-gradient(0deg, var(--scrim) 0%, rgba(8, 13, 24, 0.66) 18%, rgba(8, 13, 24, 0.58) 25%, rgba(8, 13, 24, 0.47) 31%, rgba(8, 13, 24, 0.34) 37%, rgba(8, 13, 24, 0.2) 43%, rgba(8, 13, 24, 0.08) 49%, transparent 56%);
+  -webkit-mask-image: linear-gradient(0deg, #000 0%, #000 18%, rgba(0, 0, 0, 0.82) 26%, rgba(0, 0, 0, 0.56) 33%, rgba(0, 0, 0, 0.3) 40%, rgba(0, 0, 0, 0.12) 47%, transparent 55%);
+  mask-image: linear-gradient(0deg, #000 0%, #000 18%, rgba(0, 0, 0, 0.82) 26%, rgba(0, 0, 0, 0.56) 33%, rgba(0, 0, 0, 0.3) 40%, rgba(0, 0, 0, 0.12) 47%, transparent 55%);
+}
+
+/* At the top of the screen the same ramps run the other way. */
+.snffl-frost-top i:nth-child(1) {
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 26%, rgba(0, 0, 0, 0.88) 34%, rgba(0, 0, 0, 0.66) 41%, rgba(0, 0, 0, 0.4) 48%, rgba(0, 0, 0, 0.18) 55%, transparent 64%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 26%, rgba(0, 0, 0, 0.88) 34%, rgba(0, 0, 0, 0.66) 41%, rgba(0, 0, 0, 0.4) 48%, rgba(0, 0, 0, 0.18) 55%, transparent 64%);
+}
+.snffl-frost-top i:nth-child(2) {
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 22%, rgba(0, 0, 0, 0.85) 29%, rgba(0, 0, 0, 0.6) 36%, rgba(0, 0, 0, 0.34) 43%, rgba(0, 0, 0, 0.14) 50%, transparent 58%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 22%, rgba(0, 0, 0, 0.85) 29%, rgba(0, 0, 0, 0.6) 36%, rgba(0, 0, 0, 0.34) 43%, rgba(0, 0, 0, 0.14) 50%, transparent 58%);
+}
+.snffl-frost-top i:nth-child(3) {
+  background: linear-gradient(180deg, var(--scrim) 0%, rgba(8, 13, 24, 0.66) 18%, rgba(8, 13, 24, 0.58) 25%, rgba(8, 13, 24, 0.47) 31%, rgba(8, 13, 24, 0.34) 37%, rgba(8, 13, 24, 0.2) 43%, rgba(8, 13, 24, 0.08) 49%, transparent 56%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 18%, rgba(0, 0, 0, 0.82) 26%, rgba(0, 0, 0, 0.56) 33%, rgba(0, 0, 0, 0.3) 40%, rgba(0, 0, 0, 0.12) 47%, transparent 55%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 18%, rgba(0, 0, 0, 0.82) 26%, rgba(0, 0, 0, 0.56) 33%, rgba(0, 0, 0, 0.3) 40%, rgba(0, 0, 0, 0.12) 47%, transparent 55%);
+}
+
+/* Heavy blur over a gradient produces stepped contour lines, because the blur
+   is working in 8 bit and the bands have nowhere to go. A faint turbulence
+   overlay dithers them away. Kept at 4 percent: any more and it reads as dirt
+   rather than as grain. */
+.snffl-glass::after,
+.snffl-dock::after,
+.snffl-ticker-stack::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+  border-radius: inherit;
+}
+
+/* The chrome keeps a lit edge where it meets the page, the way a pane of glass
+   catches light along its rim. Without it the bar has no thickness and reads
+   as a wash rather than as a surface. */
+/* No inset rim on either. A 1px line across the whole width is exactly the
+   stark edge the ramp exists to avoid; the frost's own gradient is the edge. */
+
+/* ---------- Progressive frost ---------- */
+
+/* A backdrop-filter is one strength, so wherever its mask ends the page snaps
+   from frosted to sharp. Three layers of rising blur, each masked to a
+   different height, ramp it: at the bar all three stack, further up only the
+   lightest is left, and the last of it dissolves rather than stopping. Each
+   layer also reaches well past the bar so the filter has pixels to sample,
+   since backdrop-filter only sees what is directly behind it. */
+.snffl-frost {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: -140%;
+  z-index: -1;
+  pointer-events: none;
+  display: block;
+}
+.snffl-frost-top { top: 0; bottom: -140%; }
+.snffl-frost i { position: absolute; inset: 0; display: block; }
+
+/* Each layer fades on a multi stop ramp rather than three stops. A gradient
+   with a couple of stops is a step with soft edges: it produced a visible line
+   across the bar where the tint stopped while the blur carried on. The stops
+   below approximate an ease, so no single point along the fade is where the
+   change happens. */
+.snffl-frost i:nth-child(1) {
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  -webkit-mask-image: linear-gradient(0deg, #000 0%, #000 26%, rgba(0, 0, 0, 0.88) 34%, rgba(0, 0, 0, 0.66) 41%, rgba(0, 0, 0, 0.4) 48%, rgba(0, 0, 0, 0.18) 55%, transparent 64%);
+  mask-image: linear-gradient(0deg, #000 0%, #000 26%, rgba(0, 0, 0, 0.88) 34%, rgba(0, 0, 0, 0.66) 41%, rgba(0, 0, 0, 0.4) 48%, rgba(0, 0, 0, 0.18) 55%, transparent 64%);
+}
+.snffl-frost i:nth-child(2) {
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-mask-image: linear-gradient(0deg, #000 0%, #000 22%, rgba(0, 0, 0, 0.85) 29%, rgba(0, 0, 0, 0.6) 36%, rgba(0, 0, 0, 0.34) 43%, rgba(0, 0, 0, 0.14) 50%, transparent 58%);
+  mask-image: linear-gradient(0deg, #000 0%, #000 22%, rgba(0, 0, 0, 0.85) 29%, rgba(0, 0, 0, 0.6) 36%, rgba(0, 0, 0, 0.34) 43%, rgba(0, 0, 0, 0.14) 50%, transparent 58%);
+}
+.snffl-frost i:nth-child(3) {
+  -webkit-backdrop-filter: blur(26px) saturate(180%);
+  backdrop-filter: blur(26px) saturate(180%);
+  background: linear-gradient(0deg, var(--scrim) 0%, rgba(8, 13, 24, 0.66) 18%, rgba(8, 13, 24, 0.58) 25%, rgba(8, 13, 24, 0.47) 31%, rgba(8, 13, 24, 0.34) 37%, rgba(8, 13, 24, 0.2) 43%, rgba(8, 13, 24, 0.08) 49%, transparent 56%);
+  -webkit-mask-image: linear-gradient(0deg, #000 0%, #000 18%, rgba(0, 0, 0, 0.82) 26%, rgba(0, 0, 0, 0.56) 33%, rgba(0, 0, 0, 0.3) 40%, rgba(0, 0, 0, 0.12) 47%, transparent 55%);
+  mask-image: linear-gradient(0deg, #000 0%, #000 18%, rgba(0, 0, 0, 0.82) 26%, rgba(0, 0, 0, 0.56) 33%, rgba(0, 0, 0, 0.3) 40%, rgba(0, 0, 0, 0.12) 47%, transparent 55%);
 }
 
 /* At the top of the screen the ramp runs the other way. */

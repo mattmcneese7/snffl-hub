@@ -201,22 +201,27 @@ export default function SiteChrome({
         </span>
       </nav>
 
-      <div className="snffl-ticker-stack">
-        <Ticker tag="LEAGUE" items={leagueTicker} variant="league" />
-        <Ticker tag="NFL" items={nflTicker} variant="nfl" />
-      </div>
+      {/* Scores and navigation are one object, not two stacked ones. Two
+          floating bars at the bottom of a phone read as a pile; a single dock
+          with the crawl above the tabs reads as designed. */}
+      <div className="snffl-dock">
+        <div className="snffl-ticker-stack">
+          <Ticker tag="LEAGUE" items={leagueTicker} variant="league" />
+          <Ticker tag="NFL" items={nflTicker} variant="nfl" />
+        </div>
 
-      <nav className="snffl-tabbar">
-        {TABS.map(({ label, href, Icon }) => {
-          const active = href === '/' ? pathname === '/' : pathname.startsWith(href);
-          return (
-            <Link key={label} href={href} className={`snffl-tab${active ? ' snffl-tab-active' : ''}`}>
-              <Icon weight={active ? 'fill' : 'duotone'} className="snffl-tab-icon" />
-              <span>{label}</span>
-            </Link>
-          );
-        })}
-      </nav>
+        <nav className="snffl-tabbar">
+          {TABS.map(({ label, href, Icon }) => {
+            const active = href === '/' ? pathname === '/' : pathname.startsWith(href);
+            return (
+              <Link key={label} href={href} className={`snffl-tab${active ? ' snffl-tab-active' : ''}`}>
+                <Icon weight={active ? 'fill' : 'duotone'} className="snffl-tab-icon" />
+                <span>{label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
     </>
   );
 }

@@ -6,7 +6,7 @@
 .snffl-profile-hero {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   padding: 18px 16px;
   color: #fff;
   position: relative;
@@ -373,7 +373,7 @@
 .snffl-bracket-live {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   font-size: 10px;
   font-weight: 800;
   color: var(--marker-ink);
@@ -390,7 +390,7 @@
   display: grid;
   grid-template-columns: 22px minmax(0, 1fr) auto;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
   padding: 5px 0;
   color: var(--ink-secondary);
 }

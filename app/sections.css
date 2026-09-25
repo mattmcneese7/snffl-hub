@@ -223,7 +223,7 @@
   position: relative;
   display: block;
   aspect-ratio: 16 / 9;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
   background: var(--surface);
   border: 1px solid var(--line);
@@ -285,10 +285,10 @@
   flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   min-height: 30px;
   padding: 0 10px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--card);
   border: 1px solid var(--line);
   color: var(--ink);
@@ -316,14 +316,14 @@
   border: 1px solid var(--line);
   border-bottom: 0;
 }
-.snffl-feed-row:first-child { border-radius: 12px 12px 0 0; }
-.snffl-feed-row:last-child { border-bottom: 1px solid var(--line); border-radius: 0 0 12px 12px; }
-.snffl-feed-row:only-child { border-radius: 12px; }
+.snffl-feed-row:first-child { border-radius: var(--radius) var(--radius) 0 0; }
+.snffl-feed-row:last-child { border-bottom: 1px solid var(--line); border-radius: 0 0 var(--radius) var(--radius); }
+.snffl-feed-row:only-child { border-radius: var(--radius); }
 .snffl-feed-mark {
   flex: 0 0 auto;
   min-width: 46px;
   padding: 3px 6px;
-  border-radius: 6px;
+  border-radius: var(--radius-xs);
   text-align: center;
   font: 800 9px/1.4 var(--mono);
   letter-spacing: 0.08em;
@@ -360,7 +360,7 @@
 .snffl-feed-row-tags { display: flex; flex-wrap: wrap; gap: 5px; }
 .snffl-feed-tag {
   padding: 2px 6px;
-  border-radius: 5px;
+  border-radius: var(--radius-xs);
   background: var(--surface);
   font: 700 10px/1.4 var(--mono);
   letter-spacing: 0.05em;
@@ -374,7 +374,7 @@
   padding: 0 12px;
   display: inline-flex;
   align-items: center;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid var(--line);
   background: var(--surface);
   color: var(--ink);
@@ -583,7 +583,7 @@
 .snffl-oracle { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
 .snffl-oracle-row {
   display: grid;
-  gap: 5px;
+  gap: 4px;
   padding: 12px;
   border-bottom: 1px solid var(--line);
 }
@@ -591,7 +591,7 @@
 .snffl-oracle-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .snffl-oracle-tag {
   padding: 2px 7px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   font: 800 10px/1.5 var(--mono);
   letter-spacing: 0.06em;
   text-transform: uppercase;

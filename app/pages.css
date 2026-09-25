@@ -274,7 +274,7 @@
   right: 10px;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   font-size: 9px;
   font-weight: 800;
   letter-spacing: 0.06em;
@@ -386,7 +386,7 @@
   display: grid;
   grid-template-columns: 22px 4px minmax(0, 1fr) 62px 52px 52px 42px;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
   padding: 8px 12px;
   border-bottom: 1px solid var(--line);
   color: inherit;
@@ -446,7 +446,7 @@
   padding: 10px;
   display: grid;
   justify-items: center;
-  gap: 3px;
+  gap: 4px;
   text-align: center;
   /* These became links on Home, and an anchor underlines everything inside it
      unless told otherwise. */
@@ -669,7 +669,7 @@
   .snffl-home-grid {
     display: grid;
     grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
-    gap: 22px;
+    gap: 24px;
     align-items: start;
   }
   /* The column rule lives in home.css, unmediated, so the widgets inside a

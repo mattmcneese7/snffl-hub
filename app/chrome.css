@@ -18,7 +18,7 @@
    compact header. Safe despite the Safari env() trap, because the variable
    holds a plain length and env() stays inline in the calc. */
 :root {
-  --header-h: 56px;
+  --header-h: 54px;
   --strip-h: 28px;
   /* Two bands of 28. Read by the body padding and the ticker's own offset. */
   --ticker-stack-h: 56px;
@@ -65,7 +65,7 @@ body { padding-bottom: calc(76px + var(--ticker-stack-h)); }
   align-items: center;
   height: var(--header-h);
   padding: 0 12px;
-  border-radius: 18px;
+  border-radius: var(--radius-lg);
   background: var(--card-strong);
   -webkit-backdrop-filter: blur(28px) saturate(170%);
   backdrop-filter: blur(28px) saturate(170%);
@@ -155,16 +155,17 @@ body { padding-bottom: calc(76px + var(--ticker-stack-h)); }
 
 /* ---------- Stacked tickers ---------- */
 
-/* Pinned above the tab bar rather than under the header. Scores stay on screen
-   the whole time, which is the point of a ticker, without being the first
-   thing between the reader and the page. */
-.snffl-ticker-stack {
+/* The dock: scores above navigation, as one floating object at the bottom.
+   Scores stay on screen the whole time, which is the point of a ticker,
+   without being the first thing between the reader and the page. */
+.snffl-dock {
   position: fixed;
   left: 0;
   right: 0;
-  bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px));
-  z-index: 50;
+  bottom: 0;
+  z-index: 70;
 }
+.snffl-ticker-stack { position: relative; }
 
 .snffl-ticker-row { display: flex; align-items: stretch; height: 28px; overflow: hidden; }
 .snffl-ticker-row-league { background: var(--ticker-band-a); }
@@ -204,7 +205,7 @@ body { padding-bottom: calc(76px + var(--ticker-stack-h)); }
 .snffl-ticker-track {
   display: flex;
   align-items: center;
-  gap: 26px;
+  gap: 24px;
   white-space: nowrap;
   padding-left: 16px;
   color: var(--ticker-ink);
@@ -254,11 +255,6 @@ body { padding-bottom: calc(76px + var(--ticker-stack-h)); }
 
 .snffl-tabbar {
   --tabbar-h: 62px;
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 70;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   background: var(--card);
@@ -271,7 +267,7 @@ body { padding-bottom: calc(76px + var(--ticker-stack-h)); }
   padding: 9px 0 10px;
   display: grid;
   justify-items: center;
-  gap: 3px;
+  gap: 4px;
   color: var(--ink-secondary);
   font-size: 10px;
   font-weight: 700;
@@ -300,7 +296,7 @@ body { padding-bottom: calc(76px + var(--ticker-stack-h)); }
   padding: calc(var(--header-h) + env(safe-area-inset-top, 0px) + 20px) 14px 14px;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 30px;
+  gap: 32px;
   max-width: 760px;
   margin: 0 auto;
   /* Route change remounts main, so this runs on every navigation without a
@@ -325,7 +321,7 @@ body { padding-bottom: calc(76px + var(--ticker-stack-h)); }
 .snffl-placeholder {
   padding: 14px;
   display: grid;
-  gap: 5px;
+  gap: 4px;
   border: 1px dashed var(--line);
   background: var(--surface);
 }
@@ -346,8 +342,6 @@ body { padding-bottom: calc(76px + var(--ticker-stack-h)); }
   body { padding-bottom: 0; }
   .snffl-header { display: none; }
   .snffl-tabbar { display: none; }
-  /* No tab bar to sit above, so the ticker takes the floor. */
-  .snffl-ticker-stack { bottom: 0; }
   body { padding-bottom: calc(24px + var(--ticker-stack-h)); }
 
   .snffl-desktop-nav {
@@ -356,7 +350,7 @@ body { padding-bottom: calc(76px + var(--ticker-stack-h)); }
     z-index: 60;
     display: flex;
     align-items: center;
-    gap: 26px;
+    gap: 24px;
     height: 62px;
     padding: 0 26px;
     background: var(--card);

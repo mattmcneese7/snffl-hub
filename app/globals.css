@@ -77,11 +77,28 @@
   --ticker-nfl-bg: #e3182d;
   --ticker-nfl-ink: #ffffff;
 
-  /* Shape */
+  /* Shape.
+     
+     Four radii and nothing else. The app had eight hand picked values between
+     3 and 18 pixels, which is the difference between a product and a set of
+     screens that were each drawn once: corners that nearly match read as
+     carelessness even when nobody can name what is wrong. */
   --slant: 12deg;
   --tap: 44px;
-  --radius: 18px;
-  --radius-sm: 10px;
+  --radius-xs: 6px;   /* tags, inline marks, anything under about 24px tall */
+  --radius-sm: 10px;  /* inner fills: score boxes, chips with a background */
+  --radius: 14px;     /* the default for a panel or a card */
+  --radius-lg: 18px;  /* the outermost containers, and the floating header */
+  --radius-pill: 999px;
+
+  /* Spacing. A four pixel grid, named, so a gap is chosen from a scale rather
+     than typed from feel. Every 5, 9 and 14 in the app was one of these. */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
 }
 
 *,

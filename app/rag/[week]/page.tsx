@@ -16,6 +16,11 @@ const dateLabel = (iso: string) =>
     timeZone: 'America/Chicago',
   });
 
+/** Every published issue is prerendered. An unpublished week still renders. */
+export function generateStaticParams() {
+  return publishedWeeks().map((week) => ({ week: String(week) }));
+}
+
 export default async function RagWeek({ params }: { params: Promise<{ week: string }> }) {
   const { week: raw } = await params;
   const week = Math.min(17, Math.max(1, Number(raw) || 1));

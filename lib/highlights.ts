@@ -246,17 +246,27 @@ export async function saveHighlights(rows: NewHighlight[]): Promise<number> {
   const client = writeClient();
   if (!client) return 0;
 
+  let payload: Record<string, unknown>[] = rows;
   let { error, data } = await client
     .from('highlights')
-    .upsert(rows, { onConflict: 'id' })
+    .upsert(payload, { onConflict: 'id' })
     .select('id');
 
-  // Before the new columns exist, write everything else rather than nothing.
-  if (error && /side|thumbnail/.test(error.message)) {
-    ({ error, data } = await client
-      .from('highlights')
-      .upsert(rows.map(({ side: _side, thumbnail: _thumbnail, ...rest }) => rest), { onConflict: 'id' })
-      .select('id'));
+  // Before a new column exists, write everything else rather than nothing, and
+  // drop only the column the error actually names. Dropping both cost every
+  // clip its side for the whole season: thumbnail did not exist, so the retry
+  // fired on every write and took side down with it, and no clip ever recorded
+  // which unit made the play.
+  // Each retry keeps the columns the previous one dropped, so a database
+  // missing both writes on the second attempt rather than failing forever.
+  for (const column of ['thumbnail', 'side'] as const) {
+    if (!error || !new RegExp(column).test(error.message)) continue;
+    payload = payload.map((row) => {
+      const copy = { ...row };
+      delete copy[column];
+      return copy;
+    });
+    ({ error, data } = await client.from('highlights').upsert(payload, { onConflict: 'id' }).select('id'));
   }
 
   if (error) {

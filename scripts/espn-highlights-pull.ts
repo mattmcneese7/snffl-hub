@@ -9,7 +9,7 @@
 //
 // Run with Node 24, which strips TypeScript types natively.
 
-import { buildAttributor } from '../lib/clip-attribution.ts';
+import { buildAttributor, fillTeams } from '../lib/clip-attribution.ts';
 import { clipIdsForGames, getEspnClip, recentNflClips, type EspnClip } from '../lib/espn-video.ts';
 import { getNflGames } from '../lib/gameday.ts';
 import { classifyUploads } from '../lib/highlight-tags.ts';
@@ -69,6 +69,14 @@ if (!classified.length) {
   console.log('nothing came back from the tagger. Done.');
   process.exit(0);
 }
+
+// A defensive clip the tagger could not place gets its team from ESPN first,
+// so it is credited to the D/ST that made the play and not to a cornerback.
+const placed = await fillTeams(
+  classified.filter((entry) => entry.kind === 'play'),
+  (line) => console.log(line)
+);
+if (placed) console.log(`  placed ${placed} defensive clips by looking the player up`);
 
 const attribute = await buildAttributor(weeks, (line) => console.log(line));
 

@@ -11,6 +11,7 @@
 // and a defender goes to whichever one is in this league.
 
 import fs from 'node:fs';
+import { nflTeamForName } from './espn-athletes.ts';
 import type { Classified } from './highlight-tags.ts';
 import { normaliseName } from './live.ts';
 import { getMatchups, getRosters } from './sleeper.ts';
@@ -28,6 +29,32 @@ export type Attribution = {
   fantasy_points: number | null;
   side: string | null;
 };
+
+/**
+ * Fills in the team on a defensive or special teams play the tagger could not
+ * place, by asking ESPN which club the named player is on.
+ *
+ * Without a team there is no defense to credit, so the clip reads as an
+ * individual cornerback nobody rosters, which is exactly what it should not do.
+ * Offensive plays are left alone: they are attributed by player, not by unit.
+ */
+export async function fillTeams(plays: Classified[], log: (line: string) => void = () => {}): Promise<number> {
+  const needy = plays.filter(
+    (play) => !play.team && (play.side === 'defense' || play.side === 'special_teams') && play.players.length
+  );
+  let filled = 0;
+  for (const play of needy) {
+    for (const name of play.players) {
+      const code = await nflTeamForName(name);
+      if (!code) continue;
+      play.team = code;
+      filled++;
+      log(`  ${name} plays for ${code}, so that ${play.side.replace('_', ' ')} clip has a defense`);
+      break;
+    }
+  }
+  return filled;
+}
 
 export async function buildAttributor(weeks: number[], log: (line: string) => void = () => {}) {
   const players = JSON.parse(fs.readFileSync('data/players.json', 'utf8')) as Record<string, PlayerRow>;

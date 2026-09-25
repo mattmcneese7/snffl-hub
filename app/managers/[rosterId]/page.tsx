@@ -6,9 +6,14 @@ import TeamAvatar from '@/components/TeamAvatar';
 import { TrophyCase } from '@/components/TrophyBits';
 import { getPointsByWeek } from '@/lib/awards';
 import { getTrophyBoard } from '@/lib/trophies';
-import { getStandings, league, playerOf, teamByRoster } from '@/lib/league';
+import { getStandings, league, playerOf, teamByRoster, teams } from '@/lib/league';
 import { getOddsFor } from '@/lib/playoff-odds';
 import { getRosters } from '@/lib/sleeper';
+
+/** All 14 manager pages are prerendered rather than built on the request. */
+export function generateStaticParams() {
+  return teams.map((team) => ({ rosterId: String(team.rosterId) }));
+}
 
 export default async function ManagerPage({
   params,

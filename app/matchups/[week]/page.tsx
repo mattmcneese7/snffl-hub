@@ -12,6 +12,18 @@ import {
   winProbabilities,
 } from '@/lib/matchup-live';
 
+/**
+ * Every week is prerendered, so a week page is served from the cache the way
+ * Home is rather than built on the request. It was the slowest page on the
+ * site, 1.8 seconds cold against 0.14 for Home, entirely because a dynamic
+ * segment with no static params renders on demand every time. The fetches
+ * inside it already carry their own revalidate, the shortest of which decides
+ * how fresh the page is, and live scores arrive through the client poll.
+ */
+export function generateStaticParams() {
+  return Array.from({ length: 17 }, (_, i) => ({ week: String(i + 1) }));
+}
+
 export default async function WeekPage({ params }: { params: Promise<{ week: string }> }) {
   const { week: raw } = await params;
   const week = Math.min(17, Math.max(1, Number(raw) || 1));

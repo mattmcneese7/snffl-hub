@@ -224,17 +224,21 @@
 .snffl-ticker-tag,
 .snffl-ticker-tag-league,
 .snffl-ticker-tag-nfl {
+  /* The band's own label, not a chip sitting in it. Full height, flush to the
+     edge, square: a pill floated in the middle of nothing, and a pill with one
+     square end read as a stub. This is how a broadcast crawl names itself. */
   flex: 0 0 auto;
-  height: 22px;
-  /* Anchored to the edge of the screen rather than floating eight pixels off
-     it. The left corners are square so the tag reads as coming out of the
-     edge, and the right corners stay round so it still reads as a tag. */
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+  height: auto;
   margin: 0;
-  padding: 0 12px 0 14px;
-  border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
-  border-left: 0;
+  padding: 0 12px;
+  border-radius: 0;
+  border: 0;
+  border-right: 1px solid var(--glass-line);
   clip-path: none;
-  font: 700 9.5px/22px var(--mono);
+  font: 700 9.5px/1 var(--mono);
   letter-spacing: 0.12em;
 }
 /* Glass does not have to be colourless. Both tags are tinted glass over the
@@ -243,16 +247,15 @@
 .snffl-ticker-tag-nfl {
   -webkit-backdrop-filter: blur(14px) saturate(160%);
   backdrop-filter: blur(14px) saturate(160%);
-  border: 1px solid transparent;
 }
 .snffl-ticker-tag-league {
   background: var(--ticker-league-bg);
-  border-color: var(--ticker-league-line);
+  border-right-color: var(--ticker-league-line);
   color: var(--ticker-league-ink);
 }
 .snffl-ticker-tag-nfl {
   background: var(--ticker-nfl-bg);
-  border-color: var(--ticker-nfl-line);
+  border-right-color: var(--ticker-nfl-line);
   color: var(--ticker-nfl-ink);
 }
 .snffl-ticker-track { color: var(--ink); padding-left: 12px; }
@@ -303,39 +306,11 @@ body { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
    layer is grown to twice its height, over the content above it, and masked
    back to the bar: the mask runs after the filter, so the blur keeps the extra
    pixels and the bar keeps its size. */
-.snffl-dock::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: -100%;
-  z-index: -1;
-  pointer-events: none;
-  -webkit-backdrop-filter: blur(26px) saturate(180%);
-  backdrop-filter: blur(26px) saturate(180%);
-  background: linear-gradient(0deg, var(--scrim) 0%, var(--scrim) 38%, var(--scrim-soft) 47%, transparent 50%);
-  -webkit-mask-image: linear-gradient(0deg, #000 0%, #000 37%, transparent 50%);
-  mask-image: linear-gradient(0deg, #000 0%, #000 37%, transparent 50%);
-}
+
 /* Solid behind the scores, feathered at the edge that meets the page, the
    same rule the dock follows at the other end of the screen. */
 /* Same trick at the top of the screen, grown downward over the page. */
-.snffl-ticker-stack::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: -100%;
-  z-index: -1;
-  pointer-events: none;
-  -webkit-backdrop-filter: blur(26px) saturate(180%);
-  backdrop-filter: blur(26px) saturate(180%);
-  background: linear-gradient(180deg, var(--scrim) 0%, var(--scrim) 42%, transparent 50%);
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 42%, transparent 50%);
-  mask-image: linear-gradient(180deg, #000 0%, #000 42%, transparent 50%);
-}
+
 
 /* The bands carry no fill or rule of their own; the scrim is the background. */
 .snffl-ticker-row {
@@ -546,14 +521,15 @@ h3,
   transform: translateX(-50%);
   display: grid;
   justify-items: center;
-  /* Clear of the disc's glow. At three pixels the label sat inside the bloom
-     and looked smudged rather than placed. */
-  gap: 9px;
+  /* Tight to its label, like every other tab is to its icon. Nine pixels here
+     let the disc drift up away from the row and read as a thing hovering over
+     the bar rather than the first item in it. */
+  gap: 5px;
   text-decoration: none;
 }
 .snffl-app-mark-disc {
-  width: 54px;
-  height: 54px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -562,11 +538,11 @@ h3,
   box-shadow:
     /* The ring is the dock's own colour, so the disc reads as a piece of the
        bar pushed up through its surface rather than a badge dropped on it. */
-    0 0 0 6px var(--scrim),
+    0 0 0 5px var(--scrim),
     0 0 12px rgba(76, 194, 255, 0.22),
     0 8px 20px rgba(0, 0, 0, 0.5);
 }
-.snffl-app-mark-disc img { width: 34px; height: 34px; display: block; object-fit: contain; }
+.snffl-app-mark-disc img { width: 30px; height: 30px; display: block; object-fit: contain; }
 .snffl-app-mark-on .snffl-app-mark-disc {
   border-color: rgba(140, 216, 255, 0.85);
   box-shadow:
@@ -785,3 +761,59 @@ h3,
    as a wash rather than as a surface. */
 .snffl-dock { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14); }
 .snffl-ticker-stack { box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.1); }
+
+/* ---------- Progressive frost ---------- */
+
+/* A backdrop-filter is one strength, so wherever its mask ends the page snaps
+   from frosted to sharp. Three layers of rising blur, each masked to a
+   different height, ramp it: at the bar all three stack, further up only the
+   lightest is left, and the last of it dissolves rather than stopping. Each
+   layer also reaches well past the bar so the filter has pixels to sample,
+   since backdrop-filter only sees what is directly behind it. */
+.snffl-frost {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: -140%;
+  z-index: -1;
+  pointer-events: none;
+  display: block;
+}
+.snffl-frost-top { top: 0; bottom: -140%; }
+.snffl-frost i { position: absolute; inset: 0; display: block; }
+
+.snffl-frost i:nth-child(1) {
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  -webkit-mask-image: linear-gradient(0deg, #000 0%, #000 40%, transparent 58%);
+  mask-image: linear-gradient(0deg, #000 0%, #000 40%, transparent 58%);
+}
+.snffl-frost i:nth-child(2) {
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-mask-image: linear-gradient(0deg, #000 0%, #000 37%, transparent 50%);
+  mask-image: linear-gradient(0deg, #000 0%, #000 37%, transparent 50%);
+}
+.snffl-frost i:nth-child(3) {
+  -webkit-backdrop-filter: blur(26px) saturate(180%);
+  backdrop-filter: blur(26px) saturate(180%);
+  background: linear-gradient(0deg, var(--scrim) 0%, var(--scrim) 33%, var(--scrim-soft) 40%, transparent 46%);
+  -webkit-mask-image: linear-gradient(0deg, #000 0%, #000 33%, transparent 46%);
+  mask-image: linear-gradient(0deg, #000 0%, #000 33%, transparent 46%);
+}
+
+/* At the top of the screen the ramp runs the other way. */
+.snffl-frost-top i:nth-child(1) {
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 40%, transparent 58%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 40%, transparent 58%);
+}
+.snffl-frost-top i:nth-child(2) {
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 37%, transparent 50%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 37%, transparent 50%);
+}
+.snffl-frost-top i:nth-child(3) {
+  background: linear-gradient(180deg, var(--scrim) 0%, var(--scrim) 33%, var(--scrim-soft) 40%, transparent 46%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 33%, transparent 46%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 33%, transparent 46%);
+}

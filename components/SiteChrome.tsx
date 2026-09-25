@@ -205,11 +205,26 @@ export default function SiteChrome({
           to be glanced at rather than reached for. It also gives the mark room
           to rise out of the bar below without the two colliding. */}
       <div className="snffl-ticker-stack">
+        <span className="snffl-frost snffl-frost-top" aria-hidden>
+          <i />
+          <i />
+          <i />
+        </span>
         <Ticker tag="LEAGUE" items={leagueTicker} variant="league" />
         <Ticker tag="NFL" items={nflTicker} variant="nfl" />
       </div>
 
       <div className="snffl-dock">
+        {/* Progressive blur. One backdrop-filter can only be one strength, so
+            it ends wherever its mask ends and the page snaps from frosted to
+            sharp in a few pixels. Three layers of increasing blur, each masked
+            to a different height, ramp it instead: all three stack at the bar
+            and only the lightest survives at the top. */}
+        <span className="snffl-frost" aria-hidden>
+          <i />
+          <i />
+          <i />
+        </span>
         {/* Two tabs, the mark, two tabs. The mark is Home and the app's one
             raised control, which is where the opening animation now lands: the
             logo ends its flight on the thing you press rather than on a

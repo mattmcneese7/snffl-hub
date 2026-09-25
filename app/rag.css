@@ -156,13 +156,16 @@
 /* The Rag's name wherever it appears outside its own page. It is a masthead
    set in type: the section is a paper, and calling it by name in the same
    voice as "Top Plays" made it read as one more data widget. */
+/* The Rag is a masthead wherever it appears, so it is set as one: display
+   size, not heading size. A section heading names a shelf; this names a
+   publication, and the gap between the two is the hierarchy. */
 .snffl-rag-wordmark {
   font-family: var(--font-archivo);
   font-style: italic;
   font-weight: 900;
   font-stretch: 62%;
-  font-size: 26px;
-  line-height: 1;
-  letter-spacing: -0.01em;
+  font-size: var(--t-display);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
 }

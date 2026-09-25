@@ -16,7 +16,8 @@
   margin-bottom: var(--s-3);
   gap: var(--s-3);
 }
-.snffl-block-heading h2 { font-size: var(--t-h2); }
+/* A shelf label, a clear step under a masthead. */
+.snffl-block-heading h2 { font-size: var(--t-h2); letter-spacing: -0.01em; }
 
 /* A section link is a quiet control, not a blue word. The references all set
    this as a small neutral label with a chevron: it is a way onward, and

@@ -241,6 +241,51 @@ Matt's call on each point.
   sentences. The writer may use what is in it and nothing it would have to
   invent, such as history from other leagues.
 
+## Notifications, rebuilt September 2026
+
+The first version sent every touchdown in the league to every device, plus lead
+changes, which read as random score updates. Ten alert types now exist and each
+one is addressed to the people it is about.
+
+- **The rule: an alert should be about you.** Your players scoring, your
+  opponent scoring, your lead changing, your close finish, your final score,
+  your lineup problem, your C'mon Man, your chug.
+- **Every touchdown in the league is still available and off by default.** It is
+  the one loud setting, and it was the old behaviour, so it is kept as a choice
+  rather than removed.
+- **One touchdown, one alert.** The owner hears "your guy just scored", the
+  manager across from him hears whose it was, and the league wide version
+  excludes both so nobody is told twice.
+- **Types, in `lib/alert-prefs.ts`:** my_td, opponent_td, league_td,
+  lead_change, close_finish, final, lineup, cmon, chug, rag. Each has its own
+  switch in Settings, per device.
+- **Settings live in a `prefs` jsonb column** on push_subscriptions, so adding
+  a type later is a code change and not a migration. Rows written before this
+  carry the two original booleans and are still honoured.
+- **A close finish is inside eight points with at most two and a half player
+  games left**, counted from how much clock each starter's NFL game has
+  remaining. Both managers hear it, worded from their own side.
+- **Alerts that are not feed posts are claimed in `alert_claims` before they are
+  sent**, because the watcher runs every minute. Without the claim a close
+  finish would arrive sixty times an hour. A database without the table claims
+  nothing and so sends nothing: silence is the safe failure.
+- **The Rag pushes when it publishes**, once, and every manager who won hardware
+  hears what he won.
+- One time SQL: `docs/sql/12b-alerts.sql`.
+
+## C'mon Man, made real, September 2026
+
+It was previously a generic callout. It now names an actual decision, judged
+only once the player in question can no longer score.
+
+- **Three calls.** A bench player who outscored a starter at his own slot by ten
+  or more, a starter who finished under two points, and a loss by less than the
+  best bench swap would have gained.
+- **The optimal lineup fills fixed slots before FLEX**, so a FLEX call is a real
+  alternative and not double counting a player already used.
+- **One call of each kind per manager per week**, the worst one, so a bad Sunday
+  is one post and not nine.
+
 ## Presentation
 
 - All 14 managers appear on every surface. No truncated lists.

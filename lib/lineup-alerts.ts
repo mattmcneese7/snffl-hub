@@ -179,7 +179,7 @@ export async function runLineupAlerts(log: (line: string) => void = () => {}) {
     if (!claimed.has(candidate.key)) continue;
     const { title, body } = message(candidate.problem);
     const delivered = await sendAlert(
-      { kind: 'lineup', teamId: String(candidate.problem.rosterId) },
+      { alert: 'lineup', teamIds: [String(candidate.problem.rosterId)] },
       {
         title: candidate.final ? `Last call. ${title}` : title,
         body,

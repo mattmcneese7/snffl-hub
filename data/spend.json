@@ -155,8 +155,14 @@
    "job": "rag retry preview",
    "model": "claude-sonnet-5",
    "usd": 0.0505
+  },
+  {
+   "at": "2026-09-25T12:15:00.602Z",
+   "job": "highlight tagging",
+   "model": "claude-haiku-4-5",
+   "usd": 0.0075
   }
  ],
  "limitUsd": 8.5,
- "spent": 1.1187
+ "spent": 1.1262
 }

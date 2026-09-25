@@ -25,6 +25,10 @@ import {
 import { templateFor } from '../lib/templates.ts';
 import { retryArticle } from '../lib/rag-writer.ts';
 import { validateArticle, type Candidate } from '../lib/validate.ts';
+import { claimAlerts } from '../lib/alert-claims.ts';
+import { pushConfigured, sendAlert } from '../lib/push.ts';
+import { awardsForWeek, TROPHY_NAMES } from '../lib/trophies.ts';
+import { firstNameOf } from '../config/managers.ts';
 
 const PENDING = path.join('data', 'rag', 'pending.json');
 const FORCE = process.argv.includes('--force');
@@ -193,3 +197,50 @@ const templated = articles.filter((a) => a.fromTemplate).length;
 console.log(
   `published week ${week}: ${articles.length} articles, ${templated} from templates, byline ${BYLINE}`
 );
+
+// The issue is out, so say so: one alert to everybody who wants the Rag, and a
+// separate one to each manager who won hardware, naming what he won. Claimed
+// per week, so a second run of the publisher does not announce it twice.
+if (pushConfigured()) {
+  const awards = await awardsForWeek(week);
+  const hardware = new Map<number, string[]>();
+  for (const award of awards) {
+    const held = hardware.get(award.rosterId) ?? [];
+    held.push(TROPHY_NAMES[award.kind].name);
+    hardware.set(award.rosterId, held);
+  }
+
+  const claims = [{ key: `rag:${week}`, week, kind: 'rag' }];
+  for (const rosterId of hardware.keys()) {
+    claims.push({ key: `hardware:${week}:${rosterId}`, week, kind: 'rag' });
+  }
+  const won = await claimAlerts(claims);
+
+  let sent = 0;
+  if (won.has(`rag:${week}`)) {
+    const lead = articles[0];
+    sent += await sendAlert(
+      { alert: 'rag' },
+      {
+        title: `The Squirtrag, Week ${week}`,
+        body: lead ? lead.headline : 'This week\'s issue is up.',
+        url: `/rag/${week}`,
+        tag: `rag-${week}`,
+      }
+    );
+  }
+  for (const [rosterId, names] of hardware) {
+    if (!won.has(`hardware:${week}:${rosterId}`)) continue;
+    const list = names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0];
+    sent += await sendAlert(
+      { alert: 'rag', teamIds: [String(rosterId)] },
+      {
+        title: names.length > 1 ? 'You won hardware' : `You won the ${names[0]}`,
+        body: `Week ${week}: ${list}. ${firstNameOf(rosterId) ?? 'You'} is on the trophy case.`,
+        url: `/managers/${rosterId}`,
+        tag: `hardware-${week}-${rosterId}`,
+      }
+    );
+  }
+  console.log(`  alerts: ${won.size} claimed, ${sent} deliveries`);
+}

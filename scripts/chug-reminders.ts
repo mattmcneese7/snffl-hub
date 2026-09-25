@@ -56,7 +56,7 @@ if (!owed) {
 
 const team = teamByRoster(owed.rosterId);
 const delivered = await sendAlert(
-  { kind: 'chug', teamId: String(owed.rosterId) },
+  { alert: 'chug', teamIds: [String(owed.rosterId)] },
   {
     title: `Chug owed, Week ${owed.week}`,
     body: reminder.note,

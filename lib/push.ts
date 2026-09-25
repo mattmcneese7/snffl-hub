@@ -5,18 +5,17 @@
 // the public key is refused on insert by row level security, checked against
 // the live project before this was written.
 //
-// Who hears what, so an alert is useful rather than noise:
-//   touchdowns   to anyone who opted in, since a touchdown is the thing people
-//                install the app for
-//   lead changes only to the two managers in that matchup, because a lead
-//                change in somebody else's game is not news to you
-//   chug         only to the manager who owes one
-//   lineup       only to the manager whose starter is out, on bye or missing
+// Who hears what is a preference per device, in lib/alert-prefs.ts. The rule
+// behind the list: an alert should be about you. Your players scoring, your
+// opponent scoring, your lead changing, your lineup, your chug. Every
+// touchdown in the league is available and off by default, because that was
+// the original behaviour and it was noise.
 //
 // A subscription the push service reports as gone, 404 or 410, is deleted so
 // dead devices stop costing a request every five minutes.
 
 import webpush from 'web-push';
+import { prefsFor, type AlertKey, type AlertPrefs } from './alert-prefs.ts';
 import { writeClient } from './supabase.ts';
 
 // || rather than ??: an unset secret arrives as an empty string, which ??
@@ -57,29 +56,43 @@ type Subscription = {
   team_id: string | null;
   alert_touchdowns: boolean | null;
   alert_lead_changes: boolean | null;
+  prefs?: Partial<AlertPrefs> | null;
 };
 
-export type Audience =
-  | { kind: 'touchdown' }
-  | { kind: 'lead_change'; teamIds: string[] }
-  | { kind: 'chug'; teamId: string }
-  | { kind: 'lineup'; teamId: string };
+/**
+ * Who hears an alert: everyone who wants that type, or only the managers
+ * named. `except` keeps a general alert away from the people who already got
+ * the personal version of it, so a touchdown does not arrive twice.
+ */
+export type Audience = {
+  alert: AlertKey;
+  /** Roster ids as text. Undefined means every device that wants the type. */
+  teamIds?: string[];
+  except?: string[];
+};
 
 async function subscribersFor(audience: Audience): Promise<Subscription[]> {
   const client = writeClient();
   if (!client) return [];
 
-  let query = client.from('push_subscriptions').select('*');
-  if (audience.kind === 'touchdown') query = query.eq('alert_touchdowns', true);
-  if (audience.kind === 'lead_change') {
-    query = query.eq('alert_lead_changes', true).in('team_id', audience.teamIds);
-  }
-  if (audience.kind === 'chug' || audience.kind === 'lineup') {
-    query = query.eq('team_id', audience.teamId);
-  }
+  // Filtering happens here rather than in the query: preferences live in a
+  // jsonb column on newer rows and in two booleans on older ones, and a
+  // database without the column at all still has to work. The league is 14
+  // people, so reading every row costs nothing.
+  let rows: Subscription[] = [];
+  const full = await client.from('push_subscriptions').select('*');
+  if (full.error) return [];
+  rows = (full.data ?? []) as Subscription[];
 
-  const { data } = await query;
-  return (data ?? []) as Subscription[];
+  const wanted = audience.teamIds ? new Set(audience.teamIds) : null;
+  const excluded = audience.except ? new Set(audience.except) : null;
+
+  return rows.filter((row) => {
+    if (!prefsFor(row)[audience.alert]) return false;
+    if (wanted && (!row.team_id || !wanted.has(row.team_id))) return false;
+    if (excluded && row.team_id && excluded.has(row.team_id)) return false;
+    return true;
+  });
 }
 
 /** Sends one alert to its audience. Returns how many devices it reached. */

@@ -10,9 +10,10 @@
 // It keeps no state of its own. Dedupe reads what earlier runs wrote into
 // feed_posts, and the hourly cap counts recent rows.
 
-import { anyGameLive, getNflScoreboard } from './espn.ts';
+import { cmonDedupeKey, cmonManPosts } from './cmon-man.ts';
+import { getNflGames } from './gameday.ts';
 import { getTouchdowns } from './espn-plays.ts';
-import { allPlayers, getWeekGames, scoredWeek, teams } from './league.ts';
+import { allPlayers, getWeekGames, league, scoredWeek, teams } from './league.ts';
 import {
   applyCap,
   leadChangePosts,
@@ -23,6 +24,7 @@ import {
   type PlayerLookup,
 } from './live.ts';
 import { pushConfigured, sendAlert } from './push.ts';
+import { scoreAlerts } from './score-alerts.ts';
 import { getRosters } from './sleeper.ts';
 import { writeClient } from './supabase.ts';
 import { firstNameOf } from '../config/managers.ts';
@@ -74,6 +76,7 @@ async function buildLookup(log: Log): Promise<PlayerLookup> {
 /** The key that makes a post unique, so an overlapping run cannot repeat it. */
 function dedupeKey(post: NewPost, prior: { leads: Map<number, number>; sharts: number }): string | null {
   const payload = post.payload ?? {};
+  if (post.kind === 'cmon-man') return cmonDedupeKey(post);
   if (payload.play_id) return `td:${payload.play_id}`;
   if (payload.matchup_id != null) {
     // The nth lead change in this matchup. Two runs racing on the same change
@@ -93,14 +96,19 @@ export async function runWatcher(log: Log = () => {}): Promise<WatchResult> {
     return { live: false, candidates: 0, written: [], pushed: 0, note: 'no Supabase service credentials' };
   }
 
-  const nfl = await getNflScoreboard();
-  if (!anyGameLive(nfl)) {
-    return { live: false, candidates: 0, written: [], pushed: 0, note: `no NFL game in progress, ${nfl.length} on the slate` };
+  const week = await scoredWeek();
+  const nfl = await getNflGames(week, league.season);
+  const live = nfl.some((game) => game.state === 'in');
+  // C'mon Man judges finished games, so the watcher keeps working after the
+  // last whistle: a bench blunder is only a fact once the player can no
+  // longer score. Nothing at all happened yet means nothing to do.
+  const anyFinished = nfl.some((game) => game.state === 'post');
+  if (!live && !anyFinished) {
+    return { live: false, candidates: 0, written: [], pushed: 0, note: `nothing in progress or finished, ${nfl.length} on the slate` };
   }
 
   const liveGameIds = nfl.filter((game) => game.state === 'in').map((game) => game.id);
-  log(`live watcher, ${liveGameIds.length} NFL games in progress`);
-  const week = await scoredWeek();
+  log(`watcher: ${liveGameIds.length} games in progress, ${nfl.filter((g) => g.state === 'post').length} final`);
 
   const postedPlayIds = async () => {
     const { data } = await supabase
@@ -172,17 +180,33 @@ export async function runWatcher(log: Log = () => {}): Promise<WatchResult> {
   ]);
   log(`  ${seen.size} plays already posted, ${recent} posts in the last hour`);
 
-  const [plays, games] = await Promise.all([getTouchdowns(liveGameIds), getWeekGames(week)]);
+  const [plays, games] = await Promise.all([
+    liveGameIds.length ? getTouchdowns(liveGameIds) : Promise.resolve([]),
+    getWeekGames(week),
+  ]);
   const candidates: NewPost[] = [
     ...touchdownPosts(plays, week, lookup, seen),
     ...leadChangePosts(games, week, announced.leaders, lookup.managerOf),
+    ...cmonManPosts(games, { nfl, week, managerOf: lookup.managerOf }),
   ];
   const shartPost = shartWatchPost(games, week, lookup.managerOf, shart.last);
   if (shartPost) candidates.push(shartPost);
 
+  // Close finishes and final scores are not feed posts, so they send whether or
+  // not anything new was written, and they are claimed in their own table.
+  const scores = pushConfigured()
+    ? await scoreAlerts({ client: supabase, games, nfl, week, managerOf: lookup.managerOf, log })
+    : { sent: 0, note: 'push not configured' };
+
   const toWrite = applyCap(candidates, recent);
   if (!toWrite.length) {
-    return { live: true, candidates: candidates.length, written: [], pushed: 0, note: 'nothing new' };
+    return {
+      live,
+      candidates: candidates.length,
+      written: [],
+      pushed: scores.sent,
+      note: `nothing new, score alerts: ${scores.note}`,
+    };
   }
 
   const rows = toWrite.map((post) => ({
@@ -216,18 +240,60 @@ export async function runWatcher(log: Log = () => {}): Promise<WatchResult> {
   // Push after the write, and only for what was actually written: an alert
   // never points at a post that failed to save or that another run already
   // announced.
-  let pushed = 0;
+  //
+  // Every alert is addressed. A touchdown reaches the manager who owns the
+  // scorer as his guy, the manager across from him as one against him, and
+  // anybody else only if they asked for the whole league. Nobody hears the
+  // same touchdown twice, because the two named managers are excluded from
+  // the league wide send.
+  const opponentOf = new Map<number, number>();
+  for (const game of games) {
+    opponentOf.set(game.home.rosterId, game.away.rosterId);
+    opponentOf.set(game.away.rosterId, game.home.rosterId);
+  }
+  const nameOf = (rosterId: number) => lookup.managerOf.get(rosterId) ?? 'Somebody';
+
+  let pushed = scores.sent;
   if (pushConfigured()) {
     for (const post of inserted) {
       const payload = post.payload ?? {};
+
       if (payload.play_id) {
+        const tag = `td-${payload.play_id}`;
+        const owner = post.team_ids?.[0] ?? null;
+        const opponent = owner != null ? opponentOf.get(owner) ?? null : null;
+        const play = post.body ?? post.title;
+        if (owner != null) {
+          pushed += await sendAlert(
+            { alert: 'my_td', teamIds: [String(owner)] },
+            { title: 'Your guy just scored', body: play, url: '/feed', tag }
+          );
+        }
+        if (opponent != null) {
+          pushed += await sendAlert(
+            { alert: 'opponent_td', teamIds: [String(opponent)] },
+            { title: `Bad news, that one is on ${nameOf(owner as number)}`, body: play, url: '/feed', tag }
+          );
+        }
+        const named = [owner, opponent].filter((id): id is number => id != null).map(String);
         pushed += await sendAlert(
-          { kind: 'touchdown' },
-          { title: post.title, body: post.body ?? '', url: '/feed', tag: `td-${payload.play_id}` }
+          { alert: 'league_td', except: named },
+          { title: post.title, body: play, url: '/feed', tag }
         );
-      } else if (payload.matchup_id != null && post.team_ids?.length) {
+        continue;
+      }
+
+      if (post.kind === 'cmon-man' && post.team_ids?.length) {
         pushed += await sendAlert(
-          { kind: 'lead_change', teamIds: post.team_ids.map(String) },
+          { alert: 'cmon', teamIds: post.team_ids.map(String) },
+          { title: post.title, body: post.body ?? '', url: '/feed', tag: `cmon-${payload.roster_id}-${payload.call}` }
+        );
+        continue;
+      }
+
+      if (payload.matchup_id != null && post.team_ids?.length) {
+        pushed += await sendAlert(
+          { alert: 'lead_change', teamIds: post.team_ids.map(String) },
           {
             title: post.title,
             body: post.body ?? '',
@@ -240,10 +306,10 @@ export async function runWatcher(log: Log = () => {}): Promise<WatchResult> {
   }
 
   return {
-    live: true,
+    live,
     candidates: candidates.length,
     written: inserted.map((post) => `[${post.kind}] ${post.title}`),
     pushed,
-    note: `wrote ${inserted.length} of ${candidates.length} candidates`,
+    note: `wrote ${inserted.length} of ${candidates.length} candidates, score alerts: ${scores.note}`,
   };
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { ALERTS, defaultPrefs, type AlertKey, type AlertPrefs } from '@/lib/alert-prefs';
 
 /**
  * Turns push alerts on for this device, Brief Section 2: "Push alerts for
@@ -9,6 +10,10 @@ import { useEffect, useState } from 'react';
  * iPhone only delivers web push to an app installed to the home screen, so in
  * a plain Safari tab this says so rather than offering a switch that cannot
  * work.
+ *
+ * Once alerts are on, every type gets its own switch. The first version sent
+ * every touchdown in the league to everybody, which read as random score
+ * updates, so the types that are about you are on and the loud one is not.
  */
 type State = 'loading' | 'unsupported' | 'install' | 'off' | 'working' | 'on' | 'denied' | 'error';
 
@@ -37,6 +42,40 @@ const isInstalled = () =>
 
 export default function AlertsToggle() {
   const [state, setState] = useState<State>('loading');
+  const [prefs, setPrefs] = useState<AlertPrefs | null>(null);
+  const [endpoint, setEndpoint] = useState<string | null>(null);
+
+  /** Reads this device's saved settings, so the switches match the server. */
+  const loadPrefs = async (deviceEndpoint: string) => {
+    setEndpoint(deviceEndpoint);
+    try {
+      const res = await fetch('/api/push', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ endpoint: deviceEndpoint }),
+      });
+      const data = (await res.json()) as { prefs?: AlertPrefs };
+      setPrefs(data.prefs ?? defaultPrefs());
+    } catch {
+      setPrefs(defaultPrefs());
+    }
+  };
+
+  /** Flips one type and saves it. The switch moves first, then the request. */
+  const toggle = async (key: AlertKey) => {
+    if (!prefs || !endpoint) return;
+    const next = { ...prefs, [key]: !prefs[key] };
+    setPrefs(next);
+    try {
+      await fetch('/api/push', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ endpoint, prefs: { [key]: next[key] } }),
+      });
+    } catch {
+      setPrefs(prefs);
+    }
+  };
 
   useEffect(() => {
     const supported =
@@ -57,7 +96,10 @@ export default function AlertsToggle() {
     navigator.serviceWorker
       .getRegistration()
       .then((registration) => registration?.pushManager.getSubscription())
-      .then((subscription) => setState(subscription ? 'on' : 'off'))
+      .then((subscription) => {
+        setState(subscription ? 'on' : 'off');
+        if (subscription) void loadPrefs(subscription.endpoint);
+      })
       .catch(() => setState('off'));
   }, []);
 
@@ -88,6 +130,11 @@ export default function AlertsToggle() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ subscription: subscription.toJSON(), teamId }),
       });
+      if (res.ok) {
+        const data = (await res.json()) as { prefs?: AlertPrefs };
+        setEndpoint(subscription.endpoint);
+        setPrefs(data.prefs ?? defaultPrefs());
+      }
       setState(res.ok ? 'on' : 'error');
     } catch {
       setState('error');
@@ -107,6 +154,8 @@ export default function AlertsToggle() {
         });
         await subscription.unsubscribe();
       }
+      setPrefs(null);
+      setEndpoint(null);
       setState('off');
     } catch {
       setState('error');
@@ -117,9 +166,9 @@ export default function AlertsToggle() {
     loading: 'Checking this device.',
     unsupported: 'This browser cannot receive alerts.',
     install: 'On iPhone, add the site to your Home Screen first, then turn alerts on there.',
-    off: 'Touchdowns, lead changes in your game, and a nudge when you owe a chug.',
+    off: 'Your players scoring, your matchup turning, and a nudge when you owe a chug.',
     working: 'One moment.',
-    on: 'On for this device. Pick your team above so lead changes and chug reminders find you.',
+    on: 'On for this device. Pick your team above so the ones about you find you.',
     denied: 'Notifications are blocked for this site. Allow them in your browser settings.',
     error: 'That did not work. Try again in a moment.',
   };
@@ -127,6 +176,7 @@ export default function AlertsToggle() {
   const canToggle = state === 'off' || state === 'on' || state === 'error';
 
   return (
+    <>
     <div className="snffl-settings-row">
       <span>
         <span className="snffl-menu-label">Alerts</span>
@@ -143,5 +193,29 @@ export default function AlertsToggle() {
         </button>
       ) : null}
     </div>
+    {state === 'on' && prefs ? (
+      <div className="snffl-alert-prefs">
+        <p className="snffl-alert-prefs-head">What you hear about</p>
+        <ul className="snffl-alert-list">
+          {ALERTS.map((alert) => (
+            <li key={alert.key} className="snffl-alert-row">
+              <span className="snffl-alert-copy">
+                <span className="snffl-menu-label">{alert.label}</span>
+                <span className="snffl-menu-note">{alert.note}</span>
+              </span>
+              <button
+                type="button"
+                className={`snffl-theme-choice${prefs[alert.key] ? ' snffl-theme-choice-active' : ''}`}
+                aria-pressed={prefs[alert.key]}
+                onClick={() => void toggle(alert.key)}
+              >
+                <span>{prefs[alert.key] ? 'On' : 'Off'}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ) : null}
+    </>
   );
 }

@@ -37,15 +37,22 @@ body { padding-bottom: 76px; }
 
 /* The interface voice: upright, normal width, heavy but not black. Every
    section heading used to be a condensed black italic, which made "Top Plays"
-   shout as hard as a Rag front page. */
+   shout as hard as a Rag front page.
+
+   Set in caps, because every heading in the app is. The masthead is not a
+   different kind of word from a section title and should not be cased like
+   one: size, width and slant carry the hierarchy, and mixing cases on top of
+   them reads as two apps sharing a page rather than one voice. Uppercase
+   closes up at negative tracking, so this takes a little air back. */
 .snffl-headline {
   font-family: var(--font-archivo);
   font-weight: 800;
   font-stretch: 100%;
   font-size: var(--t-h2);
-  letter-spacing: -0.015em;
+  letter-spacing: 0.005em;
   line-height: 1.15;
   margin: 0;
+  text-transform: uppercase;
 }
 
 /* The editorial voice, kept for the places that earn it. */

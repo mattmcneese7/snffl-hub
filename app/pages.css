@@ -16,8 +16,10 @@
   margin-bottom: var(--s-3);
   gap: var(--s-3);
 }
-/* A shelf label, a clear step under a masthead. */
-.snffl-block-heading h2 { font-size: var(--t-h2); letter-spacing: -0.01em; }
+/* A shelf label, a clear step under a masthead. This is the only place the
+   size is set: glass.css used to declare the same selector at the same
+   specificity, and being the later import it silently won. */
+.snffl-block-heading h2 { font-size: var(--t-h1); }
 
 /* A section link is a quiet control, not a blue word. The references all set
    this as a small neutral label with a chevron: it is a way onward, and
@@ -702,7 +704,8 @@
   font-weight: 800;
   font-size: var(--t-display);
   line-height: 0.96;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
 }
 .snffl-page-title.snffl-headline-editorial {
   font-size: clamp(38px, 12vw, 56px);

@@ -156,8 +156,6 @@
 }
 .snffl-label { color: var(--ink-secondary); }
 
-.snffl-block-heading h2 { font-size: var(--t-h1); }
-
 /* ---------- Pinned chrome ----------
    Full width, pinned to the top, frosted: the header and the two ticker bands
    stack edge to edge and the page scrolls under them. The header carries the
@@ -242,7 +240,6 @@
   padding: 0 12px;
   border-radius: 0;
   border: 0;
-  border-right: 1px solid var(--glass-line);
   clip-path: none;
   font: 700 9.5px/1 var(--mono);
   letter-spacing: 0.12em;
@@ -256,12 +253,10 @@
 }
 .snffl-ticker-tag-league {
   background: var(--ticker-league-bg);
-  border-right-color: var(--ticker-league-line);
   color: var(--ticker-league-ink);
 }
 .snffl-ticker-tag-nfl {
   background: var(--ticker-nfl-bg);
-  border-right-color: var(--ticker-nfl-line);
   color: var(--ticker-nfl-ink);
 }
 .snffl-ticker-track { color: var(--ink); padding-left: 12px; }

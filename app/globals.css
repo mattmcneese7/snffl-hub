@@ -37,6 +37,9 @@
      value here is the lowest that still holds a score at 4.5:1 when the
      brightest possible photograph scrolls underneath, which is what the crawl
      has to survive. A third of the backdrop comes through. */
+  /* The menu bar's own glass: a defined surface rather than a wash, so it
+     carries slightly more tint than the crawl does. */
+  --glass-bar: rgba(13, 19, 32, 0.72);
   --scrim: rgba(8, 13, 24, 0.68);
   --scrim-soft: rgba(8, 13, 24, 0.42);
 

@@ -215,16 +215,12 @@ export default function SiteChrome({
       </div>
 
       <div className="snffl-dock">
-        {/* Progressive blur. One backdrop-filter can only be one strength, so
-            it ends wherever its mask ends and the page snaps from frosted to
-            sharp in a few pixels. Three layers of increasing blur, each masked
-            to a different height, ramp it instead: all three stack at the bar
-            and only the lightest survives at the top. */}
-        <span className="snffl-frost" aria-hidden>
-          <i />
-          <i />
-          <i />
-        </span>
+        {/* The bar's glass, clipped to its own shape. It is a defined object
+            now rather than a wash that fades into the page, so it needs one
+            surface with an edge instead of a ramp. Its own element because the
+            glass is clipped to the rounded rectangle while the mark above it
+            has to break out of it. */}
+        <span className="snffl-frost" aria-hidden />
         {/* Two tabs, the mark, two tabs. The mark is Home and the app's one
             raised control, which is where the opening animation now lands: the
             logo ends its flight on the thing you press rather than on a

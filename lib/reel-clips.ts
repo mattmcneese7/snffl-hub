@@ -16,6 +16,8 @@ export type ReelClip = {
    * those have no embed and open in YouTube instead.
    */
   embed: string | null;
+  /** ESPN's own id, when this is an ESPN clip: the key to its video stream. */
+  espnId?: string;
   /** Where the clip lives at its source, for the "watch there" button. */
   sourceUrl: string;
   source: 'espn' | 'youtube';
@@ -119,6 +121,7 @@ export function toReelClip(highlight: Highlight, managerName?: string | null): R
     title: highlight.title,
     tags: clipTags(highlight, managerName),
     still: highlight.thumbnail ?? (espn ? null : `https://i.ytimg.com/vi/${raw}/hqdefault.jpg`),
+    espnId: espn ? raw : undefined,
     embed: espn ? `https://www.espn.com/watch/syndicatedplayer/_/id/${raw}/endcard/false` : null,
     sourceUrl: espn ? `https://www.espn.com/video/clip/_/id/${raw}` : `https://www.youtube.com/watch?v=${raw}`,
     source: espn ? 'espn' : 'youtube',

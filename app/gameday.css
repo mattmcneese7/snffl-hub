@@ -1512,3 +1512,41 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   font-variant-numeric: tabular-nums;
   color: #ffffff;
 }
+
+/* ---------- Clip playback ---------- */
+
+/* ESPN's stream in our own element, so the clip fills the frame and the app's
+   own controls sit on it rather than ESPN's player chrome. */
+.snffl-clip-video { position: relative; width: 100%; height: 100%; background: #000000; }
+.snffl-clip-video video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  background: #000000;
+}
+.snffl-clip-sound {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: var(--radius-pill);
+  color: #ffffff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.snffl-clip-loading,
+.snffl-clip-fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.72);
+  font: 700 12px/1 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+}

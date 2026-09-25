@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import ClipVideo from './ClipVideo';
 
 /**
  * Full screen highlight reels.
@@ -203,12 +204,8 @@ export default function ReelPlayer({
                     ))}
                   </dl>
                 </div>
-              ) : index === active && clip.embed ? (
-                <iframe
-                  src={clip.embed}
-                  title={clip.title}
-                  allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-                />
+              ) : index === active && clip.espnId ? (
+                <ClipVideo espnId={clip.espnId} poster={clip.still} title={clip.title} />
               ) : clip.still ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={clip.still} alt="" loading="lazy" />

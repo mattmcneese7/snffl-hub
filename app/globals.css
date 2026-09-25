@@ -25,9 +25,22 @@
      
      Every panel used to be glass with a lit rim, which is why a trophy badge
      and a whole section were made of identical stuff and nothing led. */
-  --panel: #0e1524;
+  /* Panels are glass too, just quieter than the chrome.
+     
+     They were flat opaque fills, which is why they read as cheap next to the
+     dock: no edge, no light, nothing of the stadium glow behind them coming
+     through. They are translucent with a lit rim now. What they do not carry
+     is a blur, and deliberately: a panel sits on the ground, which is a fixed
+     gradient that never moves, so there is nothing behind it to blur. Blur is
+     for the chrome, where the page really does scroll underneath. */
+  --panel: rgba(16, 24, 41, 0.78);
+  --panel-solid: #0e1524;
   --panel-raised: #141d30;
   --panel-sunken: #0a101c;
+  /* A panel's own rim and the light along its top edge. Quieter than the
+     chrome's, because a page holds many panels and one dock. */
+  --panel-line: rgba(255, 255, 255, 0.08);
+  --panel-shine: rgba(255, 255, 255, 0.07);
   --glass: rgba(255, 255, 255, 0.07);
   --glass-line: rgba(255, 255, 255, 0.13);
   /* The chrome's own glass: the dock and the crawl.

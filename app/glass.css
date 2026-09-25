@@ -22,10 +22,11 @@
 
 /* ---------- Panels ---------- */
 
-/* Content is panel: a solid step off the ground and nothing else. No rim, no
-   blur, no shadow. Forty three blurred layers on Home each re-rasterised on
-   scroll to blur a static gradient, and the lit 1px rim on every one of them
-   is what made the page read as boxes stacked on a page. */
+/* Content is panel: translucent over the ground, with a hairline rim and a
+   lit top edge, so the stadium glow behind it comes through and the surface
+   has somewhere the light lands. No blur: a panel sits on a fixed gradient
+   that never moves, so there is nothing behind it worth blurring. That is the
+   difference between this and the chrome, which the page scrolls under. */
 .snffl-card,
 .snffl-rag-hero-card,
 .snffl-performer-card,
@@ -37,9 +38,9 @@
 .snffl-placeholder,
 .snffl-slate-game {
   border-radius: var(--radius-lg);
-  border: 0;
+  border: 1px solid var(--panel-line);
   background: var(--panel);
-  box-shadow: none;
+  box-shadow: inset 0 1px 0 var(--panel-shine), 0 6px 20px rgba(0, 0, 0, 0.28);
 }
 .snffl-placeholder {
   border: 1px dashed var(--line);

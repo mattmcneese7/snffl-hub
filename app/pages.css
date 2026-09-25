@@ -732,3 +732,27 @@
   order: 1;
 }
 .snffl-page-fact-live dd { color: var(--live); }
+
+/* A way back that is a control rather than a sentence with an arrow in it. */
+.snffl-back {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 var(--s-3);
+  border-radius: var(--radius-pill);
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  color: var(--ink-secondary);
+  font-size: var(--t-small);
+  font-weight: 800;
+  text-decoration: none;
+}
+.snffl-back span { font-size: var(--t-h2); line-height: 1; }
+
+/* Who is carrying each side, side by side. */
+.snffl-swing { margin-top: var(--s-4); }
+.snffl-swing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); }
+.snffl-swing-card { display: grid; gap: var(--s-1); padding: var(--s-3); }
+.snffl-swing-line { font-size: var(--t-small); color: var(--ink-secondary); text-wrap: pretty; }

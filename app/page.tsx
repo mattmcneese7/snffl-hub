@@ -11,10 +11,8 @@ import StoriesRail from '@/components/StoriesRail';
 import TopPlays from '@/components/TopPlays';
 import { firstNameOf } from '@/config/managers';
 import { toReelClip, weekCardClip } from '@/lib/reel-clips';
-import PlayoffTitle from '@/components/PlayoffTitle';
 import RagHero from '@/components/RagHero';
 import ResultBug from '@/components/ResultBug';
-import StandingsTable from '@/components/StandingsTable';
 import YourMatchup from '@/components/YourMatchup';
 import { getChugCounts } from '@/lib/awards';
 import NflSlate from '@/components/NflSlate';
@@ -340,51 +338,82 @@ export default async function HomePage() {
               />
             </HomeWidget>
 
-            <HomeWidget title="Power Rankings" href="/power-rankings">
-              <div className="snffl-card">
-                {rankings.slice(0, 3).map((entry) => (
-                  <Link
-                    className={`snffl-mini-row mgr-${entry.team.userId}`}
-                    href={`/managers/${entry.team.rosterId}`}
-                    key={entry.team.rosterId}
-                  >
-                    <span className="snffl-mini-rank snffl-numeric">{entry.rank}</span>
-                    <span className="snffl-standings-colorbar" />
-                    <span className="snffl-mini-body">
-                      <span className="snffl-standings-team-name">{entry.team.teamName}</span>
-                      <span className="snffl-standings-manager">{entry.team.manager}</span>
-                    </span>
+            {/* One section for where everyone stands, holding the three
+                modules that used to be three separate widgets scattered down
+                the column. Each one opens its own part of the page. */}
+            <HomeWidget title="Standings" href="/standings" linkLabel="Full table">
+              <div className="snffl-stack">
+                <div>
+                  <Link className="snffl-sub-head" href="/standings#table">
+                    The Table
                   </Link>
-                ))}
-              </div>
-            </HomeWidget>
+                  <div className="snffl-card">
+                    {standings.slice(0, 4).map((team) => (
+                      <Link
+                        className={`snffl-mini-row mgr-${team.userId}`}
+                        href={`/managers/${team.rosterId}`}
+                        key={team.rosterId}
+                      >
+                        <span className="snffl-mini-rank snffl-numeric">{team.seed}</span>
+                        <span className="snffl-standings-colorbar" />
+                        <span className="snffl-mini-body">
+                          <span className="snffl-standings-team-name">{team.teamName}</span>
+                          <span className="snffl-standings-manager">{team.manager}</span>
+                        </span>
+                        <span className="snffl-mini-value snffl-numeric">
+                          {team.wins}-{team.losses}
+                          {team.ties ? `-${team.ties}` : ''}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
 
-            <HomeWidget
-              title={
-                <span className="snffl-playoff-title snffl-playoff-title-compact">
-                  <PlayoffTitle week={week} />
-                </span>
-              }
-              href="/playoffs"
-              linkLabel="Full tracker"
-            >
-              <div className="snffl-card">
-                {odds.slice(0, 5).map((row) => (
-                  <Link
-                    className={`snffl-mini-row mgr-${row.team.userId}`}
-                    href={`/managers/${row.rosterId}`}
-                    key={row.rosterId}
-                  >
-                    <span className="snffl-standings-colorbar" />
-                    <span className="snffl-mini-body">
-                      <span className="snffl-standings-team-name">{row.team.teamName}</span>
-                      <span className="snffl-standings-manager">{row.tag}</span>
-                    </span>
-                    <span className="snffl-mini-value snffl-numeric">
-                      {row.makePlayoffs.toFixed(0)}%
-                    </span>
+                <div>
+                  <Link className="snffl-sub-head" href="/standings#power">
+                    Power Rankings
                   </Link>
-                ))}
+                  <div className="snffl-card">
+                    {rankings.slice(0, 3).map((entry) => (
+                      <Link
+                        className={`snffl-mini-row mgr-${entry.team.userId}`}
+                        href={`/managers/${entry.team.rosterId}`}
+                        key={entry.team.rosterId}
+                      >
+                        <span className="snffl-mini-rank snffl-numeric">{entry.rank}</span>
+                        <span className="snffl-standings-colorbar" />
+                        <span className="snffl-mini-body">
+                          <span className="snffl-standings-team-name">{entry.team.teamName}</span>
+                          <span className="snffl-standings-manager">{entry.team.manager}</span>
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <Link className="snffl-sub-head" href="/standings#playoffs">
+                    Playoff Picture
+                  </Link>
+                  <div className="snffl-card">
+                    {odds.slice(0, 4).map((row) => (
+                      <Link
+                        className={`snffl-mini-row mgr-${row.team.userId}`}
+                        href={`/managers/${row.rosterId}`}
+                        key={row.rosterId}
+                      >
+                        <span className="snffl-standings-colorbar" />
+                        <span className="snffl-mini-body">
+                          <span className="snffl-standings-team-name">{row.team.teamName}</span>
+                          <span className="snffl-standings-manager">{row.tag}</span>
+                        </span>
+                        <span className="snffl-mini-value snffl-numeric">
+                          {row.makePlayoffs.toFixed(0)}%
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               </div>
             </HomeWidget>
 
@@ -431,10 +460,6 @@ export default async function HomePage() {
                 />
               </HomeWidget>
             )}
-
-            <HomeWidget title="Standings" href="/standings" linkLabel="Full table">
-              <StandingsTable standings={standings} holders={trophies.holders} />
-            </HomeWidget>
 
             <HomeWidget title="Trades" href="/trades" linkLabel="All trades">
               {latestTrade ? (

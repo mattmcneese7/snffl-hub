@@ -10,6 +10,16 @@ const nextConfig: NextConfig = {
 
   // The site is public but must stay out of search results entirely, so the
   // header goes on every response, not just the pages that remember a meta tag.
+  // Standings, Power Rankings and Playoffs merged into one page. These were
+  // real URLs people have open, so they land on the section they asked for
+  // rather than on a 404.
+  async redirects() {
+    return [
+      { source: '/power-rankings', destination: '/standings#power', permanent: true },
+      { source: '/playoffs', destination: '/standings#playoffs', permanent: true },
+    ];
+  },
+
   async headers() {
     return [
       {

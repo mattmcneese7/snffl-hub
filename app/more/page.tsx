@@ -4,10 +4,8 @@ import {
   ChartLineUp,
   Football,
   Gear,
-  ListNumbers,
   Scroll,
   Swap,
-  Trophy,
   UsersThree,
 } from '@phosphor-icons/react/dist/ssr';
 import PageHead from '@/components/PageHead';
@@ -18,9 +16,7 @@ import { league } from '@/lib/league';
    list of links into a menu. The colour groups them: blue is the league's
    standing, green its people, amber its rituals, slate its settings. */
 const MENU = [
-  { href: '/power-rankings', label: 'Power Rankings', note: 'All 14, ranked and roasted', Icon: ListNumbers, tone: 'blue' },
-  { href: '/standings', label: 'Standings', note: 'Records, points, playoff line', Icon: ChartLineUp, tone: 'blue' },
-  { href: '/playoffs', label: 'Playoff Tracker', note: 'Odds from our own simulation', Icon: Trophy, tone: 'blue' },
+  { href: '/standings', label: 'Standings', note: 'The table, the rankings, the odds', Icon: ChartLineUp, tone: 'blue' },
   { href: '/chug', label: 'Chug Meter', note: 'Who owes beers, and how many', Icon: BeerStein, tone: 'amber' },
   { href: '/trades', label: 'Trade Tracker', note: 'Every trade this season', Icon: Swap, tone: 'green' },
   { href: '/managers', label: 'Managers', note: 'All 14 teams and their seasons', Icon: UsersThree, tone: 'green' },

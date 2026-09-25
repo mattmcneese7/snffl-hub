@@ -40,6 +40,51 @@
   color: var(--muted);
 }
 
+/* A page with three sections says so at the top and lets you jump. */
+.snffl-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin-bottom: var(--s-4);
+}
+.snffl-jump-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 var(--s-3);
+  border-radius: var(--radius-pill);
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  color: var(--ink-secondary);
+  font-size: var(--t-small);
+  font-weight: 800;
+  text-decoration: none;
+}
+/* The crawl is pinned over the top of the page, so an anchor has to stop
+   short of it or the heading it jumps to lands underneath the scores. */
+.snffl-anchor { scroll-margin-top: calc(var(--ticker-stack-h) + env(safe-area-inset-top, 0px) + var(--s-4)); }
+/* A block inside a section: a step down from the section's own heading, so
+   the bracket under the odds does not read as a fourth section. */
+.snffl-sub-block { margin-top: var(--s-5); }
+.snffl-sub-block .snffl-headline { font-size: var(--t-body); }
+
+/* Modules stacked inside one Home section. */
+.snffl-stack { display: grid; gap: var(--s-4); }
+/* A module's own label: a step under the section heading, and a link, because
+   each one opens its part of the page it summarises. */
+.snffl-sub-head {
+  display: block;
+  margin-bottom: var(--s-2);
+  color: var(--ink-secondary);
+  font-family: var(--mono);
+  font-size: var(--t-label);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.snffl-sub-head::after { content: ' \203A'; }
+
 /* ---------- Horizontal rails ---------- */
 
 .snffl-stories-rail,

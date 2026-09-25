@@ -397,3 +397,36 @@ holds a credential for anyone's account.
 ever wants this badly enough to ask Sleeper about a licence. Until one of
 those changes, treat the deep links as the finished feature and not as a
 placeholder.
+
+## The palette follows the mark, September 2026
+
+Matt delivered a flat menu logo and asked that the app's colour follow it.
+The mark is a vertical ramp, and it was sampled band by band rather than
+guessed at:
+
+| Band | Hex | Hue |
+|---|---|---|
+| The point, at the top | `#005AB4` | 210, deep blue |
+| Through the middle | `#0696A2` | 185, cyan |
+| The body, at the bottom | `#1EAE9C` | 172, teal |
+
+Blue through cyan to teal is now the app's whole accent range, held in
+`--logo-blue`, `--logo-cyan` and `--logo-teal`. Two derived tokens are what
+the interface actually paints with: `--logo-aqua` (`#8AE6DD`), light enough
+to read as text or a rim on the dark ground, and `--logo-aqua-deep`, which is
+the body teal.
+
+**What moved onto it.** The water ramp, which used to run its own unrelated
+blues. The active tab's tint and rim. The link colour, which was a generic
+sky blue. Two of the three background glows; the third stays logo red, which
+is a separate brand colour and not part of this ramp.
+
+**What did not.** Status colours are not brand colours: good, bad, live and
+pending keep their own hues, because a green that means "won" has to stop
+meaning "teal, like the logo". Manager colours are per team and untouched.
+The Shartzone stays brown and the beer stays amber.
+
+**The colour table in BRIEF Section 173 is superseded.** It lists a light and
+a dark theme from before the app went dark only, and its accent column
+predates this mark. The tokens in `app/globals.css` are the source of truth,
+and `npm run contrast` is what enforces them.

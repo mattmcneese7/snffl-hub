@@ -83,9 +83,10 @@
   --glass-edge: rgba(255, 255, 255, 0.14);
   --glass-shine: rgba(255, 255, 255, 0.18);
   --shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
-  --glow-a: rgba(91, 182, 242, 0.28);
+  /* The ground's glows take the mark's teal and blue ends. */
+  --glow-a: rgba(30, 174, 156, 0.28);
   --glow-b: rgba(227, 24, 45, 0.26);
-  --glow-c: rgba(31, 116, 201, 0.42);
+  --glow-c: rgba(0, 90, 180, 0.42);
 
   /* Formerly theme-aware, now simply the values. */
   --shart: #c4946e;
@@ -97,7 +98,8 @@
      it at label size. */
   --rag-category: #ff8a95;
   --marker-ink: #ff8a95;
-  --link: #7cc6f7;
+  /* Pulled off the blue end of the mark's ramp, not a generic sky blue. */
+  --link: #6fd0e2;
   --win: #3ddc97;
 
   /* Status. Chips keep their own hex; the bare status colors are used on the
@@ -117,20 +119,27 @@
 
   /* Brand, never used for status */
   --logo-red: #e3182d;
-  /* The mark's own turquoise, sampled off the logo rather than guessed: the
-     pale highlight on the droplet and the mid tone under it. */
-  --logo-aqua: #96e4f6;
-  --logo-aqua-deep: #3cbaea;
+  /* The mark's ramp, sampled off the logo band by band rather than guessed.
+     It runs deep blue at the point, through cyan, to teal in the body, and
+     that blue to teal arc is the app's accent range. */
+  --logo-blue: #005ab4;
+  --logo-cyan: #0696a2;
+  --logo-teal: #1eae9c;
+  /* The two the interface actually paints with: a pale tone light enough to
+     read as text or a rim on the dark ground, and the body teal under it. */
+  --logo-aqua: #8ae6dd;
+  --logo-aqua-deep: var(--logo-teal);
   /* The active tab, lit in the logo's colour instead of plain white glass.
      Flat, not a gradient: a 22px tall highlight is too small to carry a ramp,
      so the ramp only read as one end being dirty. */
-  --tab-on: rgba(150, 228, 246, 0.16);
-  --tab-on-line: rgba(150, 228, 246, 0.42);
+  --tab-on: rgba(138, 230, 221, 0.16);
+  --tab-on-line: rgba(138, 230, 221, 0.42);
 
-  --water-light: #c9eeff;
-  --water-mid: #5bb6f2;
-  --water-deep: #1f74c9;
-  --water-abyss: #16539a;
+  /* The water ramp now follows the mark rather than running its own blues. */
+  --water-light: #cdeeea;
+  --water-mid: var(--logo-teal);
+  --water-deep: var(--logo-cyan);
+  --water-abyss: var(--logo-blue);
   --red-deep: #9f0e1f;
   --beer-light: #f7c04a;
   --beer-dark: #b85f10;

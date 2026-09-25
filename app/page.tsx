@@ -193,7 +193,7 @@ export default async function HomePage() {
         </section>
 
         <HomeWidget
-          title="The Rag"
+          title={<span className="snffl-rag-wordmark">The Rag</span>}
           href={latestRagWeek ? `/rag/${latestRagWeek}` : '/rag'}
           linkLabel={latestRagWeek ? `Week ${latestRagWeek}` : 'The section'}
         >

@@ -141,7 +141,15 @@
 .snffl-menu-row:last-child { border-bottom: 0; }
 /* Menus get the panel treatment too: a solid group with hairline dividers and
    an icon chip leading every row, rather than a list of blue words. */
+/* The row is icon, text, chevron. Without a flexible middle the label block
+   centred itself between the two, which is how a menu ends up looking like a
+   list of buttons. */
 .snffl-menu-row { gap: var(--s-3); }
+.snffl-menu-row > span:not(.snffl-icon-chip):not(.snffl-menu-arrow) {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: left;
+}
 .snffl-menu-row .snffl-icon-chip { margin-right: 2px; }
 .snffl-menu-label { display: block; font-size: var(--t-body); font-weight: 800; }
 .snffl-menu-note { display: block; font-size: var(--t-small); color: var(--ink-secondary); }

@@ -30,6 +30,15 @@
   --panel-sunken: #0a101c;
   --glass: rgba(255, 255, 255, 0.07);
   --glass-line: rgba(255, 255, 255, 0.13);
+  /* The chrome's own glass: the dock and the crawl.
+     
+     This was 94 percent opaque, which is a dark slab with a blur wasted behind
+     it. Glass is a low tint doing its work through the blur, not opacity: the
+     value here is the lowest that still holds a score at 4.5:1 when the
+     brightest possible photograph scrolls underneath, which is what the crawl
+     has to survive. A third of the backdrop comes through. */
+  --scrim: rgba(8, 13, 24, 0.68);
+  --scrim-soft: rgba(8, 13, 24, 0.42);
 
   --card: rgba(16, 22, 36, 0.76);
   --card-strong: rgba(20, 28, 46, 0.9);
@@ -90,10 +99,15 @@
   --ticker-ink-secondary: #aab4c6;
   --ticker-good: #4cd08a;
   --ticker-bad: #ff8a95;
-  --ticker-league-bg: #1f74c9;
-  --ticker-league-ink: #ffffff;
-  --ticker-nfl-bg: #e3182d;
-  --ticker-nfl-ink: #ffffff;
+  /* Coloured glass. A tag keeps its colour but stops being a solid slab of it:
+     a tint, a brighter rim of the same hue, and the blur behind it. The ink is
+     lifted toward white so it still reads on a fill that is now mostly ground. */
+  --ticker-league-bg: rgba(59, 150, 235, 0.26);
+  --ticker-league-line: rgba(109, 186, 255, 0.55);
+  --ticker-league-ink: #d6ecff;
+  --ticker-nfl-bg: rgba(233, 62, 80, 0.26);
+  --ticker-nfl-line: rgba(255, 120, 132, 0.55);
+  --ticker-nfl-ink: #ffdde0;
 
   /* Shape.
      

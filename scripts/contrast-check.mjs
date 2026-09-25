@@ -79,8 +79,8 @@ const PAIRS = [
   ['on-chip', 'pending-chip', 4.5, 'white on pending chip'],
   ['gold-on', 'gold', 4.5, 'dark text on gold badge'],
   ['shart-on', 'shart', 4.5, 'text on shart stamp'],
-  ['ticker-league-ink', 'ticker-league-bg', 4.5, 'LEAGUE ticker tag'],
-  ['ticker-nfl-ink', 'ticker-nfl-bg', 4.5, 'NFL ticker tag'],
+  // The ticker tags are tinted glass now, so their fill is translucent and
+  // cannot be read straight from the token. Composited below as literals.
   ['ticker-ink', 'ticker-band-a', 4.5, 'ticker text on league band'],
   ['ticker-ink', 'ticker-band-b', 4.5, 'ticker text on NFL band'],
   ['ticker-ink-secondary', 'ticker-band-a', 4.5, 'ticker status label on league band'],
@@ -210,6 +210,10 @@ const LITERAL_PAIRS = [
   ['#ffffff', '#0b1a2e', 4.5, 'DraftSharks badge label'],
   ['#ffffff', '#1f74c9', 4.5, 'SNFFL model badge letter'],
   ['#ffffff', '#c8323f', 4.5, 'injury tag on a lineup row'],
+  // Tinted glass tags, composited by hand: the tag's own tint over the dock's
+  // scrim over the ground, which is what the label actually sits on.
+  ['#d6ecff', '#15314f', 4.5, 'LEAGUE tag on its own tinted glass'],
+  ['#ffdde0', '#421a27', 4.5, 'NFL tag on its own tinted glass'],
   // The Shartzone is brown in both themes.
   ['#fff3d6', '#3b2412', 4.5, 'Shartzone name and wall text'],
   ['#e8d3a8', '#3b2412', 4.5, 'Shartzone labels'],

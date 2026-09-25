@@ -152,3 +152,17 @@
   text-transform: uppercase;
   color: var(--ink);
 }
+
+/* The Rag's name wherever it appears outside its own page. It is a masthead
+   set in type: the section is a paper, and calling it by name in the same
+   voice as "Top Plays" made it read as one more data widget. */
+.snffl-rag-wordmark {
+  font-family: var(--font-archivo);
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  font-size: 26px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}

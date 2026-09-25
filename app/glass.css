@@ -170,7 +170,9 @@
   --ticker-h: 30px;
   /* Where every tab's label sits above the bar's bottom edge. The mark button
      hangs its week on the same line. */
-  --tab-label-bottom: 9px;
+  /* Measured against where the other tabs put their labels, not guessed:
+     the week sat two pixels high and broke the row's baseline. */
+  --tab-label-bottom: 14px;
   /* Two bands, read by the body padding that clears them. */
   --ticker-stack-h: calc(var(--ticker-h) * 2);
 }
@@ -290,7 +292,7 @@ body { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
   bottom: calc(6px + env(safe-area-inset-bottom, 0px));
   /* Between a box and a pill. A pill on a bar this tall reads as a lozenge of
      buttons; square reads as a toolbar. */
-  border-radius: 20px;
+  border-radius: 24px;
   /* No padding above the bar. The mark breaks through the dock's top edge
      rather than the dock opening a band of empty glass for it to sit in,
      which is the whole point of a raised control: it interrupts the surface.
@@ -526,12 +528,14 @@ h3,
   /* Tight to its label, like every other tab is to its icon. Nine pixels here
      let the disc drift up away from the row and read as a thing hovering over
      the bar rather than the first item in it. */
-  gap: 4px;
+  /* Tighter, so a bigger disc still sits deeper in the bar rather than
+     riding higher out of it. */
+  gap: 3px;
   text-decoration: none;
 }
 .snffl-app-mark-disc {
-  width: 40px;
-  height: 40px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -544,7 +548,7 @@ h3,
     0 0 12px rgba(76, 194, 255, 0.22),
     0 8px 20px rgba(0, 0, 0, 0.5);
 }
-.snffl-app-mark-disc img { width: 26px; height: 26px; display: block; object-fit: contain; }
+.snffl-app-mark-disc img { width: 34px; height: 34px; display: block; object-fit: contain; }
 .snffl-app-mark-on .snffl-app-mark-disc {
   border-color: rgba(140, 216, 255, 0.85);
   box-shadow:
@@ -558,7 +562,7 @@ h3,
    mark reads as one of the five and not as a badge with a caption. It was
    mono and upper case beside four sans, sentence case labels. */
 .snffl-app-week {
-  font-size: 9.5px;
+  font-size: var(--t-label);
   font-weight: 700;
   color: var(--ink-secondary);
   white-space: nowrap;

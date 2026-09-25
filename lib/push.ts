@@ -19,8 +19,10 @@
 import webpush from 'web-push';
 import { writeClient } from './supabase.ts';
 
-const PUBLIC = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY ?? process.env.VAPID_PUBLIC_KEY ?? '';
-const PRIVATE = process.env.VAPID_PRIVATE_KEY ?? '';
+// || rather than ??: an unset secret arrives as an empty string, which ??
+// keeps, and empty VAPID keys silently disable every push. See lib/supabase.ts.
+const PUBLIC = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || process.env.VAPID_PUBLIC_KEY || '';
+const PRIVATE = process.env.VAPID_PRIVATE_KEY || '';
 
 /**
  * The site rather than an email address. VAPID asks for a contact, and a push

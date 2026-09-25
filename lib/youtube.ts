@@ -24,7 +24,7 @@ export type Upload = {
   description: string;
 };
 
-const key = () => process.env.YOUTUBE_API_KEY ?? '';
+const key = () => process.env.YOUTUBE_API_KEY || '';
 
 export const youtubeConfigured = () => Boolean(key());
 

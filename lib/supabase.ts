@@ -8,9 +8,14 @@
 
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
-const URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.SUPABASE_URL ?? '';
-const ANON = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '';
-const SERVICE = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
+// || rather than ??, which is load bearing. GitHub Actions passes every env
+// key it is given, so a workflow naming a secret that does not exist sets the
+// variable to an empty string rather than leaving it undefined. ?? keeps that
+// empty string, and the watcher read "" as its URL and silently wrote nothing
+// for a week while every run reported success.
+const URL = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '';
+const ANON = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const SERVICE = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 /** True when the site can read. Pages degrade to an empty Feed rather than throwing. */
 export const feedConfigured = Boolean(URL && ANON);

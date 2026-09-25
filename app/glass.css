@@ -779,7 +779,14 @@ h3,
      the way it does on anything actually made of glass. Without it the
      surface is matte, which is a plastic panel with a blur behind it. */
   background:
-    linear-gradient(118deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.05) 24%, rgba(255, 255, 255, 0) 46%),
+    linear-gradient(
+      118deg,
+      rgba(255, 255, 255, 0.16) 0%,
+      rgba(255, 255, 255, 0.06) 22%,
+      rgba(255, 255, 255, 0.02) 48%,
+      rgba(255, 255, 255, 0.05) 80%,
+      rgba(255, 255, 255, 0.09) 100%
+    ),
     var(--glass-bar);
   -webkit-backdrop-filter: blur(26px) saturate(180%);
   backdrop-filter: blur(26px) saturate(180%);
@@ -789,10 +796,18 @@ h3,
 /* The edge, which is the part that actually reads as Liquid Glass.
    
    Apple's is a gradient stroke rather than a flat rim: bright where the light
-   falls on the top left, dim on the bottom right where it falls away, so the
-   pane has a direction and a thickness. A uniform 1px line is a box with a
-   border. Drawn as a ring by masking the fill out of the middle, which is the
-   only way to put a gradient on a rounded border. */
+   falls on the top left, dimmer on the bottom right where it falls away, so
+   the pane has a direction and a thickness. A uniform 1px line is a box with
+   a border. Drawn as a ring by masking the fill out of the middle, which is
+   the only way to put a gradient on a rounded border.
+
+   The far end has a floor, and that is the point. It used to ramp down to
+   black at 32 percent, which on a dark ground is nothing at all, so the
+   bottom right corner of the bar had no edge to draw and the whole shape
+   faded out into the page. Real glass does the opposite: the far edge catches
+   light coming back through it, so it lifts rather than vanishes. Every side
+   is now visible, and the corner that used to disappear is the second
+   brightest part of the ring. */
 .snffl-frost::before {
   content: '';
   position: absolute;
@@ -802,10 +817,10 @@ h3,
   background: linear-gradient(
     135deg,
     rgba(255, 255, 255, 0.62) 0%,
-    rgba(255, 255, 255, 0.24) 18%,
-    rgba(255, 255, 255, 0.07) 38%,
-    rgba(255, 255, 255, 0.04) 62%,
-    rgba(0, 0, 0, 0.32) 100%
+    rgba(255, 255, 255, 0.30) 20%,
+    rgba(255, 255, 255, 0.15) 44%,
+    rgba(255, 255, 255, 0.13) 68%,
+    rgba(255, 255, 255, 0.22) 100%
   );
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,

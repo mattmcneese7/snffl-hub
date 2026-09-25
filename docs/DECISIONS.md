@@ -241,6 +241,32 @@ Matt's call on each point.
   sentences. The writer may use what is in it and nothing it would have to
   invent, such as history from other leagues.
 
+## Squirtfucius Says, Checkpoint 12c
+
+The week read forwards. C'mon Man judges a lineup once it cannot change; this
+is the same arithmetic run before kickoff, while the manager can still act.
+
+- **Six verdicts, ranked by whether he can still do something about it.** A
+  starter listed OUT, a bench player projected above the starter in a slot he
+  is eligible for, a starting slot that is a hole, the quietest game on the
+  board, the widest gap between ceiling and projection, and the steadiest floor
+  in the lineup. A seventh, his biggest number, exists only so all fourteen
+  managers appear.
+- **The voice is written in code, not by Claude.** It has to be true every
+  time and it is built entirely from the numbers, so a writer plus a
+  validation pass would cost money to reach the same sentence. Three phrasings
+  per verdict, chosen by hashing the player and the week, so the board is
+  stable across renders and does not read as one template fourteen times.
+- **Every saying carries its number.** Nobody has to take the oracle's word.
+- **Quarterbacks are excluded from the safe verdict.** They hold the highest
+  floor in every lineup, so allowing them meant telling fourteen managers about
+  their quarterback.
+- **No claim the data cannot support.** A first pass said a player "has not had
+  a bad day in months", which no column knows. Sayings assert the number and
+  nothing else.
+- **Sources:** projections from Sleeper, floors and ceilings from DraftSharks,
+  game totals from the book through ESPN, each credited where it is used.
+
 ## Notifications, rebuilt September 2026
 
 The first version sent every touchdown in the league to every device, plus lead

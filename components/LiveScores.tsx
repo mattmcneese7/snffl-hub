@@ -28,7 +28,21 @@ type Snapshot = {
   at: number;
 };
 
-let snapshot: Snapshot = { week: null, teams: {}, players: {}, at: 0 };
+/**
+ * The value hydration starts from, and it never changes.
+ *
+ * getServerSnapshot has to return what the server actually rendered, which is
+ * always the empty store: the server never polls. Returning the live snapshot
+ * instead was a real hydration bug on production, React error #418 on every
+ * page during a game. Hydration is not one pass, so the first poll can land
+ * after LiveRefresh's effect has run but before the ticker further down the
+ * tree has hydrated, and that ticker would then render live numbers against
+ * server HTML holding the old ones. Locally everything hydrates in one fast
+ * pass, so it only ever showed up in production.
+ */
+const EMPTY: Snapshot = { week: null, teams: {}, players: {}, at: 0 };
+
+let snapshot: Snapshot = EMPTY;
 const listeners = new Set<() => void>();
 const emit = () => listeners.forEach((listener) => listener());
 const subscribe = (listener: () => void) => {
@@ -36,7 +50,7 @@ const subscribe = (listener: () => void) => {
   return () => listeners.delete(listener);
 };
 const getSnapshot = () => snapshot;
-const getServerSnapshot = () => snapshot;
+const getServerSnapshot = () => EMPTY;
 
 const WINDOW_MS = 10_000;
 let timer: ReturnType<typeof setInterval> | null = null;

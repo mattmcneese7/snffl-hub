@@ -46,6 +46,8 @@ import { getPlayoffOdds } from '@/lib/playoff-odds';
 import { publishedWeeks, readIssue } from '@/lib/rag';
 import { getTrades } from '@/lib/trades';
 import { photosForWeek } from '@/lib/game-photos';
+import FeedDigest from '@/components/FeedDigest';
+import { buildFeed } from '@/lib/feed-view';
 import type { Game, GameSide } from '@/lib/types';
 
 const QUICK_LINKS = [
@@ -310,6 +312,12 @@ export default async function HomePage() {
           </div>
 
           <div>
+            {/* The Feed is a section of its own, so it sits here every day
+                rather than only while a game is on. */}
+            <HomeWidget title="The Feed" href="/feed" linkLabel="Everything">
+              <FeedDigest items={buildFeed(livePosts, []).slice(0, 5)} />
+            </HomeWidget>
+
             <HomeWidget title="Power Rankings" href="/power-rankings">
               <div className="snffl-card">
                 {rankings.slice(0, 3).map((entry) => (
@@ -435,28 +443,6 @@ export default async function HomePage() {
               gets an empty Feed and a slate of scheduled kickoffs on Home. */}
           {liveNow ? (
             <div className="snffl-gameday-nfl">
-              <HomeWidget title="Live Feed" href="/feed" linkLabel="Full feed">
-                {livePosts.length ? (
-                  <div className="snffl-card">
-                    {livePosts.map((post) => (
-                      <article className="snffl-feed-post" key={post.id}>
-                        <div className="snffl-feed-post-head">
-                          <span className="snffl-feed-post-title">{post.title}</span>
-                        </div>
-                        {post.body ? <p className="snffl-feed-post-body">{post.body}</p> : null}
-                      </article>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="snffl-placeholder">
-                    <span className="snffl-placeholder-label">Quiet so far</span>
-                    <span className="snffl-placeholder-note">
-                      Touchdowns and lead changes land here as they happen.
-                    </span>
-                  </div>
-                )}
-              </HomeWidget>
-
               <HomeWidget title="NFL Scores" href={`/matchups/${week}`} linkLabel="Full slate">
                 <NflSlate
                   games={ctx.nfl}

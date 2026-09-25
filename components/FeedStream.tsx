@@ -1,35 +1,47 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
-import HighlightList from './HighlightList';
+import { useMemo, useState } from 'react';
 import { LinkedText, type NameEntry } from './ManagerLink';
+import ReelPlayer from './ReelPlayer';
+import {
+  applyFilter,
+  buildFeed,
+  facetsOf,
+  EMPTY_FILTER,
+  KIND_LABELS,
+  type FeedFilter,
+  type FeedItem,
+  type FeedItemKind,
+} from '@/lib/feed-view';
 import type { FeedPost } from '@/lib/feed';
 import type { Highlight } from '@/lib/highlights';
+import { toReelClip } from '@/lib/reel-clips';
 
 /**
- * The Feed, with jump buttons that follow scroll, per Brief Section 2.
+ * The Feed as a section of its own.
  *
- * Posts arrive already read on the server. This owns the filtering and the
- * active button, which is the only part that needs to be interactive.
+ * It was four stacked lists behind a jump bar, with highlights split again
+ * into Owned, Waiver Adds and Free Agents. In a fourteen team league that
+ * second split is dead on arrival: 188 players are rostered, so Owned held
+ * every clip and the other two tabs were empty, which reads as broken rather
+ * than as empty.
+ *
+ * Now: replays that actually play across the top, then one stream of
+ * everything newest first, with filters built from what is in the stream. Each
+ * filter counts what it would leave, and a filter that cannot change the
+ * screen is never drawn.
  */
-const TABS = [
-  { kind: 'live', label: 'Live Alerts' },
-  { kind: 'cmon-man', label: "C'mon Man" },
-  { kind: 'shart-watch', label: 'Shart Watch' },
-  { kind: 'highlight', label: 'Highlights' },
-] as const;
 
-type TabKind = (typeof TABS)[number]['kind'];
-
-const EMPTY: Record<TabKind, string> = {
-  live: 'Touchdowns and lead changes land here while games are running.',
-  'cmon-man': 'The worst decisions of the week, once the watcher starts calling them out.',
-  'shart-watch': 'Whoever is tracking toward the lowest score gets named here during games.',
-  highlight: 'Real clips arrive with Checkpoint 8.',
+const KIND_MARK: Record<FeedItemKind, string> = {
+  touchdown: 'TD',
+  lead: 'LEAD',
+  cmon: 'CMON',
+  shart: 'SHART',
+  clip: 'CLIP',
 };
 
-function timeAgo(iso: string): string {
-  const seconds = Math.max(0, Math.floor((Date.now() - new Date(iso).getTime()) / 1000));
+function timeAgo(iso: string, now: number): string {
+  const seconds = Math.max(0, Math.floor((now - new Date(iso).getTime()) / 1000));
   if (seconds < 60) return 'just now';
   const minutes = Math.floor(seconds / 60);
   if (minutes < 60) return `${minutes}m ago`;
@@ -38,203 +50,254 @@ function timeAgo(iso: string): string {
   return `${Math.floor(hours / 24)}d ago`;
 }
 
-type ClipGroup = 'owned' | 'waiver' | 'free';
-const GROUP_LABELS: Record<ClipGroup, string> = {
-  owned: 'Owned',
-  waiver: 'Waiver Adds',
-  free: 'Free Agents',
-};
-const GROUP_EMPTY: Record<ClipGroup, string> = {
-  owned: 'Clips of players on a roster in this league land here.',
-  waiver: 'Clips of players picked up in the last week land here.',
-  free: 'Big plays by QBs, RBs, WRs, TEs and kickers nobody has claimed land here.',
-};
+function Chips({
+  facets,
+  active,
+  onPick,
+  label,
+}: {
+  facets: { value: string; label: string; count: number }[];
+  active: string | null;
+  onPick: (value: string | null) => void;
+  label: string;
+}) {
+  // One option is not a choice, so the row is not drawn at all.
+  if (facets.length < 2) return null;
+  return (
+    <div className="snffl-feed-filter-row">
+      <span className="snffl-feed-filter-label">{label}</span>
+      <div className="snffl-feed-chips">
+        <button
+          type="button"
+          className={`snffl-feed-chip${active === null ? ' snffl-feed-chip-on' : ''}`}
+          aria-pressed={active === null}
+          onClick={() => onPick(null)}
+        >
+          All
+        </button>
+        {facets.map((facet) => (
+          <button
+            key={facet.value}
+            type="button"
+            className={`snffl-feed-chip${active === facet.value ? ' snffl-feed-chip-on' : ''}`}
+            aria-pressed={active === facet.value}
+            onClick={() => onPick(active === facet.value ? null : facet.value)}
+          >
+            {facet.label}
+            <span className="snffl-feed-chip-count">{facet.count}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function FeedStream({
   posts,
   highlights = [],
   managers = {},
   names = [],
-  waiverIds = [],
 }: {
   posts: FeedPost[];
-  /** Clips live in their own table, so they arrive separately from posts. */
   highlights?: Highlight[];
-  /** Manager and team names to link in post copy. */
   names?: NameEntry[];
-  /** Players picked up in the last week, for the Waiver Adds tab. */
-  waiverIds?: string[];
   /** Roster id as text to manager name, matching the highlights column type. */
   managers?: Record<string, string>;
 }) {
-  const [active, setActive] = useState<TabKind>('live');
-  const [ownership, setOwnership] = useState<ClipGroup>('owned');
-  const headings = useRef<Record<string, HTMLElement | null>>({});
+  const [filter, setFilter] = useState<FeedFilter>(EMPTY_FILTER);
+  const [playing, setPlaying] = useState<number | null>(null);
 
-  const clips = useMemo(() => {
-    const added = new Set(waiverIds);
-    return {
-      owned: highlights.filter((clip) => clip.ownerTeamId),
-      // Players picked up in the last week: the clip the league wants to see
-      // is the one that explains why somebody burned a claim on him.
-      waiver: highlights.filter((clip) => clip.playerIds.some((id) => added.has(id))),
-      free: highlights.filter((clip) => !clip.ownerTeamId),
-    };
-  }, [highlights, waiverIds]);
+  // Rendered once on the client, so every row agrees on what "now" is and the
+  // server's HTML is never contradicted halfway down the list.
+  const [now] = useState(() => Date.now());
 
-  const grouped = useMemo(() => {
-    const out = {} as Record<TabKind, FeedPost[]>;
-    for (const tab of TABS) out[tab.kind] = [];
-    for (const post of posts) {
-      if (out[post.kind as TabKind]) out[post.kind as TabKind].push(post);
-    }
-    return out;
-  }, [posts]);
+  const items = useMemo(() => buildFeed(posts, highlights), [posts, highlights]);
+  const nameOf = (id: string) => managers[id] ?? `Roster ${id}`;
+  const facets = useMemo(() => facetsOf(items, nameOf), [items, managers]);
+  const shown = useMemo(() => applyFilter(items, filter), [items, filter]);
 
-  // The active button follows the page rather than only responding to clicks.
-  useEffect(() => {
-    const sections = TABS.map((tab) => headings.current[tab.kind]).filter(Boolean) as HTMLElement[];
-    if (!sections.length) return;
+  // The replay rail: only clips that play in the site, best first. A link out
+  // is still in the stream below, marked as one, but it is never offered here
+  // as something that will play.
+  const reels = useMemo(
+    () =>
+      highlights
+        .filter((clip) => clip.id.startsWith('espn:') && clip.thumbnail)
+        .sort((a, b) => (b.fantasyPoints ?? 0) - (a.fantasyPoints ?? 0))
+        .map((clip) => toReelClip(clip, clip.ownerTeamId ? nameOf(clip.ownerTeamId) : 'Free agent')),
+    [highlights, managers]
+  );
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-        const kind = visible?.target.getAttribute('data-kind') as TabKind | null;
-        if (kind) setActive(kind);
-      },
-      // Below the sticky chrome, so a section counts as current once its
-      // heading clears the header rather than when it touches the viewport.
-      { rootMargin: '-140px 0px -60% 0px', threshold: 0 }
-    );
-
-    for (const section of sections) observer.observe(section);
-
-    // At the bottom of the page no heading can be inside that band: the last
-    // one has already risen above the top inset. Measured at the scroll floor,
-    // nothing intersects and the button keeps whatever it last showed, which is
-    // right here only because Highlights happens to be last. Anchoring the
-    // final stretch to the last heading above the band makes it right on
-    // purpose rather than by luck.
-    const onScroll = () => {
-      const atFloor =
-        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
-      if (!atFloor) return;
-      const passed = sections.filter((section) => section.getBoundingClientRect().top < 140);
-      const last = passed[passed.length - 1];
-      const kind = last?.getAttribute('data-kind') as TabKind | null;
-      if (kind) setActive(kind);
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-    return () => {
-      observer.disconnect();
-      window.removeEventListener('scroll', onScroll);
-    };
-  }, [grouped]);
-
-  const jumpTo = (kind: TabKind) => {
-    setActive(kind);
-    headings.current[kind]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
+  const filtering = Boolean(filter.kind || filter.manager || filter.week);
 
   return (
-    <div>
-      <div className="snffl-feed-jump">
-        {TABS.map((tab) => (
-          <button
-            key={tab.kind}
-            type="button"
-            className={`snffl-feed-jump-button${active === tab.kind ? ' snffl-feed-jump-active' : ''}`}
-            aria-current={active === tab.kind ? 'true' : undefined}
-            onClick={() => jumpTo(tab.kind)}
-          >
-            {tab.label}
-            {(tab.kind === 'highlight' ? highlights.length : grouped[tab.kind].length) ? (
-              <span className="snffl-feed-jump-count">
-                {tab.kind === 'highlight' ? highlights.length : grouped[tab.kind].length}
-              </span>
-            ) : null}
-          </button>
-        ))}
-      </div>
-
-      {TABS.map((tab) => (
-        <section className="snffl-feed-section" key={tab.kind}>
-          <h2
-            className="snffl-headline snffl-feed-heading"
-            data-kind={tab.kind}
-            ref={(node) => {
-              headings.current[tab.kind] = node;
-            }}
-          >
-            {tab.label}
-          </h2>
-
-          {tab.kind === 'highlight' ? (
-            <>
-              {/* Owned and Free Agents, per Brief Section 2, plus the week's
-                  waiver adds. */}
-              <div className="snffl-clip-tabs">
-                {(['owned', 'waiver', 'free'] as const).map((which) => (
-                  <button
-                    key={which}
-                    type="button"
-                    className={`snffl-clip-tab${ownership === which ? ' snffl-clip-tab-active' : ''}`}
-                    aria-pressed={ownership === which}
-                    onClick={() => setOwnership(which)}
-                  >
-                    {GROUP_LABELS[which]}
-                    {clips[which].length ? ` ${clips[which].length}` : ''}
-                  </button>
-                ))}
-              </div>
-
-              {clips[ownership].length ? (
-                <HighlightList
-                  clips={clips[ownership]}
-                  managers={managers}
-                  title={`${GROUP_LABELS[ownership]} Highlights`}
-                />
-              ) : (
-                <div className="snffl-placeholder">
-                  <span className="snffl-placeholder-label">Nothing yet</span>
-                  <span className="snffl-placeholder-note">
-                    {GROUP_EMPTY[ownership]}
-                  </span>
-                </div>
-              )}
-            </>
-          ) : grouped[tab.kind].length ? (
-            <div className="snffl-card">
-              {grouped[tab.kind].map((post) => (
-                <article className="snffl-feed-post" key={post.id}>
-                  <div className="snffl-feed-post-head">
-                    <span className="snffl-feed-post-title">
-                      <LinkedText text={post.title} names={names} />
-                    </span>
-                    <time className="snffl-feed-post-time" dateTime={post.createdAt}>
-                      {timeAgo(post.createdAt)}
-                    </time>
-                  </div>
-                  {post.body ? (
-                    <p className="snffl-feed-post-body">
-                      <LinkedText text={post.body} names={names} />
-                    </p>
+    <div className="snffl-feed">
+      {reels.length ? (
+        <section className="snffl-feed-replays">
+          <div className="snffl-block-heading">
+            <h2 className="snffl-headline">Replays</h2>
+            <span className="snffl-block-heading-link">{reels.length} playable</span>
+          </div>
+          <div className="snffl-feed-reel-rail">
+            {reels.map((clip, index) => (
+              <button
+                type="button"
+                className="snffl-feed-reel"
+                key={clip.id}
+                onClick={() => setPlaying(index)}
+                aria-label={`Play: ${clip.title}`}
+              >
+                <span className="snffl-feed-reel-art">
+                  {clip.still ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={clip.still} alt="" loading="lazy" />
                   ) : null}
-                </article>
-              ))}
-            </div>
-          ) : (
-            <div className="snffl-placeholder">
-              <span className="snffl-placeholder-label">Nothing yet</span>
-              <span className="snffl-placeholder-note">{EMPTY[tab.kind]}</span>
-            </div>
-          )}
+                  <span className="snffl-feed-reel-play" aria-hidden>
+                    ▶
+                  </span>
+                </span>
+                <span className="snffl-feed-reel-title">{clip.title}</span>
+                {clip.tags.length ? (
+                  <span className="snffl-feed-reel-tags">{clip.tags.slice(0, 2).join(' · ')}</span>
+                ) : null}
+              </button>
+            ))}
+          </div>
         </section>
-      ))}
+      ) : null}
+
+      <section className="snffl-feed-stream">
+        <div className="snffl-block-heading">
+          <h2 className="snffl-headline">Everything</h2>
+          <span className="snffl-block-heading-link">
+            {shown.length === items.length ? `${items.length} moments` : `${shown.length} of ${items.length}`}
+          </span>
+        </div>
+
+        <div className="snffl-feed-filters">
+          <Chips
+            label="What"
+            facets={facets.kinds}
+            active={filter.kind}
+            onPick={(kind) => setFilter((f) => ({ ...f, kind }))}
+          />
+          <Chips
+            label="Who"
+            facets={facets.managers}
+            active={filter.manager}
+            onPick={(manager) => setFilter((f) => ({ ...f, manager }))}
+          />
+          <Chips
+            label="When"
+            facets={facets.weeks}
+            active={filter.week}
+            onPick={(week) => setFilter((f) => ({ ...f, week }))}
+          />
+        </div>
+
+        {shown.length ? (
+          <ol className="snffl-feed-list">
+            {shown.map((item) => (
+              <FeedRow
+                key={`${item.kind}-${item.id}`}
+                item={item}
+                names={names}
+                now={now}
+                onPlay={() => {
+                  const index = reels.findIndex((clip) => clip.id === item.id);
+                  if (index >= 0) setPlaying(index);
+                }}
+              />
+            ))}
+          </ol>
+        ) : (
+          <div className="snffl-placeholder">
+            <span className="snffl-placeholder-label">Nothing matches</span>
+            <span className="snffl-placeholder-note">
+              {filtering
+                ? 'Clear a filter to see the rest of the week.'
+                : 'Touchdowns, lead changes and replays land here while games are running.'}
+            </span>
+          </div>
+        )}
+      </section>
+
+      {playing != null ? (
+        <ReelPlayer
+          clips={reels}
+          start={playing}
+          title="Replays"
+          onClose={() => setPlaying(null)}
+        />
+      ) : null}
     </div>
+  );
+}
+
+function FeedRow({
+  item,
+  names,
+  now,
+  onPlay,
+}: {
+  item: FeedItem;
+  names: NameEntry[];
+  now: number;
+  onPlay: () => void;
+}) {
+  const clip = item.clip;
+  const linkOut = clip && !clip.playable;
+
+  return (
+    <li className={`snffl-feed-row snffl-feed-row-${item.kind}`}>
+      <span className={`snffl-feed-mark snffl-feed-mark-${item.kind}`} aria-hidden>
+        {KIND_MARK[item.kind]}
+      </span>
+      <span className="snffl-feed-row-main">
+        <span className="snffl-feed-row-head">
+          <span className="snffl-feed-row-title">
+            <LinkedText text={item.title} names={names} />
+          </span>
+          <time className="snffl-feed-row-time" dateTime={item.at}>
+            {timeAgo(item.at, now)}
+          </time>
+        </span>
+        {item.body ? (
+          <span className="snffl-feed-row-body">
+            <LinkedText text={item.body} names={names} />
+          </span>
+        ) : null}
+        {clip ? (
+          <span className="snffl-feed-row-tags">
+            {clip.playType ? <span className="snffl-feed-tag">{clip.playType}</span> : null}
+            {clip.started != null ? (
+              <span className="snffl-feed-tag">{clip.started ? 'Started' : 'Benched'}</span>
+            ) : null}
+            {clip.points != null ? (
+              <span className="snffl-feed-tag">{clip.points.toFixed(2)} pts</span>
+            ) : null}
+            <span className="snffl-feed-tag">{KIND_LABELS.clip}</span>
+          </span>
+        ) : null}
+        {clip ? (
+          clip.playable ? (
+            <button type="button" className="snffl-feed-row-play" onClick={onPlay}>
+              Watch replay
+            </button>
+          ) : (
+            // The NFL blocks these on outside sites, so it says where it goes
+            // rather than pretending to be a player that then does nothing.
+            <a
+              className="snffl-feed-row-play snffl-feed-row-out"
+              href={`https://www.youtube.com/watch?v=${item.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Watch on YouTube
+            </a>
+          )
+        ) : null}
+      </span>
+    </li>
   );
 }

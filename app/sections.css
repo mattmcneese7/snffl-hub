@@ -190,76 +190,204 @@
 /* Jump buttons stay reachable while the page scrolls. Offset sits below the
    header, section strip and ticker stack, which is the same stack the section
    strip already pins against. */
-.snffl-feed-jump {
-  position: sticky;
-  /* Below the pinned chrome: the header and two 30px ticker bands, per
-     glass.css. */
-  top: calc(var(--header-h) + 60px + env(safe-area-inset-top, 0px));
-  z-index: 40;
+/* ---------- The Feed ---------- */
+
+.snffl-feed { display: grid; gap: 18px; }
+.snffl-feed-replays, .snffl-feed-stream { display: grid; gap: 10px; }
+
+/* Replays: only clips that play in the site, in a rail that scrolls sideways. */
+.snffl-feed-reel-rail {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
+}
+.snffl-feed-reel-rail::-webkit-scrollbar { display: none; }
+.snffl-feed-reel {
+  flex: 0 0 auto;
+  width: 208px;
+  scroll-snap-align: start;
+  display: grid;
+  gap: 6px;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.snffl-feed-reel-art {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.snffl-feed-reel-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.snffl-feed-reel-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(8, 12, 20, 0.72);
+  color: #ffffff;
+  font-size: 15px;
+}
+.snffl-feed-reel-title {
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.25;
+  text-wrap: pretty;
+  /* Two lines, then an ellipsis: a headline of any length keeps every card in
+     the rail the same height. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.snffl-feed-reel-tags {
+  font: 700 10px/1.2 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Filters, built from what is in the stream. */
+.snffl-feed-filters { display: grid; gap: 6px; }
+.snffl-feed-filter-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.snffl-feed-filter-label {
+  flex: 0 0 auto;
+  width: 36px;
+  font: 800 10px/1.2 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.snffl-feed-chips {
   display: flex;
   gap: 6px;
   overflow-x: auto;
-  scrollbar-width: none;
-  padding: 8px 0;
-  background: var(--bg);
+  padding: 2px 0;
+  -webkit-overflow-scrolling: touch;
 }
-.snffl-feed-jump::-webkit-scrollbar { display: none; }
-
-.snffl-feed-jump-button {
+.snffl-feed-chips::-webkit-scrollbar { display: none; }
+.snffl-feed-chip {
+  flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  flex: 0 0 auto;
-  min-height: var(--tap);
-  padding: 0 12px;
+  gap: 5px;
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
   background: var(--card);
-  color: var(--ink);
   border: 1px solid var(--line);
+  color: var(--ink);
   font: inherit;
   font-size: 12px;
   font-weight: 800;
   white-space: nowrap;
   cursor: pointer;
 }
-.snffl-feed-jump-active {
-  background: var(--ink);
-  color: var(--bg);
-  border-color: var(--ink);
-}
-.snffl-feed-jump-count {
-  font-size: 11px;
-  font-weight: 800;
-  opacity: 0.75;
+.snffl-feed-chip-on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.snffl-feed-chip-count {
+  font: 700 10px/1 var(--mono);
+  font-variant-numeric: tabular-nums;
+  opacity: 0.7;
 }
 
-.snffl-feed-section { display: grid; gap: 9px; }
-.snffl-feed-heading { font-size: 17px; scroll-margin-top: 180px; }
-
-.snffl-feed-post {
-  padding: 11px 12px;
-  border-bottom: 1px solid var(--line);
+/* One stream, newest first. */
+.snffl-feed-list { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+.snffl-feed-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-bottom: 0;
 }
-.snffl-feed-post:last-child { border-bottom: 0; }
-.snffl-feed-post-head {
+.snffl-feed-row:first-child { border-radius: 12px 12px 0 0; }
+.snffl-feed-row:last-child { border-bottom: 1px solid var(--line); border-radius: 0 0 12px 12px; }
+.snffl-feed-row:only-child { border-radius: 12px; }
+.snffl-feed-mark {
+  flex: 0 0 auto;
+  min-width: 46px;
+  padding: 3px 6px;
+  border-radius: 6px;
+  text-align: center;
+  font: 800 9px/1.4 var(--mono);
+  letter-spacing: 0.08em;
+  background: var(--surface);
+  color: var(--ink-secondary);
+}
+.snffl-feed-mark-touchdown { background: var(--good-chip); color: var(--on-chip); }
+.snffl-feed-mark-lead { background: var(--live-chip); color: var(--on-chip); }
+.snffl-feed-mark-cmon { background: var(--bad-chip); color: var(--on-chip); }
+.snffl-feed-mark-shart { background: var(--shart); color: var(--shart-on); }
+.snffl-feed-mark-clip { background: var(--surface); color: var(--ink-secondary); }
+
+.snffl-feed-row-main { display: grid; gap: 4px; min-width: 0; flex: 1 1 auto; }
+.snffl-feed-row-head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 10px;
 }
-.snffl-feed-post-title {
+.snffl-feed-row-title {
+  font-size: 14px;
   font-weight: 800;
-  font-size: 13px;
-  letter-spacing: 0.02em;
+  line-height: 1.3;
+  text-wrap: pretty;
+  min-width: 0;
 }
-.snffl-feed-post-time {
-  font-size: 11px;
-  color: var(--ink-secondary);
+.snffl-feed-row-time {
+  flex: 0 0 auto;
+  font: 700 10px/1.2 var(--mono);
+  color: var(--muted);
   white-space: nowrap;
 }
-.snffl-feed-post-body {
-  margin: 3px 0 0;
-  font-size: 13px;
+.snffl-feed-row-body { font-size: 13px; color: var(--ink-secondary); text-wrap: pretty; }
+.snffl-feed-row-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.snffl-feed-tag {
+  padding: 2px 6px;
+  border-radius: 5px;
+  background: var(--surface);
+  font: 700 10px/1.4 var(--mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   color: var(--ink-secondary);
+}
+.snffl-feed-row-play {
+  justify-self: start;
+  min-height: 32px;
+  margin-top: 2px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+}
+.snffl-feed-row-out { color: var(--ink-secondary); }
+
+@media (min-width: 720px) {
+  .snffl-feed-reel { width: 248px; }
 }
 
 /* ---------- Live motion, Checkpoint 7 ---------- */
@@ -432,3 +560,20 @@
 .snffl-alert-row:last-child { border-bottom: 0; }
 /* The copy takes the space the switch does not, so no note wraps under it. */
 .snffl-alert-copy { flex: 1 1 auto; min-width: 0; text-wrap: pretty; }
+
+/* Read by a screen reader, drawn for nobody: the coloured mark beside a feed
+   row says what kind of moment it is, and it is aria-hidden. */
+.snffl-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+/* On Home the rows sit inside a widget, so they carry no outer frame. */
+.snffl-feed-digest .snffl-feed-row { padding: 10px 12px; }
+.snffl-feed-digest .snffl-feed-row-title { font-size: 13px; }

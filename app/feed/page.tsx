@@ -6,7 +6,6 @@ import FeedStream from '@/components/FeedStream';
 import { getFeedPosts } from '@/lib/feed';
 import { getHighlights, isRelevantClip } from '@/lib/highlights';
 import { allPlayers, teams } from '@/lib/league';
-import { getRecentAdds } from '@/lib/transactions';
 
 const FANTASY_POSITIONS = new Set(['QB', 'RB', 'WR', 'TE', 'K']);
 
@@ -20,11 +19,7 @@ const FANTASY_POSITIONS = new Set(['QB', 'RB', 'WR', 'TE', 'K']);
 export const revalidate = 30;
 
 export default async function FeedPage() {
-  const [posts, allClips, recentAdds] = await Promise.all([
-    getFeedPosts(),
-    getHighlights(undefined, 120),
-    getRecentAdds(),
-  ]);
+  const [posts, allClips] = await Promise.all([getFeedPosts(), getHighlights(undefined, 120)]);
   const fantasy = new Set(
     allPlayers()
       .filter((player) => FANTASY_POSITIONS.has(player.position))
@@ -33,7 +28,6 @@ export default async function FeedPage() {
   // Only clips someone in this league could care about: owned players and
   // D/STs, and unowned players at positions the league rosters.
   const highlights = allClips.filter((clip) => isRelevantClip(clip, (id) => fantasy.has(id)));
-  const waiverIds = Object.keys(recentAdds);
 
   // Keyed by text, because owner_team_id is a text column even though roster
   // ids are numbers everywhere else in the project.
@@ -49,19 +43,20 @@ export default async function FeedPage() {
           <div className="snffl-block-heading">
             <h2 className="snffl-headline">The Feed</h2>
             <span className="snffl-block-heading-link">
-              {posts.length ? `${posts.length} posts` : 'Quiet right now'}
+              {posts.length + highlights.length
+                ? `${posts.length + highlights.length} moments`
+                : 'Quiet right now'}
             </span>
           </div>
           <p className="snffl-menu-note">
-            Live alerts land here during games. Scores refresh every 30 seconds, and the watcher
-            writes at most four posts an hour.
+            Every touchdown, lead change, callout and replay of the season, newest first. Filter it
+            by what happened, by whose team it was, or by week.
           </p>
         </section>
 
         <FeedStream
           posts={posts}
           highlights={highlights}
-          waiverIds={waiverIds}
           managers={managers}
           names={managerNames()}
         />

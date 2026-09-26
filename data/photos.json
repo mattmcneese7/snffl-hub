@@ -375,110 +375,48 @@
   ],
   "3": [
     {
-      "url": "https://a.espncdn.com/photo/2025/1018/r1561966_1296x864_3-2.jpg",
-      "width": 1296,
-      "height": 864,
-      "caption": "Bijan Robinson, the No. 2 overall pick on average in fantasy leagues, delivered on those expectations on Thursday night.",
-      "gameId": "401872948",
-      "week": 3,
-      "playerIds": [
-        "9509"
-      ],
-      "score": 10
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0920/r1719791_1296x729_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/0918/r1718376_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
-      "caption": "Jaxon Smith-Njigba found the end zone three times against the Cardinals.",
+      "caption": "In his third defensive snap on Monday, Mansoor Delane recorded interception.",
+      "gameId": "401872948",
+      "week": 3,
+      "playerIds": [],
+      "score": 6
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0913/r1716212_600x400_3-2.jpg",
+      "width": 600,
+      "height": 400,
+      "caption": "Saquon Barkley #26 of the Philadelphia Eagles runs the ball.",
       "gameId": "401872948",
       "week": 3,
       "playerIds": [
-        "9488"
+        "4866"
       ],
-      "score": 10
+      "score": 5
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/0921/r1720117_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "The Minnesota Vikings announced that Kyler Murray will start in Week 3.",
-      "gameId": "401872948",
-      "week": 3,
-      "playerIds": [
-        "5849"
-      ],
-      "score": 7
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0921/r1720009_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Travis Etienne Jr. of the New Orleans Saints was started in 78.2% of ESPN leagues.",
-      "gameId": "401872948",
-      "week": 3,
-      "playerIds": [
-        "7543"
-      ],
-      "score": 7
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0924/r1721329_576x324_16-9.jpg",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0925/dm_260925_Commanders_IA_Jayden_Rap/dm_260925_Commanders_IA_Jayden_Rap.jpg",
       "width": 576,
       "height": 324,
-      "caption": "Will Aaron Jones Sr. suit up for the Vikings this weekend?",
+      "caption": "Ian Rapoport shares encouraging news on Jayden Daniels' elbow injury, with the Commanders hopeful their quarterback will return sooner rather than later.",
       "gameId": "401872948",
       "week": 3,
       "playerIds": [
-        "4199"
-      ],
-      "score": 4
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0924/r1721380_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "C.J. Stroud of the Houston Texans is available in more than 60% of ESPN leagues.",
-      "gameId": "401872948",
-      "week": 3,
-      "playerIds": [
-        "9758"
-      ],
-      "score": 4
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0924/r1721426_1296x864_3-2.jpg",
-      "width": 1296,
-      "height": 864,
-      "caption": "Malik Nabers hurt a shoulder Monday night but expects to be available Sunday against the Titans.",
-      "gameId": "401872948",
-      "week": 3,
-      "playerIds": [
-        "11632"
+        "11566"
       ],
       "score": 1
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/0923/r1720827_1296x729_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/0919/r1718841_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
-      "caption": "If injuries have upended the quarterback position on your fantasy roster, consider picking up Lions QB Jared Goff.",
+      "caption": "Nico Collins will miss Week 2 with a hamstring injury suffered during Wednesday practice.",
       "gameId": "401872948",
       "week": 3,
       "playerIds": [
-        "3163"
-      ],
-      "score": 1
-    },
-    {
-      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0922/ss_20260922_104345041_3670809/ss_20260922_104345041_3670809.jpg",
-      "width": 576,
-      "height": 324,
-      "caption": "Is Adonai Mitchell worth adding off the waiver wire?",
-      "gameId": "401872948",
-      "week": 3,
-      "playerIds": [
-        "11625"
+        "7569"
       ],
       "score": 1
     }

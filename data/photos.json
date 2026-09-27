@@ -375,48 +375,68 @@
   ],
   "3": [
     {
-      "url": "https://a.espncdn.com/photo/2026/0918/r1718376_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "In his third defensive snap on Monday, Mansoor Delane recorded interception.",
+      "url": "https://a.espncdn.com/photo/2026/0925/r1721736_576x324_16-9.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Puka Nacua has yet to catch a pass in the United States this season.",
+      "gameId": "401872948",
+      "week": 3,
+      "playerIds": [
+        "9493"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0925/r1721747_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "Rookie LB Gabe Jacas has gone from little-known contributor to impact starter with a sack and an interception.",
       "gameId": "401872948",
       "week": 3,
       "playerIds": [],
-      "score": 6
+      "score": 4
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/0913/r1716212_600x400_3-2.jpg",
-      "width": 600,
-      "height": 400,
-      "caption": "Saquon Barkley #26 of the Philadelphia Eagles runs the ball.",
-      "gameId": "401872948",
-      "week": 3,
-      "playerIds": [
-        "4866"
-      ],
-      "score": 5
-    },
-    {
-      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0925/dm_260925_Commanders_IA_Jayden_Rap/dm_260925_Commanders_IA_Jayden_Rap.jpg",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0921/ss_20260921_153817745_3670322952/ss_20260921_153817745_3670322952.jpg",
       "width": 576,
       "height": 324,
-      "caption": "Ian Rapoport shares encouraging news on Jayden Daniels' elbow injury, with the Commanders hopeful their quarterback will return sooner rather than later.",
+      "caption": "Why Orlvosky thinks Bears can stay afloat without Caleb Williams ",
       "gameId": "401872948",
       "week": 3,
       "playerIds": [
-        "11566"
+        "11560"
       ],
+      "score": 4
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2024/0606/r1342484_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Sterling Shepard recorded 24 touchdowns over eight seasons with the New York Giants.",
+      "gameId": "401872948",
+      "week": 3,
+      "playerIds": [],
+      "score": 2
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0730/r1695666_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "Patriots rookie tackle Caleb Lomu discusses likes and dislikes he has found so far around Boston.",
+      "gameId": "401872948",
+      "week": 3,
+      "playerIds": [],
       "score": 1
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/0919/r1718841_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Nico Collins will miss Week 2 with a hamstring injury suffered during Wednesday practice.",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0924/ss_20260924_102142500_3672585/ss_20260924_102142500_3672585.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Should 0-2 fantasy managers consider trading Puka Nacua?",
       "gameId": "401872948",
       "week": 3,
       "playerIds": [
-        "7569"
+        "9493"
       ],
       "score": 1
     }

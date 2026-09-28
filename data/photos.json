@@ -375,69 +375,69 @@
   ],
   "3": [
     {
-      "url": "https://a.espncdn.com/photo/2026/0925/r1721736_576x324_16-9.jpg",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0927/9dc1af8cf9844626b2405a1e0f83cd431118/9dc1af8cf9844626b2405a1e0f83cd431118.jpg",
       "width": 576,
       "height": 324,
-      "caption": "Puka Nacua has yet to catch a pass in the United States this season.",
-      "gameId": "401872948",
+      "caption": "Trevor Lawrence kneels down instead of scoring a TD with 8 minutes left in the game ",
+      "gameId": "401872957",
       "week": 3,
       "playerIds": [
-        "9493"
+        "7523"
       ],
-      "score": 7
+      "score": 9.47
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/0925/r1721747_608x342_16-9.jpg",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0927/0ace16b2ce0d4b2daec243ca325ce1e91123/0ace16b2ce0d4b2daec243ca325ce1e91123.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Cam Skattebo goes down after running into Jameis Winston",
+      "gameId": "401872956",
+      "week": 3,
+      "playerIds": [
+        "12481"
+      ],
+      "score": 5.63
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0928/4de67e1575a3416ab1376a7be662428d25/4de67e1575a3416ab1376a7be662428d25.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Broncos pick off Stafford on final play to seal win over Rams",
+      "gameId": "401872948",
+      "week": 3,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0927/6d642b41-81e6-41eb-ad43-b31d69c68480/6d642b41-81e6-41eb-ad43-b31d69c68480.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Woody Marks dives in for a Texans TD",
+      "gameId": "401872951",
+      "week": 3,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0928/dm_260928_Niners_beat_Cardinals_IA/dm_260928_Niners_beat_Cardinals_IA.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Nick Wagoner breaks down how the 49ers have to rely on Brock Purdy heavily with all of the injuries.",
+      "gameId": "401872958",
+      "week": 3,
+      "playerIds": [
+        "8183"
+      ],
+      "score": 1.91
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0927/r1722748_608x342_16-9.jpg",
       "width": 608,
       "height": 342,
-      "caption": "Rookie LB Gabe Jacas has gone from little-known contributor to impact starter with a sack and an interception.",
+      "caption": "Ravens walk off 1 Plays",
       "gameId": "401872948",
       "week": 3,
       "playerIds": [],
-      "score": 4
-    },
-    {
-      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0921/ss_20260921_153817745_3670322952/ss_20260921_153817745_3670322952.jpg",
-      "width": 576,
-      "height": 324,
-      "caption": "Why Orlvosky thinks Bears can stay afloat without Caleb Williams ",
-      "gameId": "401872948",
-      "week": 3,
-      "playerIds": [
-        "11560"
-      ],
-      "score": 4
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2024/0606/r1342484_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Sterling Shepard recorded 24 touchdowns over eight seasons with the New York Giants.",
-      "gameId": "401872948",
-      "week": 3,
-      "playerIds": [],
-      "score": 2
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0730/r1695666_608x342_16-9.jpg",
-      "width": 608,
-      "height": 342,
-      "caption": "Patriots rookie tackle Caleb Lomu discusses likes and dislikes he has found so far around Boston.",
-      "gameId": "401872948",
-      "week": 3,
-      "playerIds": [],
-      "score": 1
-    },
-    {
-      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0924/ss_20260924_102142500_3672585/ss_20260924_102142500_3672585.jpg",
-      "width": 576,
-      "height": 324,
-      "caption": "Should 0-2 fantasy managers consider trading Puka Nacua?",
-      "gameId": "401872948",
-      "week": 3,
-      "playerIds": [
-        "9493"
-      ],
       "score": 1
     }
   ]

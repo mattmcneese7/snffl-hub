@@ -9,6 +9,7 @@ import HighlightList from '@/components/HighlightList';
 import { getHighlightsForPlayer } from '@/lib/highlights';
 import SleeperActionButton from '@/components/SleeperAction';
 import PlayerOutlook from '@/components/PlayerOutlook';
+import { newsFor, filed } from '@/lib/news';
 import SourceMark, { PageSources } from '@/components/SourceMark';
 import { outlookFor, roleOf } from '@/lib/outlook';
 import { scoreStats } from '@/lib/scoring';
@@ -58,6 +59,7 @@ export default async function PlayerPage({
   const injury = projection?.injury ?? player.injuryStatus ?? null;
   const outlook = outlookFor(playerId, player.position, player.team, projected ?? 0, upcoming);
   const role = roleOf(playerId, player.position);
+  const notes = newsFor(player.espnId);
   const blocks = statBlocksFor(player.position, statsFor(playerId));
   const paint = teamPaint(player.team);
   const owner = season.ownerRosterId ? teamByRoster(season.ownerRosterId) : null;
@@ -146,6 +148,34 @@ export default async function PlayerPage({
           </div>
           <PlayerOutlook outlook={outlook} role={role} position={player.position} playerId={playerId} />
         </section>
+
+        {notes.length ? (
+          <section>
+            <div className="snffl-block-heading">
+              <h2 className="snffl-headline">Word On Him</h2>
+              <span className="snffl-block-heading-link">via ESPN</span>
+            </div>
+            <div className="snffl-card snffl-news">
+              {notes.map((note) => (
+                <a
+                  key={note.url}
+                  className="snffl-news-item"
+                  href={note.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <strong>{note.headline}</strong>
+                  {note.summary ? <span className="snffl-news-summary">{note.summary}</span> : null}
+                  <span className="snffl-news-credit">
+                    {note.byline ? `${note.byline}, ` : ''}
+                    {note.source}
+                    {filed(note.published) ? ` · ${filed(note.published)}` : ''}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </section>
+        ) : null}
 
         <section>
           <div className="snffl-block-heading">

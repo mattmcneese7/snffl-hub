@@ -33,6 +33,11 @@ jobs:
       - name: Build the statistics spine
         run: node scripts/stats-spine.ts
 
+      # Attributed player news from ESPN, keyed to the ids the app already
+      # holds. Credited and linked, never fed to the model.
+      - name: Pull player news
+        run: node scripts/news-pull.ts
+
       # Real photographs of the week for the Rag's lead art. ESPN attaches
       # these to each game and prunes them, so they are collected while fresh.
       - name: Pull game photographs

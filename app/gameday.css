@@ -2985,3 +2985,36 @@ a.snffl-swap { text-decoration: none; gap: 2px; }
   color: var(--tint-green-ink);
   white-space: nowrap;
 }
+
+/* ---------- Word on him: attributed news, Checkpoint 18d ---------- */
+
+.snffl-news { padding: 0; overflow: hidden; }
+.snffl-news-item {
+  display: grid;
+  gap: 3px;
+  padding: 12px var(--s-4);
+  border-bottom: 1px solid var(--line);
+  color: inherit;
+  text-decoration: none;
+}
+.snffl-news-item:last-child { border-bottom: 0; }
+.snffl-news-item strong {
+  font-size: var(--t-body);
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--ink);
+}
+.snffl-news-item:hover strong { color: var(--logo-aqua); }
+.snffl-news-summary {
+  font-size: var(--t-small);
+  line-height: 1.45;
+  color: var(--ink-secondary);
+}
+/* The credit, quiet but always present: this is somebody else's reporting. */
+.snffl-news-credit {
+  font-family: var(--mono);
+  font-size: var(--t-micro);
+  color: var(--ink-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}

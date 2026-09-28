@@ -15,7 +15,7 @@ number either way.
 from __future__ import annotations
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import HistGradientBoostingRegressor
+from model import train as train_models, predict as model_predict, QUANTILES
 
 from data import load, POSITIONS
 from features import build, FEATURES
@@ -30,6 +30,14 @@ def mae(a, b):
 
 def main():
     df = build(load(TRAIN_YEARS + [TEST_YEAR]))
+    # Sleeper returns every rostered player, including deep bench who never took
+    # a snap. Those near-zero rows are not who a manager starts or the app
+    # predicts for, and left in they flatter the error and wreck the
+    # distribution (a dataset that is half zeroes is trivially "predicted").
+    # Keep players who actually played. Features were computed on the full data
+    # first, so a fringe player still counts toward the shares and defence
+    # totals he was part of.
+    df = df[df["involved"] == 1].copy()
     # A fair contest needs the baselines defined, so every row must have prior
     # form. That also drops week 1 and anyone with no history, which is correct:
     # nobody can predict a player off zero prior games without making it up.
@@ -38,12 +46,8 @@ def main():
     train = df[df["season"].isin(TRAIN_YEARS)]
     test = df[df["season"] == TEST_YEAR].copy()
 
-    model = HistGradientBoostingRegressor(
-        loss="squared_error", max_iter=400, learning_rate=0.05,
-        max_leaf_nodes=31, min_samples_leaf=50, random_state=0,
-    )
-    model.fit(train[FEATURES], train["league_points"])
-    test["pred_model"] = model.predict(test[FEATURES])
+    mean_m, quant_m = train_models(train)
+    test["pred_model"] = model_predict(mean_m, quant_m, test)["proj"]
 
     print(f"Train {TRAIN_YEARS[0]}-{TRAIN_YEARS[-1]}  ({len(train):,} rows)")
     print(f"Test  {TEST_YEAR}            ({len(test):,} rows)\n")
@@ -66,14 +70,9 @@ def main():
     # ceiling, and calibration is the honesty check: of the weeks that actually
     # happened, the share landing under each quantile should match the quantile.
     print("\nDistribution calibration (share of actuals under each quantile):")
-    for q in (0.2, 0.5, 0.8):
-        qm = HistGradientBoostingRegressor(
-            loss="quantile", quantile=q, max_iter=300, learning_rate=0.05,
-            max_leaf_nodes=31, min_samples_leaf=50, random_state=0,
-        )
-        qm.fit(train[FEATURES], train["league_points"])
-        pred = qm.predict(test[FEATURES])
-        covered = float(np.mean(test["league_points"].to_numpy() <= pred))
+    preds = model_predict(mean_m, quant_m, test)
+    for q in QUANTILES:
+        covered = float(np.mean(test["league_points"].to_numpy() <= preds[f"p{int(q*100)}"]))
         print(f"  q{int(q*100):>2}: {covered*100:5.1f}% under  (target {int(q*100)}%)")
 
 

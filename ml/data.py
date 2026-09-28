@@ -1,135 +1,112 @@
-"""Historical NFL weekly data, scored on this league's rulebook.
+"""Historical weekly data from Sleeper, scored on this league's rulebook.
 
-Checkpoint 18a. The training spine for the model.
+Checkpoint 18b. Retrained on Sleeper instead of nflverse, and that switch is
+the whole point: Sleeper's stats are keyed by the same player ids the app uses,
+serve the current week the same way they serve 2017, and score through the same
+component keys as lib/scoring.ts. So training and serving are the same source,
+the same ids, and the same scoring path, which removes three ways the model
+could have quietly drifted from what the app shows.
 
-Two rules govern this file, both in service of the one constraint that matters:
-not a single invented number.
-
-  1. The target is computed from raw stat components, never taken from
-     nflverse's `fantasy_points_ppr`. That field is standard PPR; this league
-     charges -2 for an interception where standard charges -1, so trusting it
-     would train the model on the wrong target for quarterbacks. Same reasoning
-     as Checkpoint 12, in Python this time.
-
-  2. Nothing here is an estimate. Every column is a thing that happened in a
-     game, pulled from nflverse's published weekly release.
-
-Offense only: QB, RB, WR, TE. Kickers and defenses score on categories this
-file does not carry (field goal distance, points and yards allowed), and their
-projections stay on the deterministic engine from Checkpoint 14 rather than
-being half-modelled here. A model that quietly did K and DEF on missing inputs
-would be exactly the fabrication we are refusing.
+Offense only: QB, RB, WR, TE. Kickers and defences score on categories handled
+by the deterministic engine from Checkpoint 14.
 """
 
 from __future__ import annotations
-import io
+import json
 import os
-import urllib.request
+import subprocess
 import pandas as pd
 
-REL = "https://github.com/nflverse/nflverse-data/releases/download/player_stats/player_stats_{year}.parquet"
-CACHE = os.path.join(os.path.dirname(__file__), ".cache")
+CACHE = os.path.join(os.path.dirname(__file__), ".cache", "sleeper")
 POSITIONS = ["QB", "RB", "WR", "TE"]
 
+# Sleeper and the nflverse schedule disagree on a handful of team codes. Every
+# code is normalised to the schedule's spelling once, on load, so DvP, target
+# shares and the Vegas join all live in one code space and nothing has to be
+# translated back later. Covers the relocations in range too (Raiders, Chargers,
+# Rams, Commanders).
+TEAM_NORM = {"LAR": "LA", "JAC": "JAX", "OAK": "LV", "SD": "LAC", "STL": "LA", "WSH": "WAS"}
 
-def _read_season(year: int) -> pd.DataFrame:
-    """A season's parquet, from the local cache or the nflverse release.
 
-    The cache is what makes a backtest repeatable without hammering the
-    release, and it is also the reason this runs on a Mac whose Python has no
-    CA bundle: the files are fetched once with the system's own downloader and
-    read from disk thereafter. In CI the cache is cold and urllib fetches
-    directly, which works on Linux.
-    """
-    path = os.path.join(CACHE, f"player_stats_{year}.parquet")
-    if os.path.exists(path):
-        return pd.read_parquet(path)
-    with urllib.request.urlopen(REL.format(year=year)) as resp:
-        raw = resp.read()
-    os.makedirs(CACHE, exist_ok=True)
-    with open(path, "wb") as fh:
-        fh.write(raw)
-    return pd.read_parquet(io.BytesIO(raw))
+def _norm(code):
+    return TEAM_NORM.get(code, code)
 
-# This league's offensive scoring, from data/league.json. Only the rules that
-# apply to offensive stat lines are here; the rest of the 148 settings are for
-# kickers and defenses, which this file does not touch.
+# This league's offensive scoring, in Sleeper's own stat keys, taken from
+# data/league.json. The same numbers lib/scoring.ts applies, so a point
+# computed here equals a point shown in the app.
 SCORING = {
-    "passing_yards": 0.04,
-    "passing_tds": 4.0,
-    "interceptions": -2.0,          # the league's rule, not standard -1
-    "passing_2pt_conversions": 2.0,
-    "rushing_yards": 0.1,
-    "rushing_tds": 6.0,
-    "rushing_2pt_conversions": 2.0,
-    "receptions": 1.0,              # full PPR
-    "receiving_yards": 0.1,
-    "receiving_tds": 6.0,
-    "receiving_2pt_conversions": 2.0,
-    # Every flavour of lost fumble costs the same here.
-    "sack_fumbles_lost": -2.0,
-    "rushing_fumbles_lost": -2.0,
-    "receiving_fumbles_lost": -2.0,
+    "pass_yd": 0.04, "pass_td": 4.0, "pass_int": -2.0, "pass_2pt": 2.0,
+    "rush_yd": 0.1, "rush_td": 6.0, "rush_2pt": 2.0,
+    "rec": 1.0, "rec_yd": 0.1, "rec_td": 6.0, "rec_2pt": 2.0,
+    "fum_lost": -2.0,
 }
 
 
-def league_points(df: pd.DataFrame) -> pd.Series:
-    """Fantasy points under this league's rules, from the components."""
-    total = pd.Series(0.0, index=df.index)
-    for col, weight in SCORING.items():
-        if col in df.columns:
-            total = total + df[col].fillna(0) * weight
-    return total.round(2)
+def _fetch(season: int, week: int, position: str) -> list[dict]:
+    """One (season, week, position) page, cached as raw JSON on disk.
+
+    curl rather than urllib: this Mac's Python has no CA bundle, and curl is
+    present on both a laptop and an Ubuntu runner, so one path works in both.
+    """
+    os.makedirs(CACHE, exist_ok=True)
+    path = os.path.join(CACHE, f"{season}-{week}-{position}.json")
+    if os.path.exists(path):
+        with open(path) as fh:
+            return json.load(fh)
+    url = (
+        f"https://api.sleeper.com/stats/nfl/{season}/{week}"
+        f"?season_type=regular&position[]={position}"
+    )
+    out = subprocess.run(["curl", "-sL", url], capture_output=True, text=True, timeout=60)
+    rows = json.loads(out.stdout) if out.stdout.strip() else []
+    if not isinstance(rows, list):
+        rows = []
+    with open(path, "w") as fh:
+        json.dump(rows, fh)
+    return rows
 
 
-def load(years: list[int]) -> pd.DataFrame:
-    """Weekly offensive lines for the given seasons, regular season only."""
-    frames = [_read_season(year) for year in years]
-    df = pd.concat(frames, ignore_index=True)
-    df = df[df["season_type"] == "REG"].copy()
-    df = df[df["position"].isin(POSITIONS)].copy()
-    df["league_points"] = league_points(df)
-    return df
+def league_points(stats: dict) -> float:
+    return round(sum(stats.get(k, 0) * w for k, w in SCORING.items()), 2)
+
+
+def load(years: list[int], weeks: range = range(1, 19)) -> pd.DataFrame:
+    """Weekly offensive lines for the given seasons, one row per player-week."""
+    records = []
+    for year in years:
+        for week in weeks:
+            for pos in POSITIONS:
+                for row in _fetch(year, week, pos):
+                    stats = row.get("stats") or {}
+                    pid = row.get("player_id")
+                    team = row.get("team")
+                    opp = row.get("opponent")
+                    # No team or opponent means he did not play a countable
+                    # game that week; nothing to learn from and nothing to
+                    # attribute to a defence.
+                    if not pid or not team or not opp:
+                        continue
+                    rec = {
+                        "player_id": str(pid), "season": year, "week": week,
+                        "position": pos, "team": _norm(team), "opponent": _norm(opp),
+                        "league_points": league_points(stats),
+                    }
+                    for k in ("pass_att", "rec_tgt", "rush_att", "rec", "rec_air_yd", "off_snp", "tm_off_snp"):
+                        rec[k] = stats.get(k, 0.0)
+                    # Real involvement: a pass thrown, a carry, or a target. The
+                    # same line nflverse's weekly file implicitly keeps, and the
+                    # honest population for a fantasy model. A body on the field
+                    # who touched nothing is noise, not a data point.
+                    rec["involved"] = int(
+                        (rec["pass_att"] or 0) > 0 or (rec["rush_att"] or 0) > 0 or (rec["rec_tgt"] or 0) > 0
+                    )
+                    records.append(rec)
+    return pd.DataFrame.from_records(records)
 
 
 if __name__ == "__main__":
-    df = load([2024])
-    print(f"rows {len(df)}, seasons {sorted(df['season'].unique())}")
-    # Sanity: our league points should track standard PPR closely but sit a
-    # touch lower for QBs, who throw interceptions this league taxes double.
+    df = load([2023])
+    print(f"rows {len(df)}, weeks {sorted(df['week'].unique())}")
     for pos in POSITIONS:
         sub = df[df["position"] == pos]
-        diff = (sub["league_points"] - sub["fantasy_points_ppr"]).mean()
-        print(f"  {pos}: mean league-vs-standard {diff:+.2f}  (n={len(sub)})")
-
-
-def load_schedule() -> pd.DataFrame:
-    """Per team-week game environment: implied points total and home flag.
-
-    From the closing Vegas line, which is the market's honest estimate of the
-    scoring environment and is known before kickoff, so it leaks nothing. The
-    implied team total splits the game total by the spread:
-    home = (total + spread) / 2, away = (total - spread) / 2.
-    """
-    path = os.path.join(CACHE, "schedules.parquet")
-    sched = pd.read_parquet(path) if os.path.exists(path) else None
-    if sched is None:
-        with urllib.request.urlopen(
-            "https://github.com/nflverse/nflverse-data/releases/download/schedules/games.parquet"
-        ) as resp:
-            raw = resp.read()
-        os.makedirs(CACHE, exist_ok=True)
-        with open(path, "wb") as fh:
-            fh.write(raw)
-        sched = pd.read_parquet(io.BytesIO(raw))
-
-    sched = sched.dropna(subset=["total_line", "spread_line"])
-    home = pd.DataFrame({
-        "season": sched["season"], "week": sched["week"], "team": sched["home_team"],
-        "f_impl_total": (sched["total_line"] + sched["spread_line"]) / 2, "f_home": 1,
-    })
-    away = pd.DataFrame({
-        "season": sched["season"], "week": sched["week"], "team": sched["away_team"],
-        "f_impl_total": (sched["total_line"] - sched["spread_line"]) / 2, "f_home": 0,
-    })
-    return pd.concat([home, away], ignore_index=True)
+        print(f"  {pos}: {len(sub)} rows, mean {sub['league_points'].mean():.2f} pts")

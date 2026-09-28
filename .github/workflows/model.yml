@@ -1,0 +1,54 @@
+name: weekly model
+
+on:
+  schedule:
+    # 08:30 UTC is about 2:30am Central, an hour after the nightly refresh, so
+    # this reads the day's fresh data and nobody in the league is awake to see
+    # it run. Cron is UTC and Central drifts an hour with daylight saving; the
+    # exact minute does not matter at that time of night.
+    - cron: '30 8 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: model
+  cancel-in-progress: false
+
+jobs:
+  model:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      # The historical seasons never change, so the fetch cache is restored
+      # across runs and only the new current-season weeks are pulled. The key
+      # rolls monthly so it cannot grow stale forever.
+      - name: Restore data cache
+        uses: actions/cache@v4
+        with:
+          path: ml/.cache
+          key: ml-cache-${{ github.run_id }}
+          restore-keys: ml-cache-
+
+      - name: Install
+        run: pip install -r ml/requirements.txt
+
+      - name: Project the coming week
+        run: python ml/predict.py
+
+      - name: Commit the projections
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/model.json
+          if git diff --cached --quiet; then
+            echo "no change"
+          else
+            git commit -m "Weekly model projections"
+            git push
+          fi

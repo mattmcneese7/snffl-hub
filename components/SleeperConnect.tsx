@@ -57,32 +57,42 @@ export default function SleeperConnect({ onDone }: { onDone?: () => void }) {
   return (
     <div className="snffl-connect">
       <p className="snffl-connect-note">
-        Connect this device and you can set your lineup without leaving. The token is
-        kept on this phone and never reaches our server.
+        Setting your lineup from here is not ready yet. Signing in will be an email
+        and a password, once, and whatever it stores will stay on this phone.
       </p>
-      <input
-        className="snffl-connect-input"
-        type="password"
-        inputMode="text"
-        autoComplete="off"
-        spellCheck={false}
-        placeholder="Sleeper token"
-        value={value}
-        onChange={(event) => setValue(event.target.value)}
-      />
-      <button
-        type="button"
-        className="snffl-invite-go"
-        disabled={!value.trim()}
-        onClick={() => {
-          saveToken(value.trim());
-          setValue('');
-          setConnected(true);
-          onDone?.();
-        }}
-      >
-        Connect
-      </button>
+      {/* The hatch, not the feature.
+          Sleeper issues no API keys: there is no page where a manager generates
+          one, and the only thing that exists is the session token their own web
+          app receives at login. Reading that out needs developer tools, which
+          phones do not have, so this can never be how the league connects. It
+          is here so the write path can be tested with one real session before a
+          sign in screen is built for fourteen people. */}
+      <details className="snffl-connect-dev">
+        <summary>Testing, on a desktop</summary>
+        <input
+          className="snffl-connect-input"
+          type="password"
+          inputMode="text"
+          autoComplete="off"
+          spellCheck={false}
+          placeholder="Session token from sleeper.com"
+          value={value}
+          onChange={(event) => setValue(event.target.value)}
+        />
+        <button
+          type="button"
+          className="snffl-invite-go"
+          disabled={!value.trim()}
+          onClick={() => {
+            saveToken(value.trim());
+            setValue('');
+            setConnected(true);
+            onDone?.();
+          }}
+        >
+          Connect
+        </button>
+      </details>
     </div>
   );
 }

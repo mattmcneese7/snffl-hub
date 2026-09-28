@@ -2915,3 +2915,15 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   text-transform: uppercase;
   cursor: pointer;
 }
+
+/* The test hatch, set apart from the copy above it so nobody mistakes it for
+   the way the league will connect. */
+.snffl-connect-dev { width: 100%; display: grid; gap: var(--s-2); }
+.snffl-connect-dev summary {
+  font-family: var(--mono);
+  font-size: var(--t-micro);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-tertiary);
+  cursor: pointer;
+}

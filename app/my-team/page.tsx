@@ -14,6 +14,7 @@ import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { outlookFor, roleOf } from '@/lib/outlook';
 import { getWeekProjections } from '@/lib/projections';
 import { getRosters, LEAGUE_ID } from '@/lib/sleeper';
+import { sleeperLink } from '@/lib/sleeper-links';
 import { STARTER_SLOTS } from '@/lib/league';
 
 export const metadata: Metadata = { title: 'My Team' };
@@ -111,8 +112,11 @@ export default async function MyTeamPage() {
     })
     .sort((a, b) => b.gain - a.gain);
 
-  /** Where a manager goes when the unsupported path stops working. */
-  const sleeperLineup = `https://sleeper.com/leagues/${LEAGUE_ID}/team`;
+  // The lineup screen, as an app link where one has been confirmed and the web
+  // route otherwise. This is the primary action for anyone not connected, which
+  // is almost everyone, so it routes through the same place every Sleeper
+  // handoff does rather than a hardcoded web URL.
+  const sleeperLineup = sleeperLink('lineup');
 
   const game = games.find(
     (g) => g.home.rosterId === rosterId || g.away.rosterId === rosterId

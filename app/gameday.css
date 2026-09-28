@@ -2868,6 +2868,10 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   cursor: pointer;
 }
 .snffl-swap[disabled] { opacity: 0.6; cursor: default; }
+/* The control is an anchor when it hands off and a button when it writes, so
+   the anchor keeps the same shape and loses the underline. */
+a.snffl-swap { text-decoration: none; gap: 2px; }
+.snffl-swap-arrow { font-size: 0.9em; }
 .snffl-swap-done {
   font-family: var(--mono);
   font-size: var(--t-label);

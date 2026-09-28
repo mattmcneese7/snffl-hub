@@ -597,3 +597,32 @@ step once, which in practice is Matt. The decision surfaces built this
 checkpoint, Fix This and Worth A Swap on My Team, are the real win: the app now
 tells you exactly what to change and takes you one tap from doing it, whether
 or not it makes the change itself.
+
+---
+
+## Deep linking into Sleeper: the definitive answer. 18e
+
+Matt kept testing link candidates and finding they only ever opened the app to
+its home, never on a specific screen. That is not a bug in our links; it is a
+hard limit, and Sleeper's own two configuration files spell it out.
+
+The iOS app site association at sleeper.com/.well-known/apple-app-site-association
+claims exactly four path families for the app: /topics, /channels, /topic and
+/message. Every one is chat. A league, team, matchup or trade URL is not
+claimed, so on an iPhone those open in the browser rather than the app.
+
+The Android assetlinks.json claims handle_all_urls, so the app intercepts every
+sleeper.com link, but it lands the user at the app's home instead of routing to
+the screen the URL names.
+
+**So "open the app, on the exact action" is impossible.** The app only deep
+links to chat; the action screens only deep link through the web. There is no
+link, scheme, or configuration on our side that changes this, which is why
+every candidate behaved the same way and why others hit the same wall.
+
+**What we do with that.** The web URL, everywhere. On an iPhone it opens the
+browser on the exact lineup or trade screen, which is the most targeted a
+Sleeper link can be. On Android the app takes it to home, which is the ceiling
+there regardless of the link. The custom scheme, which only ever reached the
+app's home, is removed, and the /sleeper-links test page that existed to hunt
+for a working scheme is retired: the hunt is over and the answer is no.

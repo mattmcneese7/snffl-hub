@@ -1,17 +1,25 @@
-// Links from the site into Sleeper, Checkpoint 12b.
+// Links from the site into Sleeper. Checkpoint 12b, settled in 18e.
 //
-// Sleeper has no public way to change a lineup from outside its own apps, so
-// the next best thing is a button that lands a manager on the right screen.
-// The screens below are real routes, read out of Sleeper's own web app
-// (/leagues/:league/team, /matchup, /players, /trades, /standings, /scores).
+// The question we kept circling, whether a link can open the Sleeper app on the
+// exact screen where an action is done, has a definitive answer now, read
+// straight from Sleeper's own two config files:
 //
-// Where each link opens depends on the phone:
-//   Android  sleeper.com declares every URL for the app, so these open Sleeper.
-//   iPhone   the app only claims /topics, /channels, /topic and /message, so a
-//            league link opens Sleeper's website in Safari, which works for a
-//            manager logged in there. APP_LINKS takes over per action once a
-//            link has been confirmed to open the app on a real iPhone, from
-//            the test page at /sleeper-links.
+//   iOS  (sleeper.com/.well-known/apple-app-site-association) claims only four
+//        path families for the app: /topics, /channels, /topic, /message. All
+//        chat. A league, team, matchup or trade link is NOT claimed, so on an
+//        iPhone it opens in the browser, on the exact screen.
+//
+//   Android (assetlinks.json) claims handle_all_urls, so the app intercepts
+//        every sleeper.com link, but it drops the user at the app's home rather
+//        than routing to the screen the URL names.
+//
+// So "open the app, on the specific action" is not possible: the app only deep
+// links to chat, and the action screens only deep link through the web. Given
+// that, the web URL is the better choice, not the fallback. On an iPhone it
+// lands on the exact lineup or trade screen; on Android the app grabs it to
+// home, which is no worse than a scheme link would have done and needs no
+// guessing about which scheme the app registered. A custom scheme was tried and
+// only ever opened the app to home, which is strictly worse, so it is gone.
 //
 // Deliberately free of other lib imports, so client components can use it.
 
@@ -40,58 +48,18 @@ export const ACTION_LABELS: Record<SleeperAction, string> = {
   league: 'League',
 };
 
-/** The Sleeper web route for an action in this league. */
-export function sleeperWebUrl(action: SleeperAction, leagueId = SLEEPER_LEAGUE_ID): string {
+/**
+ * The Sleeper link for an action in this league.
+ *
+ * Always the web route: on an iPhone it opens the browser on the exact screen,
+ * which is the most targeted a Sleeper link can be, and on Android the app
+ * takes it to home, which is the ceiling there whatever the link. This is the
+ * best available, not a placeholder waiting on a better one.
+ */
+export function sleeperLink(action: SleeperAction, leagueId = SLEEPER_LEAGUE_ID): string {
   const path = PATHS[action];
   return `https://sleeper.com/leagues/${leagueId}${path ? `/${path}` : ''}`;
 }
 
-/**
- * iPhone links confirmed to open the Sleeper app, per action. Empty until
- * Matt has tapped through /sleeper-links on his phone; an unconfirmed guess
- * would show iPhone users "Safari cannot open the page" instead of Sleeper.
- */
-export const APP_LINKS: Partial<Record<SleeperAction, string>> = {};
-
-/** Candidate app links for the test page, each to be confirmed by a tap. */
-export function candidateAppLinks(leagueId = SLEEPER_LEAGUE_ID) {
-  return [
-    {
-      id: 'channel',
-      label: 'League chat channel',
-      note: 'sleeper.com/channels is one of the four paths the iPhone app claims. If the league chat shares the league id, this opens the app inside the league.',
-      href: `https://sleeper.com/channels/${leagueId}`,
-    },
-    { id: 'scheme-root', label: 'sleeper:// (app home)', note: 'The app URL scheme, if it has one.', href: 'sleeper://' },
-    {
-      id: 'scheme-team',
-      label: 'sleeper:// to the team screen',
-      note: 'Same scheme, pointed at the lineup route.',
-      href: `sleeper://leagues/${leagueId}/team`,
-    },
-    {
-      id: 'scheme-league',
-      label: 'sleeper:// to the league',
-      note: 'A shorter route shape some apps use.',
-      href: `sleeper://league/${leagueId}`,
-    },
-    { id: 'sleeperbot-root', label: 'sleeperbot:// (app home)', note: 'The scheme named after the app bundle, com.blitzstudios.sleeperbot.', href: 'sleeperbot://' },
-    {
-      id: 'sleeperbot-team',
-      label: 'sleeperbot:// to the team screen',
-      note: 'Bundle named scheme, lineup route.',
-      href: `sleeperbot://leagues/${leagueId}/team`,
-    },
-    {
-      id: 'web-team',
-      label: 'Web: the team screen',
-      note: 'The fallback every button uses today. Opens Safari on iPhone.',
-      href: sleeperWebUrl('lineup', leagueId),
-    },
-  ];
-}
-
-/** The best link for an action: a confirmed app link, else the web route. */
-export function sleeperLink(action: SleeperAction): string {
-  return APP_LINKS[action] ?? sleeperWebUrl(action);
-}
+/** Kept for callers that still ask for the web URL by name. */
+export const sleeperWebUrl = sleeperLink;

@@ -109,7 +109,10 @@ function livePlayer(slot: LineupSlot, ctx: MatchupContext, byTeam: Map<string, T
   const remaining = nfl ? fractionRemaining(nfl.game) : 0;
   const gameState: LivePlayer['gameState'] = nfl ? nfl.game.state : 'bye';
   const projection = ctx.projections[slot.id];
-  const projected = projection?.stats.pts_ppr != null ? Number(projection.stats.pts_ppr.toFixed(2)) : null;
+  // This league's rules, scored from the full payload before it was trimmed.
+  // It read pts_ppr until now, which is Sleeper's default scoring, so the live
+  // scoreboard was showing a projection nobody in this league plays under.
+  const projected = projection?.points ?? null;
   const ds = dsWeekly(slot.id) ?? null;
 
   const base = projected ?? ds?.projection ?? 0;

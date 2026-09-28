@@ -366,10 +366,10 @@ export async function oracleFor(week: number): Promise<{
 
   return {
     input: {
-      projectionOf: (id) => {
-        const points = projections[id]?.stats.pts_ppr;
-        return points == null ? null : Number(points);
-      },
+      // The oracle tells somebody to bench a starter, so the number behind
+      // that has to be the one his league actually scores. It was pts_ppr,
+      // which is Sleeper's defaults.
+      projectionOf: (id) => projections[id]?.points ?? null,
       injuryOf: (id) => projections[id]?.injury ?? null,
       gameTotalOf: (team) => (team ? (totalOf.get(team) ?? null) : null),
       week,

@@ -138,7 +138,11 @@ function defense(stats: RawStats): StatBlock[] {
 
 function fantasy(stats: RawStats): StatBlock | null {
   return block('Fantasy', [
-    line(stats, 'pts_ppr', 'PPR Points', 2),
+    // Named for what it is. This is Sleeper's standard PPR total, not what
+    // the player scored in this league, and the two differ for defences and
+    // kickers. Labelling it "Fantasy Points" here would contradict every
+    // other number on the page.
+    line(stats, 'pts_ppr', 'Standard PPR', 2),
     line(stats, 'pos_rank_ppr', 'Position Rank'),
     line(stats, 'gp', 'Games Played'),
     line(stats, 'gs', 'Games Started'),

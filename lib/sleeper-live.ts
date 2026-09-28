@@ -7,6 +7,11 @@
 // refetched on every render. Each position alone is well under it.
 
 const BASE = 'https://api.sleeper.com';
+import { league } from './league.ts';
+import { scoreStats } from './scoring.ts';
+
+const scoring = league.scoring as Record<string, number>;
+
 const POSITIONS = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF'] as const;
 
 /** The stat keys the site renders. Everything else is dropped on arrival. */
@@ -44,6 +49,17 @@ export type StatMap = Partial<Record<(typeof KEEP)[number], number>>;
 
 export type PlayerWeekLine = {
   stats: StatMap;
+  /**
+   * Fantasy points on this league's rules, scored before the trim below.
+   *
+   * It has to happen here and nowhere else. `trim` keeps twenty seven stat
+   * keys for display and drops the rest, and the rest is most of what a
+   * defence or a kicker scores on: every points allowed bucket, every yards
+   * allowed bucket, every field goal band. A caller scoring `stats` would get
+   * a confidently wrong number for two positions, which is exactly the bug
+   * Checkpoint 12 set out to remove.
+   */
+  points: number | null;
   /** Sleeper's injury designation, "Questionable", "Out" and so on. */
   injury: string | null;
   opponent: string | null;
@@ -84,6 +100,8 @@ async function pull(
         for (const row of rows) {
           if (!row?.player_id) continue;
           const stats = trim(row.stats);
+          // Scored off the untrimmed payload, while it is still all here.
+          const points = row.stats ? scoreStats(row.stats, scoring) : null;
           // A player ruled out often has no projection at all, and his injury
           // status is the whole point of reading him, so an injury alone
           // keeps the row.
@@ -91,6 +109,7 @@ async function pull(
           if (!Object.keys(stats).length && !injury) continue;
           out[row.player_id] = {
             stats,
+            points,
             injury,
             opponent: row.opponent ?? null,
           };

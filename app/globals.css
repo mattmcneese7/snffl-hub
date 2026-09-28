@@ -102,6 +102,15 @@
   --surface: rgba(255, 255, 255, 0.06);
   --ink: #f2f5fa;
   --ink-secondary: #a9b3c4;
+  /* The third tier: fine print, units, a caveat, a range under a figure.
+     Eight rules across two files asked for this by name and got nothing, and
+     an undefined custom property makes the whole declaration invalid, so the
+     colour inherited instead: every one of them was rendering at full --ink,
+     exactly as bright as the headline they were meant to sit under.
+     #8d97a8 is the dimmest value that still clears 4.6:1 on the brightest
+     ground in the app, which is the inner fill of a panel sitting over the
+     blue glow. Going quieter than this means failing the contrast suite. */
+  --ink-tertiary: #8d97a8;
   --line: rgba(255, 255, 255, 0.09);
   --glass-edge: rgba(255, 255, 255, 0.14);
   --glass-shine: rgba(255, 255, 255, 0.18);

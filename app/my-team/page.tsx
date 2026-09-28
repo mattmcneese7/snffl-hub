@@ -4,6 +4,8 @@ import { cookies } from 'next/headers';
 import Chrome from '@/components/Chrome';
 import MovementFeed from '@/components/MovementFeed';
 import PageHead from '@/components/PageHead';
+import SleeperConnect from '@/components/SleeperConnect';
+import SwapButton from '@/components/SwapButton';
 import TeamPicker from '@/components/TeamPicker';
 import { firstNameOf } from '@/config/managers';
 import { getWeekGames, league, playerOf, teamByRoster, teams } from '@/lib/league';
@@ -11,7 +13,7 @@ import { movementFor } from '@/lib/movement';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { outlookFor, roleOf } from '@/lib/outlook';
 import { getWeekProjections } from '@/lib/projections';
-import { getRosters } from '@/lib/sleeper';
+import { getRosters, LEAGUE_ID } from '@/lib/sleeper';
 import { STARTER_SLOTS } from '@/lib/league';
 
 export const metadata: Metadata = { title: 'My Team' };
@@ -102,9 +104,15 @@ export default async function MyTeamPage() {
         .sort((a, c) => a.outlook.adjusted - c.outlook.adjusted)[0];
       if (!target) return [];
       const gain = b.outlook.adjusted - target.outlook.adjusted;
-      return gain >= 3 ? [{ bench: b, starter: target, gain }] : [];
+      // The write is a positional array, so the swap needs the slot's index
+      // and not just the man standing in it.
+      const slotIndex = starterIds.indexOf(target.id);
+      return gain >= 3 && slotIndex >= 0 ? [{ bench: b, starter: target, gain, slotIndex }] : [];
     })
     .sort((a, b) => b.gain - a.gain);
+
+  /** Where a manager goes when the unsupported path stops working. */
+  const sleeperLineup = `https://sleeper.com/leagues/${LEAGUE_ID}/team`;
 
   const game = games.find(
     (g) => g.home.rosterId === rosterId || g.away.rosterId === rosterId
@@ -178,6 +186,21 @@ export default async function MyTeamPage() {
                   <span className="snffl-mine-num snffl-mine-gain">+{u.gain.toFixed(1)}</span>
                 </Link>
               ))}
+              {/* The whole point of v3 in one control. The app already knows
+                  this swap is worth points, so the next thing it should do is
+                  offer to make it, not send somebody to another app to do it
+                  by hand. */}
+              <div className="snffl-mine-act">
+                <SwapButton
+                  leagueId={LEAGUE_ID}
+                  rosterId={rosterId}
+                  starters={starterIds}
+                  slotIndex={upgrades[0].slotIndex}
+                  playerId={upgrades[0].bench.id}
+                  playerName={upgrades[0].bench.player.short || upgrades[0].bench.player.name}
+                  deepLink={sleeperLineup}
+                />
+              </div>
             </div>
           </section>
         ) : null}
@@ -208,6 +231,15 @@ export default async function MyTeamPage() {
                 <span className="snffl-mine-num">{s.outlook.adjusted.toFixed(1)}</span>
               </Link>
             ))}
+          </div>
+        </section>
+
+        <section>
+          <div className="snffl-block-heading">
+            <h2 className="snffl-headline">Sleeper</h2>
+          </div>
+          <div className="snffl-card snffl-mine-connect">
+            <SleeperConnect />
           </div>
         </section>
 

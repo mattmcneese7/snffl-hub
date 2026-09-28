@@ -2846,3 +2846,72 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
    readable, and the point is to draw the eye down a list, not to shout. */
 .snffl-mine-bad { box-shadow: inset 3px 0 0 var(--bad); }
 .snffl-mine-gain { color: var(--good); }
+
+/* ---------- Acting on it, Checkpoint 17 ---------- */
+
+.snffl-mine-act { padding: var(--s-3) var(--s-4); border-top: 1px solid var(--line); }
+.snffl-swap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 20px;
+  border: 1px solid rgba(170, 233, 255, 0.8);
+  border-radius: var(--radius-pill);
+  background: linear-gradient(160deg, var(--logo-cyan), var(--logo-teal));
+  color: #04121c;
+  font-family: var(--mono);
+  font-size: var(--t-label);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.snffl-swap[disabled] { opacity: 0.6; cursor: default; }
+.snffl-swap-done {
+  font-family: var(--mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--good);
+}
+/* The way out, when an unsupported endpoint stops working mid season. It is
+   a link rather than an error, because the manager still has a lineup to set. */
+.snffl-swap-fallback {
+  font-size: var(--t-small);
+  color: var(--ink-secondary);
+  text-decoration: none;
+}
+.snffl-swap-fallback:hover { color: var(--ink); }
+
+.snffl-mine-connect { padding: var(--s-4); }
+.snffl-connect { display: grid; gap: var(--s-3); justify-items: start; }
+.snffl-connect-note {
+  margin: 0;
+  font-size: var(--t-small);
+  line-height: 1.5;
+  color: var(--ink-secondary);
+}
+.snffl-connect-input {
+  width: 100%;
+  min-height: var(--tap);
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: var(--t-body);
+}
+.snffl-connect-off {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: none;
+  padding: 7px 16px;
+  color: var(--ink-secondary);
+  font-family: var(--mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}

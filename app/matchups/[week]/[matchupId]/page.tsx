@@ -4,6 +4,8 @@ import Chrome from '@/components/Chrome';
 import FeatureMatchup from '@/components/FeatureMatchup';
 import LiveRefresh from '@/components/LiveRefresh';
 import MatchupLineup from '@/components/MatchupLineup';
+import Swami from '@/components/Swami';
+import { swamiRead } from '@/lib/swami';
 import NflSlate from '@/components/NflSlate';
 import { SleeperActions } from '@/components/SleeperAction';
 import { PageSources } from '@/components/SourceMark';
@@ -94,6 +96,20 @@ export default async function MatchupDetail({
                   );
                 })}
               </div>
+            </section>
+
+            {/* The Swami's read on this one game. The research bench at
+                /swami is where a lineup gets built; this is the same numbers
+                pointed at the game already under way, and it renders nothing
+                at all once there is nothing left to play for. */}
+            <section style={{ marginTop: 18 }}>
+              <div className="snffl-block-heading">
+                <h2 className="snffl-headline">The Swami</h2>
+                <Link className="snffl-block-heading-link" href="/swami">
+                  Research
+                </Link>
+              </div>
+              <Swami read={swamiRead(live)} />
             </section>
 
             <section style={{ marginTop: 18 }}>

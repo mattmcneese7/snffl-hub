@@ -3,6 +3,7 @@ import Link from 'next/link';
 import {
   BeerStein,
   ChartLineUp,
+  Binoculars,
   Football,
   Gear,
   Scroll,
@@ -20,6 +21,7 @@ export const metadata: Metadata = { title: 'More' };
    standing, green its people, amber its rituals, slate its settings. */
 const MENU = [
   { href: '/standings', label: 'Standings', note: 'The table, the rankings, the odds', Icon: ChartLineUp, tone: 'blue' },
+  { href: '/swami', label: 'The Swami', note: 'Research a lineup: projections, matchups, usage', Icon: Binoculars, tone: 'blue' },
   { href: '/chug', label: 'Chug Meter', note: 'Who owes beers, and how many', Icon: BeerStein, tone: 'amber' },
   { href: '/trades', label: 'Trade Tracker', note: 'Every trade this season', Icon: Swap, tone: 'green' },
   { href: '/managers', label: 'Managers', note: 'All 14 teams and their seasons', Icon: UsersThree, tone: 'green' },

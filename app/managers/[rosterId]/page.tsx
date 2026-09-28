@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Chrome from '@/components/Chrome';
 import PointsByWeekChart from '@/components/PointsByWeekChart';
+import MovementFeed from '@/components/MovementFeed';
 import TeamAvatar from '@/components/TeamAvatar';
 import { TrophyCase } from '@/components/TrophyBits';
 import { getPointsByWeek } from '@/lib/awards';
@@ -9,6 +10,7 @@ import { getTrophyBoard } from '@/lib/trophies';
 import { getStandings, getWeekGames, league, playerOf, scoredWeek, teamByRoster, teams } from '@/lib/league';
 import { getOddsFor } from '@/lib/playoff-odds';
 import { getRosters } from '@/lib/sleeper';
+import { movementFor } from '@/lib/movement';
 
 /** All 14 manager pages are prerendered rather than built on the request. */
 export function generateStaticParams() {
@@ -26,12 +28,13 @@ export default async function ManagerPage({
   if (!team) notFound();
 
   const week = await scoredWeek();
-  const [standings, byWeek, odds, trophies, weekGames] = await Promise.all([
+  const [standings, byWeek, odds, trophies, weekGames, moves] = await Promise.all([
     getStandings(),
     getPointsByWeek(rosterId),
     getOddsFor(rosterId),
     getTrophyBoard(),
     getWeekGames(week).catch(() => []),
+    movementFor(rosterId),
   ]);
   // The game this manager is in right now. A profile that lists a whole season
   // and says nothing about the one result still being decided is a record
@@ -126,6 +129,15 @@ export default async function ManagerPage({
           <div className="snffl-card snffl-chart-card">
             <PointsByWeekChart points={byWeek} playoffWeekStart={league.playoffWeekStart} />
           </div>
+        </section>
+
+        {/* His own decisions, across the season rather than this week: the
+            pattern is the thing a single week cannot show. */}
+        <section>
+          <div className="snffl-block-heading">
+            <h2 className="snffl-headline">Moves</h2>
+          </div>
+          <MovementFeed events={moves} limit={10} showManager={false} />
         </section>
 
         <section>

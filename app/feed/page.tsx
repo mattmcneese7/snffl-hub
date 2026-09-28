@@ -4,10 +4,12 @@ import { firstNameOf } from '@/config/managers';
 import { PageSources } from '@/components/SourceMark';
 import Chrome from '@/components/Chrome';
 import FeedStream from '@/components/FeedStream';
+import MovementFeed from '@/components/MovementFeed';
 import PageHead from '@/components/PageHead';
 import StoriesRail from '@/components/StoriesRail';
 import { storiesRail } from '@/lib/stories-rail';
 import { getFeedPosts } from '@/lib/feed';
+import { recentMovement } from '@/lib/movement';
 import { getHighlights, isEspnClip, isRelevantClip } from '@/lib/highlights';
 import { allPlayers, scoredWeek, teams } from '@/lib/league';
 
@@ -25,7 +27,11 @@ const FANTASY_POSITIONS = new Set(['QB', 'RB', 'WR', 'TE', 'K']);
 export const revalidate = 30;
 
 export default async function FeedPage() {
-  const [posts, allClips] = await Promise.all([getFeedPosts(), getHighlights(undefined, 120)]);
+  const [posts, allClips, movement] = await Promise.all([
+    getFeedPosts(),
+    getHighlights(undefined, 120),
+    scoredWeek().then((w) => recentMovement(w)),
+  ]);
   const fantasy = new Set(
     allPlayers()
       .filter((player) => FANTASY_POSITIONS.has(player.position))
@@ -59,6 +65,15 @@ export default async function FeedPage() {
             this is the page about clips. */}
         <section className="snffl-home-section">
           <StoriesRail week={rail.week} managers={rail.managers} />
+        </section>
+
+        {/* What the league has been doing to its rosters. Renders nothing at
+            all on a quiet week rather than an empty state saying so. */}
+        <section>
+          <div className="snffl-block-heading">
+            <h2 className="snffl-headline">Movement</h2>
+          </div>
+          <MovementFeed events={movement} />
         </section>
 
         <FeedStream

@@ -536,3 +536,64 @@ outline lifted from `#b85f10` to `#c0712a`. The blue glow went to 0.22.
 
 `npm run contrast` was updated to test the consolidated token and passes every
 pair.
+
+---
+
+## In-app Sleeper writes: what is possible, and where it stops. September 2026
+
+Matt's call was to build lineup changes and trades into the app rather than
+deep linking out, and to have managers sign in rather than paste anything. The
+research went as far as it can, and the honest result is a split verdict.
+
+**The writes themselves work.** Sleeper runs a GraphQL API at
+`api.sleeper.app/graphql` with introspection open and 355 mutations exposed.
+The ones a manager needs are there with confirmed signatures:
+
+    roster_update_starters(league_id, roster_id, starters) -> Roster
+    league_create_transaction(type, league_id, k_adds, v_adds, k_drops, v_drops)
+    submit_waiver_claim(...)
+    propose_trade(...)
+
+A cross origin POST from our page to Sleeper's GraphQL, carrying an
+Authorization header, is allowed and returns a clean 401 on a bad token. So a
+device holding a valid token can write to Sleeper directly, with this server
+never in the path. `lib/sleeper-write.ts` is built against exactly this.
+
+**Authentication is the wall, and it is a real one.** Login is
+`login(email_or_phone_or_username, password, captcha) { token }`, and the
+captcha is enforced: a malformed login still comes back demanding a captcha,
+which means the check runs at the gate before credentials are even read. The
+captcha widget is bound to sleeper.com as an origin and cannot be minted from
+ours, so an email and password form inside SQUIRT cannot complete a login. Two
+other doors are shut for the same origin reason: passkeys are bound to
+sleeper.com, and Sleeper's stored token lives in sleeper.com localStorage,
+which our page can never read.
+
+**So a token can only be obtained by:**
+
+  - reading it from a logged in browser with developer tools, which is desktop
+    only, or
+  - a bookmarklet run on sleeper.com, which is technically mobile capable and
+    practically mobile hostile to install.
+
+There is no captcha free, phone friendly way to get a token onto a device. For
+a fourteen person league that plays on phones, that means seamless in app
+writes are not achievable as a web app.
+
+**What we will not do.** No captcha solving services, no rotating identities,
+no attempt to defeat the bot protection. That was the standing rule from the
+start and the captcha does not change it.
+
+**The one real alternative, noted not chosen.** A native wrapper (Capacitor or
+similar) can host a Sleeper webview and read its token from the native layer,
+which is how some third party fantasy apps do it. That means app stores,
+review, and a real chance of rejection for harvesting another service's
+session. It is a different product, not a change to this one.
+
+**Shipped decision.** The deep link stays the path everyone uses, and the swap
+button already falls back to it. The write path stays in the code behind the
+"Testing, on a desktop" hatch, usable by anyone willing to do the DevTools
+step once, which in practice is Matt. The decision surfaces built this
+checkpoint, Fix This and Worth A Swap on My Team, are the real win: the app now
+tells you exactly what to change and takes you one tap from doing it, whether
+or not it makes the change itself.

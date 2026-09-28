@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import AlertsToggle from './AlertsToggle';
+import { readMyTeam, setMyTeam } from '@/lib/my-team';
 
-const TEAM_KEY = 'snffl.myTeam';
 
 export default function SettingsPanel({
   teams,
@@ -15,7 +15,7 @@ export default function SettingsPanel({
 
   useEffect(() => {
     try {
-      setRosterId(localStorage.getItem(TEAM_KEY) ?? '');
+      setRosterId(String(readMyTeam() ?? ''));
     } catch {
       // Private browsing can refuse storage. Controls still work this visit.
     }
@@ -25,8 +25,7 @@ export default function SettingsPanel({
   const chooseTeam = (value: string) => {
     setRosterId(value);
     try {
-      if (value) localStorage.setItem(TEAM_KEY, value);
-      else localStorage.removeItem(TEAM_KEY);
+      setMyTeam(value ? Number(value) : null);
     } catch {}
   };
 

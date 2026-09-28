@@ -2777,3 +2777,72 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   color: var(--ink-tertiary);
   white-space: nowrap;
 }
+
+/* ---------- My Team, Checkpoint 17 ---------- */
+
+.snffl-mine-empty { display: grid; gap: var(--s-3); padding: var(--s-4); }
+.snffl-mine-empty p {
+  margin: 0;
+  font-size: var(--t-body);
+  line-height: 1.5;
+  color: var(--ink-secondary);
+}
+.snffl-mine-top {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  padding: var(--s-4);
+}
+.snffl-mine-top strong {
+  font-family: var(--font-archivo);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  font-size: var(--t-h1);
+  line-height: 1;
+  color: var(--ink);
+}
+.snffl-mine-opp {
+  margin-left: auto;
+  font-size: var(--t-small);
+  color: var(--logo-aqua);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.snffl-mine-list { padding: 0; overflow: hidden; }
+.snffl-mine-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: 10px var(--s-4);
+  border-bottom: 1px solid var(--line);
+  color: inherit;
+  text-decoration: none;
+}
+.snffl-mine-row:last-child { border-bottom: 0; }
+.snffl-mine-row > span:first-child { display: grid; gap: 1px; min-width: 0; flex: 1; }
+.snffl-mine-row strong {
+  font-size: var(--t-body);
+  font-weight: 700;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.snffl-mine-row em {
+  font-style: normal;
+  font-size: var(--t-micro);
+  color: var(--ink-tertiary);
+}
+.snffl-mine-num {
+  font-family: var(--font-archivo);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  font-size: var(--t-h3);
+  color: var(--ink);
+  white-space: nowrap;
+}
+/* A problem is a red left edge rather than a red row: the row still has to be
+   readable, and the point is to draw the eye down a list, not to shout. */
+.snffl-mine-bad { box-shadow: inset 3px 0 0 var(--bad); }
+.snffl-mine-gain { color: var(--good); }

@@ -3,8 +3,10 @@
 import { useEffect, useState } from 'react';
 import FeatureMatchup, { type FeatureData } from './FeatureMatchup';
 import { SleeperActions } from './SleeperAction';
+import { readMyTeam, setMyTeam } from '@/lib/my-team';
 
-const STORAGE_KEY = 'snffl.myTeam';
+// The choice lives in a cookie now so server pages can personalise. This
+// module also migrates anyone whose pick is still only in localStorage.
 
 /**
  * The brief's Your Matchup: a team picked once and remembered on the device,
@@ -23,7 +25,7 @@ export default function YourMatchup({
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
+      const saved = readMyTeam();
       if (saved) setRosterId(Number(saved));
     } catch {
       // Private browsing can refuse storage. The picker still works this visit.
@@ -33,12 +35,7 @@ export default function YourMatchup({
 
   const choose = (value: number | null) => {
     setRosterId(value);
-    try {
-      if (value == null) localStorage.removeItem(STORAGE_KEY);
-      else localStorage.setItem(STORAGE_KEY, String(value));
-    } catch {
-      // Ignored for the same reason.
-    }
+    setMyTeam(value);
   };
 
   // Nothing is rendered until the device has been read, so the wrong team never

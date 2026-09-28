@@ -20,6 +20,7 @@ export const metadata: Metadata = { title: 'More' };
    list of links into a menu. The colour groups them: blue is the league's
    standing, green its people, amber its rituals, slate its settings. */
 const MENU = [
+  { href: '/my-team', label: 'My Team', note: 'Your lineup, what is wrong with it, your moves', Icon: Football, tone: 'blue' },
   { href: '/standings', label: 'Standings', note: 'The table, the rankings, the odds', Icon: ChartLineUp, tone: 'blue' },
   { href: '/swami', label: 'The Swami', note: 'Research a lineup: projections, matchups, usage', Icon: Binoculars, tone: 'blue' },
   { href: '/chug', label: 'Chug Meter', note: 'Who owes beers, and how many', Icon: BeerStein, tone: 'amber' },

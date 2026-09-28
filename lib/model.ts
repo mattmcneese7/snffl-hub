@@ -25,11 +25,22 @@ export type PlayerModel = {
   games: number;
 };
 
+export type BoomBust = {
+  /** Chance of a top-quarter week for the position. */
+  boom: number;
+  /** Chance of a bottom-quarter dud. */
+  bust: number;
+  /** The scores those lines sit at, so the app can name them. */
+  boomLine: number;
+  bustLine: number;
+};
+
 type ModelFile = {
   season: number;
   week: number;
   built_at: string;
   quantiles: number[];
+  thresholds: Record<string, { boom: number; bust: number }>;
   players: Record<string, PlayerModel>;
 };
 
@@ -68,4 +79,29 @@ export function chanceOf(playerId: string, points: number): number | null {
     }
   }
   return 1 - 0.9;
+}
+
+/**
+ * The odds of a big week and a dud, against this position's historical lines.
+ *
+ * Both probabilities come from the calibrated distribution, both lines from
+ * real history, so nothing here is a guess. Null when the player is not
+ * projected or the position has no lines, so a caller shows nothing rather
+ * than a number it made up.
+ */
+export function boomBust(playerId: string, position: string): BoomBust | null {
+  const m = modelFor(playerId);
+  const t = model.thresholds[position];
+  if (!m || !t) return null;
+  const boom = chanceOf(playerId, t.boom);
+  const bustAtOrBelow = chanceOf(playerId, t.bust);
+  if (boom === null || bustAtOrBelow === null) return null;
+  return {
+    boom,
+    // chanceOf is an at-least probability, so the chance of landing at or below
+    // the bust line is its complement.
+    bust: Number((1 - bustAtOrBelow).toFixed(2)),
+    boomLine: t.boom,
+    bustLine: t.bust,
+  };
 }

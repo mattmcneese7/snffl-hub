@@ -144,7 +144,7 @@ export default async function PlayerPage({
               </span>
             ) : null}
           </div>
-          <PlayerOutlook outlook={outlook} role={role} position={player.position} />
+          <PlayerOutlook outlook={outlook} role={role} position={player.position} playerId={playerId} />
         </section>
 
         <section>

@@ -2931,3 +2931,57 @@ a.snffl-swap { text-decoration: none; gap: 2px; }
   color: var(--ink-tertiary);
   cursor: pointer;
 }
+
+/* ---------- Model read on the outlook card, Checkpoint 18c ---------- */
+
+/* The read, in the app's voice. Serif and set apart, because it is the one
+   sentence on the card that is prose rather than a figure. */
+.snffl-outlook-read {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--t-body);
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+/* Boom and bust, as two figures over their own tinted glass, the same green
+   and red the matchup chips use so the colour means the same thing everywhere. */
+.snffl-outlook-odds { display: flex; gap: var(--s-2); }
+.snffl-outlook-odd {
+  flex: 1;
+  display: grid;
+  gap: 1px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+}
+.snffl-outlook-odd strong {
+  font-family: var(--font-archivo);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  font-size: var(--t-h3);
+  line-height: 1;
+}
+.snffl-outlook-odd span {
+  font-size: var(--t-micro);
+  color: var(--ink-tertiary);
+}
+.snffl-outlook-odd.snffl-outlook-soft {
+  background: var(--tint-green);
+  border-color: var(--tint-green-line);
+}
+.snffl-outlook-odd.snffl-outlook-soft strong { color: var(--tint-green-ink); }
+.snffl-outlook-odd.snffl-outlook-hard {
+  background: var(--tint-red);
+  border-color: var(--tint-red-line);
+}
+.snffl-outlook-odd.snffl-outlook-hard strong { color: var(--tint-red-ink); }
+
+/* Boom odds on a Swami row: quiet, green, the same colour boom means elsewhere. */
+.snffl-swami-boom {
+  font-family: var(--mono);
+  font-size: var(--t-micro);
+  color: var(--tint-green-ink);
+  white-space: nowrap;
+}

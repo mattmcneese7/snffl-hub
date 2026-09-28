@@ -169,6 +169,11 @@ export default async function SwamiPage({
                     ) : (
                       <span className="snffl-swami-edge">no game</span>
                     )}
+                    {outlook.boomBust ? (
+                      <span className="snffl-swami-boom">
+                        {Math.round(outlook.boomBust.boom * 100)}% boom
+                      </span>
+                    ) : null}
                     {outlook.usage ? (
                       <em>
                         {Math.round(outlook.usage.snapShare * 100)}% snaps

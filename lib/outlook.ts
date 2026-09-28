@@ -35,6 +35,7 @@ import {
   type Pos,
   type UsageEntry,
 } from './spine.ts';
+import { boomBust, modelFor, type BoomBust } from './model.ts';
 
 /** How much of the defence rating to believe, by how much evidence there is. */
 const WEIGHT: Record<ReturnType<typeof dvpConfidence>, number> = {
@@ -56,10 +57,16 @@ export type MatchupRead = {
 export type Outlook = {
   /** The projection as Sleeper gives it, scored on this league's rules. */
   base: number;
-  /** The same number after the matchup, which is what to lead with. */
+  /** The number to lead with: the model's where it has him, else matchup-adjusted. */
   adjusted: number;
   floor: number;
   ceiling: number;
+  /** The distribution's midpoint. Only set when the model is the source. */
+  median: number | null;
+  /** Where the projection came from. */
+  source: 'model' | 'deterministic';
+  /** Big-week and dud odds, only when the model has him. */
+  boomBust: BoomBust | null;
   matchup: MatchupRead | null;
   /** How much of the defence rating was applied, 0 to 1. */
   weight: number;
@@ -113,15 +120,36 @@ export function outlookFor(
   const fixtures = team ? scheduleAhead(team, 4) : [];
   const thisWeek = fixtures.find((f) => f.week === week) ?? null;
 
+  // The model is the source wherever it has the player. Its projection already
+  // carries the opponent as a feature, so the matchup is NOT multiplied in
+  // again here: it is shown as context, not applied twice. The floor and
+  // ceiling are the model's own calibrated tenth and ninetieth percentiles,
+  // which the backtest proved land where they claim to.
+  const m = modelFor(playerId);
+  const dist =
+    m !== null
+      ? {
+          source: 'model' as const,
+          adjusted: m.proj,
+          floor: m.p10,
+          ceiling: m.p90,
+          median: m.p50,
+          boomBust: boomBust(playerId, position),
+        }
+      : null;
+
   if (!isPos(position) || !thisWeek) {
-    // No opponent known, so no adjustment and no invented precision. The floor
-    // and ceiling still apply: they are about the position, not the matchup.
+    // No opponent known, so no matchup adjustment. Without the model, the floor
+    // and ceiling fall back to the position's dispersion.
     const spread = isPos(position) ? spine.dispersion?.[position] : undefined;
     return {
       base,
-      adjusted: base,
-      floor: Math.max(0, Number((base + (spread?.p20 ?? 0)).toFixed(2))),
-      ceiling: Number((base + (spread?.p80 ?? 0)).toFixed(2)),
+      adjusted: dist?.adjusted ?? base,
+      floor: dist?.floor ?? Math.max(0, Number((base + (spread?.p20 ?? 0)).toFixed(2))),
+      ceiling: dist?.ceiling ?? Number((base + (spread?.p80 ?? 0)).toFixed(2)),
+      median: dist?.median ?? null,
+      source: dist?.source ?? 'deterministic',
+      boomBust: dist?.boomBust ?? null,
       matchup: null,
       weight,
       confidence,
@@ -133,16 +161,19 @@ export function outlookFor(
 
   const pos = position as Pos;
   const factor = matchupFactor(thisWeek.opponent, pos);
-  // Damped toward 1 by how much evidence stands behind the rating.
+  // The deterministic fallback, used only when the model has no read on him.
   const effective = 1 + (factor - 1) * weight;
-  const adjusted = Number((base * effective).toFixed(2));
-
+  const detAdjusted = Number((base * effective).toFixed(2));
   const spread = spine.dispersion?.[pos];
+
   return {
     base,
-    adjusted,
-    floor: Math.max(0, Number((adjusted + (spread?.p20 ?? 0)).toFixed(2))),
-    ceiling: Number((adjusted + (spread?.p80 ?? 0)).toFixed(2)),
+    adjusted: dist?.adjusted ?? detAdjusted,
+    floor: dist?.floor ?? Math.max(0, Number((detAdjusted + (spread?.p20 ?? 0)).toFixed(2))),
+    ceiling: dist?.ceiling ?? Number((detAdjusted + (spread?.p80 ?? 0)).toFixed(2)),
+    median: dist?.median ?? null,
+    source: dist?.source ?? 'deterministic',
+    boomBust: dist?.boomBust ?? null,
     matchup: readMatchup(thisWeek.opponent, pos, thisWeek.home),
     weight,
     confidence,

@@ -86,10 +86,21 @@ def main():
             rec[c] = float(preds[c][i])
         out[str(row["player_id"])] = rec
 
+    # Boom and bust lines per position, from the historical involved scores the
+    # model trained on: a top-quarter week and a bottom-quarter dud for the
+    # position. Real percentiles, so the app can turn the calibrated
+    # distribution into "chance of a big week" without inventing a threshold.
+    thresholds = {}
+    for pos in train_rows["position"].unique():
+        pts = train_rows[train_rows["position"] == pos]["league_points"]
+        thresholds[pos] = {"boom": round(float(pts.quantile(0.75)), 1),
+                           "bust": round(float(pts.quantile(0.25)), 1)}
+
     payload = {
         "season": season, "week": week,
         "built_at": pd.Timestamp.utcnow().isoformat(),
         "quantiles": [int(q * 100) for q in QUANTILES],
+        "thresholds": thresholds,
         "players": out,
     }
     os.makedirs(os.path.dirname(OUT), exist_ok=True)

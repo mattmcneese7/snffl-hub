@@ -38,6 +38,19 @@ export type PlayerLite = {
   logo?: string;
   /** ESPN id from the nflverse map, used for cutout art. */
   espnId?: string;
+  /**
+   * Questionable, Doubtful, Out, IR, PUP. Absent when healthy.
+   *
+   * Named apart from the live `injury` the matchup views carry, deliberately.
+   * This is the status from the nightly player file; that one is what Sleeper
+   * reports on the day. They intersect in LineupSlot, and sharing a name
+   * narrowed the pair to a type neither of them is.
+   */
+  injuryStatus?: string;
+  /** Hamstring, Knee - ACL, and so on. */
+  injuryPart?: string;
+  /** Full, Limited, DNP. What he did at practice this week. */
+  practice?: string;
 };
 
 /**

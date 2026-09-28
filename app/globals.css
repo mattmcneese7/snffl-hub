@@ -249,6 +249,13 @@ body {
   --t-body: 14px;
   --t-small: 12px;
   --t-label: 10px;
+  /* Fine print that is not a label: a caveat, a unit, a footnote. --t-label is
+     10px because it is always uppercase with tracking, which reads larger than
+     it measures; the same size in sentence case is too small to be read and
+     too small to be ignored. Five rules already asked for this token by name
+     and got nothing, because it was used before it existed and an undefined
+     custom property silently inherits rather than failing. */
+  --t-micro: 11px;
   --mono: var(--font-mono), ui-monospace, 'SF Mono', Menlo, monospace;
   margin: 0;
   /* The ground is painted on html. A body background would sit on top of the

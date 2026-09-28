@@ -112,4 +112,9 @@ export type RawPlayer = {
   team?: string | null;
   status?: string;
   active?: boolean;
+  /** Questionable, Doubtful, Out, IR, PUP. Absent when healthy. */
+  injury_status?: string | null;
+  injury_body_part?: string | null;
+  /** Full, Limited, DNP. */
+  practice_participation?: string | null;
 };

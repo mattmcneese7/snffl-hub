@@ -53,6 +53,8 @@ type Spine = {
   positionMean: Record<string, number>;
   dvp: Record<string, Partial<Record<Pos, DvpEntry>>>;
   usage: Record<string, UsageEntry>;
+  /** Measured actual minus projected, per position. Floors and ceilings. */
+  dispersion: Record<Pos, { n: number; p20: number; p50: number; p80: number }>;
   schedule: Record<string, Fixture[]>;
 };
 

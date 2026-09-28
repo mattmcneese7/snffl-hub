@@ -259,6 +259,58 @@ for (const [id, playerLines] of byPlayer) {
   };
 }
 
+// ---- Dispersion ----
+//
+// How wrong a projection for this position usually is, measured rather than
+// assumed, so a floor and a ceiling can be real percentiles instead of a
+// guess dressed up as one.
+//
+// Residuals are actual minus projected, both scored on this league's rules.
+// Percentiles rather than a standard deviation, because fantasy scoring is not
+// symmetric: a receiver's downside is bounded at zero and his upside is a
+// ninety yard touchdown, so a plus or minus band would be wrong in both
+// directions at once.
+
+const residuals = new Map<Pos, number[]>();
+const actualByKey = new Map<string, number>();
+for (const line of lines) actualByKey.set(`${line.id}-${line.week}`, line.points);
+
+for (const week of weeks) {
+  for (const pos of POSITIONS) {
+    const rows = await get<Row[]>(
+      `https://api.sleeper.com/projections/nfl/${season}/${week}?season_type=regular&position[]=${pos}`
+    );
+    for (const row of rows ?? []) {
+      const id = row?.player_id;
+      if (!id || !row.stats) continue;
+      const projected = scoreStats(row.stats, scoring);
+      // A projection of nothing against an outcome of nothing is a bye week,
+      // not evidence about how wide a position's outcomes are.
+      if (projected < 1) continue;
+      const actual = actualByKey.get(`${id}-${week}`);
+      if (actual === undefined) continue;
+      residuals.set(pos, [...(residuals.get(pos) ?? []), actual - projected]);
+    }
+  }
+}
+
+const quantile = (sorted: number[], q: number) => {
+  if (!sorted.length) return 0;
+  const i = Math.min(sorted.length - 1, Math.max(0, Math.round((sorted.length - 1) * q)));
+  return sorted[i];
+};
+
+const dispersion = {} as Record<Pos, { n: number; p20: number; p50: number; p80: number }>;
+for (const pos of POSITIONS) {
+  const xs = (residuals.get(pos) ?? []).slice().sort((a, b) => a - b);
+  dispersion[pos] = {
+    n: xs.length,
+    p20: Number(quantile(xs, 0.2).toFixed(2)),
+    p50: Number(quantile(xs, 0.5).toFixed(2)),
+    p80: Number(quantile(xs, 0.8).toFixed(2)),
+  };
+}
+
 // ---- Schedule ahead ----
 //
 // Which defence every NFL team meets over the next few weeks, which is what
@@ -299,6 +351,7 @@ const out = {
   ),
   dvp,
   usage,
+  dispersion,
   schedule,
 };
 
@@ -310,5 +363,11 @@ console.log(
   `\n  ${Object.keys(dvp).length} defences, ${Object.keys(usage).length} players, ` +
     `${Object.keys(schedule).length} teams scheduled, ${kb}KB`
 );
-console.log('\nLeague average conceded per game:');
-for (const pos of POSITIONS) console.log(`  ${pos.padEnd(4)} ${positionMean[pos].toFixed(2)}`);
+console.log('\nLeague average conceded per game, and projection residuals:');
+for (const pos of POSITIONS) {
+  const d = dispersion[pos];
+  console.log(
+    `  ${pos.padEnd(4)} avg ${positionMean[pos].toFixed(2).padStart(6)}   ` +
+      `residual p20 ${String(d.p20).padStart(6)}  median ${String(d.p50).padStart(6)}  p80 ${String(d.p80).padStart(6)}  n=${d.n}`
+  );
+}

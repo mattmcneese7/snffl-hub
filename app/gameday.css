@@ -2396,3 +2396,138 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
   color: var(--tint-amber-ink);
 }
 .snffl-chugreplay-mark { width: 7px; height: 9px; flex: 0 0 auto; color: var(--beer-light); }
+
+/* ---------- Player outlook, Checkpoint 14 ---------- */
+
+/* The number, then the argument for it. Laid out so the projection and the
+   matchup that moved it sit side by side rather than the matchup reading as a
+   caption under a figure it caused. */
+.snffl-outlook {
+  display: grid;
+  gap: var(--s-3);
+  padding: var(--s-4);
+}
+.snffl-outlook-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s-3);
+}
+.snffl-outlook-number {
+  display: grid;
+  gap: 2px;
+}
+.snffl-outlook-number strong {
+  font-family: var(--font-archivo);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  font-size: var(--t-h1);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.snffl-outlook-range {
+  font-family: var(--mono);
+  font-size: var(--t-small);
+  color: var(--ink-tertiary);
+}
+
+/* Coloured glass, the same recipe as every other status tint on the site:
+   a low fill, a brighter rim of the same hue, never a painted slab. */
+.snffl-outlook-matchup {
+  display: grid;
+  gap: 1px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  text-align: right;
+}
+.snffl-outlook-matchup strong {
+  font-family: var(--font-archivo);
+  font-weight: 800;
+  font-size: var(--t-body);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.snffl-outlook-rank {
+  font-size: var(--t-micro);
+  color: var(--ink-tertiary);
+}
+.snffl-outlook-soft {
+  background: var(--tint-green);
+  border-color: var(--tint-green-line);
+}
+.snffl-outlook-soft strong { color: var(--tint-green-ink); }
+.snffl-outlook-hard {
+  background: var(--tint-red);
+  border-color: var(--tint-red-line);
+}
+.snffl-outlook-hard strong { color: var(--tint-red-ink); }
+.snffl-outlook-even strong { color: var(--ink-secondary); }
+
+.snffl-outlook-working {
+  margin: 0;
+  font-size: var(--t-small);
+  line-height: 1.45;
+  color: var(--ink-secondary);
+}
+
+.snffl-outlook-usage {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+}
+.snffl-outlook-role {
+  font-family: var(--font-archivo);
+  font-weight: 800;
+  font-size: var(--t-label);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--logo-aqua);
+}
+.snffl-outlook-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: var(--radius-xs);
+  background: var(--surface);
+  font-size: var(--t-micro);
+  color: var(--ink-tertiary);
+}
+.snffl-outlook-chip strong {
+  font-family: var(--mono);
+  font-size: var(--t-small);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.snffl-outlook-ahead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.snffl-outlook-fx {
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: var(--t-micro);
+  color: var(--ink-secondary);
+}
+.snffl-outlook-fx.snffl-outlook-soft { color: var(--tint-green-ink); }
+.snffl-outlook-fx.snffl-outlook-hard { color: var(--tint-red-ink); }
+
+/* The admission. Set quietly, but present, because a rating built on two
+   games that does not say so is the dishonest version of this card. */
+.snffl-outlook-caveat {
+  margin: 0;
+  padding-top: var(--s-2);
+  border-top: 1px solid var(--line);
+  font-size: var(--t-micro);
+  line-height: 1.5;
+  color: var(--ink-tertiary);
+}

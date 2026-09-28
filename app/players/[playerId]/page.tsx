@@ -8,7 +8,10 @@ import { getPlayerSeason } from '@/lib/players';
 import HighlightList from '@/components/HighlightList';
 import { getHighlightsForPlayer } from '@/lib/highlights';
 import SleeperActionButton from '@/components/SleeperAction';
+import PlayerOutlook from '@/components/PlayerOutlook';
 import SourceMark, { PageSources } from '@/components/SourceMark';
+import { outlookFor, roleOf } from '@/lib/outlook';
+import { scoreStats } from '@/lib/scoring';
 import { dsRos, dsWeekly } from '@/lib/draftsharks';
 import {
   formatMoneyline,
@@ -39,7 +42,11 @@ export default async function PlayerPage({
   ]);
   const { player } = season;
   const projection = projections[playerId];
-  const projected = projection?.stats.pts_ppr ?? null;
+  // Scored on this league's rules, not Sleeper's defaults. This page still
+  // took the raw pts_ppr after Checkpoint 12 corrected it everywhere else.
+  const projected = projection?.stats
+    ? scoreStats(projection.stats, league.scoring as Record<string, number>)
+    : null;
   const matchup = player.team ? gamesByTeam(nflWeek).get(player.team) : undefined;
   const lines = matchup ? await getGameLines(matchup.game.id, matchup.game.state === 'in') : null;
   const teamTotal = matchup ? impliedTeamTotal(lines ?? undefined, matchup.home) : null;
@@ -48,7 +55,9 @@ export default async function PlayerPage({
   const ros = dsRos(playerId);
   const actualLine = formatStatLine(player.position, statLines[playerId]?.stats);
   const projectedLine = formatStatLine(player.position, projection?.stats, true);
-  const injury = projection?.injury ?? null;
+  const injury = projection?.injury ?? player.injuryStatus ?? null;
+  const outlook = outlookFor(playerId, player.position, player.team, projected ?? 0, upcoming);
+  const role = roleOf(playerId, player.position);
   const blocks = statBlocksFor(player.position, statsFor(playerId));
   const paint = teamPaint(player.team);
   const owner = season.ownerRosterId ? teamByRoster(season.ownerRosterId) : null;
@@ -126,8 +135,21 @@ export default async function PlayerPage({
 
         <section>
           <div className="snffl-block-heading">
+            <h2 className="snffl-headline">Outlook</h2>
+            {injury ? (
+              <span className="snffl-mu-injury">
+                {injury}
+                {player.injuryPart ? `, ${player.injuryPart}` : ''}
+                {player.practice && player.practice !== 'None' ? ` · ${player.practice} in practice` : ''}
+              </span>
+            ) : null}
+          </div>
+          <PlayerOutlook outlook={outlook} role={role} position={player.position} />
+        </section>
+
+        <section>
+          <div className="snffl-block-heading">
             <h2 className="snffl-headline">Week {upcoming}</h2>
-            {injury ? <span className="snffl-mu-injury">{injury}</span> : null}
           </div>
           <div className="snffl-card snffl-week-card">
             {matchup ? (
@@ -163,7 +185,11 @@ export default async function PlayerPage({
 
             <div className="snffl-week-card-grid">
               <div className="snffl-week-card-cell">
-                <span className="snffl-label">Projected</span>
+                {/* Outlook above owns "projected" now and shows the adjusted
+                    figure. Two cells both labelled Projected, holding two
+                    different numbers, reads as a bug rather than as a before
+                    and after. */}
+                <span className="snffl-label">Unadjusted</span>
                 <span className="snffl-numeric">{projected != null ? projected.toFixed(1) : 'None'}</span>
               </div>
               <div className="snffl-week-card-cell">

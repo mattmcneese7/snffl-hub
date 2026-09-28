@@ -199,6 +199,14 @@ for (const [id, raw] of Object.entries(all) as [string, RawPlayer][]) {
     entry.logo = TEAM_LOGO(id);
   }
   if (espnIds[id]) entry.espnId = espnIds[id];
+  // Injuries come from the player file we already download rather than from a
+  // second source. The plan named ESPN for this and ESPN is not needed for the
+  // status itself: Sleeper carries it on the same ids, updated on the same
+  // nightly pull, for 882 players. What ESPN would add is the prose around it,
+  // which is a separate thing and not what a lineup decision turns on.
+  if (raw.injury_status) entry.injuryStatus = String(raw.injury_status);
+  if (raw.injury_body_part) entry.injuryPart = String(raw.injury_body_part);
+  if (raw.practice_participation) entry.practice = String(raw.practice_participation);
   players[id] = entry;
 }
 

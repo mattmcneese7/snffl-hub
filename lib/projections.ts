@@ -1,6 +1,25 @@
-// Sleeper projections. Unofficial and public, no login. Used for win
-// probability, playoff odds and previews. Falls back to season scoring
-// averages if the endpoint breaks, per Brief Section 3.
+// Sleeper projections, scored on this league's rulebook. Unofficial and
+// public, no login. Used for win probability, playoff odds and previews.
+// Falls back to season scoring averages if the endpoint breaks, per Brief
+// Section 3.
+//
+// The payload carries a precomputed `pts_ppr` and this used to take it. That
+// field is scored on Sleeper's defaults, which are not this league's, so the
+// number was systematically wrong in three places every week:
+//
+//   QB    interceptions cost 2 here and 1 by default, and a starting
+//         quarterback is projected for about two thirds of one a week, so
+//         every QB came through about 0.66 too high
+//   DEF   points allowed pays about half the default rate, and the league
+//         scores yards allowed too, which default scoring does not price at
+//         all: about 0.48 a week, and up to 2.94 for one defence
+//   K     fifty yard field goals pay through the fine grained buckets
+//
+// Receivers, backs and tight ends were unaffected: full PPR with standard
+// yardage and touchdowns is exactly what `pts_ppr` assumes.
+
+import { league } from './league.ts';
+import { scoreStats } from './scoring.ts';
 
 const PROJECTIONS = 'https://api.sleeper.com/projections/nfl';
 const POSITIONS = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF'];
@@ -33,11 +52,12 @@ export async function getWeekProjections(
     const rows: RawProjection[] = await res.json();
     if (!Array.isArray(rows)) return {};
 
+    const scoring = league.scoring as Record<string, number>;
     const out: ProjectionMap = {};
     for (const row of rows) {
       const id = row?.player_id;
-      const pts = row?.stats?.pts_ppr ?? row?.stats?.pts_half_ppr ?? row?.stats?.pts_std;
-      if (id && typeof pts === 'number') out[id] = Number(pts.toFixed(2));
+      if (!id || !row?.stats) continue;
+      out[id] = scoreStats(row.stats, scoring);
     }
     return out;
   } catch {

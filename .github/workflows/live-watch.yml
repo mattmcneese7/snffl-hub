@@ -46,3 +46,16 @@ jobs:
           VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
           VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
         run: node scripts/live-watch.ts
+
+      # Rides the same five minute schedule, because a lineup change matters
+      # most in the hour before kickoff and that is exactly when this fires.
+      # It runs after the watcher and independently of it: a failure here
+      # should not cost the league its touchdown alerts.
+      - name: Record roster and lineup movement
+        if: always()
+        env:
+          SLEEPER_LEAGUE_ID: ${{ secrets.SLEEPER_LEAGUE_ID }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/movement-poll.ts

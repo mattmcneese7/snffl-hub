@@ -27,6 +27,12 @@ jobs:
           SLEEPER_LEAGUE_ID: ${{ secrets.SLEEPER_LEAGUE_ID }}
         run: node scripts/nightly-refresh.ts
 
+      # Defence versus position, usage and the schedule ahead. Runs after the
+      # refresh above because it reads the league's current week from the file
+      # that step writes, and a spine built for last week is worse than none.
+      - name: Build the statistics spine
+        run: node scripts/stats-spine.ts
+
       # Real photographs of the week for the Rag's lead art. ESPN attaches
       # these to each game and prunes them, so they are collected while fresh.
       - name: Pull game photographs

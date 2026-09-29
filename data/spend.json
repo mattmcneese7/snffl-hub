@@ -167,8 +167,38 @@
    "job": "highlight tagging",
    "model": "claude-haiku-4-5",
    "usd": 0.0028
+  },
+  {
+   "at": "2026-09-29T15:06:44.413Z",
+   "job": "rag week 3",
+   "model": "claude-sonnet-5",
+   "usd": 0.1704
+  },
+  {
+   "at": "2026-09-29T15:07:04.318Z",
+   "job": "rag retry shart",
+   "model": "claude-sonnet-5",
+   "usd": 0.0327
+  },
+  {
+   "at": "2026-09-29T15:07:17.086Z",
+   "job": "rag retry hardware",
+   "model": "claude-sonnet-5",
+   "usd": 0.0257
+  },
+  {
+   "at": "2026-09-29T15:07:28.370Z",
+   "job": "rag retry game",
+   "model": "claude-sonnet-5",
+   "usd": 0.0236
+  },
+  {
+   "at": "2026-09-29T15:07:44.467Z",
+   "job": "rag retry preview",
+   "model": "claude-sonnet-5",
+   "usd": 0.0326
   }
  ],
  "limitUsd": 8.5,
- "spent": 1.129
+ "spent": 1.414
 }

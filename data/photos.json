@@ -399,10 +399,20 @@
       "score": 5.63
     },
     {
-      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0928/4de67e1575a3416ab1376a7be662428d25/4de67e1575a3416ab1376a7be662428d25.jpg",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0929/dm_260929_BEARS_MNF_RECAP_16x9_REV/dm_260929_BEARS_MNF_RECAP_16x9_REV.jpg",
       "width": 576,
       "height": 324,
-      "caption": "Broncos pick off Stafford on final play to seal win over Rams",
+      "caption": "The Bears dismantle the Eagles at Soldier Field with QB Case Keenum scoring 3 total touchdowns.",
+      "gameId": "401872948",
+      "week": 3,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0928/9bd3b7b7f9624f29b828c6e0d8cc1f261397/9bd3b7b7f9624f29b828c6e0d8cc1f261397.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Case Keenum scores 3 TDs to lead Bears over Eagles on MNF",
       "gameId": "401872948",
       "week": 3,
       "playerIds": [],
@@ -429,16 +439,6 @@
         "8183"
       ],
       "score": 1.91
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0927/r1722748_608x342_16-9.jpg",
-      "width": 608,
-      "height": 342,
-      "caption": "Ravens walk off 1 Plays",
-      "gameId": "401872948",
-      "week": 3,
-      "playerIds": [],
-      "score": 1
     }
   ]
 }

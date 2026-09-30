@@ -1,11 +1,11 @@
 {
  "season": "2026",
  "throughWeek": 3,
- "builtAt": "2026-09-29T08:11:48.222Z",
+ "builtAt": "2026-09-30T08:11:28.400Z",
  "shrinkGames": 4,
  "positionMean": {
   "QB": 17.25,
-  "RB": 20.81,
+  "RB": 20.84,
   "WR": 32.02,
   "TE": 13.73,
   "K": 8.14,
@@ -23,7 +23,7 @@
    "RB": {
     "perGame": 20.83,
     "games": 3,
-    "adjusted": 20.82,
+    "adjusted": 20.84,
     "vsAverage": 1,
     "rank": 13
    },
@@ -67,8 +67,8 @@
    "RB": {
     "perGame": 16.23,
     "games": 3,
-    "adjusted": 18.85,
-    "vsAverage": 0.906,
+    "adjusted": 18.86,
+    "vsAverage": 0.905,
     "rank": 28
    },
    "WR": {
@@ -111,8 +111,8 @@
    "RB": {
     "perGame": 17.4,
     "games": 3,
-    "adjusted": 19.35,
-    "vsAverage": 0.93,
+    "adjusted": 19.36,
+    "vsAverage": 0.929,
     "rank": 22
    },
    "WR": {
@@ -153,11 +153,11 @@
     "rank": 25
    },
    "RB": {
-    "perGame": 21.73,
+    "perGame": 22.67,
     "games": 3,
-    "adjusted": 21.21,
-    "vsAverage": 1.019,
-    "rank": 11
+    "adjusted": 21.62,
+    "vsAverage": 1.038,
+    "rank": 10
    },
    "WR": {
     "perGame": 28.4,
@@ -199,8 +199,8 @@
    "RB": {
     "perGame": 26.53,
     "games": 3,
-    "adjusted": 23.26,
-    "vsAverage": 1.118,
+    "adjusted": 23.28,
+    "vsAverage": 1.117,
     "rank": 7
    },
    "WR": {
@@ -243,8 +243,8 @@
    "RB": {
     "perGame": 18.87,
     "games": 3,
-    "adjusted": 19.98,
-    "vsAverage": 0.96,
+    "adjusted": 19.99,
+    "vsAverage": 0.959,
     "rank": 20
    },
    "WR": {
@@ -287,7 +287,7 @@
    "RB": {
     "perGame": 16.4,
     "games": 3,
-    "adjusted": 18.92,
+    "adjusted": 18.94,
     "vsAverage": 0.909,
     "rank": 27
    },
@@ -331,7 +331,7 @@
    "RB": {
     "perGame": 12.27,
     "games": 3,
-    "adjusted": 17.15,
+    "adjusted": 17.16,
     "vsAverage": 0.824,
     "rank": 31
    },
@@ -375,7 +375,7 @@
    "RB": {
     "perGame": 20.53,
     "games": 3,
-    "adjusted": 20.69,
+    "adjusted": 20.71,
     "vsAverage": 0.994,
     "rank": 15
    },
@@ -419,7 +419,7 @@
    "RB": {
     "perGame": 29.67,
     "games": 3,
-    "adjusted": 24.61,
+    "adjusted": 24.62,
     "vsAverage": 1.182,
     "rank": 4
    },
@@ -463,8 +463,8 @@
    "RB": {
     "perGame": 23.43,
     "games": 3,
-    "adjusted": 21.93,
-    "vsAverage": 1.054,
+    "adjusted": 21.95,
+    "vsAverage": 1.053,
     "rank": 9
    },
    "WR": {
@@ -507,7 +507,7 @@
    "RB": {
     "perGame": 19.7,
     "games": 3,
-    "adjusted": 20.33,
+    "adjusted": 20.35,
     "vsAverage": 0.977,
     "rank": 17
    },
@@ -551,8 +551,8 @@
    "RB": {
     "perGame": 16.77,
     "games": 3,
-    "adjusted": 19.08,
-    "vsAverage": 0.917,
+    "adjusted": 19.09,
+    "vsAverage": 0.916,
     "rank": 26
    },
    "WR": {
@@ -595,8 +595,8 @@
    "RB": {
     "perGame": 20.67,
     "games": 3,
-    "adjusted": 20.75,
-    "vsAverage": 0.997,
+    "adjusted": 20.76,
+    "vsAverage": 0.996,
     "rank": 14
    },
    "WR": {
@@ -639,9 +639,9 @@
    "RB": {
     "perGame": 21.87,
     "games": 3,
-    "adjusted": 21.26,
-    "vsAverage": 1.022,
-    "rank": 10
+    "adjusted": 21.28,
+    "vsAverage": 1.021,
+    "rank": 11
    },
    "WR": {
     "perGame": 35.23,
@@ -683,8 +683,8 @@
    "RB": {
     "perGame": 21.43,
     "games": 3,
-    "adjusted": 21.08,
-    "vsAverage": 1.013,
+    "adjusted": 21.09,
+    "vsAverage": 1.012,
     "rank": 12
    },
    "WR": {
@@ -727,8 +727,8 @@
    "RB": {
     "perGame": 28.1,
     "games": 3,
-    "adjusted": 23.93,
-    "vsAverage": 1.15,
+    "adjusted": 23.95,
+    "vsAverage": 1.149,
     "rank": 6
    },
    "WR": {
@@ -771,7 +771,7 @@
    "RB": {
     "perGame": 12.8,
     "games": 3,
-    "adjusted": 17.38,
+    "adjusted": 17.39,
     "vsAverage": 0.835,
     "rank": 29
    },
@@ -815,7 +815,7 @@
    "RB": {
     "perGame": 11.83,
     "games": 3,
-    "adjusted": 16.96,
+    "adjusted": 16.98,
     "vsAverage": 0.815,
     "rank": 32
    },
@@ -859,8 +859,8 @@
    "RB": {
     "perGame": 17.83,
     "games": 3,
-    "adjusted": 19.53,
-    "vsAverage": 0.939,
+    "adjusted": 19.55,
+    "vsAverage": 0.938,
     "rank": 21
    },
    "WR": {
@@ -903,7 +903,7 @@
    "RB": {
     "perGame": 19.67,
     "games": 3,
-    "adjusted": 20.32,
+    "adjusted": 20.34,
     "vsAverage": 0.976,
     "rank": 18
    },
@@ -947,8 +947,8 @@
    "RB": {
     "perGame": 32.87,
     "games": 3,
-    "adjusted": 25.98,
-    "vsAverage": 1.248,
+    "adjusted": 25.99,
+    "vsAverage": 1.247,
     "rank": 1
    },
    "WR": {
@@ -991,7 +991,7 @@
    "RB": {
     "perGame": 25,
     "games": 3,
-    "adjusted": 22.61,
+    "adjusted": 22.62,
     "vsAverage": 1.086,
     "rank": 8
    },
@@ -1035,8 +1035,8 @@
    "RB": {
     "perGame": 17.17,
     "games": 3,
-    "adjusted": 19.25,
-    "vsAverage": 0.925,
+    "adjusted": 19.26,
+    "vsAverage": 0.924,
     "rank": 23
    },
    "WR": {
@@ -1079,8 +1079,8 @@
    "RB": {
     "perGame": 20.5,
     "games": 3,
-    "adjusted": 20.68,
-    "vsAverage": 0.994,
+    "adjusted": 20.69,
+    "vsAverage": 0.993,
     "rank": 16
    },
    "WR": {
@@ -1123,7 +1123,7 @@
    "RB": {
     "perGame": 12.7,
     "games": 3,
-    "adjusted": 17.33,
+    "adjusted": 17.35,
     "vsAverage": 0.833,
     "rank": 30
    },
@@ -1167,8 +1167,8 @@
    "RB": {
     "perGame": 30.53,
     "games": 3,
-    "adjusted": 24.98,
-    "vsAverage": 1.2,
+    "adjusted": 24.99,
+    "vsAverage": 1.199,
     "rank": 3
    },
    "WR": {
@@ -1211,8 +1211,8 @@
    "RB": {
     "perGame": 30.67,
     "games": 3,
-    "adjusted": 25.03,
-    "vsAverage": 1.203,
+    "adjusted": 25.05,
+    "vsAverage": 1.202,
     "rank": 2
    },
    "WR": {
@@ -1255,8 +1255,8 @@
    "RB": {
     "perGame": 17.07,
     "games": 3,
-    "adjusted": 19.21,
-    "vsAverage": 0.923,
+    "adjusted": 19.22,
+    "vsAverage": 0.922,
     "rank": 25
    },
    "WR": {
@@ -1299,7 +1299,7 @@
    "RB": {
     "perGame": 17.13,
     "games": 3,
-    "adjusted": 19.23,
+    "adjusted": 19.25,
     "vsAverage": 0.924,
     "rank": 24
    },
@@ -1343,8 +1343,8 @@
    "RB": {
     "perGame": 28.67,
     "games": 3,
-    "adjusted": 24.18,
-    "vsAverage": 1.162,
+    "adjusted": 24.19,
+    "vsAverage": 1.161,
     "rank": 5
    },
    "WR": {
@@ -1387,7 +1387,7 @@
    "RB": {
     "perGame": 19.03,
     "games": 3,
-    "adjusted": 20.05,
+    "adjusted": 20.06,
     "vsAverage": 0.963,
     "rank": 19
    },
@@ -1451,7 +1451,7 @@
   },
   "829": {
    "weeks": 3,
-   "snapShare": 0,
+   "snapShare": 0.022,
    "targetShare": 0,
    "carryShare": 0,
    "redZone": 0,
@@ -1469,7 +1469,7 @@
   },
   "1339": {
    "weeks": 1,
-   "snapShare": 0,
+   "snapShare": 0.38,
    "targetShare": 0.08,
    "carryShare": 0,
    "redZone": 1,
@@ -1514,7 +1514,7 @@
   },
   "1737": {
    "weeks": 2,
-   "snapShare": 0,
+   "snapShare": 0.49,
    "targetShare": 0,
    "carryShare": 0.054,
    "redZone": 1,
@@ -1541,7 +1541,7 @@
   },
   "2078": {
    "weeks": 3,
-   "snapShare": 0.105,
+   "snapShare": 0.11,
    "targetShare": 0.012,
    "carryShare": 0,
    "redZone": 0,
@@ -1685,7 +1685,7 @@
   },
   "3202": {
    "weeks": 3,
-   "snapShare": 0.3,
+   "snapShare": 0.341,
    "targetShare": 0.08,
    "carryShare": 0,
    "redZone": 0.33,
@@ -1757,7 +1757,7 @@
   },
   "3634": {
    "weeks": 3,
-   "snapShare": 0.611,
+   "snapShare": 0.656,
    "targetShare": 0.231,
    "carryShare": 0,
    "redZone": 0.67,
@@ -1937,7 +1937,7 @@
   },
   "4314": {
    "weeks": 3,
-   "snapShare": 0.527,
+   "snapShare": 0.525,
    "targetShare": 0.049,
    "carryShare": 0,
    "redZone": 0,
@@ -1991,7 +1991,7 @@
   },
   "4866": {
    "weeks": 3,
-   "snapShare": 0.389,
+   "snapShare": 0.481,
    "targetShare": 0.073,
    "carryShare": 0.447,
    "redZone": 1.67,
@@ -2423,7 +2423,7 @@
   },
   "6271": {
    "weeks": 3,
-   "snapShare": 0.36,
+   "snapShare": 0.372,
    "targetShare": 0.08,
    "carryShare": 0,
    "redZone": 0,
@@ -2504,7 +2504,7 @@
   },
   "6790": {
    "weeks": 3,
-   "snapShare": 0.624,
+   "snapShare": 0.647,
    "targetShare": 0.11,
    "carryShare": 0.514,
    "redZone": 5.33,
@@ -2576,7 +2576,7 @@
   },
   "6826": {
    "weeks": 3,
-   "snapShare": 0.631,
+   "snapShare": 0.62,
    "targetShare": 0.055,
    "carryShare": 0,
    "redZone": 0,
@@ -2612,7 +2612,7 @@
   },
   "6904": {
    "weeks": 3,
-   "snapShare": 1,
+   "snapShare": 0.978,
    "targetShare": 0,
    "carryShare": 0.211,
    "redZone": 1,
@@ -2675,7 +2675,7 @@
   },
   "7075": {
    "weeks": 3,
-   "snapShare": 0.57,
+   "snapShare": 0.55,
    "targetShare": 0.013,
    "carryShare": 0,
    "redZone": 0,
@@ -2711,7 +2711,7 @@
   },
   "7521": {
    "weeks": 3,
-   "snapShare": 0.285,
+   "snapShare": 0.341,
    "targetShare": 0.04,
    "carryShare": 0,
    "redZone": 0,
@@ -2729,7 +2729,7 @@
   },
   "7525": {
    "weeks": 3,
-   "snapShare": 0.908,
+   "snapShare": 0.934,
    "targetShare": 0.329,
    "carryShare": 0,
    "redZone": 0.67,
@@ -2810,7 +2810,7 @@
   },
   "7553": {
    "weeks": 3,
-   "snapShare": 0.53,
+   "snapShare": 0.496,
    "targetShare": 0.08,
    "carryShare": 0,
    "redZone": 0,
@@ -2901,6 +2901,15 @@
   "7595": {
    "weeks": 3,
    "snapShare": 0.24,
+   "targetShare": 0,
+   "carryShare": 0,
+   "redZone": 0,
+   "pointsPerGame": 0,
+   "recent": null
+  },
+  "7596": {
+   "weeks": 1,
+   "snapShare": 0.12,
    "targetShare": 0,
    "carryShare": 0,
    "redZone": 0,
@@ -3044,7 +3053,7 @@
   },
   "8112": {
    "weeks": 3,
-   "snapShare": 0.84,
+   "snapShare": 0.791,
    "targetShare": 0.267,
    "carryShare": 0.019,
    "redZone": 0,
@@ -3062,7 +3071,7 @@
   },
   "8119": {
    "weeks": 3,
-   "snapShare": 0.685,
+   "snapShare": 0.698,
    "targetShare": 0.147,
    "carryShare": 0,
    "redZone": 0,
@@ -3251,7 +3260,7 @@
   },
   "8154": {
    "weeks": 3,
-   "snapShare": 0.335,
+   "snapShare": 0.372,
    "targetShare": 0.027,
    "carryShare": 0.288,
    "redZone": 0.33,
@@ -3306,7 +3315,7 @@
   "8172": {
    "weeks": 3,
    "snapShare": 0.691,
-   "targetShare": 0.146,
+   "targetShare": 0.141,
    "carryShare": 0,
    "redZone": 0.67,
    "pointsPerGame": 6,
@@ -3476,7 +3485,7 @@
   },
   "8523": {
    "weeks": 3,
-   "snapShare": 0.18,
+   "snapShare": 0.147,
    "targetShare": 0,
    "carryShare": 0,
    "redZone": 0,
@@ -3548,7 +3557,7 @@
   },
   "9225": {
    "weeks": 3,
-   "snapShare": 0.244,
+   "snapShare": 0.188,
    "targetShare": 0.037,
    "carryShare": 0.184,
    "redZone": 1,
@@ -3558,7 +3567,7 @@
   "9226": {
    "weeks": 3,
    "snapShare": 0.516,
-   "targetShare": 0.146,
+   "targetShare": 0.141,
    "carryShare": 0.442,
    "redZone": 2.33,
    "pointsPerGame": 8.2,
@@ -3611,7 +3620,7 @@
   },
   "9486": {
    "weeks": 3,
-   "snapShare": 0.74,
+   "snapShare": 0.779,
    "targetShare": 0.183,
    "carryShare": 0,
    "redZone": 1.33,
@@ -3701,7 +3710,7 @@
   },
   "9509": {
    "weeks": 3,
-   "snapShare": 0.66,
+   "snapShare": 0.628,
    "targetShare": 0.213,
    "carryShare": 0.635,
    "redZone": 3.67,
@@ -3908,7 +3917,7 @@
   },
   "10235": {
    "weeks": 3,
-   "snapShare": 0.007,
+   "snapShare": 0.005,
    "targetShare": 0,
    "carryShare": 0,
    "redZone": 0,
@@ -4025,7 +4034,7 @@
   },
   "11256": {
    "weeks": 2,
-   "snapShare": 0.135,
+   "snapShare": 0.068,
    "targetShare": 0,
    "carryShare": 0,
    "redZone": 0,
@@ -4070,7 +4079,7 @@
   },
   "11304": {
    "weeks": 3,
-   "snapShare": 0.198,
+   "snapShare": 0.215,
    "targetShare": 0,
    "carryShare": 0,
    "redZone": 0,
@@ -4089,7 +4098,7 @@
   "11421": {
    "weeks": 3,
    "snapShare": 0.122,
-   "targetShare": 0.049,
+   "targetShare": 0.047,
    "carryShare": 0,
    "redZone": 0,
    "pointsPerGame": 6.07,
@@ -4151,7 +4160,7 @@
   },
   "11559": {
    "weeks": 1,
-   "snapShare": 1,
+   "snapShare": 0,
    "targetShare": 0,
    "carryShare": 0.049,
    "redZone": 0,
@@ -4232,7 +4241,7 @@
   },
   "11577": {
    "weeks": 3,
-   "snapShare": 0.374,
+   "snapShare": 0.343,
    "targetShare": 0.061,
    "carryShare": 0.118,
    "redZone": 1,
@@ -4350,7 +4359,7 @@
   "11610": {
    "weeks": 3,
    "snapShare": 0.856,
-   "targetShare": 0.28,
+   "targetShare": 0.271,
    "carryShare": 0.039,
    "redZone": 0.67,
    "pointsPerGame": 8.7,
@@ -4385,7 +4394,7 @@
   },
   "11620": {
    "weeks": 3,
-   "snapShare": 0.658,
+   "snapShare": 0.719,
    "targetShare": 0.143,
    "carryShare": 0,
    "redZone": 0.67,
@@ -4782,7 +4791,7 @@
   "12495": {
    "weeks": 3,
    "snapShare": 0.404,
-   "targetShare": 0.037,
+   "targetShare": 0.035,
    "carryShare": 0.26,
    "redZone": 1,
    "pointsPerGame": 5.07,
@@ -4934,7 +4943,7 @@
   },
   "12517": {
    "weeks": 3,
-   "snapShare": 0.866,
+   "snapShare": 0.842,
    "targetShare": 0.099,
    "carryShare": 0,
    "redZone": 1,
@@ -4952,7 +4961,7 @@
   },
   "12519": {
    "weeks": 3,
-   "snapShare": 0.651,
+   "snapShare": 0.638,
    "targetShare": 0.253,
    "carryShare": 0.019,
    "redZone": 2,
@@ -5042,7 +5051,7 @@
   },
   "12534": {
    "weeks": 3,
-   "snapShare": 0.383,
+   "snapShare": 0.357,
    "targetShare": 0.044,
    "carryShare": 0.286,
    "redZone": 2.33,
@@ -5285,7 +5294,7 @@
   },
   "13079": {
    "weeks": 3,
-   "snapShare": 0.275,
+   "snapShare": 0.204,
    "targetShare": 0.011,
    "carryShare": 0,
    "redZone": 0.33,
@@ -5294,7 +5303,7 @@
   },
   "13150": {
    "weeks": 3,
-   "snapShare": 0.298,
+   "snapShare": 0.243,
    "targetShare": 0.037,
    "carryShare": 0,
    "redZone": 0.33,
@@ -5420,7 +5429,7 @@
   },
   "13294": {
    "weeks": 3,
-   "snapShare": 0.634,
+   "snapShare": 0.652,
    "targetShare": 0.11,
    "carryShare": 0.013,
    "redZone": 0,
@@ -5430,7 +5439,7 @@
   "13296": {
    "weeks": 2,
    "snapShare": 0.887,
-   "targetShare": 0.213,
+   "targetShare": 0.2,
    "carryShare": 0,
    "redZone": 0.5,
    "pointsPerGame": 9.15,
@@ -5493,7 +5502,7 @@
   "13311": {
    "weeks": 3,
    "snapShare": 0.559,
-   "targetShare": 0.122,
+   "targetShare": 0.118,
    "carryShare": 0,
    "redZone": 0,
    "pointsPerGame": 4.73,
@@ -5519,7 +5528,7 @@
   },
   "13320": {
    "weeks": 3,
-   "snapShare": 0.225,
+   "snapShare": 0.248,
    "targetShare": 0.053,
    "carryShare": 0,
    "redZone": 0,
@@ -5528,7 +5537,7 @@
   },
   "13322": {
    "weeks": 3,
-   "snapShare": 0.215,
+   "snapShare": 0.217,
    "targetShare": 0.044,
    "carryShare": 0,
    "redZone": 0.33,
@@ -5583,7 +5592,7 @@
   "13338": {
    "weeks": 3,
    "snapShare": 0.468,
-   "targetShare": 0.073,
+   "targetShare": 0.071,
    "carryShare": 0,
    "redZone": 0,
    "pointsPerGame": 0.43,
@@ -5654,7 +5663,7 @@
   },
   "13411": {
    "weeks": 3,
-   "snapShare": 0.013,
+   "snapShare": 0.045,
    "targetShare": 0.011,
    "carryShare": 0,
    "redZone": 0,
@@ -5866,6 +5875,15 @@
    "carryShare": 0,
    "redZone": 0,
    "pointsPerGame": 7.33,
+   "recent": null
+  },
+  "14026": {
+   "weeks": 3,
+   "snapShare": 0.314,
+   "targetShare": 0.035,
+   "carryShare": 0,
+   "redZone": 0,
+   "pointsPerGame": 0.93,
    "recent": null
   },
   "SEA": {
@@ -6165,9 +6183,9 @@
    "p80": 8.23
   },
   "RB": {
-   "n": 235,
+   "n": 236,
    "p20": -4.98,
-   "p50": -1.92,
+   "p50": -1.86,
    "p80": 2.85
   },
   "WR": {

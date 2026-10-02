@@ -133,6 +133,8 @@
   "espnId": "15818",
   "headshot": "https://sleepercdn.com/content/nfl/players/1479.jpg",
   "id": "1479",
+  "injuryPart": "Groin",
+  "injuryStatus": "Questionable",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/ind.png",
   "name": "Keenan Allen",
   "position": "WR",
@@ -631,8 +633,6 @@
   "espnId": "3116165",
   "headshot": "https://sleepercdn.com/content/nfl/players/4037.jpg",
   "id": "4037",
-  "injuryPart": "Ankle",
-  "injuryStatus": "Questionable",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/tb.png",
   "name": "Chris Godwin",
   "position": "WR",
@@ -958,8 +958,6 @@
   "espnId": "3916387",
   "headshot": "https://sleepercdn.com/content/nfl/players/4881.jpg",
   "id": "4881",
-  "injuryPart": "Undisclosed",
-  "injuryStatus": "Questionable",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/bal.png",
   "name": "Lamar Jackson",
   "position": "QB",
@@ -1150,8 +1148,6 @@
   "espnId": "3052897",
   "headshot": "https://sleepercdn.com/content/nfl/players/5008.jpg",
   "id": "5008",
-  "injuryPart": "Heel",
-  "injuryStatus": "Questionable",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/bal.png",
   "name": "Durham Smythe",
   "position": "TE",
@@ -1319,6 +1315,16 @@
   "short": "K. Hodge",
   "team": "SF"
  },
+ "5781": {
+  "espnId": "3115928",
+  "headshot": "https://sleepercdn.com/content/nfl/players/5781.jpg",
+  "id": "5781",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/sf.png",
+  "name": "Malik Turner",
+  "position": "WR",
+  "short": "M. Turner",
+  "team": "SF"
+ },
  "5844": {
   "espnId": "4036133",
   "headshot": "https://sleepercdn.com/content/nfl/players/5844.jpg",
@@ -1387,6 +1393,8 @@
   "espnId": "4036131",
   "headshot": "https://sleepercdn.com/content/nfl/players/5857.jpg",
   "id": "5857",
+  "injuryPart": "Abdomen",
+  "injuryStatus": "Questionable",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/no.png",
   "name": "Noah Fant",
   "position": "TE",
@@ -1491,8 +1499,6 @@
   "espnId": "3916148",
   "headshot": "https://sleepercdn.com/content/nfl/players/5967.jpg",
   "id": "5967",
-  "injuryPart": "Ankle",
-  "injuryStatus": "Questionable",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/ten.png",
   "name": "Tony Pollard",
   "position": "RB",
@@ -1737,8 +1743,6 @@
   "espnId": "4061956",
   "headshot": "https://sleepercdn.com/content/nfl/players/6427.jpg",
   "id": "6427",
-  "injuryPart": "Ankle",
-  "injuryStatus": "Questionable",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/ind.png",
   "name": "Ashton Dulin",
   "position": "WR",
@@ -1892,6 +1896,8 @@
   "espnId": "4259545",
   "headshot": "https://sleepercdn.com/content/nfl/players/6790.jpg",
   "id": "6790",
+  "injuryPart": "Knee",
+  "injuryStatus": "Questionable",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/chi.png",
   "name": "D'Andre Swift",
   "position": "RB",
@@ -2414,7 +2420,7 @@
   "headshot": "https://sleepercdn.com/content/nfl/players/7543.jpg",
   "id": "7543",
   "injuryPart": "Hamstring",
-  "injuryStatus": "Out",
+  "injuryStatus": "IR",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/no.png",
   "name": "Travis Etienne",
   "position": "RB",
@@ -4127,8 +4133,6 @@
   "espnId": "4429615",
   "headshot": "https://sleepercdn.com/content/nfl/players/9997.jpg",
   "id": "9997",
-  "injuryPart": "Hamstring",
-  "injuryStatus": "Questionable",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/bal.png",
   "name": "Zay Flowers",
   "position": "WR",
@@ -4475,6 +4479,16 @@
   "short": "J. Wayne",
   "team": "HOU"
  },
+ "11058": {
+  "espnId": "4259619",
+  "headshot": "https://sleepercdn.com/content/nfl/players/11058.jpg",
+  "id": "11058",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/nyj.png",
+  "name": "Blake Grupe",
+  "position": "K",
+  "short": "B. Grupe",
+  "team": "NYJ"
+ },
  "11068": {
   "espnId": "4690070",
   "headshot": "https://sleepercdn.com/content/nfl/players/11068.jpg",
@@ -4573,16 +4587,6 @@
   "position": "QB",
   "short": "T. Bagent",
   "team": "CHI"
- },
- "11257": {
-  "espnId": "4361332",
-  "headshot": "https://sleepercdn.com/content/nfl/players/11257.jpg",
-  "id": "11257",
-  "logo": "https://sleepercdn.com/images/team_logos/nfl/bal.png",
-  "name": "Shedrick Jackson",
-  "position": "WR",
-  "short": "S. Jackson",
-  "team": "BAL"
  },
  "11261": {
   "espnId": "4258620",
@@ -5391,8 +5395,6 @@
   "espnId": "4682745",
   "headshot": "https://sleepercdn.com/content/nfl/players/11643.jpg",
   "id": "11643",
-  "injuryPart": "Foot",
-  "injuryStatus": "Questionable",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/mia.png",
   "name": "Jaylen Wright",
   "position": "RB",
@@ -5701,6 +5703,7 @@
   "team": "MIN"
  },
  "12079": {
+  "espnId": "4430684",
   "headshot": "https://sleepercdn.com/content/nfl/players/12079.jpg",
   "id": "12079",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/no.png",
@@ -5719,15 +5722,6 @@
   "position": "TE",
   "short": "T. Yassmin",
   "team": "GB"
- },
- "12151": {
-  "headshot": "https://sleepercdn.com/content/nfl/players/12151.jpg",
-  "id": "12151",
-  "logo": "https://sleepercdn.com/images/team_logos/nfl/sea.png",
-  "name": "Julian Hicks",
-  "position": "WR",
-  "short": "J. Hicks",
-  "team": "SEA"
  },
  "12171": {
   "espnId": "4373273",
@@ -6261,6 +6255,8 @@
   "espnId": "4429955",
   "headshot": "https://sleepercdn.com/content/nfl/players/12511.jpg",
   "id": "12511",
+  "injuryPart": "Coach's Decision",
+  "injuryStatus": "Out",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/pit.png",
   "name": "Will Howard",
   "position": "QB",
@@ -6830,6 +6826,16 @@
   "short": "J. Briningstool",
   "team": "KC"
  },
+ "12826": {
+  "espnId": "4426689",
+  "headshot": "https://sleepercdn.com/content/nfl/players/12826.jpg",
+  "id": "12826",
+  "logo": "https://sleepercdn.com/images/team_logos/nfl/no.png",
+  "name": "Ulysses Bentley",
+  "position": "RB",
+  "short": "U. Bentley",
+  "team": "NO"
+ },
  "12829": {
   "espnId": "4578436",
   "headshot": "https://sleepercdn.com/content/nfl/players/12829.jpg",
@@ -6978,6 +6984,7 @@
   "team": "DET"
  },
  "12939": {
+  "espnId": "4709392",
   "headshot": "https://sleepercdn.com/content/nfl/players/12939.jpg",
   "id": "12939",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/car.png",
@@ -7433,6 +7440,8 @@
   "espnId": "4714771",
   "headshot": "https://sleepercdn.com/content/nfl/players/13289.jpg",
   "id": "13289",
+  "injuryPart": "Coach's Decision",
+  "injuryStatus": "Out",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/pit.png",
   "name": "Drew Allar",
   "position": "QB",
@@ -7516,6 +7525,8 @@
   "espnId": "4686248",
   "headshot": "https://sleepercdn.com/content/nfl/players/13299.jpg",
   "id": "13299",
+  "injuryPart": "Illness",
+  "injuryStatus": "Questionable",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/jax.png",
   "name": "Nate Boerkircher",
   "position": "TE",
@@ -7568,6 +7579,8 @@
   "espnId": "4431325",
   "headshot": "https://sleepercdn.com/content/nfl/players/13306.jpg",
   "id": "13306",
+  "injuryPart": "Coach's Decision",
+  "injuryStatus": "Out",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/cle.png",
   "name": "Taylen Green",
   "position": "QB",
@@ -8172,6 +8185,8 @@
   "espnId": "5081508",
   "headshot": "https://sleepercdn.com/content/nfl/players/13423.jpg",
   "id": "13423",
+  "injuryPart": "Coach's Decision",
+  "injuryStatus": "Out",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/pit.png",
   "name": "Eli Heidenreich",
   "position": "RB",
@@ -8281,6 +8296,8 @@
   "espnId": "4432631",
   "headshot": "https://sleepercdn.com/content/nfl/players/13437.jpg",
   "id": "13437",
+  "injuryPart": "Quadriceps",
+  "injuryStatus": "Out",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/hou.png",
   "name": "Noah Whittington",
   "position": "RB",
@@ -8600,6 +8617,7 @@
   "team": "NYJ"
  },
  "13827": {
+  "espnId": "4683308",
   "headshot": "https://sleepercdn.com/content/nfl/players/13827.jpg",
   "id": "13827",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/ne.png",
@@ -8751,6 +8769,7 @@
   "team": "WAS"
  },
  "13981": {
+  "espnId": "5225419",
   "headshot": "https://sleepercdn.com/content/nfl/players/13981.jpg",
   "id": "13981",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/den.png",
@@ -8769,6 +8788,7 @@
   "team": "TB"
  },
  "14026": {
+  "espnId": "4685116",
   "headshot": "https://sleepercdn.com/content/nfl/players/14026.jpg",
   "id": "14026",
   "logo": "https://sleepercdn.com/images/team_logos/nfl/mia.png",

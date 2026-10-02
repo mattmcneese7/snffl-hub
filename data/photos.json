@@ -440,5 +440,71 @@
       ],
       "score": 1.91
     }
+  ],
+  "4": [
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1001/00566164e84141c19d2c4cf8f1167ad31438/00566164e84141c19d2c4cf8f1167ad31438.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Deshaun Watson zips pass to Harold Fannin Jr. for Browns TD",
+      "gameId": "401872964",
+      "week": 4,
+      "playerIds": [
+        "12506"
+      ],
+      "score": 5.46
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0928/r1722971_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "Tyler Shough is off to a fast start, but the Saints are 1-2 heading into a Week 4 Monday night matchup with the Falcons.",
+      "gameId": "401872964",
+      "week": 4,
+      "playerIds": [
+        "12545"
+      ],
+      "score": 5
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1002/r1724738_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "Wide receiver Roman Wilson, the Steelers' 2024 third-round pick, scored Pittsburgh's first touchdown of the night in Cleveland.",
+      "gameId": "401872964",
+      "week": 4,
+      "playerIds": [],
+      "score": 4
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0909/nfl_rodgers-final-season_16x9.jpg",
+      "width": 1500,
+      "height": 844,
+      "caption": "As he reported to his 22nd NFL training camp in July, quarterback Aaron Rodgers affirmed that there's \"zero debate\" 2026 is his last season playing football.",
+      "gameId": "401872964",
+      "week": 4,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0828/rodgers_pre-season_chase_v2.jpg",
+      "width": 1296,
+      "height": 1522,
+      "caption": "rodgers_pre-season_chase_v2",
+      "gameId": "401872964",
+      "week": 4,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1002/r1724773_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "Deshaun Watson has the Browns sitting at 3-1 and in the lead of the AFC North following Thursday night's win against the Steelers in Cleveland.",
+      "gameId": "401872964",
+      "week": 4,
+      "playerIds": [],
+      "score": 1
+    }
   ]
 }

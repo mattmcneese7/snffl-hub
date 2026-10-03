@@ -443,6 +443,90 @@
   ],
   "4": [
     {
+      "url": "https://a.espncdn.com/photo/2026/0902/r1710593_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Jameson Williams is off to a slow start with six catches for 78 yards and no touchdowns for a Lions team that has 62 points in two games.",
+      "gameId": "401872964",
+      "week": 4,
+      "playerIds": [
+        "8148"
+      ],
+      "score": 10
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0914/r1716707_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Michael Pittman Jr., Pittsburgh Steelers wide receiver",
+      "gameId": "401872964",
+      "week": 4,
+      "playerIds": [
+        "6819"
+      ],
+      "score": 7.44
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0903/r1711041_2_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Christian Watson, Green Bay Packers wide receiver",
+      "gameId": "401872964",
+      "week": 4,
+      "playerIds": [
+        "8167"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0914/r1716699_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Jonathan Taylor, Indianapolis Colts running back",
+      "gameId": "401872964",
+      "week": 4,
+      "playerIds": [
+        "6813"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0903/r1711051_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Justin Jefferson, Minnesota Vikings wide receiver",
+      "gameId": "401872964",
+      "week": 4,
+      "playerIds": [
+        "6794"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1002/r1724907_576x324_16-9.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Jayden Daniels is not yet ready to return to the Commanders huddle.",
+      "gameId": "401872964",
+      "week": 4,
+      "playerIds": [
+        "11566"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1002/r1725115_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Mike Evans",
+      "gameId": "401872964",
+      "week": 4,
+      "playerIds": [
+        "2216"
+      ],
+      "score": 7
+    },
+    {
       "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1001/00566164e84141c19d2c4cf8f1167ad31438/00566164e84141c19d2c4cf8f1167ad31438.jpg",
       "width": 576,
       "height": 324,
@@ -455,56 +539,76 @@
       "score": 5.46
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/0928/r1722971_608x342_16-9.jpg",
-      "width": 608,
-      "height": 342,
-      "caption": "Tyler Shough is off to a fast start, but the Saints are 1-2 heading into a Week 4 Monday night matchup with the Falcons.",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0927/ss_20260927_180657293_3677806/ss_20260927_180657293_3677806.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Bhayshul Tuten continues to showcase his fantasy potential",
       "gameId": "401872964",
       "week": 4,
       "playerIds": [
-        "12545"
+        "12490"
       ],
-      "score": 5
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/1002/r1724738_608x342_16-9.jpg",
-      "width": 608,
-      "height": 342,
-      "caption": "Wide receiver Roman Wilson, the Steelers' 2024 third-round pick, scored Pittsburgh's first touchdown of the night in Cleveland.",
-      "gameId": "401872964",
-      "week": 4,
-      "playerIds": [],
       "score": 4
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/0909/nfl_rodgers-final-season_16x9.jpg",
-      "width": 1500,
-      "height": 844,
-      "caption": "As he reported to his 22nd NFL training camp in July, quarterback Aaron Rodgers affirmed that there's \"zero debate\" 2026 is his last season playing football.",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0928/ss_20260928_130036762_3678554824/ss_20260928_130036762_3678554824.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Why Mike Clay is moving Rashee Rice up in his rankings for Week 4",
       "gameId": "401872964",
       "week": 4,
-      "playerIds": [],
-      "score": 3
+      "playerIds": [
+        "10229"
+      ],
+      "score": 4
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/0828/rodgers_pre-season_chase_v2.jpg",
-      "width": 1296,
-      "height": 1522,
-      "caption": "rodgers_pre-season_chase_v2",
+      "url": "https://a.espncdn.com/photo/2026/1002/r1724904_576x324_16-9.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Don't expect to see DeVonta Smith on the field for the Eagles this weekend.",
       "gameId": "401872964",
       "week": 4,
-      "playerIds": [],
-      "score": 3
+      "playerIds": [
+        "7525"
+      ],
+      "score": 4
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1002/r1724773_608x342_16-9.jpg",
-      "width": 608,
-      "height": 342,
-      "caption": "Deshaun Watson has the Browns sitting at 3-1 and in the lead of the AFC North following Thursday night's win against the Steelers in Cleveland.",
+      "url": "https://a.espncdn.com/photo/2026/1002/r1724903_576x324_16-9.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "If Jalen Coker is able to suit up, he may do quite well against the Lions on Sunday night.",
       "gameId": "401872964",
       "week": 4,
-      "playerIds": [],
-      "score": 1
+      "playerIds": [
+        "11646"
+      ],
+      "score": 4
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1001/ss_20261001_110532411_3680722/ss_20261001_110532411_3680722.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Why Mike Clay is conflicted on Mark Andrews in Week 4",
+      "gameId": "401872964",
+      "week": 4,
+      "playerIds": [
+        "5012"
+      ],
+      "score": 4
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1002/ss_20261002_090924707_3681592/ss_20261002_090924707_3681592.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Dan Orlovsky: Brock Purdy is the best QB in football right now",
+      "gameId": "401872964",
+      "week": 4,
+      "playerIds": [
+        "8183"
+      ],
+      "score": 4
     }
   ]
 }

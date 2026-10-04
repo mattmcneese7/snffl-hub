@@ -1,7 +1,7 @@
 {
  "season": "2026",
  "throughWeek": 3,
- "builtAt": "2026-10-03T08:10:06.016Z",
+ "builtAt": "2026-10-04T15:26:17.979Z",
  "shrinkGames": 4,
  "positionMean": {
   "QB": 17.25,
@@ -6214,50 +6214,6 @@
   }
  },
  "schedule": {
-  "CLE": [
-   {
-    "week": 4,
-    "opponent": "PIT",
-    "home": true
-   },
-   {
-    "week": 5,
-    "opponent": "NYJ",
-    "home": false
-   },
-   {
-    "week": 6,
-    "opponent": "BAL",
-    "home": true
-   },
-   {
-    "week": 7,
-    "opponent": "TEN",
-    "home": false
-   }
-  ],
-  "PIT": [
-   {
-    "week": 4,
-    "opponent": "CLE",
-    "home": false
-   },
-   {
-    "week": 5,
-    "opponent": "IND",
-    "home": true
-   },
-   {
-    "week": 6,
-    "opponent": "TB",
-    "home": false
-   },
-   {
-    "week": 7,
-    "opponent": "NO",
-    "home": false
-   }
-  ],
   "WAS": [
    {
     "week": 4,
@@ -6822,6 +6778,50 @@
     "week": 7,
     "opponent": "GB",
     "home": true
+   }
+  ],
+  "CLE": [
+   {
+    "week": 4,
+    "opponent": "PIT",
+    "home": true
+   },
+   {
+    "week": 5,
+    "opponent": "NYJ",
+    "home": false
+   },
+   {
+    "week": 6,
+    "opponent": "BAL",
+    "home": true
+   },
+   {
+    "week": 7,
+    "opponent": "TEN",
+    "home": false
+   }
+  ],
+  "PIT": [
+   {
+    "week": 4,
+    "opponent": "CLE",
+    "home": false
+   },
+   {
+    "week": 5,
+    "opponent": "IND",
+    "home": true
+   },
+   {
+    "week": 6,
+    "opponent": "TB",
+    "home": false
+   },
+   {
+    "week": 7,
+    "opponent": "NO",
+    "home": false
    }
   ],
   "NO": [

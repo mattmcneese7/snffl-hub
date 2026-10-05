@@ -1,7 +1,7 @@
 {
  "season": "2026",
  "throughWeek": 3,
- "builtAt": "2026-10-04T15:26:17.979Z",
+ "builtAt": "2026-10-05T08:12:43.713Z",
  "shrinkGames": 4,
  "positionMean": {
   "QB": 17.25,
@@ -6214,6 +6214,94 @@
   }
  },
  "schedule": {
+  "NO": [
+   {
+    "week": 4,
+    "opponent": "ATL",
+    "home": true
+   },
+   {
+    "week": 5,
+    "opponent": "MIN",
+    "home": true
+   },
+   {
+    "week": 6,
+    "opponent": "NYG",
+    "home": false
+   },
+   {
+    "week": 7,
+    "opponent": "PIT",
+    "home": true
+   }
+  ],
+  "ATL": [
+   {
+    "week": 4,
+    "opponent": "NO",
+    "home": false
+   },
+   {
+    "week": 5,
+    "opponent": "BAL",
+    "home": true
+   },
+   {
+    "week": 6,
+    "opponent": "CHI",
+    "home": true
+   },
+   {
+    "week": 7,
+    "opponent": "SF",
+    "home": true
+   }
+  ],
+  "CLE": [
+   {
+    "week": 4,
+    "opponent": "PIT",
+    "home": true
+   },
+   {
+    "week": 5,
+    "opponent": "NYJ",
+    "home": false
+   },
+   {
+    "week": 6,
+    "opponent": "BAL",
+    "home": true
+   },
+   {
+    "week": 7,
+    "opponent": "TEN",
+    "home": false
+   }
+  ],
+  "PIT": [
+   {
+    "week": 4,
+    "opponent": "CLE",
+    "home": false
+   },
+   {
+    "week": 5,
+    "opponent": "IND",
+    "home": true
+   },
+   {
+    "week": 6,
+    "opponent": "TB",
+    "home": false
+   },
+   {
+    "week": 7,
+    "opponent": "NO",
+    "home": false
+   }
+  ],
   "WAS": [
    {
     "week": 4,
@@ -6777,94 +6865,6 @@
    {
     "week": 7,
     "opponent": "GB",
-    "home": true
-   }
-  ],
-  "CLE": [
-   {
-    "week": 4,
-    "opponent": "PIT",
-    "home": true
-   },
-   {
-    "week": 5,
-    "opponent": "NYJ",
-    "home": false
-   },
-   {
-    "week": 6,
-    "opponent": "BAL",
-    "home": true
-   },
-   {
-    "week": 7,
-    "opponent": "TEN",
-    "home": false
-   }
-  ],
-  "PIT": [
-   {
-    "week": 4,
-    "opponent": "CLE",
-    "home": false
-   },
-   {
-    "week": 5,
-    "opponent": "IND",
-    "home": true
-   },
-   {
-    "week": 6,
-    "opponent": "TB",
-    "home": false
-   },
-   {
-    "week": 7,
-    "opponent": "NO",
-    "home": false
-   }
-  ],
-  "NO": [
-   {
-    "week": 4,
-    "opponent": "ATL",
-    "home": true
-   },
-   {
-    "week": 5,
-    "opponent": "MIN",
-    "home": true
-   },
-   {
-    "week": 6,
-    "opponent": "NYG",
-    "home": false
-   },
-   {
-    "week": 7,
-    "opponent": "PIT",
-    "home": true
-   }
-  ],
-  "ATL": [
-   {
-    "week": 4,
-    "opponent": "NO",
-    "home": false
-   },
-   {
-    "week": 5,
-    "opponent": "BAL",
-    "home": true
-   },
-   {
-    "week": 6,
-    "opponent": "CHI",
-    "home": true
-   },
-   {
-    "week": 7,
-    "opponent": "SF",
     "home": true
    }
   ]

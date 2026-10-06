@@ -443,55 +443,6 @@
   ],
   "4": [
     {
-      "url": "https://a.espncdn.com/photo/2026/1004/r1726014_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "CeeDee Lamb found the end zone with his 17th and final reception of the day.",
-      "gameId": "401872964",
-      "week": 4,
-      "playerIds": [
-        "6786"
-      ],
-      "score": 14
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/1005/r1726200_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "The Lions had no answers for the Bryce Young-Tetairoa McMillan connection on Sunday night.",
-      "gameId": "401872964",
-      "week": 4,
-      "playerIds": [
-        "9228",
-        "12526"
-      ],
-      "score": 11
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/1004/r1726096_608x342_16-9.jpg",
-      "width": 608,
-      "height": 342,
-      "caption": "Kenneth Walker III",
-      "gameId": "401872964",
-      "week": 4,
-      "playerIds": [
-        "8151"
-      ],
-      "score": 8.86
-    },
-    {
-      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1004/dm_261004_fantasy_ceedeelamb/dm_261004_fantasy_ceedeelamb.jpg",
-      "width": 576,
-      "height": 324,
-      "caption": "Can CeeDee Lamb finish as the overall WR1 in fantasy this season?",
-      "gameId": "401872964",
-      "week": 4,
-      "playerIds": [
-        "6786"
-      ],
-      "score": 8
-    },
-    {
       "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/1004/768bf0e4-32e6-4119-8a9a-71ff9a0c0129/768bf0e4-32e6-4119-8a9a-71ff9a0c0129.jpg",
       "width": 576,
       "height": 324,
@@ -502,6 +453,18 @@
         "8150"
       ],
       "score": 8
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1006/ss_20261006_001718093_3686691/ss_20261006_001718093_3686691.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Bijan Robinson: Primetime games bring out a different energy",
+      "gameId": "401872964",
+      "week": 4,
+      "playerIds": [
+        "9509"
+      ],
+      "score": 7.46
     },
     {
       "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/1004/62346bd2-6c9d-4c71-a926-e8e5d091dd58/62346bd2-6c9d-4c71-a926-e8e5d091dd58.jpg",
@@ -516,16 +479,16 @@
       "score": 7.38
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1004/r1725937_608x342_16-9.jpg",
-      "width": 608,
-      "height": 342,
-      "caption": "Dak Prescott",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1005/1190cf2dce934dcba76ce8730ee0a2e41437/1190cf2dce934dcba76ce8730ee0a2e41437.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Brian Robinson Jr.'s hat trick gives Falcons a commanding lead ",
       "gameId": "401872964",
       "week": 4,
       "playerIds": [
-        "3294"
+        "8154"
       ],
-      "score": 7.26
+      "score": 7.21
     },
     {
       "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1004/d91042a77f0b4922993942f7f90b16261042/d91042a77f0b4922993942f7f90b16261042.jpg",
@@ -560,16 +523,6 @@
       "week": 4,
       "playerIds": [],
       "score": 3
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/1004/r1725796_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "",
-      "gameId": "401872964",
-      "week": 4,
-      "playerIds": [],
-      "score": 2
     },
     {
       "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1004/25e61c06815d42a7b6b69bce6a5f60791008/25e61c06815d42a7b6b69bce6a5f60791008.jpg",

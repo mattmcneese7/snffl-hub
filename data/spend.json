@@ -197,8 +197,38 @@
    "job": "rag retry preview",
    "model": "claude-sonnet-5",
    "usd": 0.0326
+  },
+  {
+   "at": "2026-10-06T14:06:58.587Z",
+   "job": "rag week 4",
+   "model": "claude-sonnet-5",
+   "usd": 0.1749
+  },
+  {
+   "at": "2026-10-06T14:07:08.853Z",
+   "job": "rag retry game",
+   "model": "claude-sonnet-5",
+   "usd": 0.024
+  },
+  {
+   "at": "2026-10-06T14:07:27.741Z",
+   "job": "rag retry around",
+   "model": "claude-sonnet-5",
+   "usd": 0.033
+  },
+  {
+   "at": "2026-10-06T14:08:09.891Z",
+   "job": "rag retry power",
+   "model": "claude-sonnet-5",
+   "usd": 0.0633
+  },
+  {
+   "at": "2026-10-06T14:08:39.388Z",
+   "job": "rag retry preview",
+   "model": "claude-sonnet-5",
+   "usd": 0.0445
   }
  ],
  "limitUsd": 8.5,
- "spent": 1.414
+ "spent": 1.7537
 }

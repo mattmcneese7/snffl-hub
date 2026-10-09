@@ -536,5 +536,71 @@
       ],
       "score": 0.36
     }
+  ],
+  "5": [
+    {
+      "url": "https://a.espncdn.com/photo/2026/1005/r1726378_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "Trevor Lawrence finds himself in the thick of the MVP face following another standout performance.",
+      "gameId": "401872980",
+      "week": 5,
+      "playerIds": [
+        "7523"
+      ],
+      "score": 5
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0730/r1695455_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "Josh Allen",
+      "gameId": "401872980",
+      "week": 5,
+      "playerIds": [
+        "4984"
+      ],
+      "score": 5
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1009/r1728095_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "Jalon Daniels finished 19-for-25 for 189 yards and a touchdown Thursday.",
+      "gameId": "401872980",
+      "week": 5,
+      "playerIds": [],
+      "score": 4
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1009/03761ba3e59c4375ae9f35e4e21ec0658/03761ba3e59c4375ae9f35e4e21ec0658.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Buccaneers stun Cowboys 24-16 to pick up first win of season",
+      "gameId": "401872980",
+      "week": 5,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0202/r1609489_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "SoFi Stadium will be the site of Super Bowl LXI in 2027, and the game will be broadcast on ESPN for the first time.",
+      "gameId": "401872980",
+      "week": 5,
+      "playerIds": [],
+      "score": 1
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1009/r1728106_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "Caleb Downs and the Cowboys' defense allowed 17 points in the third quarter.",
+      "gameId": "401872980",
+      "week": 5,
+      "playerIds": [],
+      "score": 1
+    }
   ]
 }

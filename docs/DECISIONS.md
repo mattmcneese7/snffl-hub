@@ -626,3 +626,111 @@ Sleeper link can be. On Android the app takes it to home, which is the ceiling
 there regardless of the link. The custom scheme, which only ever reached the
 app's home, is removed, and the /sleeper-links test page that existed to hunt
 for a working scheme is retired: the hunt is over and the answer is no.
+
+---
+
+## Trades and waivers, in the Swami. Checkpoint 18, October 2026
+
+The unbuilt half of the Decisions checkpoint. Matt's call on 11 October 2026:
+"build into the Swami", so both live at /swami as views beside the research
+bench, addressed by URL (`?view=trade&a=1&b=7&pa=...&pb=...` and
+`?view=waivers&team=1&pos=RB`) so a trade or a waiver list can be pasted into
+the group chat as it stands.
+
+**Lineup impact, not raw points, is the number that leads.** A player is worth
+what he adds to the best lineup a team can field, so both views rebuild that
+lineup for every remaining week, byes included, and report the difference.
+The lineup fills single position slots first and FLEX last, which is exactly
+optimal for this league's shape. Raw rest of season totals sit beside it, and
+when they and the lineups disagree the trade verdict says so with both numbers.
+
+**How rest of season is valued**, in `lib/rest-of-season.ts`:
+
+- A per game rate: this week's projection on this league's scoring, the
+  model's where it is current and has the player, Sleeper's through our engine
+  otherwise.
+- Each remaining week is that rate times the defence he faces, damped by the
+  same confidence weight the outlook card uses (67 percent at four weeks of
+  games). A bye is zero.
+- A player on a bye or listed out takes his rate from the first of the next two
+  weeks Sleeper projects him for, and counts zero until then. Sleeper's feed is
+  also where his status comes from: it is fresher than the nightly file, which
+  had Jordan Addison as Questionable on a day the feed had him Out.
+- A Sleeper row with no projected game in it (a player ruled out still gets a
+  row carrying only his draft position) is read as "not projected", not as
+  zero. Only a projected game worth nothing is a real zero.
+- Every figure is held as a tenth: the rate, each week's points (rate times
+  that week's factor, the factor held at two places), and every total as a sum
+  of those. Rounding only at display had a lineup reading "1130.0 now, 1147.8
+  after" beside a gain of 17.7. Now any number on screen can be rebuilt from
+  the numbers beside it.
+- The window runs to week 17, the championship. Once any game of the current
+  week kicks off, that week is out of the window for everyone, because a move
+  cannot reach back into a slate under way and half a week for some players
+  would make two sides incomparable.
+
+**The rate is not adjusted for this week's opponent first, and that was
+measured.** The first build divided this week's matchup out before carrying
+the rate forward, on the theory that the projection already priced it. It
+turned a 7.9 point Falcons defence into an 11.3 point one. Checked against
+real data before replacing it: the correlation between a projection relative
+to the player's season scoring rate and our defence rating was 0.06 for
+Sleeper's week 5 projections (249 players) and -0.11 for the model's week 4
+file (259 players). Neither source prices our ratings, so dividing by them
+invented a correction. The projection is taken as it stands.
+
+**Waivers rank by what a pickup adds to one team's lineup.** With a team
+picked (the URL first, then the device's cookie from Checkpoint 17), every
+unrostered player is tested against that roster: lineup points added over the
+window, per game gain in a typical week, the starter he pushes out and from
+which slot, and this week's gain while the week is still to play. Without a
+team it is the league's board: mean lineup gain across all fourteen teams,
+zeros included, and how many teams' typical lineups he would crack. The top
+30 free agents per position by rate are tested, which is far past anyone who
+could start.
+
+**Usage is shown, not multiplied in.** The model already reads recent snap and
+target share as features. Scaling its number again by a trend would count the
+same evidence twice with a weight nobody calibrated, so the snap share and its
+last three weeks sit beside each suggestion instead.
+
+**The verdict is arithmetic.** Under one projected point a week either way is
+called even, because a single weekly projection misses by about five points
+(the model's backtest MAE is 4.89), so a smaller gap is not distinguishable
+from nothing. Phrasings are picked by hashing the players and the week, the
+Squirt Says scheme, so the same trade reads the same on every render.
+
+**The stored schedule now runs to the end of the season.** `stats-spine.ts`
+fetches every week through week 17 and records `scheduleThrough`, so a missing
+week inside the range is a bye and one past it is unknown. `scheduleAhead`
+became a window on week numbers so the player page's "next three" is
+unchanged. Until the nightly job has run with this, the window stops where the
+stored schedule does and the page says so.
+
+**A stale model file now counts as no model.** The weekly model job has
+failed every night since 6 October (zero rows to predict for week 5), leaving
+a week 4 file in place, and every reader was showing those week 4 numbers as
+week 5's. `modelFor` returns nothing unless the file's week is the league's
+week, so everything falls back to the deterministic projection and the
+Swami's method note says the model is behind. Fixing the job itself is
+separate work.
+
+**Honest limits**, stated on the page where the numbers are:
+
+- Injuries that have not happened and depth charts that have not changed are
+  not foreseen. Neither is a return from injury beyond Sleeper's next two
+  weeks: a player with no projection in that span gets no read, is left at
+  zero in the totals, and is named in the verdict.
+- A rate is one week's projection carried forward. A player whose role is
+  changing is valued on the role he has this week; the usage trend is there so
+  a reader can see the change before the projection does.
+- The weekly lineup starts whoever projects higher that week, which is what a
+  manager reading projections would do. It is not a promise that the pickup
+  outscores the man he replaces. A pickup who never beats a starter in a
+  typical week is labelled a spot starter, and his value is named as coming
+  from weeks a starter is on a bye, out, or in a worse matchup, which are the
+  only three ways it can arise.
+- Defence ratings at four weeks are a fair read, not a good one, which is why
+  they are damped to 67 percent.
+- Draft picks and FAAB are not valued. A trade that includes them is
+  evaluated on its players only.

@@ -23,7 +23,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { getNflGames } from '../lib/gameday.ts';
-import { league } from '../lib/league.ts';
+import { lastFantasyWeek, league } from '../lib/league.ts';
 import { scoreStats, type StatLine } from '../lib/scoring.ts';
 
 const POSITIONS = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF'] as const;
@@ -313,15 +313,21 @@ for (const pos of POSITIONS) {
 
 // ---- Schedule ahead ----
 //
-// Which defence every NFL team meets over the next few weeks, which is what
-// joins a player to the dvp table above and turns "he is good" into "he has
-// three soft matchups and then a wall".
+// Which defence every NFL team meets for the rest of the fantasy season, which
+// is what joins a player to the dvp table above and turns "he is good" into
+// "he has three soft matchups and then a wall".
+//
+// It runs to the last fantasy week rather than a fixed few ahead because the
+// trade evaluator and the waiver board value a player over every week he has
+// left, and a bye in week 14 is as real as one in week 6. `scheduleThrough`
+// records how far it reached, so a reader can tell a bye (a missing week
+// inside the range) from a week nobody fetched (past the end of it).
 
-const AHEAD = 4;
+const LAST = lastFantasyWeek();
 const schedule: Record<string, { week: number; opponent: string; home: boolean }[]> = {};
+let scheduleThrough = league.state.week - 1;
 
-for (let i = 0; i < AHEAD; i++) {
-  const week = league.state.week + i;
+for (let week = league.state.week; week <= LAST; week++) {
   const games = await getNflGames(week, season).catch(() => []);
   for (const game of games) {
     const pairs: [string, string, boolean][] = [
@@ -334,6 +340,10 @@ for (let i = 0; i < AHEAD; i++) {
     }
   }
   console.log(`  week ${week} schedule: ${games.length} games`);
+  // A week ESPN returned nothing for is a failed fetch, not a league wide bye,
+  // so the range stops before it rather than recording sixteen byes.
+  if (!games.length) break;
+  scheduleThrough = week;
 }
 
 // A bye is an absence rather than a row, so it is left absent: a caller
@@ -353,6 +363,7 @@ const out = {
   usage,
   dispersion,
   schedule,
+  scheduleThrough,
 };
 
 fs.mkdirSync(path.dirname(OUT), { recursive: true });

@@ -56,6 +56,8 @@ type Spine = {
   /** Measured actual minus projected, per position. Floors and ceilings. */
   dispersion: Record<Pos, { n: number; p20: number; p50: number; p80: number }>;
   schedule: Record<string, Fixture[]>;
+  /** Last week the schedule was fetched for. Absent in files built before it existed. */
+  scheduleThrough?: number;
 };
 
 export const spine = spineData as unknown as Spine;
@@ -67,14 +69,39 @@ export const dvpFor = (defense: string, pos: Pos): DvpEntry | null =>
 export const usageFor = (playerId: string): UsageEntry | null => spine.usage[playerId] ?? null;
 
 /**
- * The next few fixtures for an NFL team.
+ * The next few weeks of fixtures for an NFL team.
  *
  * A bye is an absence rather than an entry, so asking for three weeks can
  * return two. That is the honest shape: a caller that wants to say "two of his
  * next three are soft" needs to know one of them does not exist.
  */
-export const scheduleAhead = (team: string, weeks = 3): Fixture[] =>
-  (spine.schedule[team] ?? []).slice(0, weeks);
+export const scheduleAhead = (team: string, weeks = 3): Fixture[] => {
+  // The schedule now runs to the end of the fantasy season, so "the next three
+  // weeks" is a window on week numbers, not the first three rows: slicing rows
+  // would quietly reach past a bye into a fourth week.
+  const from = spine.throughWeek + 1;
+  return (spine.schedule[team] ?? []).filter((f) => f.week >= from && f.week < from + weeks);
+};
+
+/**
+ * The last week the stored schedule reaches.
+ *
+ * Inside it, a week with no fixture is a bye. Past it, nobody knows, and a
+ * caller valuing the rest of a season has to stop there and say so rather than
+ * treat unfetched weeks as byes. Older spine files predate the field, so it
+ * falls back to the furthest week any team has.
+ */
+export function scheduleThrough(): number {
+  if (typeof spine.scheduleThrough === 'number') return spine.scheduleThrough;
+  let last = spine.throughWeek;
+  for (const fixtures of Object.values(spine.schedule)) {
+    for (const f of fixtures) last = Math.max(last, f.week);
+  }
+  return last;
+}
+
+/** Every stored fixture for a team, current week onward. */
+export const fixturesFor = (team: string): Fixture[] => spine.schedule[team] ?? [];
 
 /**
  * How much easier or harder than average this matchup is, as a multiplier.

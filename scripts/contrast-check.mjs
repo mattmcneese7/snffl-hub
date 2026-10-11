@@ -112,6 +112,17 @@ const PAIRS = [
   ['good-chip', 'panel', 3, 'win chip edge on glass'],
   ['marker-ink', 'panel', 4.5, 'LIVE pill label'],
   ['ink-secondary', 'surface', 4.5, 'projection under a player score'],
+  // The Swami's trade and waiver views: small gains and losses, on glass and
+  // on the inner fills of the week by week table.
+  ['win', 'bg', 4.5, 'Swami gain on the ground'],
+  ['lose', 'panel', 4.5, 'Swami loss on glass'],
+  ['lose', 'surface', 4.5, 'Swami loss on an inner fill'],
+  ['lose', 'bg', 4.5, 'Swami loss on the ground'],
+  ['ink', 'tab-on', 4.5, 'Swami picked player name'],
+  ['ink-secondary', 'tab-on', 4.5, 'Swami picked player position line'],
+  ['ink', 'tint-amber', 4.5, 'Swami weak slot player name'],
+  ['ink-secondary', 'tint-amber', 4.5, 'Swami weak slot rate'],
+  ['ink-secondary', 'tint-amber', 4.5, 'Swami weak slot label'],
 ];
 
 let failures = 0;
@@ -121,7 +132,9 @@ let failures = 0;
 // its peak, and the worst of the four is the one that has to pass. Cards are
 // composited onto that ground, and inner fills (--surface) onto the card, which
 // is the order they actually stack in on the page.
-const LAYERED_ON_PANEL = new Set(['surface']);
+// The Swami's picked row (--tab-on) and weak lineup slot (--tint-amber) are
+// tints laid on a card, the same stacking as --surface.
+const LAYERED_ON_PANEL = new Set(['surface', 'tab-on', 'tint-amber']);
 function groundsFor(tokens) {
   const base = parse(tokens.bg);
   const out = [{ name: 'ground', rgb: base.slice(0, 3) }];

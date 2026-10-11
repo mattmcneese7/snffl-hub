@@ -11,6 +11,7 @@
 // deterministic projection rather than showing an invented one.
 
 import modelData from '../data/model.json' with { type: 'json' };
+import { league } from './league.ts';
 
 export type PlayerModel = {
   /** Point projection, this league's scoring. */
@@ -46,9 +47,21 @@ type ModelFile = {
 
 export const model = modelData as unknown as ModelFile;
 
-/** The model's read on a player, or null if it could not project him. */
+/**
+ * Whether the file on disk projects the week the league is actually in.
+ *
+ * The nightly job can fail and leave last week's file in place, and a week 4
+ * projection read as week 5's is a number about a game already played,
+ * against the wrong opponent. So a stale file counts as no read at all and
+ * every caller falls back to the deterministic projection, which is fetched
+ * live for the right week.
+ */
+export const modelIsCurrent = () =>
+  String(model.season) === String(league.state.season) && model.week === league.state.week;
+
+/** The model's read on a player, or null if it could not project him this week. */
 export const modelFor = (playerId: string): PlayerModel | null =>
-  model.players[playerId] ?? null;
+  modelIsCurrent() ? (model.players[playerId] ?? null) : null;
 
 /** Which week these projections are for. */
 export const modelWeek = () => ({ season: model.season, week: model.week });

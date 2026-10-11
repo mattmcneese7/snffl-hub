@@ -41,7 +41,7 @@ def main():
     prior_seasons = list(range(HISTORY_FROM, season))
     done = load(prior_seasons)
     if week > 1:
-        done = pd.concat([done, load([season], weeks=range(1, week))], ignore_index=True)
+        done = pd.concat([done, load([season], weeks=range(1, week), live_week=week)], ignore_index=True)
 
     # Placeholder rows for the week being projected, one per player who has
     # played this season, carrying his current team and this week's opponent

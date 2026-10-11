@@ -15,6 +15,8 @@ from __future__ import annotations
 import json
 import os
 import subprocess
+import sys
+import time
 import pandas as pd
 
 CACHE = os.path.join(os.path.dirname(__file__), ".cache", "sleeper")
@@ -42,27 +44,72 @@ SCORING = {
 }
 
 
-def _fetch(season: int, week: int, position: str) -> list[dict]:
-    """One (season, week, position) page, cached as raw JSON on disk.
+# Sleeper corrects a week's stats for a few days after it is played (a catch
+# overturned, a fumble reassigned), so the current season's most recent
+# completed weeks are fetched again once their copy is older than MAX_AGE_HOURS.
+# Older weeks and past seasons are settled and stay cached for good. The nightly
+# job always starts from a cache restored from an earlier run, so without this a
+# correction would never arrive.
+RECENT_WEEKS = 2
+MAX_AGE_HOURS = 6
+
+
+def _download(url: str) -> list[dict] | None:
+    """One page from Sleeper, or None if the request or the body is bad.
 
     curl rather than urllib: this Mac's Python has no CA bundle, and curl is
     present on both a laptop and an Ubuntu runner, so one path works in both.
+    -g keeps curl from reading the brackets in position[] as a glob.
     """
-    os.makedirs(CACHE, exist_ok=True)
+    out = subprocess.run(
+        ["curl", "-fsSLg", "--retry", "3", url], capture_output=True, text=True, timeout=120
+    )
+    if out.returncode != 0:
+        return None
+    try:
+        rows = json.loads(out.stdout)
+    except ValueError:
+        return None
+    if not isinstance(rows, list):
+        return None
+    return rows
+
+
+def _fetch(season: int, week: int, position: str, live_week: int | None = None) -> list[dict]:
+    """One (season, week, position) page, cached as raw JSON on disk.
+
+    live_week is the week being projected when `season` is the current one. A
+    page from the RECENT_WEEKS completed weeks before it, or an empty page from
+    any completed week of this season, is fetched again once its copy is older
+    than MAX_AGE_HOURS. An empty page is real for a week no team played (week
+    18 of a 17 week season) but never for a completed week of the current one.
+    A failed or malformed response is never cached.
+    """
     path = os.path.join(CACHE, f"{season}-{week}-{position}.json")
+    cached = None
     if os.path.exists(path):
         with open(path) as fh:
-            return json.load(fh)
+            cached = json.load(fh)
+        recheck = live_week is not None and (week >= live_week - RECENT_WEEKS or not cached)
+        old = time.time() - os.path.getmtime(path) >= MAX_AGE_HOURS * 3600
+        if not (recheck and old):
+            return cached
     url = (
         f"https://api.sleeper.com/stats/nfl/{season}/{week}"
         f"?season_type=regular&position[]={position}"
     )
-    out = subprocess.run(["curl", "-sL", url], capture_output=True, text=True, timeout=60)
-    rows = json.loads(out.stdout) if out.stdout.strip() else []
-    if not isinstance(rows, list):
-        rows = []
-    with open(path, "w") as fh:
+    rows = _download(url)
+    if rows is None:
+        if cached is not None:
+            print(f"  stats refresh failed for {season} week {week} {position}, "
+                  "using the cached copy", file=sys.stderr)
+            return cached
+        raise SystemExit(f"could not download {season} week {week} {position} stats from Sleeper")
+    os.makedirs(CACHE, exist_ok=True)
+    tmp = path + ".tmp"
+    with open(tmp, "w") as fh:
         json.dump(rows, fh)
+    os.replace(tmp, path)
     return rows
 
 
@@ -70,13 +117,17 @@ def league_points(stats: dict) -> float:
     return round(sum(stats.get(k, 0) * w for k, w in SCORING.items()), 2)
 
 
-def load(years: list[int], weeks: range = range(1, 19)) -> pd.DataFrame:
-    """Weekly offensive lines for the given seasons, one row per player-week."""
+def load(years: list[int], weeks: range = range(1, 19), live_week: int | None = None) -> pd.DataFrame:
+    """Weekly offensive lines for the given seasons, one row per player-week.
+
+    Pass live_week, the week being projected, when loading the current season,
+    so its recent pages are kept up to date with Sleeper's stat corrections.
+    """
     records = []
     for year in years:
         for week in weeks:
             for pos in POSITIONS:
-                for row in _fetch(year, week, pos):
+                for row in _fetch(year, week, pos, live_week):
                     stats = row.get("stats") or {}
                     pid = row.get("player_id")
                     team = row.get("team")

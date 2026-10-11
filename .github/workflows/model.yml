@@ -26,8 +26,11 @@ jobs:
           python-version: '3.13'
 
       # The historical seasons never change, so the fetch cache is restored
-      # across runs and only the new current-season weeks are pulled. The key
-      # rolls monthly so it cannot grow stale forever.
+      # across runs and only the new current-season weeks are pulled. Each run
+      # saves under its own key and the next restores the newest one, so
+      # anything in here lives forever unless the code refreshes it. The
+      # schedule does change weekly, which is why ml/schedule.py fetches it again
+      # whenever its copy is more than a few hours old.
       - name: Restore data cache
         uses: actions/cache@v4
         with:

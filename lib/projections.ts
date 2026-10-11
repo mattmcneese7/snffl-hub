@@ -29,7 +29,23 @@ export type ProjectionMap = Record<string, number>;
 type RawProjection = {
   player_id?: string;
   stats?: Record<string, number>;
+  player?: { injury_status?: string | null };
 };
+
+export type ProjectionDetail = Record<
+  string,
+  {
+    points: number;
+    /**
+     * Whether Sleeper actually projected a game. A player ruled out, or on a
+     * bye, still gets a row, carrying nothing but his draft position, and
+     * scoring that row says zero when the truth is "not projected".
+     */
+    projected: boolean;
+    /** Sleeper's designation on this feed, fresher than the nightly file. */
+    injury: string | null;
+  }
+>;
 
 /**
  * Projected fantasy points by player id for one week. Returns an empty map on
@@ -39,6 +55,22 @@ export async function getWeekProjections(
   season: string,
   week: number
 ): Promise<ProjectionMap> {
+  const detail = await getWeekProjectionDetail(season, week);
+  const out: ProjectionMap = {};
+  for (const [id, row] of Object.entries(detail)) out[id] = row.points;
+  return out;
+}
+
+/**
+ * The same week, with what the bare points map throws away: whether a game
+ * was projected at all, and the injury designation the feed carries. The rest
+ * of season valuation needs both to tell a player projected for nothing from
+ * one nobody projected.
+ */
+export async function getWeekProjectionDetail(
+  season: string,
+  week: number
+): Promise<ProjectionDetail> {
   const query = POSITIONS.map((p) => `position[]=${p}`).join('&');
   const url = `${PROJECTIONS}/${season}/${week}?season_type=regular&order_by=ppr&${query}`;
 
@@ -53,11 +85,15 @@ export async function getWeekProjections(
     if (!Array.isArray(rows)) return {};
 
     const scoring = league.scoring as Record<string, number>;
-    const out: ProjectionMap = {};
+    const out: ProjectionDetail = {};
     for (const row of rows) {
       const id = row?.player_id;
       if (!id || !row?.stats) continue;
-      out[id] = scoreStats(row.stats, scoring);
+      out[id] = {
+        points: scoreStats(row.stats, scoring),
+        projected: (row.stats.gp ?? 0) > 0,
+        injury: row.player?.injury_status ?? null,
+      };
     }
     return out;
   } catch {

@@ -37,8 +37,12 @@ import {
 } from './spine.ts';
 import { boomBust, modelFor, type BoomBust } from './model.ts';
 
-/** How much of the defence rating to believe, by how much evidence there is. */
-const WEIGHT: Record<ReturnType<typeof dvpConfidence>, number> = {
+/**
+ * How much of the defence rating to believe, by how much evidence there is.
+ * Exported because the rest of season valuation applies the same damping, and
+ * two copies of these three numbers would drift.
+ */
+export const WEIGHT: Record<ReturnType<typeof dvpConfidence>, number> = {
   thin: 0.34,
   fair: 0.67,
   good: 1,

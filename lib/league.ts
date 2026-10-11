@@ -44,7 +44,18 @@ export function playerOf(id: string): PlayerLite {
  */
 export const allPlayers = (): PlayerLite[] => Object.values(players);
 
-export const currentWeek = () => Math.max(1, league.state.display_week || league.state.week);
+/**
+ * The last week fantasy points count, championship included.
+ *
+ * Sleeper's bracket has one round per week here (playoff_round_type 0), and a
+ * field of seven needs three rounds with the top seed on a bye, so a week 15
+ * start ends in week 17. Derived from the settings rather than written down,
+ * so a change to the playoff field moves it.
+ */
+export const lastFantasyWeek = () =>
+  league.playoffWeekStart + Math.ceil(Math.log2(Math.max(2, league.playoffTeams))) - 1;
+
+export const currentWeek = () =>Math.max(1, league.state.display_week || league.state.week);
 
 /** The most recent week that actually has scores behind it. */
 export async function scoredWeek(): Promise<number> {

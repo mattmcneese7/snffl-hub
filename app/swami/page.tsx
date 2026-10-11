@@ -1,14 +1,19 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { cookies } from 'next/headers';
 import Chrome from '@/components/Chrome';
 import PageHead from '@/components/PageHead';
 import { PageSources } from '@/components/SourceMark';
 import SwamiSaveView from '@/components/SwamiSaveView';
+import SwamiTrade, { tradeHref } from '@/components/SwamiTrade';
+import SwamiWaivers, { waiverHref } from '@/components/SwamiWaivers';
 import { firstNameOf } from '@/config/managers';
 import { allPlayers, league, teamByRoster } from '@/lib/league';
 import { outlookFor, roleOf } from '@/lib/outlook';
 import { getWeekProjections } from '@/lib/projections';
-import { getRosters } from '@/lib/sleeper';
+import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
+import { loadRosBoard } from '@/lib/ros-load';
+import { getLeague, getRosters } from '@/lib/sleeper';
 import { dvpConfidence, POSITIONS, spine, type Pos } from '@/lib/spine';
 
 export const metadata: Metadata = { title: 'The Swami' };
@@ -27,7 +32,34 @@ export const revalidate = 900;
  * makes a filtered view something a manager can paste into the group chat.
  */
 
-type Search = { pos?: string; own?: string };
+type Search = {
+  pos?: string;
+  own?: string;
+  /** Which view of the bench: research (the default), trade or waivers. */
+  view?: string;
+  /** Trade: the two rosters and who each sends, as comma separated player ids. */
+  a?: string;
+  b?: string;
+  pa?: string;
+  pb?: string;
+  /** Waivers: a roster id, or "league" for the league wide board. */
+  team?: string;
+};
+
+const VIEWS = [
+  { key: 'research', label: 'Research' },
+  { key: 'trade', label: 'Trade' },
+  { key: 'waivers', label: 'Waivers' },
+] as const;
+
+const ids = (value: string | undefined) =>
+  (value ?? '')
+    .split(',')
+    .map((x) => x.trim())
+    .filter((x) => /^[A-Za-z0-9]+$/.test(x))
+    .slice(0, 10);
+
+const teamParam = (value: string | undefined) => parseTeam(value ?? null);
 
 const OWNERSHIP = [
   { key: 'all', label: 'Everyone' },
@@ -41,6 +73,62 @@ export default async function SwamiPage({
   searchParams: Promise<Search>;
 }) {
   const params = await searchParams;
+  const view = VIEWS.some((v) => v.key === params.view) ? params.view! : 'research';
+
+  if (view !== 'research') {
+    const jar = await cookies();
+    const mine = parseTeam(jar.get(TEAM_COOKIE)?.value);
+    const [board, deadline] = await Promise.all([
+      loadRosBoard(),
+      view === 'trade'
+        ? getLeague()
+            .then((l) => l.settings?.trade_deadline ?? null)
+            .catch(() => null)
+        : Promise.resolve(null),
+    ]);
+
+    // A team in the URL wins, so a pasted link shows what its sender saw. With
+    // none, the device's own team is the natural default.
+    const waiverTeam =
+      params.team === 'league' ? 'league' : (teamParam(params.team) ?? mine ?? null);
+    const waiverPos = (POSITIONS as readonly string[]).includes(params.pos ?? '')
+      ? params.pos!
+      : null;
+
+    return (
+      <>
+        <Chrome section="The Swami" />
+        <main className="snffl-page">
+          <PageHead title="The Swami" />
+          <ViewTabs view={view} mine={mine} />
+          {view === 'trade' ? (
+            <SwamiTrade
+              board={board}
+              deadline={deadline}
+              params={{
+                a: teamParam(params.a) ?? mine,
+                b: teamParam(params.b),
+                pa: ids(params.pa),
+                pb: ids(params.pb),
+              }}
+            />
+          ) : (
+            <SwamiWaivers board={board} params={{ team: waiverTeam, pos: waiverPos }} />
+          )}
+          <PageSources
+            items={[
+              { source: 'snffl', label: 'Model projections' },
+              { source: 'sleeper', label: 'Projections' },
+              { source: 'sleeper', label: 'Rosters' },
+              { source: 'espn', label: 'Schedule' },
+              { source: 'snffl', label: 'Matchup ratings' },
+            ]}
+          />
+        </main>
+      </>
+    );
+  }
+
   const pos = (POSITIONS as readonly string[]).includes(params.pos ?? '')
     ? (params.pos as Pos)
     : null;
@@ -109,6 +197,7 @@ export default async function SwamiPage({
       <Chrome section="The Swami" />
       <main className="snffl-page">
         <PageHead title="The Swami" />
+        <ViewTabs view="research" mine={null} />
 
         <section>
           <div className="snffl-swami-filters">
@@ -232,5 +321,31 @@ export default async function SwamiPage({
         />
       </main>
     </>
+  );
+}
+
+/**
+ * The bench's three views, as links, so each is a URL of its own. Trade and
+ * waivers open on the device's team when one is picked.
+ */
+function ViewTabs({ view, mine }: { view: string; mine: number | null }) {
+  const hrefs: Record<string, string> = {
+    research: '/swami',
+    trade: tradeHref({ a: mine, b: null, pa: [], pb: [] }),
+    waivers: waiverHref({ team: mine, pos: null }),
+  };
+  return (
+    <nav className="snffl-swami-views" aria-label="Swami views">
+      {VIEWS.map((v) => (
+        <Link
+          key={v.key}
+          href={hrefs[v.key]}
+          className={`snffl-swami-view${view === v.key ? ' snffl-swami-view-on' : ''}`}
+          aria-current={view === v.key ? 'page' : undefined}
+        >
+          {v.label}
+        </Link>
+      ))}
+    </nav>
   );
 }

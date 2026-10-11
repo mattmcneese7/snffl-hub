@@ -19,7 +19,7 @@ import pandas as pd
 
 from data import load, _norm
 from features import build
-from schedule import team_week_env
+from schedule import team_week_env, week_games
 from model import train, predict as model_predict, QUANTILES
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "data", "model.json")
@@ -52,12 +52,29 @@ def main():
         raise SystemExit("no games this season yet, nothing to project")
     latest = this_season.sort_values("week").groupby("player_id").tail(1)
 
+    # The Vegas line is a model feature, so a team without one this week cannot
+    # be projected honestly. The backtest never scored a week without lines, so
+    # there is no filling it in: no lines at all fails the run and leaves the
+    # last good file in place, and a game whose line is off the board leaves its
+    # players to the app's deterministic projection.
+    games = week_games(season, week)
+    if not len(games):
+        raise SystemExit(f"the schedule has no games for {season} week {week}")
+    if not games["has_line"].any():
+        raise SystemExit(
+            f"the schedule has no Vegas lines for {season} week {week} yet, "
+            "so nothing can be projected; data/model.json is left as it was"
+        )
+    missing = sorted(games.loc[~games["has_line"], "team"])
+    if missing:
+        print(f"  no line yet for {', '.join(missing)}; their players are left out")
+
     env = team_week_env()
     envW = env[(env["season"] == season) & (env["week"] == week)][["team", "opponent", "f_impl_total", "f_home"]]
 
     holders = latest[["player_id", "position", "team"]].merge(envW, on="team", how="inner")
     # inner join drops anyone on a bye this week, which is correct: no game, no
-    # projection.
+    # projection. It also drops the teams named above, whose line is not posted.
     ph = pd.DataFrame({
         "player_id": holders["player_id"], "season": season, "week": week,
         "position": holders["position"], "team": holders["team"], "opponent": holders["opponent"],
@@ -74,6 +91,8 @@ def main():
     target = target[target["f_l3_points"].notna()]
 
     print(f"  train rows {len(train_rows):,} | projecting {len(target)} players")
+    if not len(target):
+        raise SystemExit(f"no players to project for {season} week {week}; data/model.json is left as it was")
 
     mean_m, quant_m = train(train_rows)
     preds = model_predict(mean_m, quant_m, target)

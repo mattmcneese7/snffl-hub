@@ -95,23 +95,53 @@ export default async function SwamiPage({
       ? params.pos!
       : null;
 
+    const tradeParams = {
+      a: teamParam(params.a) ?? mine,
+      b: teamParam(params.b),
+      pa: ids(params.pa),
+      pb: ids(params.pb),
+    };
+
+    // A saved copy of this view: the URL as resolved, so a trade that opened
+    // on the device's team saves with that team named in it, and a label
+    // saying what it is in words.
+    const who = (rosterId: number | null) =>
+      rosterId ? (firstNameOf(rosterId) ?? teamByRoster(rosterId)?.manager ?? `Team ${rosterId}`) : null;
+    const saved =
+      view === 'trade'
+        ? {
+            path: tradeHref(tradeParams),
+            label: [
+              'Trade',
+              [who(tradeParams.a), who(tradeParams.b)].filter(Boolean).join(' with ') || null,
+              tradeParams.pa.length || tradeParams.pb.length
+                ? `${tradeParams.pa.length} for ${tradeParams.pb.length}`
+                : null,
+            ]
+              .filter(Boolean)
+              .join(', '),
+          }
+        : {
+            path: waiverHref({ team: waiverTeam, pos: waiverPos }),
+            label: [
+              'Waivers',
+              waiverTeam === 'league' || !waiverTeam ? 'league wide' : who(waiverTeam),
+              waiverPos,
+            ]
+              .filter(Boolean)
+              .join(', '),
+          };
+
     return (
       <>
         <Chrome section="The Swami" />
         <main className="snffl-page">
           <PageHead title="The Swami" />
           <ViewTabs view={view} mine={mine} />
+          {/* Signed in only. Renders nothing for everybody else. */}
+          <SwamiSaveView path={saved.path} label={saved.label.slice(0, 60)} />
           {view === 'trade' ? (
-            <SwamiTrade
-              board={board}
-              deadline={deadline}
-              params={{
-                a: teamParam(params.a) ?? mine,
-                b: teamParam(params.b),
-                pa: ids(params.pa),
-                pb: ids(params.pb),
-              }}
-            />
+            <SwamiTrade board={board} deadline={deadline} params={tradeParams} />
           ) : (
             <SwamiWaivers board={board} params={{ team: waiverTeam, pos: waiverPos }} />
           )}

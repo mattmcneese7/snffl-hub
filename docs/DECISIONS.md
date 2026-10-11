@@ -761,8 +761,10 @@ asked to sign in, and nothing changes for somebody who never does.
   settings that follow you: a signed in device's push subscription carries the
   user id, a change on one device is written to every row that shares it, and
   the watcher needed no change because it still reads each device's own row.
-  Saved Swami views, which are just the URL, since the Swami already filters
-  through it.
+  Saved Swami views, which are just the URL, since the Swami already keeps
+  everything in it: a research filter, a half built trade or a waiver list
+  each saves as the link that reopens it, labelled in words ("Trade, Matt with
+  Aaron, 1 for 2").
 - **Free for everyone who does not sign in.** The proxy that refreshes sessions
   returns at once when a request carries no Supabase session cookie, so no
   request is made and no static page became dynamic. The header control reads

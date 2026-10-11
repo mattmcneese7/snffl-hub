@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Chrome from '@/components/Chrome';
 import PageHead from '@/components/PageHead';
 import { PageSources } from '@/components/SourceMark';
+import SwamiSaveView from '@/components/SwamiSaveView';
 import { firstNameOf } from '@/config/managers';
 import { allPlayers, league, teamByRoster } from '@/lib/league';
 import { outlookFor, roleOf } from '@/lib/outlook';
@@ -97,6 +98,12 @@ export default async function SwamiPage({
     return s ? `/swami?${s}` : '/swami';
   };
 
+  // What a saved copy of this view is called: its filters, in words.
+  const viewLabel = [
+    pos ?? 'All positions',
+    OWNERSHIP.find((o) => o.key === own)?.label ?? 'Everyone',
+  ].join(', ');
+
   return (
     <>
       <Chrome section="The Swami" />
@@ -130,6 +137,8 @@ export default async function SwamiPage({
                 </Link>
               ))}
             </div>
+            {/* Signed in only. Renders nothing for everybody else. */}
+            <SwamiSaveView path={href({})} label={viewLabel} />
           </div>
         </section>
 

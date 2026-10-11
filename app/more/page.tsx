@@ -8,6 +8,7 @@ import {
   Gear,
   Scroll,
   Swap,
+  UserCircle,
   UsersThree,
 } from '@phosphor-icons/react/dist/ssr';
 import PageHead from '@/components/PageHead';
@@ -29,6 +30,7 @@ const MENU = [
   { href: '/players', label: 'Players', note: 'Every rostered player', Icon: Football, tone: 'green' },
   { href: '/rules', label: 'Rules', note: 'Scoring, roster, and the chug rules', Icon: Scroll, tone: 'slate' },
   { href: '/settings', label: 'Settings', note: 'Your team, alerts, install', Icon: Gear, tone: 'slate' },
+  { href: '/account', label: 'Account', note: 'Optional. Your team and alerts on every device', Icon: UserCircle, tone: 'slate' },
 ];
 
 export default function MorePage() {

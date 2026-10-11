@@ -814,3 +814,157 @@
 }
 .snffl-squirt-fold[open] .snffl-squirt-chevron { transform: rotate(90deg); }
 .snffl-squirt-fold[open] .snffl-squirt-summary { border-bottom: 1px solid var(--line); }
+
+/* ---------- Accounts, optional ---------- */
+
+/* The title row makes room for the phone's account control on its right. */
+.snffl-page-head { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+.snffl-page-head > :not(.snffl-account) { grid-column: 1; }
+
+.snffl-account { position: relative; display: inline-flex; }
+.snffl-account-page { grid-column: 2; grid-row: 1; }
+@media (min-width: 900px) {
+  .snffl-account-page { display: none; }
+}
+
+/* 36px to look at, 44px to hit: the margin is the rest of the target. */
+.snffl-account-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin: -4px;
+  padding: 0;
+  box-sizing: content-box;
+  border: 4px solid transparent;
+  background-clip: padding-box;
+  border-radius: var(--radius-pill);
+  background-color: var(--glass);
+  box-shadow: inset 0 0 0 1px var(--glass-line);
+  color: var(--ink-secondary);
+  cursor: pointer;
+  text-decoration: none;
+}
+.snffl-account-button:hover { color: var(--ink); }
+.snffl-account-button:focus-visible { outline: 2px solid var(--water-mid); outline-offset: 0; }
+.snffl-account-icon { width: 24px; height: 24px; }
+.snffl-account-photo { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+.snffl-account-initial {
+  font-family: var(--font-archivo);
+  font-weight: 800;
+  font-size: var(--t-body);
+  color: var(--ink);
+}
+
+.snffl-account-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 60;
+  display: grid;
+  min-width: 220px;
+  max-width: min(300px, calc(100vw - 32px));
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  /* Solid ground rather than glass: it opens over form controls, and a
+     picker's label showing through a menu reads as a rendering fault. */
+  background: var(--bg);
+  box-shadow: inset 0 0 0 1px var(--panel-line), var(--shadow);
+}
+.snffl-account-who {
+  display: grid;
+  gap: 2px;
+  padding: 8px 10px 10px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 4px;
+  min-width: 0;
+}
+.snffl-account-who strong { font-size: var(--t-body); color: var(--ink); }
+.snffl-account-who em {
+  font-style: normal;
+  font-size: var(--t-small);
+  color: var(--ink-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.snffl-account-item {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  font: inherit;
+  font-size: var(--t-body);
+  font-weight: 700;
+  color: var(--ink);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.snffl-account-item:hover,
+.snffl-account-item:focus-visible { background: var(--surface); outline: none; }
+
+/* The account screen. */
+.snffl-account-card { display: grid; gap: var(--s-3); padding: var(--s-4); }
+.snffl-account-card p { margin: 0; color: var(--ink-secondary); font-size: var(--t-body); line-height: 1.45; }
+.snffl-account-card .snffl-btn { justify-self: start; }
+.snffl-account-perks { margin: 0; padding-left: 18px; display: grid; gap: 6px; color: var(--ink); font-size: var(--t-body); }
+.snffl-account-perks li::marker { color: var(--ink-secondary); }
+.snffl-account-flag {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: var(--t-body);
+}
+.snffl-account-head { display: flex; align-items: center; gap: var(--s-3); min-width: 0; }
+.snffl-account-head .snffl-account-photo,
+.snffl-account-head .snffl-account-initial-large {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+.snffl-account-initial-large {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--glass);
+  box-shadow: inset 0 0 0 1px var(--glass-line);
+  font-family: var(--font-archivo);
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--ink);
+}
+.snffl-account-head span { display: grid; gap: 2px; min-width: 0; }
+.snffl-account-head strong { font-size: var(--t-body); color: var(--ink); }
+.snffl-account-head em {
+  font-style: normal;
+  font-size: var(--t-small);
+  color: var(--ink-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.snffl-views { display: grid; }
+.snffl-view-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  min-height: 48px;
+  padding: 0 var(--s-3);
+  border-top: 1px solid var(--line);
+}
+.snffl-view-row:first-child { border-top: 0; }
+.snffl-view-row a { color: var(--link); font-weight: 700; text-decoration: none; min-width: 0; }
+.snffl-view-empty { margin: 0; padding: var(--s-3); color: var(--ink-secondary); font-size: var(--t-body); }
+
+/* Saving a view on the Swami, for somebody signed in. */
+.snffl-swami-saved { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }
+.snffl-swami-saved-note { font-size: var(--t-small); color: var(--ink-secondary); }

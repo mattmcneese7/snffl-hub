@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import AccountButton from './AccountButton';
 import {
   Football,
   FootballHelmet,
@@ -231,6 +232,7 @@ export default function SiteChrome({
           <span className="snffl-week-tag">
             <span>WEEK {week}</span>
           </span>
+          <AccountButton placement="bar" />
         </span>
       </nav>
 

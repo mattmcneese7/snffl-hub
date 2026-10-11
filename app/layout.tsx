@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import AccountSync from '@/components/AccountSync';
 import AppIntro from '@/components/AppIntro';
 import ChugSplash from '@/components/ChugSplash';
 import InstallGuide from '@/components/InstallGuide';
@@ -114,6 +115,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             invite: iOS saves the page you are looking at, so the taps have to
             be taught on the page that should end up on the home screen. */}
         <InstallGuide />
+        {/* Optional accounts: copies a signed in person's team between the
+            account and this device. Nothing at all for anyone else. */}
+        <AccountSync />
       </body>
     </html>
   );

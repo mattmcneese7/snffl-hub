@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import AlertsToggle from './AlertsToggle';
 import { readMyTeam, setMyTeam } from '@/lib/my-team';
+import { useAccount } from '@/lib/use-account';
 
 
 export default function SettingsPanel({
@@ -12,6 +13,7 @@ export default function SettingsPanel({
 }) {
   const [rosterId, setRosterId] = useState<string>('');
   const [ready, setReady] = useState(false);
+  const account = useAccount();
 
   useEffect(() => {
     try {
@@ -38,7 +40,11 @@ export default function SettingsPanel({
         <label className="snffl-settings-row" htmlFor="snffl-my-team">
           <span>
             <span className="snffl-menu-label">My Team</span>
-            <span className="snffl-menu-note">Remembered on this device. No account.</span>
+            <span className="snffl-menu-note">
+              {account.status === 'in'
+                ? 'Saved to your account.'
+                : 'Remembered on this device. No account needed.'}
+            </span>
           </span>
           <select
             id="snffl-my-team"

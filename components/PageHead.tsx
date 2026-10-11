@@ -1,3 +1,5 @@
+import AccountButton from './AccountButton';
+
 /**
  * How a page opens: its name, and nothing else.
  *
@@ -36,6 +38,8 @@ export default function PageHead({
   return (
     <header className="snffl-page-head">
       <h1 className={kind}>{title}</h1>
+      {/* The phone's account control. The desktop bar carries its own. */}
+      <AccountButton placement="page" />
     </header>
   );
 }

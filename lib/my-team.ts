@@ -15,12 +15,14 @@
 // it. There is nothing sensitive in it either way, it is a number between one
 // and fourteen identifying a team in a public league.
 
+import { TEAM_EVENT } from './auth';
+
 export const TEAM_COOKIE = 'snffl_team';
 /** The old home, still read once so nobody has to pick their team again. */
 export const TEAM_STORAGE_KEY = 'snffl.myTeam';
 
 /** A season is the longest this is ever useful for. */
-const MAX_AGE = 60 * 60 * 24 * 200;
+export const TEAM_MAX_AGE = 60 * 60 * 24 * 200;
 
 const valid = (n: number) => Number.isInteger(n) && n > 0 && n <= 14;
 
@@ -42,13 +44,17 @@ export function setMyTeam(rosterId: number | null) {
   document.cookie =
     rosterId == null
       ? `${TEAM_COOKIE}=; path=/; max-age=0; samesite=lax`
-      : `${TEAM_COOKIE}=${rosterId}; path=/; max-age=${MAX_AGE}; samesite=lax`;
+      : `${TEAM_COOKIE}=${rosterId}; path=/; max-age=${TEAM_MAX_AGE}; samesite=lax`;
   try {
     if (rosterId == null) localStorage.removeItem(TEAM_STORAGE_KEY);
     else localStorage.setItem(TEAM_STORAGE_KEY, String(rosterId));
   } catch {
     // The cookie is the one that matters now. Storage refusing is survivable.
   }
+  // Heard only by AccountSync, which copies the choice to the account when
+  // somebody is signed in. Nobody signed in, nobody listening: the pick is
+  // exactly what it was before accounts existed.
+  window.dispatchEvent(new CustomEvent(TEAM_EVENT, { detail: rosterId }));
 }
 
 /** Read it in the browser, preferring the cookie and falling back to storage. */

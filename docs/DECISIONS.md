@@ -626,3 +626,57 @@ Sleeper link can be. On Android the app takes it to home, which is the ceiling
 there regardless of the link. The custom scheme, which only ever reached the
 app's home, is removed, and the /sleeper-links test page that existed to hunt
 for a working scheme is retired: the hunt is over and the answer is no.
+
+---
+
+## Sign in with Google, optional. October 2026
+
+Matt's call on 11 October 2026: the team picked on a device stays the default
+and stays exactly as Checkpoint 17 built it. Google sign in sits on top, for
+anybody who wants it, and adds things a device cannot do on its own. Nobody is
+asked to sign in, and nothing changes for somebody who never does.
+
+- **Google only, through Supabase Auth.** V3 section 3 named Google and Apple.
+  Google is what was approved; Apple needs a paid developer account and can be
+  added later as a second provider without touching anything here.
+- **The device cookie is still the one thing pages read.** No page learned
+  about accounts. Signed in, the account is the source and the cookie is its
+  copy on that device: `AccountSync`, mounted once in the layout, copies the
+  account's team down on load and copies a new pick up to the account. Reading
+  the account on the server instead would have raced the picker, which writes
+  the cookie and refreshes in the same tap.
+- **Linking on first sign in never fights the device.** An account with no team
+  takes the device's; a device with no team takes the account's; when both
+  exist and differ the account wins, because following you is the point. With
+  neither, the account screen asks.
+- **What signing in adds.** The team on every device you sign in on. Alert
+  settings that follow you: a signed in device's push subscription carries the
+  user id, a change on one device is written to every row that shares it, and
+  the watcher needed no change because it still reads each device's own row.
+  Saved Swami views, which are just the URL, since the Swami already filters
+  through it.
+- **Free for everyone who does not sign in.** The proxy that refreshes sessions
+  returns at once when a request carries no Supabase session cookie, so no
+  request is made and no static page became dynamic. The header control reads
+  the session from that cookie, also without a request.
+- **Row level security is the whole of the protection.** The anon key is
+  already public. `accounts` and `saved_views` return only rows carrying the
+  caller's own user id, and nothing at all to a visitor who is not signed in.
+  `push_subscriptions` stays service role only; `/api/push` checks the session
+  on the server before it links or changes anything.
+- **Not configured is a state, not an error.** Whether Google is switched on is
+  read from Supabase's public settings endpoint, cached five minutes, so
+  enabling the provider in the dashboard is the whole of turning sign in on.
+  Until then the account screen says sign in is not switched on yet and offers
+  no button that would land on a raw auth server error. Until the SQL runs,
+  sign in still works and the team stays on the device.
+- **Sign out is per device.** The team picked on that device stays, its alerts
+  keep working, and its subscription simply stops following the account.
+- **On a phone the account control sits beside each page's title.** The phone
+  has no header bar: tickers at the top, the dock at the bottom. On a wide
+  screen it sits at the end of the desktop bar.
+- **Roast Pit submissions were not built.** Attributing them to the signed in
+  user was approved, but the Roast Pit is scoped above and does not exist in
+  the app yet, so there is nothing to attribute. `currentUser()` in
+  `lib/supabase-server.ts` is what it will use when it is built.
+- One time SQL: `docs/sql/17b-accounts.sql`.

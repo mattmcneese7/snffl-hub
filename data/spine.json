@@ -1,7 +1,7 @@
 {
  "season": "2026",
  "throughWeek": 4,
- "builtAt": "2026-10-10T08:08:46.974Z",
+ "builtAt": "2026-10-11T08:09:54.984Z",
  "shrinkGames": 4,
  "positionMean": {
   "QB": 16.8,
@@ -9884,50 +9884,6 @@
   }
  },
  "schedule": {
-  "DAL": [
-   {
-    "week": 5,
-    "opponent": "TB",
-    "home": true
-   },
-   {
-    "week": 6,
-    "opponent": "GB",
-    "home": false
-   },
-   {
-    "week": 7,
-    "opponent": "PHI",
-    "home": false
-   },
-   {
-    "week": 8,
-    "opponent": "ARI",
-    "home": true
-   }
-  ],
-  "TB": [
-   {
-    "week": 5,
-    "opponent": "DAL",
-    "home": false
-   },
-   {
-    "week": 6,
-    "opponent": "PIT",
-    "home": true
-   },
-   {
-    "week": 7,
-    "opponent": "CAR",
-    "home": false
-   },
-   {
-    "week": 8,
-    "opponent": "ATL",
-    "home": true
-   }
-  ],
   "JAX": [
    {
     "week": 5,
@@ -10443,6 +10399,50 @@
     "week": 8,
     "opponent": "BUF",
     "home": false
+   }
+  ],
+  "DAL": [
+   {
+    "week": 5,
+    "opponent": "TB",
+    "home": true
+   },
+   {
+    "week": 6,
+    "opponent": "GB",
+    "home": false
+   },
+   {
+    "week": 7,
+    "opponent": "PHI",
+    "home": false
+   },
+   {
+    "week": 8,
+    "opponent": "ARI",
+    "home": true
+   }
+  ],
+  "TB": [
+   {
+    "week": 5,
+    "opponent": "DAL",
+    "home": false
+   },
+   {
+    "week": 6,
+    "opponent": "PIT",
+    "home": true
+   },
+   {
+    "week": 7,
+    "opponent": "CAR",
+    "home": false
+   },
+   {
+    "week": 8,
+    "opponent": "ATL",
+    "home": true
    }
   ],
   "LAR": [

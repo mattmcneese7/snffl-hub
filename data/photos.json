@@ -539,144 +539,41 @@
   ],
   "5": [
     {
-      "url": "https://a.espncdn.com/photo/2026/0902/r1710593_1296x729_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/1002/r1724970_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
-      "caption": "Jameson Williams is off to a slow start with six catches for 78 yards and no touchdowns for a Lions team that has 62 points in two games.",
+      "caption": "Lions running back Jahmyr Gibbs has five rushing TDs and two receiving scores through four games.",
       "gameId": "401872980",
       "week": 5,
       "playerIds": [
-        "8148"
+        "9221"
       ],
       "score": 10
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/0722/r1692509_1296x729_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/1008/r1727863_3_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
-      "caption": "Dallas Cowboys place kicker Brandon Aubrey (17) makes a game-winning field goal against the New York Giants during overtime at AT&T Stadium.",
+      "caption": "Aaron Rodgers threw for 299 yards and three TDs last week, and Jaylen Warren had 126 total yards.",
       "gameId": "401872980",
       "week": 5,
       "playerIds": [
-        "11533"
-      ],
-      "score": 7.63
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0903/r1711063_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Colston Loveland, Chicago Bears tight end",
-      "gameId": "401872980",
-      "week": 5,
-      "playerIds": [
-        "12517"
+        "96",
+        "8228"
       ],
       "score": 7
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/0903/r1711066_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Cam Little, Jacksonville Jaguars kicker",
-      "gameId": "401872980",
-      "week": 5,
-      "playerIds": [
-        "11786"
-      ],
-      "score": 7
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0914/r1716707_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Michael Pittman Jr., Pittsburgh Steelers wide receiver",
-      "gameId": "401872980",
-      "week": 5,
-      "playerIds": [
-        "6819"
-      ],
-      "score": 7
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0903/r1711041_2_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Christian Watson, Green Bay Packers wide receiver",
-      "gameId": "401872980",
-      "week": 5,
-      "playerIds": [
-        "8167"
-      ],
-      "score": 7
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0903/r1711049_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Josh Allen, Buffalo Bills quarterback",
-      "gameId": "401872980",
-      "week": 5,
-      "playerIds": [
-        "4984"
-      ],
-      "score": 7
-    },
-    {
-      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1006/dm_261006_ffp_dopp_on_likely/dm_261006_ffp_dopp_on_likely.jpg",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1007/ss_20261007_104735712_3687674/ss_20261007_104735712_3687674.jpg",
       "width": 576,
       "height": 324,
-      "caption": "Is Isaiah Likely a top-10 TE option in Week 5?",
+      "caption": "Why Mike Clay is finally backing Jared Goff in Week 5",
       "gameId": "401872980",
       "week": 5,
       "playerIds": [
-        "8131"
+        "3163"
       ],
       "score": 4
-    },
-    {
-      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1006/dm_261006_Michael_Wilson_fantasy/dm_261006_Michael_Wilson_fantasy.jpg",
-      "width": 576,
-      "height": 324,
-      "caption": "Daniel Dopp: Michael Wilson is a fantasy football must-start in Week 5",
-      "gameId": "401872980",
-      "week": 5,
-      "playerIds": [
-        "10232"
-      ],
-      "score": 4
-    },
-    {
-      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1006/ss_20261006_103437905_3686813/ss_20261006_103437905_3686813.jpg",
-      "width": 576,
-      "height": 324,
-      "caption": "Mike Clay: Jacoby Brissett is a ‘great streamer’ in Week 5",
-      "gameId": "401872980",
-      "week": 5,
-      "playerIds": [
-        "3257"
-      ],
-      "score": 4
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0903/r1711080_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Maxx Crosby, Las Vegas Raiders edge rusher",
-      "gameId": "401872980",
-      "week": 5,
-      "playerIds": [],
-      "score": 3
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0903/r1711074_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Will Anderson Jr. and Danielle Hunter, Houston Texans edge rushers",
-      "gameId": "401872980",
-      "week": 5,
-      "playerIds": [],
-      "score": 3
     }
   ]
 }

@@ -138,6 +138,10 @@
   /* Pulled off the blue end of the mark's ramp, not a generic sky blue. */
   --link: #6fd0e2;
   --win: #3ddc97;
+  /* The losing side of --win, for small figures that go down: a lineup that
+     loses points, a role that shrinks. Always beside a minus sign or an arrow,
+     never alone. */
+  --lose: #ff8a95;
 
   /* Status. Chips keep their own hex; the bare status colors are used on the
      ground for chart bars and arrows. */

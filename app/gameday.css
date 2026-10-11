@@ -2732,6 +2732,270 @@ a.snffl-board:hover { border-color: var(--glass-edge); }
 }
 .snffl-swami-edges { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 
+/* ---------- The Swami's trade and waiver views, Checkpoint 18 ----------
+   Views are links, like the filters, so each one is a URL. The tabs are the
+   filter chips at tap size, because they switch the whole page rather than
+   narrow a list. */
+.snffl-swami-views {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-bottom: var(--s-4);
+}
+.snffl-swami-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--ink-secondary);
+  font-family: var(--mono);
+  font-size: var(--t-small);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.snffl-swami-view-on {
+  background: linear-gradient(160deg, var(--logo-cyan), var(--logo-teal));
+  border-color: rgba(170, 233, 255, 0.8);
+  color: #04121c;
+}
+
+.snffl-swami-intro {
+  margin: 0 0 var(--s-3);
+  font-size: var(--t-small);
+  line-height: 1.5;
+  color: var(--ink-secondary);
+}
+.snffl-swami-select { display: grid; gap: 2px; }
+.snffl-swami-select .snffl-team-picker { margin-top: 0; }
+
+/* Two columns on a wide screen, stacked on a phone: the same design wider,
+   never a second one. */
+.snffl-swami-trade-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-3);
+  margin-top: var(--s-3);
+}
+@media (min-width: 760px) {
+  .snffl-swami-trade-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.snffl-swami-trade-col { display: grid; gap: var(--s-2); align-content: start; min-width: 0; }
+
+.snffl-swami-roster { padding: 0; overflow: hidden; }
+.snffl-swami-pick {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: var(--tap);
+  padding: 6px var(--s-3);
+  border-bottom: 1px solid var(--line);
+  color: inherit;
+  text-decoration: none;
+}
+.snffl-swami-pick:last-child { border-bottom: 0; }
+/* The research row places the name by grid area; the picker is a plain
+   three column row, so it opts out. */
+.snffl-swami-pick .snffl-swami-name { grid-area: auto; }
+.snffl-swami-pick-mark {
+  display: grid;
+  place-items: center;
+  height: 24px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: var(--t-micro);
+  font-weight: 700;
+  color: var(--ink-secondary);
+}
+.snffl-swami-pick-on { background: var(--tab-on); }
+/* Tertiary ink falls under 4.5:1 on the tint, so fine print steps up a level. */
+.snffl-swami-pick-on .snffl-swami-name em,
+.snffl-swami-pick-on .snffl-swami-pick-val em { color: var(--ink-secondary); }
+.snffl-swami-pick-on .snffl-swami-pick-mark {
+  background: linear-gradient(160deg, var(--logo-cyan), var(--logo-teal));
+  border-color: rgba(170, 233, 255, 0.8);
+  color: #04121c;
+}
+.snffl-swami-pick-val {
+  font-family: var(--font-archivo);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  font-size: var(--t-body);
+  color: var(--ink);
+}
+.snffl-swami-pick-val em {
+  font-style: normal;
+  font-family: var(--mono);
+  font-size: var(--t-micro);
+  font-weight: 400;
+  color: var(--ink-tertiary);
+}
+
+.snffl-swami-verdict { display: grid; gap: var(--s-2); padding: var(--s-4); margin-bottom: var(--s-3); }
+.snffl-swami-verdict .snffl-swami-caveat { padding: 0; }
+
+.snffl-swami-up { color: var(--win); }
+.snffl-swami-down { color: var(--lose); }
+.snffl-swami-flat { color: var(--ink-secondary); }
+em.snffl-swami-up,
+em.snffl-swami-down,
+em.snffl-swami-flat { font-style: normal; }
+
+.snffl-swami-side { display: grid; gap: var(--s-2); padding: var(--s-4); align-content: start; }
+.snffl-swami-side-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-3);
+}
+.snffl-swami-side-head strong {
+  font-family: var(--font-archivo);
+  font-variant-numeric: tabular-nums;
+  font-weight: 900;
+  font-size: var(--t-h2);
+  line-height: 1;
+}
+.snffl-swami-side-sub {
+  margin: 0;
+  font-size: var(--t-micro);
+  line-height: 1.5;
+  color: var(--ink-secondary);
+}
+.snffl-swami-side-list { display: grid; }
+
+.snffl-swami-work {
+  display: grid;
+  gap: 4px;
+  padding: var(--s-2) 0;
+  border-top: 1px solid var(--line);
+}
+.snffl-swami-work-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+}
+.snffl-swami-work-head .snffl-swami-name { color: inherit; text-decoration: none; }
+.snffl-swami-work-total {
+  font-family: var(--font-archivo);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  font-size: var(--t-h3);
+  color: var(--ink);
+  white-space: nowrap;
+}
+.snffl-swami-work-sub {
+  margin: 0;
+  font-size: var(--t-micro);
+  line-height: 1.5;
+  color: var(--ink-tertiary);
+}
+.snffl-swami-fx-wrap summary,
+.snffl-swami-working summary {
+  min-height: var(--tap);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--link);
+  font-size: var(--t-small);
+  font-weight: 700;
+}
+.snffl-swami-fx {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  gap: 4px;
+}
+.snffl-swami-fx-cell {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 4px 6px;
+  border-radius: var(--radius-xs);
+  background: var(--surface);
+  font-family: var(--mono);
+  font-size: var(--t-micro);
+  color: var(--ink-secondary);
+}
+.snffl-swami-fx-cell em,
+.snffl-swami-fx-cell i { font-style: normal; color: var(--ink-tertiary); }
+.snffl-swami-fx-cell strong { margin-left: auto; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+.snffl-swami-working { margin-top: var(--s-3); padding: 0 var(--s-4) var(--s-2); }
+.snffl-swami-weeks { display: grid; }
+.snffl-swami-weeks-row {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--s-2);
+  padding: 6px 0;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: var(--t-micro);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-secondary);
+}
+.snffl-swami-weeks-head { color: var(--ink-tertiary); border-top: 0; }
+
+.snffl-swami-lineup {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 6px;
+  padding: var(--s-4);
+}
+.snffl-swami-slot {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: var(--radius-xs);
+  background: var(--surface);
+  border: 1px solid transparent;
+}
+.snffl-swami-slot em {
+  font-style: normal;
+  font-family: var(--mono);
+  font-size: var(--t-micro);
+  color: var(--ink-tertiary);
+}
+.snffl-swami-slot strong {
+  font-size: var(--t-small);
+  font-weight: 700;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.snffl-swami-slot span {
+  font-family: var(--mono);
+  font-size: var(--t-small);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-secondary);
+}
+/* A weak slot is marked by its outline and by the caption under the grid,
+   never by colour alone. */
+.snffl-swami-slot-weak { border-color: var(--tint-amber-line); background: var(--tint-amber); }
+.snffl-swami-slot-weak em { color: var(--ink-secondary); }
+
+.snffl-swami-method {
+  display: grid;
+  gap: var(--s-2);
+  margin-top: var(--s-5);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line);
+}
+.snffl-swami-method p {
+  margin: 0;
+  font-size: var(--t-micro);
+  line-height: 1.55;
+  color: var(--ink-tertiary);
+}
+
 /* ---------- Movement, Checkpoint 16 ---------- */
 
 .snffl-movement {

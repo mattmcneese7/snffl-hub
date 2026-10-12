@@ -1,0 +1,265 @@
+/* Home on one system. Every value below comes from the tokens in .system;
+   nothing is set ad hoc.
+
+   Rhythm     4px grid: 16 gutter, 12 inside, 24 between blocks, 8 within
+   Edge       every line of type starts 28px in (gutter + inside), so text on
+              glass and text on the ground share one left edge
+   Corners    8 for a card and anything cut from it, 16 for the bar
+   Type       Switzer on the balanced map: 900 page title, 700 block titles
+              and the winning score, 600 lead team names and actions, 500
+              lists and labels and the losing score, 400 reading
+   Color     neutral base; manager color for whose; state for what is
+              happening; a section's color once per block, in its strip
+   Motion     one spring, for every press */
+
+.system {
+  font-family: 'Switzer', system-ui, sans-serif;
+  --gutter: 16px;
+  --in: 12px;
+  --gap: 24px;
+  --r: 8px;
+  --r-in: 8px;
+  --hair: rgba(18, 28, 48, 0.12);
+  --cut: rgba(18, 28, 48, 0.34);
+  --strip-mix: #121c30;
+  --strip-hue: 58%;
+  --ring-gap: rgba(255, 255, 255, 0.85);
+  --spring: cubic-bezier(0.3, 1.3, 0.5, 1);
+  --live: #e3182d;
+  --live-ink: #b3101f;
+  --lead-ink: #065f53;
+}
+
+/* ---------- Day: the ground ---------- */
+
+/* Light, permanent and universal: one theme. The warm off-white of Matt's
+   menu reference at the top, with the logo's blue and teal pooling softly
+   lower down, the way the Cora reference deepens toward the bottom. The
+   color stays put while the page scrolls, so every pane of glass picks up a
+   different slice of it. */
+.day {
+  background: #f6f5f2;
+  --ink: #15171c;
+  --ink-2: #3d434e;
+  --ink-3: #5a616d;
+  --hair: rgba(21, 23, 28, 0.1);
+  --cut: rgba(21, 23, 28, 0.3);
+  --strip-mix: #15171c;
+  --strip-hue: 56%;
+  --ring-gap: #ffffff;
+  --live: #e3182d;
+  --live-ink: #b3101f;
+  --lead-ink: #08695b;
+  --r: 16px;
+  --r-in: 8px;
+}
+
+.lights { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+.lights span { position: absolute; display: block; }
+.poolTeal {
+  left: -40vw;
+  top: 42vh;
+  width: 120vw;
+  height: 80vh;
+  background: radial-gradient(closest-side, rgba(86, 206, 188, 0.55), rgba(86, 206, 188, 0.2) 55%, transparent);
+}
+.poolBlue {
+  right: -44vw;
+  top: 22vh;
+  width: 120vw;
+  height: 84vh;
+  background: radial-gradient(closest-side, rgba(96, 150, 240, 0.5), rgba(96, 150, 240, 0.18) 55%, transparent);
+}
+.poolWarm {
+  left: -10vw;
+  top: -26vh;
+  width: 120vw;
+  height: 60vh;
+  background: radial-gradient(closest-side, rgba(255, 244, 226, 0.9), transparent);
+}
+
+/* ---------- Day: the glass ---------- */
+
+/* Lens, the glass Matt chose, made for a light ground: white and clear enough
+   that the color behind it shows through, blurred and brightened; a thick
+   edge read from a bright rim (brightest at the top left, where the light
+   comes from) and a soft glow just inside it; and a soft shadow that lifts it
+   clear of the page. */
+.lensGlass {
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.42) 50%, rgba(255, 255, 255, 0.58)),
+    transparent;
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  backdrop-filter: blur(24px) saturate(1.6);
+  box-shadow:
+    inset 1.5px 1.5px 0 rgba(255, 255, 255, 1),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.45),
+    inset 0 0 22px rgba(255, 255, 255, 0.5),
+    0 1px 2px rgba(20, 30, 45, 0.06),
+    0 18px 40px -18px rgba(24, 48, 84, 0.3);
+}
+
+.page {
+  position: relative;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 20px var(--gutter) calc(40px + env(safe-area-inset-bottom, 0px));
+  display: grid;
+  gap: var(--gap);
+}
+
+/* ---------- The header every block opens with ---------- */
+
+.head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--in); }
+.title { margin: 0; font-size: 15px; line-height: 1.2; font-weight: 700; color: var(--ink); }
+.meta { font-size: 13px; font-weight: 500; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+
+.pageHead { padding: 0 var(--in); }
+.pageTitle { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 28px; line-height: 1.1; font-weight: 900; letter-spacing: -0.02em; color: var(--ink); }
+
+/* The menu floats at the top, centered; the cards scroll under it. */
+.menuDock {
+  position: sticky;
+  z-index: 5;
+  top: calc(10px + env(safe-area-inset-top, 0px));
+  display: flex;
+  justify-content: center;
+  padding: 10px 12px 0;
+}
+/* The ticker runs the full width, edge to edge, under the bar. */
+.tickerWrap { margin-top: 8px; }
+
+/* A bench control for judging the glass, not part of the design. */
+.switch { display: flex; gap: 6px; padding: 0 var(--in); margin-top: -12px; }
+.switchItem {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: var(--r-in);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+  text-decoration: none;
+  box-shadow: inset 0 0 0 1px var(--hair);
+}
+.switchOn { color: var(--ink); font-weight: 600; box-shadow: inset 0 0 0 1.5px var(--ink); }
+.switchItem:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* ---------- The two surfaces ---------- */
+
+/* A sheet: glass, lifted, 12 in, its strip flush to the bottom edge. */
+.card {
+  position: relative;
+  display: grid;
+  gap: var(--in);
+  padding: var(--in) var(--in) 0;
+  border-radius: var(--r);
+}
+/* The ground: no glass, but the same 12 in, so its type sits on the same
+   edge as the type in the cards above and below it. */
+.ground { display: grid; gap: 8px; padding: 0 var(--in); }
+
+/* ---------- The strip every block ends with ---------- */
+
+.strip {
+  margin: 0 calc(-1 * var(--in));
+  min-height: 44px;
+  padding: 0 var(--in);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--hair);
+  border-radius: 0 0 var(--r) var(--r);
+  font-size: 15px;
+  font-weight: 600;
+  color: color-mix(in oklab, var(--hue) var(--strip-hue), var(--strip-mix));
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 180ms var(--spring);
+}
+/* On the ground there is no card edge to sit flush with, so the strip keeps
+   its rule and its inset and loses only the corners it has nothing to fit. */
+.ground .strip { margin: 0; padding: 0; border-radius: 0; }
+.strip:active { background: color-mix(in oklab, var(--hue) 18%, transparent); transition-duration: 60ms; }
+.strip:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+.caret { width: 16px; height: 16px; transition: transform 180ms var(--spring); }
+.strip:active .caret { transform: translateX(3px); }
+
+.sub { font-size: 12px; line-height: 1.25; font-weight: 400; color: var(--ink-3); }
+
+/* ---------- The closest game ---------- */
+
+.live { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--live-ink); }
+.live::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--live);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--live) 25%, transparent);
+}
+
+.sides { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, auto); column-gap: var(--in); }
+.side { display: grid; grid-row: span 4; grid-template-rows: subgrid; row-gap: 2px; justify-items: start; align-items: end; min-width: 0; }
+.right { justify-items: end; text-align: right; }
+.avatar {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 8px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--mgr);
+  box-shadow: 0 0 0 2px var(--ring-gap), 0 0 0 4px var(--mgr);
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.team { font-size: 15px; line-height: 1.15; font-weight: 600; color: var(--ink); overflow-wrap: anywhere; }
+.score { margin-top: 4px; font-size: 46px; line-height: 1; font-weight: 500; letter-spacing: -0.02em; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.winning { font-weight: 700; color: var(--ink); }
+
+.odds { display: grid; gap: 4px; }
+.bar { display: flex; gap: 2px; height: 6px; border-radius: 3px; overflow: hidden; }
+.bar span { display: block; height: 100%; }
+.oddsRow { display: flex; align-items: baseline; justify-content: space-between; font-size: 13px; font-weight: 600; color: var(--ink); }
+
+/* ---------- Every other game ---------- */
+
+.games { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr auto auto 1fr; column-gap: var(--in); }
+.game {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: baseline;
+  padding: 8px 0;
+  border-top: 1px solid var(--hair);
+}
+.gameTeam { font-size: 13px; font-weight: 400; color: var(--ink-2); overflow-wrap: anywhere; }
+.gameScore { font-size: 13px; font-weight: 500; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.ahead { font-weight: 700; color: var(--lead-ink); }
+.end { text-align: right; }
+
+/* ---------- Standings ---------- */
+
+.table { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 24px 1fr auto 60px; column-gap: var(--in); }
+.row {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: center;
+  padding: 8px 0;
+  border-top: 1px solid var(--hair);
+}
+.cutline { border-bottom: 1.5px solid var(--cut); }
+.cutline + .row { border-top: 0; }
+/* Cut from the same family: an 8px corner on a 24px chip. */
+.seed { display: grid; place-items: center; width: 24px; height: 24px; border-radius: var(--r-in); font-size: 12px; font-weight: 700; color: #fff; }
+.who { display: grid; min-width: 0; }
+.rowTeam { font-size: 15px; line-height: 1.18; font-weight: 500; color: var(--ink); overflow-wrap: anywhere; }
+.cell { font-size: 13px; font-weight: 400; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+
+/* ---------- The Rag ---------- */
+
+.story { display: grid; gap: 4px; }
+.headline { margin: 0; font-size: 20px; line-height: 1.2; font-weight: 700; letter-spacing: -0.015em; color: var(--ink); text-wrap: balance; }
+.deck { margin: 0; font-size: 15px; line-height: 1.4; font-weight: 400; font-style: italic; color: var(--ink-2); }

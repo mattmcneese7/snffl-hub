@@ -1,0 +1,68 @@
+/* One player row, everywhere: the same columns, the same height, the same
+   caret. Collapsed is the essentials; open is the deep read. */
+
+.item { min-width: 0; }
+.row {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  list-style: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.row::-webkit-details-marker { display: none; }
+.row:active { opacity: 0.6; }
+.row:focus-visible { outline: 2px solid #2d4c9c; outline-offset: 2px; border-radius: 8px; }
+.withSlot { grid-template-columns: 40px 40px minmax(0, 1fr) auto; }
+
+.slot {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 22px; border-radius: 6px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.02em;
+  color: #2d4c9c; background: color-mix(in oklab, #c9dcfa 65%, white);
+}
+.slotQuiet { color: #3d434e; background: #f7f6f2; box-shadow: inset 0 0 0 1px rgba(20, 21, 24, 0.08); }
+
+.face { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; background: color-mix(in oklab, #c9dcfa 60%, white); }
+.face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.who { display: grid; gap: 2px; min-width: 0; }
+.name { font-size: 15px; line-height: 1.2; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.meta { display: flex; align-items: center; gap: 4px; min-width: 0; font-size: 12px; line-height: 1.3; color: #5a616d; overflow: hidden; white-space: nowrap; }
+.meta > * { flex: none; }
+.meta img { width: 14px; height: 14px; object-fit: contain; }
+.pos { font-weight: 700; color: #3d434e; }
+.sep { color: rgba(20, 21, 24, 0.25); }
+
+.end { display: flex; align-items: center; gap: 10px; }
+.num { font-size: 17px; line-height: 1; font-weight: 800; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; color: #141518; }
+.numProj { font-weight: 600; color: #5a616d; }
+.nums { display: grid; justify-items: end; gap: 3px; }
+.note { font-size: 11px; font-weight: 600; color: #5a616d; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.chev { flex: none; width: 7px; height: 7px; margin: -4px 3px 0 0; border-right: 2px solid #2d4c9c; border-bottom: 2px solid #2d4c9c; transform: rotate(45deg); transition: transform 160ms ease; }
+.item[open] .chev { transform: rotate(225deg); margin-top: 4px; }
+
+/* Open: the deep read, starting on the name's line. */
+.detail { display: grid; gap: 10px; padding: 0 0 12px 52px; min-width: 0; }
+.detailSlot { padding-left: 52px; }
+.go { justify-self: start; font-size: 13px; font-weight: 600; color: #2d4c9c; text-decoration: none; }
+
+.range { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: #3d434e; font-variant-numeric: tabular-nums; }
+.track { position: relative; height: 6px; border-radius: 3px; background: color-mix(in oklab, #c9dcfa 75%, white); }
+.span { position: absolute; top: 0; bottom: 0; border-radius: 3px; background: #2d4c9c; }
+.dot { position: absolute; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: #141518; box-shadow: 0 0 0 2px #fff; }
+
+.tags { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; }
+.chipEven { color: #3d434e; background: #f7f6f2; box-shadow: inset 0 0 0 1px rgba(20, 21, 24, 0.06); }
+
+.block { display: grid; gap: 6px; min-width: 0; }
+.label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #2d4c9c; }
+.list { display: grid; gap: 4px; }
+.prop { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 10px; font-size: 13px; color: #3d434e; }
+.prop b { font-weight: 700; color: #141518; font-variant-numeric: tabular-nums; }
+.pay { font-size: 12px; color: #5a616d; font-variant-numeric: tabular-nums; }
+.usage { display: grid; gap: 4px; }
+.usageRow { display: grid; grid-template-columns: minmax(0, 1fr) repeat(3, 52px); align-items: baseline; gap: 6px; font-size: 13px; color: #3d434e; }
+.usageRow b { font-weight: 700; color: #141518; text-align: right; font-variant-numeric: tabular-nums; }

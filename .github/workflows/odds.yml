@@ -1,0 +1,63 @@
+name: sportsbook lines
+
+# Every 20 minutes; scripts/odds-pull.ts decides what each run does and most
+# runs do nothing after one free ESPN call. The snapshot lives in Supabase
+# Storage (bucket "odds", object "nfl.json"), never in the repo, so nothing
+# here commits and nothing redeploys the site.
+#
+# Credit math, The Odds API free plan, 500 credits a month:
+#
+#   Full pull (h2h, spreads, totals)   3 credits
+#   Live pull (h2h only)               1 credit
+#
+#   Full pulls a week. 14:00 and 23:00 UTC daily, a slot skipped when a full
+#   pull ran in the last 4 hours or a kickoff is under 5 hours away; plus one
+#   about an hour before each kickoff window (4:05 and 4:25 share one).
+#   Thursday 2, Sunday 3 (pre 1 PM, pre 4 PM, pre night game, which is also
+#   the 23:00 slot), Monday 2, the other four days 2 each:
+#   15 x 3 = 45 credits.
+#   Live pulls a week, one per 20 minutes in progress. Thursday about 3.3
+#   hours, Sunday about 6.5 hours of afternoon games and 3.2 of the night
+#   game, Monday about 3.3: about 16.3 hours x 3 = about 50 credits.
+#
+#   About 95 credits a week, 4.43 weeks a month: about 420. A London morning
+#   game adds about 10 that week. The script's guard keeps it under 500: under
+#   40 left it stops live pulls, under 10 it stops everything until the month
+#   resets.
+
+on:
+  schedule:
+    - cron: '*/20 * * * *'
+  workflow_dispatch:
+    inputs:
+      full:
+        description: 'Force a full pull (3 credits)'
+        type: boolean
+        default: false
+
+# Nothing is written to the repo.
+permissions:
+  contents: read
+
+concurrency:
+  # Runs never overlap: the snapshot is read, merged and written whole.
+  group: odds
+  cancel-in-progress: false
+
+jobs:
+  pull:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      # The script has no dependencies, so there is no npm ci.
+      - name: Pull sportsbook lines when due
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/odds-pull.ts ${{ inputs.full && '--full' || '' }}

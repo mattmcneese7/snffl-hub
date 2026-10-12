@@ -1,0 +1,22 @@
+/* The page kit: the section head and the week picker. Text on the wallpaper
+   sits on the 28px line like everything else (page 12 plus 16). */
+.head { display: grid; gap: 8px; padding: 4px 16px 0; }
+.title { margin: 0; font-size: 34px; line-height: 1.05; font-weight: 900; letter-spacing: -0.03em; color: #141518; text-shadow: 0 0 12px #f7f6f2, 0 0 4px #f7f6f2; }
+.titleRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+/* Collapse all: the app's small pill. */
+.collapse {
+  flex: none; display: inline-flex; align-items: center; gap: 5px;
+  height: 32px; padding: 0 12px; border: 0; border-radius: 999px;
+  background: #fff; color: #2d4c9c; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+  box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.07), 0 1px 3px rgba(30, 26, 20, 0.05), 0 8px 20px -8px rgba(30, 26, 20, 0.16);
+  -webkit-tap-highlight-color: transparent;
+}
+.collapse:active { transform: scale(0.96); }
+.collapse:focus-visible { outline: 2px solid #2d4c9c; outline-offset: 3px; }
+.collapse svg { width: 13px; height: 13px; }
+.sub { margin: 0; font-size: 15px; line-height: 1.4; color: #3d434e; text-shadow: 0 0 10px #f7f6f2, 0 0 3px #f7f6f2; }
+
+.weeks { display: flex; gap: 6px; margin: 4px -28px 0; padding: 2px 28px 6px; overflow-x: auto; scrollbar-width: none; }
+.weeks::-webkit-scrollbar { display: none; }
+.week { flex: none; display: inline-flex; align-items: center; height: 34px; padding: 0 14px; border-radius: 999px; background: #fff; color: #3d434e; font-size: 13px; font-weight: 600; text-decoration: none; font-variant-numeric: tabular-nums; box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.07), 0 1px 3px rgba(30, 26, 20, 0.05); }
+.weekOn { background: #c9dcfa; color: #141518; font-weight: 700; }

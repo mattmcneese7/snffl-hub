@@ -1,0 +1,103 @@
+/* Buttons. The canvas draws every surface; these rules set size, type and the
+   press. Label 500, per the Switzer map. Sizes on the scale (11, 12, 13, 15,
+   17, 20, 28, 46); every target at least 44px tall, Apple's minimum. The CSS stand ins below only show if
+   WebGL never starts. */
+
+.switzer { font-family: 'Switzer', system-ui, sans-serif; }
+
+.page {
+  position: relative;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: calc(14px + env(safe-area-inset-top, 0px)) 16px
+    calc(40px + env(safe-area-inset-bottom, 0px));
+  display: grid;
+  gap: 26px;
+}
+.head { display: grid; gap: 2px; padding: 0 4px; }
+.title { margin: 0; font-size: 28px; line-height: 1.1; font-weight: 600; letter-spacing: -0.025em; color: var(--ink); }
+.sub { margin: 0; font-size: 13px; font-weight: 400; color: var(--ink-2); }
+
+.option { display: grid; gap: 14px; }
+.optName { margin: 0; padding: 0 4px; font-size: 13px; font-weight: 600; color: var(--ink); }
+.optName span { display: block; font-weight: 400; color: var(--ink-2); }
+
+.row { display: flex; align-items: center; gap: 12px; padding: 0 4px; }
+
+/* ---------- The button ---------- */
+
+.btn {
+  appearance: none;
+  border: 0;
+  margin: 0;
+  background: none;
+  font: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  height: 52px;
+  padding: 0 24px 0 20px;
+  border-radius: 999px;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 160ms cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+.btn:active { transform: scale(0.965); transition-duration: 90ms; }
+.btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+
+.small { height: 44px; padding: 0 18px 0 15px; font-size: 15px; gap: 7px; }
+.round { width: 52px; padding: 0; }
+
+.icon { width: 21px; height: 21px; color: var(--ink-3); flex: none; }
+.iconSm { width: 18px; height: 18px; color: var(--ink-3); flex: none; }
+
+/* Stand ins, only without WebGL. */
+[data-stage]:not([data-webgl='on']) .lens {
+  background: #f4f5f7;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.55), 0 0 0 5px rgba(20, 28, 44, 0.35), 0 3px 8px rgba(20, 30, 50, 0.18);
+}
+[data-stage]:not([data-webgl='on']) .clear {
+  background: rgba(246, 249, 251, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6), 0 2px 6px rgba(20, 30, 50, 0.14);
+}
+
+/* ---------- The track ---------- */
+
+.track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 4px;
+  padding: 5px;
+  border-radius: 999px;
+}
+.seg {
+  appearance: none;
+  border: 0;
+  margin: 0;
+  background: none;
+  font: inherit;
+  height: 44px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink-2);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 160ms cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+.seg:active { transform: scale(0.965); transition-duration: 90ms; }
+.seg:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.thumb { color: var(--ink); }
+
+/* One button in its own groove, like the clip. */
+.slot { justify-self: start; grid-auto-columns: auto; padding: 7px; }
+.seated { height: 50px; }
+
+[data-stage]:not([data-webgl='on']) .track { background: rgba(20, 30, 50, 0.06); box-shadow: inset 0 2px 4px rgba(20, 30, 50, 0.12); }
+[data-stage]:not([data-webgl='on']) .thumb { background: #f4f5f7; box-shadow: 0 1px 3px rgba(20, 30, 50, 0.2); }

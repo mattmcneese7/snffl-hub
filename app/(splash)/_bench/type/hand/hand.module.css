@@ -1,0 +1,56 @@
+/* The hand wall. Switzer carries the facts (tag, score); the hand carries
+   the joke. Tight, like the other walls. */
+
+.switzer { font-family: 'Switzer', system-ui, sans-serif; }
+
+.page {
+  position: relative;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: calc(12px + env(safe-area-inset-top, 0px)) 10px
+    calc(24px + env(safe-area-inset-bottom, 0px));
+  display: grid;
+  gap: 6px;
+}
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 4px 2px;
+}
+.title { margin: 0; font-size: 24px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); }
+.sub { font-size: 11.5px; font-weight: 400; color: var(--ink-2); }
+
+.card { display: grid; gap: 4px; padding: 8px 11px 10px; border-radius: 6px; }
+.top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.name { font-size: 12px; font-weight: 500; color: var(--ink); }
+.kind { font-size: 11px; font-weight: 400; color: var(--ink-2); }
+
+.body { display: grid; grid-template-columns: auto 1fr; align-items: center; column-gap: 12px; }
+.facts { display: grid; gap: 1px; }
+.tag {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.figure { font-size: 30px; line-height: 1; font-weight: 300; font-variant-numeric: tabular-nums; color: var(--ink); }
+
+.scrawl { display: grid; gap: 0; min-width: 0; }
+.handLine {
+  font-family: var(--hand), cursive;
+  font-size: var(--hand-size);
+  font-weight: var(--hand-weight);
+  line-height: 1.05;
+  color: var(--ink);
+}
+.handNote {
+  font-family: var(--hand), cursive;
+  font-size: calc(var(--hand-size) * 0.72);
+  font-weight: var(--hand-weight);
+  line-height: 1.1;
+  color: var(--ink-2);
+}

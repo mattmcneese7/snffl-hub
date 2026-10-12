@@ -1,0 +1,53 @@
+/* Mark options on the lens ground. Sizes on the scale; weights on the map. */
+
+.page {
+  position: relative;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: calc(20px + env(safe-area-inset-top, 0px)) 0 calc(40px + env(safe-area-inset-bottom, 0px));
+  display: grid;
+  gap: 32px;
+}
+.head { padding: 0 28px; display: grid; gap: 4px; }
+.title { margin: 0; font-size: 28px; line-height: 1.1; font-weight: 900; letter-spacing: -0.02em; color: var(--ink); }
+.sub { margin: 0; font-size: 13px; color: var(--ink-2); }
+
+.option { display: grid; gap: 14px; }
+.optHead { padding: 0 28px; display: grid; gap: 2px; }
+.optName { margin: 0; font-size: 17px; font-weight: 700; color: var(--ink); }
+.idea { margin: 0; font-size: 13px; line-height: 1.35; color: var(--ink-2); }
+
+.row { display: flex; align-items: center; gap: 14px; padding: 0 28px; flex-wrap: wrap; }
+
+/* The app icon: the mark in the brand's blue to teal on a pale tile, the way
+   it would sit on a home screen. */
+.icon {
+  width: 76px;
+  height: 76px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: linear-gradient(160deg, #ffffff, #eef2f5);
+  box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(20, 30, 45, 0.08), 0 12px 24px -12px rgba(24, 48, 84, 0.35);
+}
+.icon svg,
+.icon img { width: 52px; height: 52px; display: block; }
+
+/* The other way round: the mark in white on the brand's blue to teal. */
+.iconBrand { background: linear-gradient(160deg, #0a5ad0, #1ec3a6); color: #fff; }
+.iconBrand svg { width: 56px; height: 56px; }
+
+/* The name beside the mark: Switzer at 800, tight, the mark at cap height
+   and a little over. */
+.lockup { display: flex; align-items: center; gap: 8px; padding: 0 28px; }
+.lockMark { display: block; width: 34px; height: 34px; }
+.lockMark svg { width: 34px; height: 34px; display: block; }
+.word { font-size: 28px; line-height: 1; font-weight: 800; letter-spacing: -0.035em; color: var(--ink); }
+
+.menuRow { display: flex; justify-content: center; padding: 0 12px; }
+
+.sizes { display: flex; align-items: flex-end; gap: 16px; color: var(--ink); }
+.size { display: block; flex: none; }
+.size svg,
+.size img { width: 100%; height: 100%; display: block; }

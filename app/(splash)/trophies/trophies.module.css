@@ -1,0 +1,31 @@
+
+/* This week's hardware: big tiles, two to a row. */
+.latest { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.tile { display: grid; justify-items: start; gap: 6px; padding: 14px; border-radius: 16px; background: #f7f6f2; }
+.award { margin-top: 4px; font-size: 12px; font-weight: 700; color: #2d4c9c; }
+.winner { font-size: 20px; line-height: 1.1; font-weight: 800; letter-spacing: -0.01em; }
+.detail { font-size: 12px; color: #5a616d; font-variant-numeric: tabular-nums; }
+
+/* Every award, with its history. */
+.awards { list-style: none; margin: 0; padding: 0; display: grid; }
+.awardRow { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 14px; align-items: start; padding: 14px 0; }
+.awardRow + .awardRow { border-top: 1px solid rgba(20, 21, 24, 0.08); }
+.awardText { display: grid; gap: 4px; min-width: 0; }
+.awardText b { font-size: 16px; font-weight: 700; }
+.blurb { font-size: 13px; line-height: 1.35; color: #5a616d; }
+.history { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.chip { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 11px; font-weight: 600; color: #2d4c9c; background: color-mix(in oklab, #c9dcfa 55%, white); white-space: nowrap; }
+.none { font-size: 13px; color: #5a616d; }
+.most { font-size: 12px; font-weight: 700; color: #141518; }
+
+/* Every shelf: a manager and the pieces they hold. */
+.shelves { list-style: none; margin: 0; padding: 0; display: grid; }
+.shelf { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 4px 12px; align-items: center; padding: 12px 0; }
+.shelf + .shelf { border-top: 1px solid rgba(20, 21, 24, 0.08); }
+.avatar { grid-row: span 2; width: 36px; height: 36px; border-radius: 50%; overflow: hidden; background: #c9dcfa; box-shadow: 0 0 0 1.5px #fff, 0 0 0 2.5px rgba(20, 21, 24, 0.12); }
+.avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.shelfWho { display: grid; min-width: 0; }
+.shelfWho b { font-size: 15px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pieces { display: flex; flex-wrap: wrap; gap: 6px; }
+.piece { position: relative; display: inline-flex; }
+.times { position: absolute; right: -4px; bottom: -4px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px; display: grid; place-items: center; font-size: 10px; font-weight: 800; color: #fff; background: #2d4c9c; box-shadow: 0 0 0 2px #fff; }

@@ -1,0 +1,24 @@
+.sheet { font-family: 'Switzer', system-ui, sans-serif; background: #f7f6f2; color: #141518; }
+.page { max-width: 440px; margin: 0 auto; padding: 28px 12px 64px; display: grid; gap: 20px; }
+.intro { display: grid; gap: 8px; padding: 0 16px; }
+.h1 { margin: 0; font-size: 34px; line-height: 1.05; font-weight: 900; letter-spacing: -0.03em; }
+.lede { margin: 0; font-size: 15px; line-height: 1.45; color: #3d434e; }
+.card { display: grid; gap: 14px; padding: 18px 16px 18px; border-radius: 22px; background: #fff; box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.06), 0 2px 4px rgba(30, 26, 20, 0.04), 0 14px 30px -14px rgba(30, 26, 20, 0.2); }
+.head { display: flex; align-items: baseline; gap: 10px; }
+.num { font-size: 13px; font-weight: 800; color: #2d4c9c; }
+.name { font-size: 17px; font-weight: 800; }
+.note { margin: 0; font-size: 14px; line-height: 1.4; color: #3d434e; }
+
+/* The buried score, as on the score card. */
+.demo { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 26px 14px 14px; border-radius: 14px; background: #f7f6f2; }
+.team { font-size: 15px; font-weight: 600; }
+.score { position: relative; display: inline-block; font-size: 32px; line-height: 1; font-weight: 500; letter-spacing: -0.02em; color: #5a616d; font-variant-numeric: tabular-nums; }
+.circle { position: absolute; left: -10px; top: -6px; width: calc(100% + 20px); height: calc(100% + 14px); overflow: visible; }
+.circle path { fill: none; stroke: #2d4c9c; stroke-width: 2.2; stroke-linecap: round; }
+.ouch { position: absolute; right: -6px; top: -24px; font-family: var(--hand), cursive; font-size: calc(21px * var(--hand-scale)); line-height: 1; font-weight: var(--hand-weight); color: #2d4c9c; transform: rotate(-8deg); white-space: nowrap; }
+
+.lines { display: grid; gap: 10px; }
+.sweat { display: inline-flex; align-items: center; gap: 6px; font-family: var(--hand), cursive; font-size: calc(18px * var(--hand-scale)); line-height: 1; font-weight: var(--hand-weight); color: #2d4c9c; }
+.tap { font-family: var(--hand), cursive; font-size: calc(17px * var(--hand-scale)); line-height: 1; font-weight: var(--hand-weight); color: #2d4c9c; }
+
+.try { justify-self: start; display: inline-flex; align-items: center; height: 32px; padding: 0 14px; border-radius: 999px; background: #fff; color: #2d4c9c; font-size: 13px; font-weight: 600; text-decoration: none; box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.07), 0 1px 3px rgba(30, 26, 20, 0.05), 0 8px 20px -8px rgba(30, 26, 20, 0.16); }

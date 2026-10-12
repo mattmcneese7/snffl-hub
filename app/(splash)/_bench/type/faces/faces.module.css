@@ -1,0 +1,110 @@
+/* The faces wall. Tight on purpose: small padding, small gaps, thin weights.
+   Each card reads its face and tuning from custom properties set inline. */
+
+.page {
+  position: relative;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: calc(12px + env(safe-area-inset-top, 0px)) 10px
+    calc(24px + env(safe-area-inset-bottom, 0px));
+  display: grid;
+  gap: 6px;
+  font-family: system-ui, sans-serif;
+}
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 4px 2px;
+}
+.title { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); }
+.sub { font-size: 11.5px; color: var(--ink-2); }
+
+.card {
+  display: grid;
+  gap: 5px;
+  padding: 8px 11px 9px;
+  border-radius: 6px;
+  font-family: var(--face), system-ui, sans-serif;
+  font-stretch: var(--stretch);
+  font-variation-settings: var(--axes);
+}
+.top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+.name { font-size: 12px; font-weight: 500; color: var(--ink); white-space: nowrap; }
+.note {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--ink-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sides { display: grid; grid-template-columns: 1fr 1fr; column-gap: 10px; }
+.side { display: grid; gap: 0; justify-items: start; min-width: 0; }
+.right { justify-items: end; text-align: right; }
+
+.team {
+  font-size: 13.5px;
+  line-height: 1.15;
+  font-weight: var(--w-team);
+  color: var(--ink);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.score {
+  font-size: 32px;
+  line-height: 1.05;
+  font-weight: var(--w-score);
+  font-stretch: var(--stretch-score);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  color: var(--ink-3);
+}
+.lead { color: var(--ink); }
+.meta {
+  font-size: 11px;
+  line-height: 1.2;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Emphasis, shown on every card: a distinct bold for strong emphasis, and
+   bold caps kept for heavy emphasis only. */
+.emphasis {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 4px;
+  border-top: 1px solid rgba(18, 28, 48, 0.09);
+  min-width: 0;
+}
+.bold {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.caps {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+}

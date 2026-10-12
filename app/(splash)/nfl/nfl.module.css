@@ -1,0 +1,100 @@
+/* One NFL game. The board leads: the ground it is played on, or the home
+   side's color when ESPN has no photograph, with the state on a white pill
+   so it reads over anything; then the two sides, the line and the win bar.
+   Everything else is widgets in the Scoreboard's language. */
+
+.board { padding: 0; gap: 0; overflow: hidden; }
+.boardBack { margin: 0; padding: 10px 16px 8px; }
+.art { position: relative; height: 150px; overflow: hidden; background: var(--home, #2d4c9c); }
+.art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.artShade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10, 12, 18, 0.18) 0%, rgba(10, 12, 18, 0) 45%); }
+.pill { position: absolute; left: 16px; top: 16px; display: inline-flex; align-items: center; gap: 6px; max-width: calc(100% - 32px); height: 30px; padding: 0 12px; border-radius: 999px; background: #fff; font-size: 13px; font-weight: 700; color: #141518; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; box-shadow: 0 4px 14px -6px rgba(0, 0, 0, 0.45); }
+.pillLive { color: #2d4c9c; }
+.body { display: grid; gap: 12px; padding: 14px 16px; }
+.rows { display: grid; }
+.teamRow { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; column-gap: 12px; padding: 10px 0; }
+.teamRow + .teamRow { border-top: 1px solid rgba(20, 21, 24, 0.08); }
+.logo { width: 32px; height: 32px; object-fit: contain; }
+.teamWho { display: grid; gap: 2px; min-width: 0; line-height: 1.2; }
+.name { font-size: 17px; font-weight: 600; color: #141518; overflow-wrap: anywhere; }
+.score { font-size: 28px; line-height: 1; font-weight: 800; letter-spacing: -0.02em; color: #141518; font-variant-numeric: tabular-nums; }
+.scoreLost { color: #5a616d; }
+/* Label | value facts under the rows: the label in the label style. */
+.facts1 { display: grid; gap: 6px; }
+.pair { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 8px; font-size: 13px; line-height: 1.35; color: #3d434e; font-variant-numeric: tabular-nums; }
+.factText { font-size: 15px; line-height: 1.2; font-weight: 700; overflow-wrap: anywhere; }
+.lineTeams { display: grid; }
+.lineTeam { display: grid; grid-template-columns: 24px minmax(0, 1fr); align-items: center; column-gap: 10px; row-gap: 4px; padding: 10px 0; }
+.lineTeam + .lineTeam { border-top: 1px solid rgba(20, 21, 24, 0.08); }
+.lineTeam img { width: 24px; height: 24px; object-fit: contain; }
+.lineName { font-size: 15px; font-weight: 600; }
+.linePairs { grid-column: 2; display: flex; flex-wrap: wrap; gap: 4px 16px; }
+
+/* Weather, the line: facts as tiles on paper. */
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.facts2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.fact { display: grid; gap: 4px; padding: 10px; border-radius: 14px; background: #f7f6f2; min-width: 0; }
+.factNum { font-size: 22px; line-height: 1; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.factNum small { font-size: 12px; font-weight: 600; color: #5a616d; }
+.note { margin: 0; font-size: 13px; line-height: 1.4; color: #3d434e; }
+
+/* Season so far: the two clubs either side of the label. */
+.season { display: grid; }
+.sRow { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 10px; padding: 9px 0; font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.sRow + .sRow { border-top: 1px solid rgba(20, 21, 24, 0.08); }
+.sRow > :last-child { text-align: right; }
+.sHead { padding-top: 0; }
+.sTeam { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; }
+.sHead > :last-child { justify-content: flex-end; }
+.sTeam img { width: 22px; height: 22px; object-fit: contain; }
+
+/* Who has skin in this: managers, then their players. */
+.groups { display: grid; gap: 10px; }
+.group { display: grid; gap: 2px; padding: 12px; border-radius: 16px; background: #f7f6f2; }
+.groupMine { background: color-mix(in oklab, #c9dcfa 32%, white); }
+.gHead { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding-bottom: 6px; color: inherit; text-decoration: none; }
+.gAvatar { width: 32px; height: 32px; border-radius: 50%; overflow: hidden; background: #c9dcfa; }
+.gAvatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gWho { display: grid; min-width: 0; line-height: 1.2; }
+.gTeam { font-size: 15px; font-weight: 600; overflow-wrap: anywhere; }
+.players { list-style: none; margin: 0; padding: 0; display: grid; }
+.players > li + li { border-top: 1px solid rgba(20, 21, 24, 0.08); }
+.player { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 8px 0; color: inherit; text-decoration: none; }
+.pFace { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; background: color-mix(in oklab, #c9dcfa 60%, white); }
+.pFace img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pWho { display: grid; gap: 3px; min-width: 0; }
+.pName { font-size: 14px; font-weight: 600; overflow-wrap: anywhere; }
+.pMeta { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; min-width: 0; font-size: 12px; color: #5a616d; }
+.pNum { display: grid; justify-items: end; gap: 2px; font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.pNum span { font-size: 11px; font-weight: 500; color: #5a616d; }
+/* Beating his projection: the number on a powder wash, in deep blue. */
+.beat { padding: 1px 6px; border-radius: 6px; color: #2d4c9c; background: color-mix(in oklab, #c9dcfa 70%, white); }
+
+/* Lines across books: one row a book, the away number over the home number
+   in each column. The best number per column on a lime chip in ink; the
+   picked book's row on powder. Book names in ink, weight 600. */
+.bt { display: grid; margin: 0 -8px; }
+.btRow { display: grid; grid-template-columns: minmax(0, 1.15fr) repeat(3, minmax(0, 1fr)); align-items: center; column-gap: 6px; padding: 8px; border-radius: 12px; }
+.btRow { position: relative; }
+.btRow + .btRow:not(.btMine)::before { content: ''; position: absolute; left: 8px; right: 8px; top: 0; height: 1px; background: rgba(20, 21, 24, 0.08); }
+.btMine + .btRow::before { display: none; }
+.btHead { padding-top: 0; padding-bottom: 6px; }
+.btMine { background: color-mix(in oklab, #c9dcfa 45%, white); }
+.btBook { font-size: 14px; font-weight: 600; line-height: 1.2; color: #141518; overflow-wrap: anywhere; }
+.btCell { display: grid; justify-items: start; gap: 4px; min-width: 0; }
+.btVal { display: inline-flex; align-items: baseline; flex-wrap: wrap; gap: 0 4px; padding: 1px 5px; margin-left: -5px; border-radius: 6px; font-size: 14px; font-weight: 700; line-height: 1.3; color: #141518; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.btVal small { font-size: 11px; font-weight: 500; color: #5a616d; }
+.btBest { background: #ecf88a; }
+.btBest small { color: #3d434e; }
+
+/* Book logos: each book's own icon on a small rounded tile, beside its name. */
+.bookLogo { width: 20px; height: 20px; flex: none; border-radius: 5px; object-fit: cover; }
+.viaBook { display: inline-flex; align-items: center; gap: 6px; }
+/* A book's name never breaks inside a word; the column is wide enough for
+   the logo and the longest name (Polymarket), and the numbers share the rest. */
+.btBookName { display: flex; align-items: center; gap: 6px; min-width: 0; overflow-wrap: normal; }
+.btBook { display: grid; gap: 2px; overflow-wrap: normal; }
+.btRow { grid-template-columns: 102px repeat(3, minmax(0, 1fr)); column-gap: 4px; }
+.btHead > span { letter-spacing: 0.05em; }
+.btVol { font-size: 11px; font-weight: 500; line-height: 1.3; color: #5a616d; }
+.pairSub { font-size: 11px; font-weight: 500; color: #5a616d; }

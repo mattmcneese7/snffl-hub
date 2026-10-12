@@ -1,0 +1,376 @@
+/* The menu at the reference clip's proportions. The bar is 48px tall (H);
+   the pill sits inside with 6px clear above and below; names 15px and icons
+   16px, about a third of H; items stand well apart, the pill's own padding
+   doing the spacing. Pool's powder blue for the selection. */
+
+/* The pill's two edges animate separately, so they are registered lengths. */
+@property --l { syntax: '<length>'; inherits: false; initial-value: 0px; }
+@property --r { syntax: '<length>'; inherits: false; initial-value: 0px; }
+
+.dock { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-width: 0; max-width: 400px; }
+
+.bar {
+  position: relative;
+  height: 48px;
+  padding: 0 6px;
+  display: flex;
+  align-items: center;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #141518;
+  box-shadow:
+    0 0 0 0.5px rgba(30, 26, 20, 0.05),
+    0 2px 4px rgba(30, 26, 20, 0.04),
+    0 12px 32px -8px rgba(30, 26, 20, 0.14);
+}
+.track { position: relative; display: flex; align-items: center; height: 100%; }
+
+/* ---------- The selection ---------- */
+
+/* Measured from the clip, frame by frame: a crisp pill of one flat pastel,
+   whose softness lives inside its outline. At the edge the color arrives at
+   once, about half strength, then deepens to the flat fill over about a
+   sixth of the bar's height: a white glow along the inside of the edge, not
+   a blur of the whole shape. Clear of the bar by about 8% above and below. */
+.pill {
+  position: absolute;
+  left: var(--l);
+  width: calc(var(--r) - var(--l));
+  border-radius: 999px;
+  background: #c9dcfa;
+  box-shadow: inset 0 0 7px 1.5px rgba(255, 255, 255, 0.72);
+  filter: blur(0.35px);
+  transition-property: --l, --r, filter;
+  transition-timing-function: cubic-bezier(0.34, 1.2, 0.5, 1), cubic-bezier(0.34, 1.2, 0.5, 1), ease;
+}
+/* In flight it softens, as in the clip. */
+.moving { filter: blur(2.2px); }
+
+/* ---------- Items ---------- */
+
+.item {
+  position: relative;
+  appearance: none;
+  border: 0;
+  margin: 0;
+  background: none;
+  font: inherit;
+  height: 36px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border-radius: 999px;
+  color: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 120ms ease;
+}
+/* A 48px target: the tap area runs to the bar's top and bottom. */
+.item::after { content: ''; position: absolute; inset: -6px 0; }
+.item:active { opacity: 0.45; }
+.item:focus-visible { outline: 2px solid #141518; outline-offset: -2px; }
+
+.icon { display: block; width: 16px; height: 16px; flex: none; color: #141518; }
+.icon svg { display: block; width: 16px; height: 16px; }
+.label { font-size: 15px; font-weight: 450; letter-spacing: -0.005em; }
+
+/* ---------- 1. Split: three, and More as a round button ---------- */
+
+.round {
+  appearance: none;
+  border: 0;
+  margin: 0;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #141518;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow:
+    0 0 0 0.5px rgba(30, 26, 20, 0.05),
+    0 2px 4px rgba(30, 26, 20, 0.04),
+    0 12px 32px -8px rgba(30, 26, 20, 0.14);
+  transition: opacity 120ms ease;
+}
+.round:active { opacity: 0.45; }
+.round:focus-visible { outline: 2px solid #141518; outline-offset: 2px; }
+.roundIcon { width: 22px; height: 22px; }
+
+/* ---------- 2. Scroll: all five, full proportion ---------- */
+
+.scroll .bar {
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 36px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 36px), transparent);
+}
+.scroll .bar::-webkit-scrollbar { display: none; }
+.scroll .item { padding: 0 22px; }
+
+/* ---------- 3. Names: four, no icons ---------- */
+
+.names .item { padding: 0 18px; }
+.names .label { font-weight: 500; }
+
+/* ---------- 2. Marker ---------- */
+
+.marker { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 400px; padding: 0 16px; }
+.mItem {
+  position: relative;
+  appearance: none;
+  border: 0;
+  margin: 0;
+  background: none;
+  font: inherit;
+  height: 44px;
+  padding: 0 4px;
+  display: inline-flex;
+  align-items: center;
+  color: #141518;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 120ms ease;
+}
+.mItem:active { opacity: 0.45; }
+.mItem:focus-visible { outline: 2px solid #141518; outline-offset: 2px; border-radius: 6px; }
+.mLabel { position: relative; z-index: 1; font-size: 17px; font-weight: 500; letter-spacing: -0.01em; }
+.mOn .mLabel { font-weight: 700; }
+/* The highlighter: a slightly askew swipe through the lower half of the
+   name, drawn in from the left like a marker stroke. */
+.stroke {
+  position: absolute;
+  z-index: 0;
+  left: -2px;
+  right: -4px;
+  top: 52%;
+  height: 0.62em;
+  background: #ecf88a;
+  border-radius: 3px 9px 4px 10px;
+  transform: rotate(-2deg) skewX(-10deg);
+  animation: draw 380ms cubic-bezier(0.5, 0, 0.2, 1) both;
+}
+@keyframes draw {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+/* ---------- Marker on the scrolling bar ---------- */
+
+/* The pill: whole, with two clean rounded ends, never faded. */
+.mScroll {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  min-width: 0;
+  height: 40px;
+  padding: 0;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #141518;
+  /* The track clips its own items; the bar lets the first-visit tag show
+     beneath it. */
+  position: relative;
+  overflow: visible;
+  box-shadow:
+    0 0 0 0.5px rgba(30, 26, 20, 0.05),
+    0 2px 4px rgba(30, 26, 20, 0.04),
+    0 12px 32px -8px rgba(30, 26, 20, 0.14);
+}
+/* The items scroll inside it and fade out under its ends, so the cut reads as
+   items slipping beneath the bar's lip, not the bar dissolving. */
+.msTrack {
+  border-radius: inherit;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  overflow-x: auto;
+  /* Sideways only: the items' tap areas reach 2px past the bar, which would
+     otherwise let it scroll a few pixels up and down. */
+  overflow-y: hidden;
+  overscroll-behavior: contain;
+  touch-action: pan-x;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+  /* When items run off an end they fade out between the bar's edge and the
+     line the logo and the week sit on (16px in), and are fully solid from
+     that line inward: the fade never reaches past the logo's edge. */
+  --il: 0px;
+  --ir: 0px;
+  --fl: 0px;
+  --fr: 0px;
+  -webkit-mask-image: linear-gradient(to right, transparent var(--il), #000 calc(var(--il) + var(--fl)), #000 calc(100% - var(--ir) - var(--fr)), transparent calc(100% - var(--ir)));
+  mask-image: linear-gradient(to right, transparent var(--il), #000 calc(var(--il) + var(--fl)), #000 calc(100% - var(--ir) - var(--fr)), transparent calc(100% - var(--ir)));
+}
+.msTrack::-webkit-scrollbar { display: none; }
+
+/* First visit: a tag under the bar's right end, saying it scrolls. Paper on
+   the page, deep blue words, the arrow nudging the way to swipe. */
+.hint {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 10px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #fff;
+  color: #2d4c9c;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.07), 0 1px 3px rgba(30, 26, 20, 0.05), 0 8px 20px -8px rgba(30, 26, 20, 0.16);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 260ms ease, transform 260ms ease;
+}
+.hint svg { width: 12px; height: 12px; }
+.hintOn { opacity: 1; transform: none; }
+.hintOn svg { animation: nudge 0.9s ease-in-out infinite; }
+@keyframes nudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(3px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hint { transition: opacity 260ms ease; transform: none; }
+  .hintOn svg { animation: none; }
+}
+.fadeLeft { --fl: 16px; }
+.fadeRight { --fr: 16px; }
+.msItem {
+  position: relative;
+  appearance: none;
+  border: 0;
+  margin: 0;
+  background: none;
+  font: inherit;
+  flex: none;
+  height: 40px;
+  /* Spread so Home, Scores and Standings show in full and Rag shows half:
+     the cut says there is more to scroll. */
+  padding: 0 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  scroll-snap-align: center;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 120ms ease;
+}
+.msItem:active { opacity: 0.45; }
+.msItem:focus-visible { outline: 2px solid #141518; outline-offset: -2px; border-radius: 10px; }
+.msName { position: relative; display: inline-flex; }
+.msItem .mLabel { font-size: 13px; font-weight: 500; }
+/* The first item lines up with the name above it by what the eye sees, not
+   by boxes: its icon gets the mark's 20px frame with the glyph centered in
+   it, so the house and the drop share a center line, and "Home" starts
+   where the wordmark starts. */
+.msItem:first-child { padding-left: 16px; }
+/* (The house stays its 15px size; 2.5px either side gives it the mark's 20px
+   frame, so the two share a center.) */
+.msItem:first-child .icon { width: 15px; height: 15px; margin: 0 2.5px; }
+.msItem .icon,
+.msItem .icon svg { width: 15px; height: 15px; }
+/* A 44px tap target from a 40px bar: the hit area runs a little past it. */
+.msItem::after { content: ''; position: absolute; inset: 0; }
+.msItem.mOn .mLabel { font-weight: 700; }
+/* Pool's roles: selection is the soft blue's job, so here the stroke is
+   powder and the chosen icon deep blue. The lime stays for emphasis only. */
+.msItem .stroke { background: #c9dcfa; }
+.msItem.mOn .icon { color: #2d4c9c; }
+/* The set's icons in the bar: ink outlines on a white face; the chosen one
+   fills powder with a deep blue line, the same pair as its marker stroke.
+   A touch bigger than the old filled icons, since outlines weigh less, but
+   in the same 20px frame so the optical line holds. */
+.msItem .setIcon,
+.msItem .setIcon svg { width: 17px; height: 17px; }
+.msItem:first-child .setIcon { width: 17px; height: 17px; margin: 0 1.5px; }
+.setIcon { --ic-face: #ffffff; --ic-line: #141518; --ic-w: 1.9; }
+.msItem.mOn .setIcon { --ic-face: #c9dcfa; --ic-line: #2d4c9c; }
+
+/* ---------- 3. Drop dock ---------- */
+
+.dockBar {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  width: 100%;
+  max-width: 400px;
+  padding: 8px 6px 12px;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.72);
+  -webkit-backdrop-filter: blur(22px) saturate(1.6);
+  backdrop-filter: blur(22px) saturate(1.6);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 0 0 0.5px rgba(30, 26, 20, 0.06),
+    0 12px 32px -10px rgba(30, 26, 20, 0.18);
+}
+.dItem {
+  appearance: none;
+  border: 0;
+  margin: 0;
+  background: none;
+  font: inherit;
+  height: 48px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 4px;
+  color: #5a616d;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 220ms ease, opacity 120ms ease;
+}
+.dItem .icon { width: 20px; height: 20px; color: currentColor; }
+.dItem .icon svg { width: 20px; height: 20px; }
+.dLabel { font-size: 11px; font-weight: 500; }
+.dItem:active { opacity: 0.45; }
+.dItem:focus-visible { outline: 2px solid #141518; outline-offset: -2px; border-radius: 12px; }
+.dOn { color: #2d4c9c; }
+.dOn .dLabel { font-weight: 700; }
+/* The drop rides a track under the tabs, sliding to the chosen one while it
+   hops in a small arc, then settles. */
+.dropTrack {
+  position: absolute;
+  left: 6px;
+  bottom: 3px;
+  display: flex;
+  justify-content: center;
+  width: calc((100% - 12px) / 5);
+  pointer-events: none;
+  transition: transform 460ms cubic-bezier(0.34, 1.2, 0.5, 1);
+}
+.drop { width: 8px; height: 8px; fill: #2d4c9c; animation: hop 460ms cubic-bezier(0.3, 0.7, 0.4, 1); }
+@keyframes hop {
+  0% { transform: translateY(0) scale(1); }
+  45% { transform: translateY(-7px) scale(0.9, 1.15); }
+  80% { transform: translateY(0.5px) scale(1.12, 0.88); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stroke { animation: none; }
+  .dropTrack { transition: none; }
+  .drop { animation: none; }
+  .pill { transition-duration: 0ms !important; }
+  .moving { filter: blur(0.35px); }
+}
+/* As links in the navigating menu: ink, no underline. */
+a.msItem { color: #141518; text-decoration: none; -webkit-tap-highlight-color: transparent; }

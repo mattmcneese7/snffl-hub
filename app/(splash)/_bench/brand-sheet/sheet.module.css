@@ -1,0 +1,55 @@
+.sheet { font-family: 'Switzer', system-ui, sans-serif; background: #f7f6f2; color: #141518; }
+.page { max-width: 440px; margin: 0 auto; padding: 28px 12px 64px; display: grid; gap: 20px; }
+.intro { display: grid; gap: 6px; padding: 0 16px; }
+.kicker { margin: 0; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #2d4c9c; }
+.h1 { margin: 0; font-size: 46px; line-height: 1; font-weight: 900; letter-spacing: -0.04em; }
+.lede { margin: 0; font-size: 15px; line-height: 1.45; color: #3d434e; }
+.card { display: grid; gap: 14px; padding: 18px 16px 20px; border-radius: 22px; background: #fff; box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.06), 0 2px 4px rgba(30, 26, 20, 0.04), 0 14px 30px -14px rgba(30, 26, 20, 0.2); }
+.h2 { margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
+.note { margin: 0; font-size: 14px; line-height: 1.45; color: #3d434e; }
+
+/* The lockup at 3x the top bar: mark 60, gap 18, word 57. */
+.lockups { display: grid; gap: 10px; }
+.lockupTile { display: grid; place-items: center; height: 132px; border-radius: 16px; }
+.onPaper { background: #f7f6f2; }
+.onDeep { background: #2d4c9c; }
+.lockup { display: inline-flex; align-items: center; gap: 15px; font-size: 48px; line-height: 1; font-weight: 800; letter-spacing: -0.04em; color: #141518; }
+.lockMark { display: block; width: 50px; height: 50px; color: #2d4c9c; }
+.lockMark svg,
+.markAt svg { display: block; width: 100%; height: 100%; }
+.reversed { color: #fff; }
+.reversed .lockMark { color: #fff; }
+.sizesRow { display: flex; align-items: end; gap: 18px; flex-wrap: wrap; }
+.sizeCell { display: grid; justify-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: #5a616d; }
+.markAt { display: block; color: #2d4c9c; }
+
+.swatches { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.swatch { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 12px; align-items: center; }
+.chip { display: grid; place-items: center; height: 52px; border-radius: 12px; font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; box-shadow: inset 0 0 0 0.5px rgba(20, 21, 24, 0.12); }
+.swatchText { display: grid; gap: 2px; font-size: 13px; line-height: 1.35; color: #3d434e; }
+.swatchText b { font-size: 15px; color: #141518; }
+
+.scale { list-style: none; margin: 0; padding: 0; display: grid; }
+.scaleRow { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 2px 12px; align-items: baseline; padding: 10px 0; }
+.scaleRow + .scaleRow { border-top: 1px solid rgba(20, 21, 24, 0.08); }
+.scaleSpec { grid-row: span 2; font-size: 11px; font-weight: 700; color: #2d4c9c; font-variant-numeric: tabular-nums; }
+.scaleSample { line-height: 1.1; letter-spacing: -0.02em; overflow-wrap: anywhere; }
+.scaleUse { font-size: 12px; color: #5a616d; }
+.hand { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px; align-items: center; padding-top: 6px; }
+.handSample { font-family: 'Caveat', cursive; font-size: 40px; font-weight: 700; color: #2d4c9c; transform: rotate(-6deg); }
+
+.icons { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+.iconCell { display: grid; place-items: center; aspect-ratio: 1; border-radius: 50%; background: color-mix(in oklab, #c9dcfa 70%, white); }
+.iconDisc { width: 62%; height: 62%; }
+
+.moods { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px 8px; padding-top: 14px; }
+.moodCell { display: grid; justify-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: #5a616d; text-align: center; }
+
+.widgetDemo { padding: 14px 12px; border-radius: 16px; background: #f7f6f2; }
+
+.motion { margin: 0; display: grid; gap: 10px; }
+.motion dt { font-size: 14px; font-weight: 700; }
+.motion dd { margin: 2px 0 0; font-size: 13px; line-height: 1.4; color: #3d434e; }
+
+.voice { margin: 0; padding-left: 18px; display: grid; gap: 8px; font-size: 14px; line-height: 1.45; color: #3d434e; }
+.voice b { color: #141518; }

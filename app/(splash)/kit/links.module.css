@@ -1,0 +1,10 @@
+.list { list-style: none; margin: 0; padding: 0; display: grid; }
+.list > li + li { border-top: 1px solid rgba(20, 21, 24, 0.08); }
+.row { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 0; color: #141518; text-decoration: none; }
+.row:active { opacity: 0.6; }
+.disc { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: color-mix(in oklab, #c9dcfa 70%, white); }
+.disc svg { width: 24px; height: 24px; }
+.text { display: grid; gap: 2px; min-width: 0; }
+.text b { font-size: 16px; font-weight: 600; }
+.text span { font-size: 13px; line-height: 1.35; color: #5a616d; }
+.caret { width: 14px; height: 14px; color: #2d4c9c; }

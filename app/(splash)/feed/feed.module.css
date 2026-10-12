@@ -1,0 +1,180 @@
+/* The Feed's own pieces. Everything else comes from the Home's widget
+   classes, so a row here is a row there: 13px padding, the same hairline,
+   the same marks and chips. */
+
+.asideNote { font-size: 13px; font-weight: 600; color: #2d4c9c; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* Rows */
+
+.rowMain { display: grid; gap: 6px; min-width: 0; }
+.rowHead { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; min-width: 0; }
+.rowHead > :first-child { min-width: 0; overflow-wrap: anywhere; }
+.when { flex: none; font-size: 12px; color: #5a616d; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.name { color: #2d4c9c; font-weight: 600; text-decoration: none; }
+.tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.out { justify-self: start; display: inline-flex; align-items: center; min-height: 32px; margin: -6px 0; font-size: 13px; font-weight: 600; color: #2d4c9c; text-decoration: underline; text-decoration-color: #c9dcfa; text-decoration-thickness: 3px; text-underline-offset: 3px; }
+.moveLine { font-size: 14px; line-height: 1.3; font-weight: 600; color: #141518; text-decoration: none; }
+.chipMine { color: #141518; background: #c9dcfa; }
+
+/* What mattered: the rank, the line, its mark on the right. */
+.ranked { display: grid; grid-template-columns: 22px minmax(0, 1fr) 52px; gap: 12px; align-items: start; padding: 13px 0; }
+.rank { font-size: 20px; line-height: 1; font-weight: 800; color: #2d4c9c; font-variant-numeric: tabular-nums; text-align: center; }
+
+/* The full record */
+
+.toggle {
+  appearance: none;
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: #141518;
+  background: #c9dcfa;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.toggle:active { transform: scale(0.97); }
+.toggle:focus-visible { outline: 2px solid #2d4c9c; outline-offset: 3px; }
+
+.record { display: grid; gap: 18px; min-width: 0; }
+.filters { display: grid; gap: 12px; min-width: 0; }
+.filterRow { display: grid; gap: 6px; min-width: 0; }
+.chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.fchip {
+  appearance: none;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: #3d434e;
+  background: #f7f6f2;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.fchip:focus-visible { outline: 2px solid #2d4c9c; outline-offset: 2px; }
+.fchipOn { color: #141518; background: #c9dcfa; font-weight: 700; }
+.count { font-size: 11px; font-weight: 700; color: #2d4c9c; font-variant-numeric: tabular-nums; }
+
+.day { display: grid; gap: 2px; min-width: 0; }
+.dayHead { display: flex; align-items: baseline; gap: 8px; margin: 0; padding-bottom: 4px; border-bottom: 1px solid rgba(20, 21, 24, 0.08); }
+.dayCount { font-size: 12px; font-weight: 600; color: #5a616d; font-variant-numeric: tabular-nums; }
+
+.nothing { display: grid; grid-template-columns: 44px minmax(0, 1fr); align-items: center; gap: 12px; padding: 6px 0; }
+.nothing > span { display: grid; gap: 2px; }
+.clear { appearance: none; justify-self: start; min-height: 32px; margin: -4px 0; padding: 0; border: 0; background: none; font: inherit; font-size: 13px; font-weight: 600; color: #2d4c9c; cursor: pointer; text-decoration: underline; text-decoration-color: #c9dcfa; text-decoration-thickness: 3px; text-underline-offset: 3px; }
+.nothing b { font-size: 15px; font-weight: 700; }
+
+/* The stories rail */
+
+.rail { display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; }
+.rail::-webkit-scrollbar { display: none; }
+.railBleed { margin: 0 -16px; padding: 2px 16px 4px; scroll-padding: 0 16px; }
+.bubble { flex: none; width: 64px; display: grid; justify-items: center; gap: 6px; scroll-snap-align: start; }
+.ring {
+  appearance: none;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px rgba(20, 21, 24, 0.12);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+/* Lit: his players have clips this week. Deep blue, the live color. */
+.ringLit { box-shadow: inset 0 0 0 3px #2d4c9c; }
+.ring:active { transform: scale(0.95); }
+.ring:focus-visible { outline: 2px solid #2d4c9c; outline-offset: 3px; }
+.ring:disabled { cursor: default; opacity: 0.6; }
+.avatar { display: grid; place-items: center; width: 54px; height: 54px; overflow: hidden; border-radius: 50%; background: color-mix(in oklab, #c9dcfa 60%, white); }
+.avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.initials { font-size: 15px; font-weight: 800; color: #2d4c9c; }
+.bubbleName { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; font-weight: 600; color: #141518; text-decoration: none; }
+
+/* The story viewer */
+
+.viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  padding: calc(10px + env(safe-area-inset-top)) 0 env(safe-area-inset-bottom);
+  background: #f7f6f2;
+  color: #141518;
+  overscroll-behavior: contain;
+}
+.progress { display: flex; gap: 4px; width: 100%; max-width: 440px; margin: 0 auto; padding: 0 16px; box-sizing: border-box; }
+.progress i { flex: 1; height: 3px; border-radius: 2px; background: #c9dcfa; }
+.progress .barDone,
+.progress .barNow { background: #2d4c9c; }
+
+.vHead { display: flex; align-items: center; gap: 10px; width: 100%; max-width: 440px; margin: 0 auto; padding: 10px 8px 6px 16px; box-sizing: border-box; }
+.vAvatar { flex: none; width: 36px; height: 36px; overflow: hidden; border-radius: 50%; background: color-mix(in oklab, #c9dcfa 60%, white); }
+.vAvatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.vWho { display: grid; min-width: 0; }
+.vWho b { font-size: 15px; font-weight: 700; }
+.vWho span { font-size: 12px; color: #5a616d; font-variant-numeric: tabular-nums; }
+.vClose { appearance: none; flex: none; display: grid; place-items: center; width: 44px; height: 44px; margin-left: auto; padding: 0; border: 0; border-radius: 50%; background: #fff; color: #141518; cursor: pointer; box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.08), 0 2px 6px rgba(30, 26, 20, 0.08); }
+.vClose svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.vClose:focus-visible { outline: 2px solid #2d4c9c; outline-offset: 2px; }
+
+.vBody { position: relative; display: grid; align-items: center; min-height: 0; overflow-y: auto; }
+/* The tap zones fill the body; the slide sits over them but lets taps fall
+   through everywhere except its own link. */
+.tap { appearance: none; position: absolute; top: 0; bottom: 0; z-index: 0; padding: 0; border: 0; background: transparent; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.tapBack { left: 0; width: 33%; }
+.tapNext { right: 0; width: 67%; }
+.tap:focus-visible { outline: 2px solid #2d4c9c; outline-offset: -4px; }
+
+.vSlide { position: relative; z-index: 1; display: grid; gap: 12px; width: 100%; max-width: 440px; margin: 0 auto; padding: 8px 16px 24px; box-sizing: border-box; pointer-events: none; min-width: 0; }
+.vSlide a { pointer-events: auto; }
+.vStill { display: block; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 22px; background: #c9dcfa; box-shadow: 0 14px 30px -14px rgba(30, 26, 20, 0.35); }
+.vStill img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.vTitle { margin: 4px 0 0; font-size: 22px; line-height: 1.15; font-weight: 800; letter-spacing: -0.02em; overflow-wrap: anywhere; text-wrap: balance; }
+.vTags { display: flex; flex-wrap: wrap; gap: 6px; }
+.vTag { display: inline-flex; align-items: center; height: 24px; padding: 0 9px; border-radius: 7px; font-size: 12px; font-weight: 600; color: #2d4c9c; background: #fff; }
+.vTagHot { color: #141518; background: #ecf88a; }
+.yt { justify-self: start; display: inline-flex; align-items: center; gap: 8px; height: 44px; margin-top: 4px; padding: 0 20px 0 16px; border-radius: 999px; font-size: 15px; font-weight: 700; color: #fff; background: #2d4c9c; text-decoration: none; }
+.yt svg { width: 16px; height: 16px; fill: currentColor; }
+.yt:focus-visible { outline: 2px solid #2d4c9c; outline-offset: 3px; }
+
+/* The week in numbers: a white card, the result big. */
+.card { gap: 14px; padding: 22px 20px; border-radius: 22px; background: #fff; width: calc(100% - 32px); max-width: 408px; box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.06), 0 14px 30px -14px rgba(30, 26, 20, 0.25); }
+.cardLabel { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #2d4c9c; }
+.cardHead { margin: 0; font-size: 28px; line-height: 1.05; font-weight: 800; letter-spacing: -0.02em; overflow-wrap: anywhere; }
+.cardScore { margin: 0; font-size: 17px; font-weight: 600; color: #3d434e; font-variant-numeric: tabular-nums; }
+.cardPlayer { display: grid; grid-template-columns: 52px minmax(0, 1fr); align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: color-mix(in oklab, #c9dcfa 32%, white); }
+.cardShot { width: 52px; height: 52px; overflow: hidden; border-radius: 50%; background: color-mix(in oklab, #c9dcfa 60%, white); }
+.cardShot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cardWho { display: grid; gap: 2px; min-width: 0; }
+.cardWho b { font-size: 15px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cardWho span { font-size: 13px; color: #3d434e; font-variant-numeric: tabular-nums; }
+.cardLines { display: grid; margin: 0; }
+.cardLines div { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid rgba(20, 21, 24, 0.08); font-size: 14px; }
+.cardLines dt { color: #3d434e; min-width: 0; overflow-wrap: anywhere; }
+.cardLines dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+.sleeper { justify-self: start; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; font-size: 12px; font-weight: 600; color: #5a616d; text-decoration: none; }
+.sleeper img { width: 16px; height: 16px; border-radius: 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ring:active,
+  .toggle:active { transform: none; }
+}

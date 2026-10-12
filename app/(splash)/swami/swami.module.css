@@ -1,0 +1,86 @@
+/* The Swami in Pool. One short row per player: the face, the name, who owns
+   him and his matchup, the projection on the right. Tap it and the reads
+   open under it: the range, the odds of a big week, the usage, the stat
+   line and the book on his game. */
+
+.row {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  gap: 8px 12px;
+  align-items: center;
+  padding: 10px 0;
+  color: inherit;
+  text-decoration: none;
+}
+.row { list-style: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.row::-webkit-details-marker { display: none; }
+.row:active { opacity: 0.6; }
+.row:focus-visible { outline: 2px solid #2d4c9c; outline-offset: 2px; border-radius: 8px; }
+
+/* The chevron: down when shut, up when open. */
+.chev { flex: none; width: 7px; height: 7px; margin: -4px 3px 0 0; border-right: 2px solid #2d4c9c; border-bottom: 2px solid #2d4c9c; transform: rotate(45deg); transition: transform 160ms ease; }
+.item[open] .chev { transform: rotate(225deg); margin-top: 4px; }
+
+.detail { display: grid; gap: 8px; padding: 0 0 10px 52px; min-width: 0; }
+.facts { display: grid; gap: 6px; min-width: 0; }
+.pairs { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; min-width: 0; }
+.source { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #2d4c9c; }
+.pair { display: inline-flex; align-items: center; gap: 3px; height: 20px; padding: 0 7px; border-radius: 6px; font-size: 11px; font-weight: 500; color: #3d434e; background: #f0efea; white-space: nowrap; }
+.pair b { font-weight: 700; color: #141518; font-variant-numeric: tabular-nums; }
+.line { font-size: 13px; line-height: 1.4; color: #3d434e; overflow-wrap: anywhere; }
+.line b { font-weight: 600; color: #141518; }
+.go { justify-self: start; font-size: 13px; font-weight: 600; color: #2d4c9c; text-decoration: none; }
+
+.face { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; background: color-mix(in oklab, #c9dcfa 60%, white); }
+.face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.who { display: grid; gap: 2px; min-width: 0; }
+.name { font-size: 15px; line-height: 1.2; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.meta { font-size: 12px; line-height: 1.3; color: #5a616d; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.logo { display: inline-block; width: 14px; height: 14px; margin-right: 3px; object-fit: contain; vertical-align: -2px; }
+.game { font-size: 14px; font-weight: 600; line-height: 1.3; color: #141518; overflow-wrap: anywhere; }
+.owner { font-weight: 600; color: #3d434e; }
+.free { font-weight: 600; color: #2d4c9c; }
+
+.proj { display: flex; align-items: center; gap: 10px; }
+.projNum { font-size: 17px; line-height: 1; font-weight: 800; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+
+/* The range: floor on the left, ceiling on the right, the bar between on one
+   scale for every row, so a wide range and a high one both read at a glance.
+   The dot is the projection itself. */
+.range {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  font-size: 11px;
+  color: #5a616d;
+  font-variant-numeric: tabular-nums;
+}
+.track { position: relative; height: 6px; border-radius: 3px; background: color-mix(in oklab, #c9dcfa 75%, white); }
+.span { position: absolute; top: 0; bottom: 0; border-radius: 3px; background: #2d4c9c; }
+.dot { position: absolute; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: #141518; box-shadow: 0 0 0 2px #fff; }
+
+.tags { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; }
+.chipEven { color: #3d434e; background: #f0efea; }
+
+.note { margin: 0; font-size: 12px; line-height: 1.4; color: #5a616d; }
+
+.emptyState { display: grid; justify-items: start; gap: 8px; padding: 4px 0; }
+
+/* Defenses against the position: four to a row, the rank, the team and
+   what it concedes. */
+.dvp { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.def { display: grid; gap: 2px; min-width: 0; padding: 8px 8px 7px; border-radius: 12px; background: #f7f6f2; }
+.defTop { display: flex; align-items: baseline; gap: 5px; min-width: 0; }
+.defRank { font-size: 11px; font-weight: 700; color: #5a616d; font-variant-numeric: tabular-nums; }
+.defTeam { font-size: 13px; font-weight: 700; color: #141518; }
+.defPts { font-size: 12px; color: #3d434e; font-variant-numeric: tabular-nums; }
+.caveat { margin: 0; padding: 10px 12px; border-radius: 12px; font-size: 13px; line-height: 1.4; color: #3d434e; background: color-mix(in oklab, #c9dcfa 32%, white); }
+
+/* The list's own filters, inside the Players widget: each row of pills runs
+   to the card's edges and scrolls under them, like the page rails do. */
+.filters { display: grid; gap: 8px; }
+.filters { margin-bottom: 4px; }
+.filters > nav,
+.inCard { margin: 0 -16px; padding: 2px 16px 6px; scroll-padding: 0 16px; }

@@ -1,0 +1,114 @@
+/* The top bar and the ticker line. The bar takes the page's glass; corners
+   from the family (16 on the bar, 12 on an item inside its 4px inset); the
+   one spring. Labels 13px 600 on the scale. Every item a 44px target. */
+
+.dock { display: flex; justify-content: center; padding: 0 16px; pointer-events: none; }
+.sticky { position: sticky; z-index: 5; top: calc(10px + env(safe-area-inset-top, 0px)); }
+
+.bar {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  border-radius: 16px;
+}
+
+.item {
+  appearance: none;
+  border: 0;
+  margin: 0;
+  font: inherit;
+  height: 44px;
+  min-width: 44px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--ink-2);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color 260ms ease,
+    color 200ms ease,
+    gap 420ms var(--spring, cubic-bezier(0.3, 1.3, 0.5, 1));
+}
+.item:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+.home { padding: 0 8px; }
+
+.icon { width: 20px; height: 20px; flex: none; }
+.mark { display: grid; place-items: center; width: 28px; height: 28px; color: var(--ink); }
+.mark svg,
+.mark img { width: 28px; height: 28px; display: block; }
+
+/* Closed, a name takes no room; chosen, it opens beside its icon. */
+.label {
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 600;
+  transition:
+    max-width 420ms var(--spring, cubic-bezier(0.3, 1.3, 0.5, 1)),
+    opacity 200ms ease;
+}
+
+/* The chosen item: its section's color as a soft wash with a lit top edge,
+   the only place that color appears in the bar. */
+.on {
+  gap: 6px;
+  color: #fff;
+  background: color-mix(in oklab, var(--hue) 42%, rgba(10, 24, 40, 0.3));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.26), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+.on .label { max-width: 80px; opacity: 1; }
+.on .icon,
+.on .mark { animation: hop 520ms var(--spring, cubic-bezier(0.3, 1.3, 0.5, 1)); }
+@keyframes hop {
+  0% { transform: translateY(0) scale(1); }
+  35% { transform: translateY(-4px) scale(1.12); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+/* ---------- The ticker line ---------- */
+
+.ticker {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 28px, #000 calc(100% - 28px), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 28px, #000 calc(100% - 28px), transparent);
+}
+.track { display: flex; width: max-content; animation: drift var(--secs) linear infinite; }
+.copy { display: flex; }
+@keyframes drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.held { overflow-x: auto; }
+.held .track { animation: none; }
+
+.game {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 14px;
+  white-space: nowrap;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.team { font-weight: 400; color: var(--ink-2); }
+.up { font-weight: 700; color: var(--lead-ink); }
+.down { font-weight: 500; color: var(--ink-3); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker { overflow-x: auto; }
+  .track { animation: none; }
+  .copy { display: none; }
+  .item,
+  .label { transition: none; }
+  .on .icon,
+  .on .mark { animation: none; }
+}

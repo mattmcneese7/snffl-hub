@@ -1,0 +1,33 @@
+/* Home on the bench. The matchup, ticker, standings and buttons take their
+   rules from color/color.module.css, which this page shares; this file holds
+   the page's own layout and the Rag card. Sizes on the scale (11, 12, 13, 15,
+   17, 20, 28, 46); weights on the balanced map. */
+
+.page {
+  position: relative;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: calc(14px + env(safe-area-inset-top, 0px)) 16px
+    calc(40px + env(safe-area-inset-bottom, 0px));
+  display: grid;
+  gap: 30px;
+  --live: #e3182d;
+  --live-ink: #b3101f;
+  --lead-ink: #065f53;
+}
+.head { display: flex; align-items: baseline; justify-content: space-between; padding: 0 4px; }
+.week { font-size: 13px; font-weight: 500; color: var(--ink-2); }
+
+.block { display: grid; gap: 12px; }
+.section { margin: 0; padding: 0 4px; font-size: 17px; font-weight: 700; letter-spacing: -0.01em; color: var(--ink); }
+.inset { padding: 0 4px; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; padding: 0 4px; }
+.actions a { text-decoration: none; }
+
+/* ---------- The Rag ---------- */
+
+.rag { gap: 6px; padding: 14px 16px 14px; }
+/* The Rag's own color, darkened to read as type. */
+.category { font-size: 12px; font-weight: 700; color: #8f1a3c; }
+.headline { margin: 0; font-size: 20px; line-height: 1.2; font-weight: 700; letter-spacing: -0.015em; color: var(--ink); text-wrap: balance; }
+.deck { margin: 0; font-size: 15px; line-height: 1.4; font-weight: 400; font-style: italic; color: var(--ink-2); }

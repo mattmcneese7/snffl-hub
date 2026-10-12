@@ -1,0 +1,18 @@
+.page {
+  position: relative;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: calc(20px + env(safe-area-inset-top, 0px)) 0 calc(48px + env(safe-area-inset-bottom, 0px));
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 36px;
+}
+.head { padding: 0 28px; display: grid; gap: 4px; }
+.title { margin: 0; font-size: 28px; line-height: 1.1; font-weight: 900; letter-spacing: -0.02em; color: var(--ink); }
+.sub { margin: 0; font-size: 13px; color: var(--ink-2); }
+
+.attempt { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.copy { padding: 0 28px; display: grid; gap: 2px; }
+.name { margin: 0; font-size: 17px; font-weight: 700; color: var(--ink); }
+.note { margin: 0; font-size: 13px; line-height: 1.35; color: var(--ink-2); }
+.stagePad { display: flex; justify-content: center; padding: 0 12px; min-width: 0; }

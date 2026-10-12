@@ -1,0 +1,22 @@
+.sheet { font-family: 'Switzer', system-ui, sans-serif; background: #f7f6f2; color: #141518; }
+.page { max-width: 440px; margin: 0 auto; padding: 28px 12px 64px; display: grid; gap: 14px; }
+.h1 { margin: 0 0 6px; padding: 0 16px; font-size: 34px; line-height: 1.05; font-weight: 900; letter-spacing: -0.03em; }
+.card { display: grid; gap: 12px; padding: 16px; border-radius: 22px; background: #fff; box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.06), 0 14px 30px -14px rgba(30, 26, 20, 0.2); }
+.row { display: flex; align-items: center; gap: 16px; }
+.disc { display: grid; place-items: center; width: 56px; height: 56px; flex: none; border-radius: 50%; background: color-mix(in oklab, #c9dcfa 70%, white); --line: #2d4c9c; --fill: #fff; }
+.disc svg { width: 34px; height: 34px; }
+.menu { display: grid; gap: 6px; }
+.rest,
+.on { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px; border-radius: 999px; font-size: 13px; font-weight: 500; box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.08); }
+.rest { --line: #141518; --fill: #fff; background: #fff; }
+.on { --line: #2d4c9c; --fill: #c9dcfa; background: #fff; font-weight: 700; }
+.rest svg,
+.on svg { width: 17px; height: 17px; }
+.text { display: grid; gap: 2px; font-size: 13px; line-height: 1.4; color: #3d434e; }
+.text b { font-size: 16px; color: #141518; }
+.from { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #2d4c9c; }
+.solid { fill: var(--line); }
+.stroke { fill: none; stroke: var(--line); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.face { fill: var(--fill); }
+.ph { color: var(--line); }
+.ph [opacity] { fill: var(--fill); opacity: 1; }

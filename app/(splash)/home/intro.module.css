@@ -1,0 +1,37 @@
+/* The intro: the top bar's lockup at three times its size (mark 60, gap 18,
+   word 57, against the bar's 20, 6 and 19), on the paper, with two rings. */
+.intro { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: #f7f6f2; cursor: pointer; transition: background-color 600ms ease; }
+.leaving { background-color: rgba(247, 246, 242, 0); pointer-events: none; }
+
+.lockup { display: inline-flex; align-items: center; gap: 18px; transform-origin: 50% 50%; translate: 0 -4vh; }
+.markWrap { position: relative; width: 60px; height: 60px; flex: none; }
+.mark { position: relative; z-index: 1; display: block; width: 60px; height: 60px; color: #2d4c9c; animation: fall 620ms cubic-bezier(0.55, 0, 1, 0.45) both, squash 300ms ease-out 620ms both; transform-origin: 50% 100%; }
+.mark svg { display: block; width: 100%; height: 100%; }
+@keyframes fall {
+  from { translate: 0 -60vh; }
+  to { translate: 0 0; }
+}
+@keyframes squash {
+  0% { scale: 1 1; }
+  35% { scale: 1.18 0.8; }
+  70% { scale: 0.94 1.06; }
+  100% { scale: 1 1; }
+}
+
+/* The rings spread from the drop's foot. */
+.rings { position: absolute; left: 50%; top: 56px; width: 0; height: 0; }
+.ring { position: absolute; left: -66px; top: -12px; width: 132px; height: 24px; border: 3px solid #2d4c9c; border-radius: 50%; opacity: 0; animation: ring 950ms cubic-bezier(0.2, 0.6, 0.3, 1) 620ms both; }
+.ring2 { border-color: #c9dcfa; border-width: 4px; animation-delay: 760ms; }
+@keyframes ring {
+  0% { transform: scale(0.15); opacity: 1; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+
+/* The word, exactly the top bar's: Switzer 800, tight. */
+.word { display: flex; font-family: 'Switzer', system-ui, sans-serif; font-size: 57px; line-height: 1; font-weight: 800; letter-spacing: -0.04em; color: #141518; }
+.word span { display: inline-block; animation: rise 460ms cubic-bezier(0.2, 0.8, 0.3, 1) both; }
+@keyframes rise {
+  from { transform: translateY(16px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+.leaving .rings { opacity: 0; transition: opacity 240ms ease; }

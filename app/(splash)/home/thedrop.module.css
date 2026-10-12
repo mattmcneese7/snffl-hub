@@ -1,0 +1,93 @@
+/* The Drop on the Home. The widget's material (white, 20px corners, the
+   lift), marked as its own thing by its broadcast icon (pulsing while live), the live chip and
+   Squirt's pen on the numbers. No lime: the pen's ring is the Shart's
+   emphasis. */
+
+.drop {
+  grid-column: 1 / -1;
+  min-width: 0;
+  border-radius: 20px;
+  background: #fff;
+  color: #141518;
+  /* The widget frame, exactly: the same edge and lift as every other card. */
+  box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.06), 0 2px 4px rgba(30, 26, 20, 0.04), 0 14px 30px -14px rgba(30, 26, 20, 0.2);
+  overflow: hidden;
+}
+
+/* The head is the toggle: the broadcast icon (pulsing while live), name and
+   sub, caret. */
+.head { gap: 12px; padding: 16px 16px 14px; background: none; color: inherit; }
+.head > svg:last-child { margin-left: auto; color: #5a616d; }
+.mark { width: 28px; height: 28px; flex: none; margin-left: -4px; --ic-face: #c9dcfa; --ic-line: #2d4c9c; }
+.title { display: grid; gap: 3px; min-width: 0; }
+.name { font-size: 24px; font-weight: 900; letter-spacing: -0.035em; line-height: 1; }
+.sub { font-size: 13px; font-weight: 600; color: #5a616d; line-height: 1.2; }
+
+.body { display: grid; gap: 18px; padding: 4px 16px 18px; }
+
+/* Three counts across the card, equal columns. */
+.counts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.counts > span { display: grid; gap: 2px; font-size: 12px; font-weight: 600; color: #5a616d; line-height: 1.2; }
+.counts b { font-size: 24px; font-weight: 900; letter-spacing: -0.03em; color: #2d4c9c; font-variant-numeric: tabular-nums; line-height: 1.05; }
+
+/* Your game, on powder. */
+.yours { display: grid; gap: 5px; padding: 14px 16px; border-radius: 14px; background: #edf3fd; color: inherit; text-decoration: none; }
+.yours:active { transform: scale(0.99); }
+.yoursTop { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.chance { font-size: 13px; font-weight: 800; color: #2d4c9c; font-variant-numeric: tabular-nums; }
+.score { display: flex; align-items: baseline; gap: 8px; font-variant-numeric: tabular-nums; }
+.score b { font-size: 26px; font-weight: 900; letter-spacing: -0.035em; line-height: 1.1; color: #3d434e; }
+.score b.ahead { color: #2d4c9c; }
+.score span { font-size: 13px; font-weight: 600; color: #5a616d; }
+.bar { display: block; height: 4px; margin: 2px 0 4px; border-radius: 2px; background: rgba(45, 76, 156, 0.14); overflow: hidden; }
+.bar span { display: block; height: 100%; border-radius: 2px; background: #2d4c9c; }
+.teams { font-size: 14px; font-weight: 700; line-height: 1.25; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.left { font-size: 12px; font-weight: 600; color: #5a616d; }
+
+/* The three facts, each with its icon and Squirt's note above the number. */
+.facts { list-style: none; margin: 0; padding: 0; display: grid; }
+.facts li + li { border-top: 1px solid rgba(20, 21, 24, 0.08); }
+.facts li:first-child .fact { padding-top: 14px; }
+.fact {
+  display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; align-items: end; gap: 12px;
+  padding: 22px 0 12px; color: inherit; text-decoration: none;
+}
+.facts li:last-child .fact { padding-bottom: 0; }
+.factIcon { width: 20px; height: 20px; align-self: center; margin-top: 8px; --ic-face: #c9dcfa; --ic-line: #2d4c9c; }
+.factText { display: grid; gap: 1px; min-width: 0; font-size: 15px; font-weight: 700; line-height: 1.25; }
+.factText > span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.label { font-size: 12px; font-weight: 600; color: #5a616d; line-height: 1.2; }
+.num { position: relative; font-size: 19px; font-weight: 850; letter-spacing: -0.02em; line-height: 1.25; font-variant-numeric: tabular-nums; }
+
+/* Squirt's pen: Rock Salt notes, and a ring drawn round the Shart score the
+   way you'd circle it on a printout. */
+.note {
+  position: absolute; right: 0; bottom: calc(100% + 1px);
+  font-family: var(--hand), cursive; font-weight: var(--hand-weight, 400);
+  font-size: calc(17px * var(--hand-scale, 1)); line-height: 1; letter-spacing: 0;
+  color: #2d4c9c; white-space: nowrap; pointer-events: none;
+  transform-origin: right bottom;
+}
+.noteTop { rotate: -4deg; }
+.noteLow { rotate: 3deg; right: -4px; bottom: calc(100% + 5px); }
+.noteClose { rotate: -3deg; }
+.ring { position: absolute; left: -10px; top: -7px; width: calc(100% + 20px); height: calc(100% + 14px); overflow: visible; pointer-events: none; }
+.ring path {
+  fill: none; stroke: #2d4c9c; stroke-width: 2.2; stroke-linecap: round; vector-effect: non-scaling-stroke;
+  stroke-dasharray: 340; stroke-dashoffset: 340; animation: draw 0.9s 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+@keyframes draw { to { stroke-dashoffset: 0; } }
+
+/* On air: the waves go out from the dot, near then far, while games are live. */
+.onAir .waveNear,
+.onAir .waveFar { animation: onAir 1.6s ease-in-out infinite; }
+.onAir .waveFar { animation-delay: 0.25s; }
+@keyframes onAir {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .onAir .waveNear, .onAir .waveFar { animation: none; }
+  .ring path { animation: none; stroke-dashoffset: 0; }
+}

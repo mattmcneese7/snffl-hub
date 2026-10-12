@@ -1,0 +1,52 @@
+/* The Rag's nameplates. Both sit full bleed at the head of the hero widget. */
+
+/* Tabloid: an ink band, the name knocked out, a lime tag. */
+.tabloid { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: end; gap: 14px; padding: 18px 16px 16px; background: #141518; color: #fff; text-decoration: none; }
+.nameplate { display: grid; justify-items: start; line-height: 0.82; }
+.the { display: inline-block; margin: 0 0 4px 2px; padding: 3px 7px 2px; border-radius: 4px; font-size: 13px; line-height: 1; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; color: #141518; background: #ecf88a; transform: rotate(-3deg); }
+.rag { font-size: 68px; font-weight: 900; letter-spacing: -0.05em; text-transform: uppercase; }
+.tabloidDate { display: grid; justify-items: end; gap: 3px; text-align: right; font-size: 12px; line-height: 1.2; color: #c9dcfa; }
+.tabloidDate b { font-size: 13px; font-weight: 800; color: #fff; }
+
+/* Broadsheet: rules above and below, the name centered, a dateline. */
+.broadsheet { display: grid; gap: 8px; padding: 18px 16px 16px; color: #141518; text-decoration: none; }
+.double { height: 6px; border-top: 3px solid #141518; border-bottom: 1px solid #141518; }
+.bsName { text-align: center; font-size: 46px; line-height: 1; font-weight: 900; letter-spacing: -0.045em; }
+.single { height: 0; border-top: 1px solid #141518; }
+.bsDate { display: flex; justify-content: space-between; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #3d434e; }
+
+/* ---------- A. Blackletter: the paper of record, worn by a gossip sheet ---------- */
+.bl { display: grid; gap: 6px; padding: 18px 16px 16px; color: #141518; text-decoration: none; }
+.blTop { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; }
+.blName { font-family: 'UnifrakturMaguntia', 'Old English Text MT', serif; font-size: 48px; line-height: 1; letter-spacing: 0; white-space: nowrap; }
+.ear { display: grid; gap: 1px; justify-items: start; padding: 5px 6px; border: 1px solid #141518; font-size: 10px; line-height: 1.15; text-transform: uppercase; letter-spacing: 0.04em; color: #3d434e; }
+.ear b { font-size: 10px; font-weight: 800; color: #141518; }
+.earRight { justify-items: end; text-align: right; }
+.blDate { text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #3d434e; }
+
+/* ---------- B. Red top, in Pool ---------- */
+.redtop { display: grid; color: #fff; text-decoration: none; }
+.slab { position: relative; display: flex; align-items: center; justify-content: space-between; padding: 16px 16px 14px; background: #2d4c9c; }
+.rtName { font-size: 54px; line-height: 0.9; font-weight: 900; font-style: italic; letter-spacing: -0.05em; text-shadow: 0 2px 0 rgba(20, 21, 24, 0.25); }
+.flash {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  width: 70px;
+  height: 70px;
+  color: #141518;
+  background: #ecf88a;
+  transform: rotate(-10deg);
+  clip-path: polygon(50% 0%, 61% 15%, 79% 9%, 80% 27%, 97% 32%, 88% 48%, 99% 63%, 82% 70%, 83% 89%, 64% 85%, 50% 100%, 37% 85%, 18% 90%, 18% 71%, 2% 63%, 12% 48%, 3% 32%, 20% 27%, 21% 9%, 39% 15%);
+}
+.flash span { font-size: 10px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; line-height: 1; }
+.flash b { font-size: 26px; font-weight: 900; line-height: 1; }
+.rtDate { display: flex; justify-content: space-between; padding: 8px 16px 14px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #3d434e; border-bottom: 3px solid #2d4c9c; }
+
+/* ---------- C. The drop period ---------- */
+.period { display: grid; gap: 10px; padding: 18px 16px 16px; color: #141518; text-decoration: none; }
+.pName { display: flex; align-items: baseline; gap: 0.18em; font-size: 54px; line-height: 0.95; font-weight: 900; letter-spacing: -0.05em; }
+.pRag { position: relative; z-index: 0; }
+.pRag::before { content: ''; position: absolute; z-index: -1; left: -4px; right: -6px; top: 56%; height: 0.36em; background: #ecf88a; border-radius: 4px 10px 5px 12px; transform: rotate(-1.5deg) skewX(-8deg); }
+.pDrop { width: 0.26em; height: 0.26em; margin-left: -0.08em; fill: #2d4c9c; align-self: baseline; }
+.pDate { display: flex; justify-content: space-between; gap: 8px; padding-top: 8px; border-top: 1px solid #141518; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #3d434e; }

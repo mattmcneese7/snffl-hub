@@ -1,0 +1,28 @@
+/* The install coach: a dim over the page, a white card near the control, an
+   arrow at the control, bobbing gently. */
+.scrim { position: fixed; inset: 0; z-index: 90; background: rgba(20, 21, 24, 0.42); animation: fade 220ms ease; }
+@keyframes fade {
+  from { opacity: 0; }
+}
+.card { position: absolute; left: 16px; right: 16px; display: grid; gap: 14px; padding: 18px 16px 16px; border-radius: 22px; background: #fff; color: #141518; box-shadow: 0 24px 48px -18px rgba(20, 21, 24, 0.45); }
+.atBottom { bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
+.atTop { top: calc(84px + env(safe-area-inset-top, 0px)); }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-size: 16px; font-weight: 600; }
+.steps li { display: flex; align-items: center; gap: 12px; }
+.steps svg { display: inline-block; width: 20px; height: 20px; vertical-align: -4px; stroke: #2d4c9c; }
+.n { display: grid; place-items: center; width: 28px; height: 28px; flex: none; border-radius: 50%; background: #c9dcfa; color: #2d4c9c; font-size: 14px; font-weight: 800; }
+.done { appearance: none; border: 0; margin: 0; font: inherit; height: 48px; border-radius: 999px; background: #2d4c9c; color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; }
+.done:focus-visible { outline: 2px solid #2d4c9c; outline-offset: 3px; }
+.arrow { position: absolute; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: #ecf88a; color: #141518; box-shadow: 0 10px 24px -10px rgba(20, 21, 24, 0.5); animation: bob 1.2s ease-in-out infinite; }
+.arrow svg { width: 26px; height: 26px; }
+.bottom_center { left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); margin-left: -26px; }
+.bottom_right { right: 18px; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); }
+.top_right { right: 18px; top: calc(16px + env(safe-area-inset-top, 0px)); }
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .arrow,
+  .scrim { animation: none; }
+}

@@ -1,0 +1,184 @@
+/* The four ticker treatments. Pool: powder for structure, deep blue for the
+   leading score and live drops, ink and paper. */
+
+.up { font-weight: 700; color: #2d4c9c; }
+.down { font-weight: 500; color: #5a616d; }
+.drop { width: 8px; height: 8px; fill: #2d4c9c; flex: none; }
+.clock { font-size: 12px; color: #5a616d; white-space: nowrap; }
+.name { color: #3d434e; white-space: nowrap; }
+.abbr { font-weight: 600; color: #3d434e; }
+
+/* ---------- 1. The bottom line ---------- */
+
+.bottom {
+  position: fixed;
+  z-index: 6;
+  /* The menu bar's bounds: 12px in from each side, never wider than 400,
+     centered, its white face and its lift. The corners take the menu's end
+     radius (24px, half its 48px height). */
+  left: 12px;
+  right: 12px;
+  bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+  max-width: 400px;
+  margin: 0 auto;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 0.5px rgba(30, 26, 20, 0.05),
+    0 2px 4px rgba(30, 26, 20, 0.04),
+    0 12px 32px -8px rgba(30, 26, 20, 0.14);
+}
+/* Two rows, the logo pinned at the left of each, the scores running beside
+   it and fading in from under it. */
+.bRow { display: grid; grid-template-columns: 88px minmax(0, 1fr); align-items: center; }
+.bRow + .bRow { border-top: 1px solid rgba(20, 21, 24, 0.07); }
+.bottomTrack {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 14px, #000 calc(100% - 20px), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 14px, #000 calc(100% - 20px), transparent);
+}
+.run { display: flex; align-items: center; width: max-content; height: 38px; animation: drift var(--secs) linear infinite; }
+.hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.copy { display: flex; align-items: center; }
+@keyframes drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.held { overflow-x: auto; scrollbar-width: none; }
+.held .run { animation: none; }
+.source {
+  display: inline-flex; align-items: center; gap: 6px; justify-self: start;
+  /* One width for both, so the two read as a pair. */
+  width: 80px; height: 26px; margin: 0 4px 0 6px; padding: 0 8px 0 4px; border-radius: 999px;
+  background: #f7f6f2; box-shadow: inset 0 0 0 0.5px rgba(20, 21, 24, 0.1);
+  font-size: 12px; font-weight: 600; color: #141518; white-space: nowrap;
+}
+.sourceLogo { width: 18px; height: 18px; object-fit: contain; border-radius: 5px; flex: none; }
+/* The NFL shield keeps its own corners. */
+.shield { border-radius: 0; }
+.item { display: inline-flex; align-items: center; gap: 6px; padding: 0 14px; font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* Each matchup closes with a hairline, so one game never runs into the next.
+   On every item, not between them, so the rule survives the loop's seam. */
+.run > .item, .copy > .item { border-right: 1px solid rgba(20, 21, 24, 0.14); }
+
+/* ---------- The pill: 2's corner pill and 3's score bug ---------- */
+
+.pill {
+  position: fixed;
+  z-index: 6;
+  appearance: none;
+  border: 0;
+  margin: 0;
+  font: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 18px 0 14px;
+  border-radius: 999px;
+  background: var(--pill-face, #fff);
+  color: #141518;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  /* The menu bar's material, like every pill. */
+  box-shadow: var(--pill-ring);
+  opacity: 0;
+  transform: translateY(16px) scale(0.92);
+  pointer-events: none;
+  transition: opacity 220ms ease, transform 420ms cubic-bezier(0.3, 1.3, 0.5, 1);
+}
+.pillIn { opacity: 1; transform: none; pointer-events: auto; }
+.pill:active { transform: scale(0.96); }
+.pill:focus-visible { outline: 2px solid #2d4c9c; outline-offset: 6px; }
+.pillDrop { width: 11px; height: 11px; fill: #2d4c9c; }
+
+.corner { right: 16px; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); }
+
+.bug {
+  left: 50%;
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  translate: -50% 0;
+  max-width: calc(100vw - 40px);
+  min-height: 52px;
+  padding: 0 18px 0 16px;
+}
+.bugText { display: grid; justify-items: start; line-height: 1.15; min-width: 0; }
+.bugLabel { font-size: 11px; font-weight: 600; color: #2d4c9c; }
+.bugScore { display: inline-flex; align-items: baseline; gap: 6px; font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.bugTeam { font-weight: 500; color: #3d434e; max-width: 92px; overflow: hidden; text-overflow: ellipsis; }
+
+/* ---------- The sheet: every score ---------- */
+
+.scrim { position: fixed; inset: 0; z-index: 20; display: flex; align-items: flex-end; background: rgba(20, 21, 24, 0.28); animation: fade 200ms ease; }
+@keyframes fade {
+  from { opacity: 0; }
+}
+.sheet {
+  width: 100%;
+  max-height: 78vh;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  gap: 12px;
+  padding: 10px 16px calc(16px + env(safe-area-inset-bottom, 0px));
+  border-radius: 22px 22px 0 0;
+  background: #f7f6f2;
+  box-shadow: 0 -12px 32px -12px rgba(20, 30, 50, 0.35);
+  animation: rise 380ms cubic-bezier(0.3, 1.1, 0.4, 1);
+}
+@keyframes rise {
+  from { transform: translateY(100%); }
+}
+.grabber { justify-self: center; width: 40px; height: 5px; border-radius: 3px; background: rgba(20, 21, 24, 0.18); }
+.tabs { display: flex; gap: 8px; }
+.tab {
+  appearance: none;
+  border: 0;
+  margin: 0;
+  font: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 0 16px 0 12px;
+  border-radius: 999px;
+  background: #fff;
+  color: #141518;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 0 0 0.5px rgba(20, 21, 24, 0.1);
+}
+.tabOn { background: #c9dcfa; }
+.tabLogo { width: 18px; height: 18px; object-fit: contain; border-radius: 4px; }
+.list { list-style: none; margin: 0; padding: 0; overflow-y: auto; display: grid; grid-template-columns: 1fr auto auto 1fr; column-gap: 10px; align-content: start; }
+.row { display: grid; grid-column: 1 / -1; grid-template-columns: subgrid; align-items: center; padding: 11px 0; border-top: 1px solid rgba(20, 21, 24, 0.08); font-size: 14px; font-variant-numeric: tabular-nums; }
+.row:first-child { border-top: 0; }
+.row .clock { grid-column: 1 / -1; text-align: center; font-size: 11px; margin-top: 2px; }
+.rowTeam { display: inline-flex; align-items: center; gap: 6px; min-width: 0; color: #3d434e; overflow-wrap: anywhere; }
+.end { justify-content: flex-end; text-align: right; }
+.teamLogo { width: 18px; height: 18px; object-fit: contain; }
+.done {
+  appearance: none;
+  border: 0;
+  margin: 0;
+  font: inherit;
+  min-height: 48px;
+  border-radius: 999px;
+  background: #141518;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .run { animation: none; }
+  .bottomTrack { overflow-x: auto; }
+  .copy { display: none; }
+  .pill,
+  .sheet,
+  .scrim { transition: none; animation: none; }
+}

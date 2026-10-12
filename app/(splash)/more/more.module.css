@@ -1,0 +1,4 @@
+/* The foot of More: the app's version, and the credits the licenses ask for. */
+.foot { display: grid; gap: 2px; justify-items: center; padding: 8px 16px 0; font-size: 12px; line-height: 1.4; color: #5a616d; text-align: center; text-shadow: 0 0 8px #f7f6f2; }
+.foot a { color: #2d4c9c; text-decoration: underline; text-decoration-color: #c9dcfa; text-decoration-thickness: 2px; text-underline-offset: 2px; }
+.version { font-weight: 700; color: #3d434e; touch-action: manipulation; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; }

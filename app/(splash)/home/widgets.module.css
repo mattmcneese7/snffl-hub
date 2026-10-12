@@ -1,0 +1,296 @@
+/* Widgets on the wallpaper. One card, three sizes, one head. Text inside
+   starts 20px from the screen's edge: the page's 8px plus the card's 12px. */
+
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 10px; }
+
+.widget {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+  padding: 14px 16px;
+  border-radius: 20px;
+  background: #fff;
+  color: #141518;
+  box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.06), 0 2px 4px rgba(30, 26, 20, 0.04), 0 14px 30px -14px rgba(30, 26, 20, 0.2);
+}
+/* Small widgets size to their content; only the film tiles keep a shape. */
+.s { overflow: hidden; }
+.m,
+.l { grid-column: 1 / -1; }
+
+.head { display: flex; align-items: center; gap: 8px; min-height: 22px; }
+/* Pages with Collapse all: every widget folds from its head. Folded, the
+   head stands alone; the caret points down to open, up to close. */
+.widget[data-folded] { gap: 0; }
+.widget[data-folded] > .head ~ * { display: none; }
+.widget[data-foldable] > .head { cursor: pointer; }
+.widget[data-foldable] > .head::after {
+  content: ''; flex: none; width: 8px; height: 8px; margin: 2px 4px 0 10px;
+  border-right: 2.4px solid currentColor; border-bottom: 2.4px solid currentColor; border-radius: 1px;
+  transform: rotate(-135deg);
+  transition: transform 320ms cubic-bezier(0.3, 0.7, 0.2, 1), margin 320ms cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+.widget[data-foldable][data-folded] > .head::after { transform: rotate(45deg); margin-top: -4px; }
+/* Part of a title that only applies while the widget is open (the chosen
+   position on "Defenses vs WR"). */
+.widget[data-folded] .openOnly { display: none; }
+.headIcon { width: 20px; height: 20px; flex: none; --ic-face: #c9dcfa; --ic-line: #2d4c9c; }
+.title { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.more { display: inline-flex; align-items: center; gap: 2px; margin: -12px 0 -12px auto; min-height: 44px; font-size: 13px; font-weight: 600; color: #2d4c9c; text-decoration: none; white-space: nowrap; }
+.caret { width: 12px; height: 12px; }
+.aside { display: inline-flex; align-items: center; margin-left: auto; }
+
+.sub { font-size: 12px; line-height: 1.3; color: #5a616d; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* ---------- The Rag, the hero ---------- */
+
+.hero { padding: 0; gap: 0; overflow: hidden; }
+.heroArt { position: relative; display: block; height: 210px; overflow: hidden; background: #c9dcfa; }
+.heroArt img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mast { display: flex; align-items: center; gap: 8px; padding: 14px 16px 12px; }
+/* The same 20px frame as every widget's icon, so the title starts on the
+   same line as the others. */
+.mastIcon { width: 20px; height: 20px; flex: none; --ic-face: #c9dcfa; --ic-line: #2d4c9c; }
+.mastName { font-size: 22px; font-weight: 900; letter-spacing: -0.03em; }
+.mastWeek { margin-left: auto; font-size: 13px; font-weight: 600; color: #2d4c9c; }
+/* The photo sits flush under the nameplate. */
+.lead { display: grid; gap: 6px; padding: 0 16px 12px; color: inherit; text-decoration: none; }
+.tag { justify-self: start; display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 11px; font-weight: 700; color: #2d4c9c; background: color-mix(in oklab, #c9dcfa 70%, white); }
+.leadHead { font-size: 22px; line-height: 1.12; font-weight: 800; letter-spacing: -0.02em; text-wrap: balance; }
+.deck { font-size: 14px; line-height: 1.4; color: #3d434e; }
+.more2 { list-style: none; margin: 0; padding: 0 16px 6px; display: grid; }
+.row { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid rgba(20, 21, 24, 0.08); color: inherit; text-decoration: none; }
+.thumb { position: relative; width: 56px; height: 56px; overflow: hidden; border-radius: 12px; background: #c9dcfa; }
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rowText { display: grid; gap: 2px; min-width: 0; }
+.rowCat { font-size: 11px; font-weight: 700; color: #2d4c9c; }
+.rowHead { font-size: 15px; line-height: 1.2; font-weight: 600; text-wrap: balance; }
+.heroFoot { display: flex; padding: 4px 16px 14px; }
+
+/* ---------- Squirt says ---------- */
+
+/* Squirt on the left, his two lines beside him in bubbles whose tails point
+   back at him. The words are quoted, as said, not texted. */
+.says { display: grid; grid-template-columns: 84px minmax(0, 1fr); align-items: center; gap: 12px; }
+.quotes { display: grid; gap: 8px; }
+.quote {
+  position: relative;
+  margin: 0;
+  padding: 10px 13px;
+  border-radius: 18px;
+  background: color-mix(in oklab, #c9dcfa 40%, white);
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 500;
+  color: #3d434e;
+}
+.quote q { quotes: '\201C' '\201D'; }
+/* The tail: a small notch on the left edge, pointing at Squirt. */
+.quote::after {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  margin-top: -6px;
+  background: inherit;
+  border-radius: 2px;
+  transform: rotate(45deg);
+}
+.quoteLead { font-size: 18px; line-height: 1.2; font-weight: 800; letter-spacing: -0.015em; color: #141518; text-wrap: balance; }
+
+/* ---------- Film tiles ---------- */
+
+.films { display: contents; }
+.film {
+  aspect-ratio: 1;
+  appearance: none;
+  border: 0;
+  margin: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+  overflow: hidden;
+  color: #fff;
+  background: #141518;
+  -webkit-tap-highlight-color: transparent;
+}
+.film:active { transform: scale(0.98); }
+.film:focus-visible { outline: 2px solid #2d4c9c; outline-offset: 3px; }
+.filmArt { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.filmShade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10, 12, 18, 0.05) 35%, rgba(10, 12, 18, 0.82) 100%); }
+.filmPlay { position: absolute; top: 16px; left: 16px; width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; background: #fff; color: #141518; box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.4); }
+.filmPlay svg { width: 13px; height: 13px; margin-left: 2px; }
+.filmBadge { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; background: #c9dcfa; }
+.filmBadge svg { width: 20px; height: 20px; --ic-face: #fff; --ic-line: #2d4c9c; }
+.filmText { position: absolute; left: 16px; right: 16px; bottom: 16px; display: grid; gap: 1px; }
+.filmText b { font-size: 17px; line-height: 1.1; font-weight: 800; }
+.filmText span { font-size: 12px; opacity: 0.92; }
+
+/* ---------- Small facts ---------- */
+
+.fact { display: grid; align-content: space-between; height: 100%; gap: 6px; }
+.big { font-size: 28px; line-height: 1; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.factName { font-size: 15px; line-height: 1.15; font-weight: 700; overflow-wrap: anywhere; }
+.mini { list-style: none; margin: 0; padding: 0; display: grid; gap: 3px; font-size: 12px; color: #3d434e; }
+.mini li { display: flex; justify-content: space-between; gap: 6px; }
+.mini li span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ---------- Lists ---------- */
+
+.list { list-style: none; margin: 0; padding: 0; display: grid; }
+.list > li + li { border-top: 1px solid rgba(20, 21, 24, 0.08); }
+
+/* The league scoreboard: one line per game, the leader in ink. */
+.game { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3px 12px; padding: 10px 0; color: inherit; text-decoration: none; font-size: 14px; }
+.side { display: contents; }
+.team { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #5a616d; }
+.pts { text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; color: #5a616d; }
+.leader .team { color: #141518; font-weight: 600; }
+.leader .pts { color: #141518; font-weight: 700; }
+.liveDrop { display: inline-block; width: 8px; height: 8px; margin-right: 6px; fill: #2d4c9c; vertical-align: 1px; }
+
+/* Faces: the week's top scorers, headshot first. */
+.faces { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; padding-bottom: 2px; }
+.face { display: grid; justify-items: center; gap: 4px; color: inherit; text-decoration: none; text-align: center; min-width: 0; }
+.headshot { width: 52px; height: 52px; border-radius: 50%; overflow: hidden; background: color-mix(in oklab, #c9dcfa 60%, white); }
+.headshot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.faceName { font-size: 12px; font-weight: 600; line-height: 1.15; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.facePts { font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.faceMeta { font-size: 11px; color: #5a616d; }
+
+/* NFL: mini scoreboards two to a row. */
+.nfl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.nflGame { display: grid; gap: 5px; padding: 10px 12px; border-radius: 14px; background: #f7f6f2; color: inherit; text-decoration: none; }
+.nflSide { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; align-items: center; gap: 6px; font-size: 13px; font-variant-numeric: tabular-nums; }
+.nflSide img { width: 18px; height: 18px; object-fit: contain; }
+.nflAbbr { font-weight: 600; color: #3d434e; }
+.nflWin .nflAbbr,
+.nflWin .nflScore { color: #141518; font-weight: 700; }
+.nflScore { color: #5a616d; }
+.nflState { font-size: 11px; font-weight: 600; color: #5a616d; }
+.nflLive { color: #2d4c9c; }
+
+/* The Feed: a mark, then the line. */
+.post { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 12px; align-items: start; padding: 10px 0; }
+.mark { display: inline-flex; justify-content: center; align-items: center; height: 20px; border-radius: 6px; font-size: 10px; font-weight: 800; letter-spacing: 0.06em; color: #2d4c9c; background: color-mix(in oklab, #c9dcfa 65%, white); }
+.markHot { color: #141518; background: #ecf88a; }
+.postTitle { font-size: 14px; line-height: 1.3; font-weight: 600; }
+.postBody { display: block; margin-top: 2px; font-size: 13px; line-height: 1.35; color: #3d434e; }
+
+/* Standings: the top of the table, then the power order. */
+.table { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 18px minmax(0, 1fr) auto 56px; column-gap: 10px; }
+/* Rank, record and points sit on the team name's baseline, not the middle
+   of the name and manager together. */
+.tRow { display: grid; grid-column: 1 / -1; grid-template-columns: subgrid; align-items: first baseline; padding: 9px 0; color: inherit; text-decoration: none; }
+.tRow + .tRow { border-top: 1px solid rgba(20, 21, 24, 0.08); }
+.seed { font-size: 13px; font-weight: 600; color: #5a616d; text-align: center; font-variant-numeric: tabular-nums; }
+.tTeam { display: grid; min-width: 0; }
+.tName { font-size: 15px; line-height: 1.18; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cell { font-size: 13px; color: #3d434e; text-align: right; font-variant-numeric: tabular-nums; }
+.subHead { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #2d4c9c; }
+.power { display: grid; gap: 7px; padding-top: 2px; }
+.powerRow { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; gap: 10px; align-items: baseline; font-size: 14px; color: inherit; text-decoration: none; }
+.move { font-size: 12px; font-weight: 600; color: #5a616d; font-variant-numeric: tabular-nums; }
+.moveUp { color: #2d4c9c; }
+.foot { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Trade: week, the two sides and what each got. */
+.trade { display: grid; gap: 4px; font-size: 13px; line-height: 1.3; }
+.trade b { font-weight: 700; }
+.gets { color: #3d434e; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+
+/* Quick links: icon tiles, three to a row. */
+.links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.link { display: grid; justify-items: center; gap: 6px; padding: 12px 4px 10px; border-radius: 14px; background: #f7f6f2; color: #141518; text-decoration: none; font-size: 13px; font-weight: 600; }
+.link:active { transform: scale(0.97); }
+.linkIcon { width: 26px; height: 26px; --ic-face: #c9dcfa; --ic-line: #2d4c9c; }
+
+.empty { font-size: 13px; line-height: 1.35; color: #5a616d; }
+
+/* A rail inside a widget runs to the card's edges, not the screen's. */
+.inRail { margin: 0 -16px; padding: 2px 16px 8px; scroll-padding: 0 16px; }
+
+/* In a square there is no room for the way-further-in words: just the caret,
+   with the words kept for screen readers. */
+/* The caret alone takes no more width than it draws; its tap area runs past
+   it invisibly, so it never pushes past the card's inner edge. */
+.s .more { position: relative; font-size: 0; gap: 0; min-width: 0; min-height: 0; margin: 0 0 0 auto; }
+.s .more::after { content: ''; position: absolute; inset: -14px -14px -14px -20px; }
+.s .caret { width: 14px; height: 14px; }
+
+/* ---------- Soul ---------- */
+
+/* Your row, wherever it appears: a powder wash run out to the card's edges
+   with shadows, so the columns inside do not move. */
+.mineRow { background: color-mix(in oklab, #c9dcfa 32%, white); box-shadow: -16px 0 0 color-mix(in oklab, #c9dcfa 32%, white), 16px 0 0 color-mix(in oklab, #c9dcfa 32%, white); }
+.list > li.mineRow + li,
+.list > li + li.mineRow { border-top-color: transparent; }
+
+/* The scoreboard's lore line: Squirt on the closest game, one chip a side. */
+.gameLore { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding-top: 4px; }
+/* Squirt's own scribble, in the hand. */
+.sweat { display: inline-flex; align-items: center; gap: 6px; font-family: var(--hand, 'Caveat'), 'Bradley Hand', cursive;
+  font-size: calc(18px * var(--hand-scale, 1)); line-height: 1; font-weight: var(--hand-weight, 700); color: #2d4c9c; }
+.chip { display: inline-flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 6px; font-size: 11px; font-weight: 600; color: #2d4c9c; background: color-mix(in oklab, #c9dcfa 55%, white); white-space: nowrap; }
+.chipHot { color: #141518; background: #ecf88a; }
+
+/* Squirt's cameos. */
+/* Beside the big number, clear of the lines under it. */
+.cameo { position: absolute; right: 22px; top: 58px; pointer-events: none; }
+.asleep { display: grid; justify-items: start; gap: 8px; }
+.tNameLine { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.tNameLine .tName { min-width: 0; }
+.crowned { flex: none; display: inline-flex; margin-top: 4px; }
+.streak { display: block; font-size: 11px; font-weight: 600; color: #5a616d; }
+.gap { grid-column: 1 / -1; height: 10px; border-top: 1px dashed rgba(20, 21, 24, 0.16); margin-top: 6px; }
+
+/* Squirt says: Squirt is a button when he has more to say. */
+.squirtTap { appearance: none; border: 0; margin: 0; padding: 0; background: none; cursor: pointer; border-radius: 16px; -webkit-tap-highlight-color: transparent; }
+.squirtTap:active { transform: scale(0.94); }
+.squirtTap:focus-visible { outline: 2px solid #2d4c9c; outline-offset: 4px; }
+.tapHint { font-family: var(--hand, 'Caveat'), 'Bradley Hand', cursive;
+  font-size: calc(17px * var(--hand-scale, 1)); line-height: 1; font-weight: var(--hand-weight, 700); color: #2d4c9c; padding-left: 4px; }
+
+/* ---------- The tape ---------- */
+
+.clips { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.clips::-webkit-scrollbar { display: none; }
+.clip { flex: none; width: 220px; display: grid; align-content: start; gap: 6px; scroll-snap-align: start; color: inherit; text-decoration: none; }
+.clipStill { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 14px; background: #c9dcfa; }
+.clipStill img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.clipPlay { position: absolute; left: 10px; bottom: 10px; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: #fff; box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.45); }
+.clipPlay svg { width: 14px; height: 14px; margin-left: 2px; fill: #141518; }
+.clipTitle { font-size: 14px; line-height: 1.3; font-weight: 600; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.clipOwners { display: flex; flex-wrap: wrap; gap: 4px; }
+/* Clips that play in place (ClipPlayer.tsx). Wide tiles are 16:9; on a phone a
+   vertical clip is 9:16. Both keep the player at least 180px tall. The tap
+   target covers the whole picture: first tap plays, then it toggles sound. */
+.clipWide { width: 320px; }
+.clipTall { width: 210px; }
+.clipStillTall { aspect-ratio: 9 / 16; }
+.clipFrame { position: absolute; inset: 0; display: block; }
+.clipFrame iframe { display: block; width: 100%; height: 100%; border: 0; }
+.clipStill[data-playing] img { visibility: hidden; }
+.clipTap { position: absolute; inset: 0; z-index: 1; display: block; margin: 0; padding: 0; border: 0; background: transparent; cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+.clipTap:focus-visible { outline: 2px solid #2d4c9c; outline-offset: -2px; border-radius: 14px; }
+.clipSource { font-size: 12px; line-height: 1.3; color: #5a616d; }
+.via { font-size: 11px; color: #5a616d; }
+
+/* NFL game cards with a still from their own highlights on top. */
+.nflPictured { padding-top: 0; overflow: hidden; }
+.nflStill { display: block; height: 64px; margin: 0 -12px 2px; overflow: hidden; background: #c9dcfa; }
+.nflStill img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Who carried: one row per player, full name, his real line, his points. */
+.scorer { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 9px 0; color: inherit; text-decoration: none; }
+.scorer .headshot { width: 44px; height: 44px; }
+.scorerText { display: grid; gap: 2px; min-width: 0; }
+.scorerText b { font-size: 15px; font-weight: 600; }
+.statLine { font-size: 12px; line-height: 1.35; color: #3d434e; font-variant-numeric: tabular-nums; }
+.scorerPts { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }

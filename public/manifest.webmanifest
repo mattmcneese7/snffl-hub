@@ -1,13 +1,13 @@
 {
-  "name": "SQUIRT",
-  "short_name": "SQUIRT",
-  "description": "The home of the Squirtnite FFL.",
+  "name": "Splash",
+  "short_name": "Splash",
+  "description": "The Squirtnite FFL, live.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#091c1e",
-  "theme_color": "#091c1e",
+  "background_color": "#f7f6f2",
+  "theme_color": "#f7f6f2",
   "icons": [
     {
       "src": "/icon-192.png",

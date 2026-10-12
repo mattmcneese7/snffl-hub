@@ -1,0 +1,17 @@
+/* Versions: one widget per name the app has had. Facts as "Label | value"
+   rows, the era's line, its highlights, and the way in. */
+
+.facts { display: grid; gap: 0; margin: 0; }
+.fact { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; padding: 6px 0; border-top: 1px solid rgba(20, 21, 24, 0.08); font-size: 13px; line-height: 1.35; }
+.fact:first-child { border-top: 0; padding-top: 0; }
+.fact dt { color: #5a616d; font-weight: 600; }
+.fact dd { margin: 0; color: #141518; font-weight: 600; font-variant-numeric: tabular-nums; }
+.sha { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+
+.line { margin: 0; font-size: 15px; line-height: 1.4; color: #3d434e; }
+
+.highlights { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.highlights li { position: relative; padding-left: 14px; font-size: 14px; line-height: 1.35; color: #141518; }
+.highlights li::before { content: ''; position: absolute; left: 0; top: 0.5em; width: 6px; height: 6px; border-radius: 50%; background: #2d4c9c; }
+
+.foot { display: flex; padding-top: 2px; }

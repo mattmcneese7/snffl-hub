@@ -1,0 +1,5 @@
+/* The icon set's dress. Phosphor's duotone draws a line layer in the current
+   color and a back layer at 20% opacity; here the line takes --ic-line and
+   the back layer becomes a solid face in --ic-face. */
+.icon { display: block; width: 24px; height: 24px; overflow: visible; color: var(--ic-line, #2d4c9c); }
+.icon [opacity] { fill: var(--ic-face, #fff); opacity: 1; }

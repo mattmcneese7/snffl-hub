@@ -1,0 +1,57 @@
+/* The Chug Meter in Pool: a row per manager, his face, his name, and a bar
+   made of steins from the icon set, one per beer owed. */
+
+.row {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) 28px;
+  grid-template-areas:
+    'face who count'
+    'face steins steins';
+  column-gap: 12px;
+  align-items: center;
+  padding: 9px 0;
+  color: inherit;
+  text-decoration: none;
+}
+.row:active { opacity: 0.6; }
+.face { grid-area: face; width: 36px; height: 36px; border-radius: 50%; overflow: hidden; background: color-mix(in oklab, #c9dcfa 60%, white); }
+.face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.who { grid-area: who; display: flex; align-items: baseline; gap: 8px; min-width: 0; }
+.name { flex: none; font-size: 15px; font-weight: 600; }
+.team { min-width: 0; font-size: 12px; color: #5a616d; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.count { grid-area: count; font-size: 20px; line-height: 1; font-weight: 800; letter-spacing: -0.02em; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* The bar: one stein per beer, deep blue on a powder face, wrapping if a
+   season ever gets that bad. */
+.steins { grid-area: steins; display: flex; flex-wrap: wrap; align-items: center; gap: 2px; padding-top: 3px; }
+.stein { width: 22px; height: 22px; --ic-face: #c9dcfa; --ic-line: #2d4c9c; }
+.weeks { margin-left: 6px; font-size: 12px; font-weight: 600; color: #5a616d; font-variant-numeric: tabular-nums; }
+
+
+/* The film */
+
+.film { margin: 0 -16px; overflow: hidden; background: #141518; }
+.video { display: block; width: 100%; max-height: 70vh; background: #141518; }
+.filmLine { margin: 0; font-size: 14px; line-height: 1.4; color: #3d434e; }
+.filmLine b { font-weight: 700; color: #141518; }
+
+/* The archive: past films, folded shut until opened. Two to a row, each in a
+   dark frame that fits a phone's portrait or landscape clip whole. */
+.archive { gap: 0; }
+.archiveHead { padding: 0; min-height: 22px; background: none; color: inherit; gap: 8px; }
+.archiveCount { margin-left: auto; }
+.archiveGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 10px; padding-top: 12px; }
+.archiveItem { display: grid; gap: 6px; margin: 0; }
+.archiveVideo { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: contain; border-radius: 14px; background: #141518; }
+.archiveItem figcaption { display: grid; gap: 1px; font-size: 12px; line-height: 1.3; color: #5a616d; }
+.archiveItem figcaption b { font-size: 14px; font-weight: 700; color: #141518; }
+
+/* The rules */
+
+.intro { margin: 0; font-size: 15px; line-height: 1.45; color: #3d434e; }
+.rules { list-style: none; margin: 0; padding: 0; display: grid; }
+.rules li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; align-items: start; padding: 9px 0; font-size: 14px; line-height: 1.45; color: #3d434e; }
+.rules li + li { border-top: 1px solid rgba(20, 21, 24, 0.08); }
+.ruleNum { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: color-mix(in oklab, #c9dcfa 70%, white); color: #2d4c9c; font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.submit { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; align-items: start; margin: 0; padding: 10px 12px; border-radius: 12px; background: #f7f6f2; font-size: 13px; line-height: 1.4; color: #3d434e; }
+.submitIcon { width: 22px; height: 22px; --ic-face: #c9dcfa; --ic-line: #2d4c9c; }

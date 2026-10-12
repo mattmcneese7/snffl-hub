@@ -1,0 +1,28 @@
+/* The rules in Pool: setup and scoring as label and value rows on hairlines,
+   the starting lineup as slots, and the chug rules numbered on discs. */
+
+.list { list-style: none; margin: 0; padding: 0; display: grid; }
+.list > li + li { border-top: 1px solid rgba(20, 21, 24, 0.08); }
+.row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: baseline; padding: 9px 0; }
+.label { display: grid; gap: 1px; min-width: 0; font-size: 15px; font-weight: 500; color: #141518; }
+.hint { font-size: 12px; font-weight: 400; color: #5a616d; }
+.value { font-size: 15px; font-weight: 700; color: #141518; text-align: right; font-variant-numeric: tabular-nums; }
+.neg { color: #3d434e; }
+.zero { font-weight: 500; color: #5a616d; }
+
+.group { display: grid; gap: 2px; padding-top: 2px; }
+
+/* The starting lineup, slot by slot, the way Sleeper lays it out. */
+.lineup { display: grid; gap: 8px; }
+.slots { display: flex; flex-wrap: wrap; gap: 6px; }
+.slot { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; height: 30px; padding: 0 10px; border-radius: 8px; background: color-mix(in oklab, #c9dcfa 55%, white); color: #2d4c9c; font-size: 13px; font-weight: 700; letter-spacing: 0.02em; }
+
+/* The chug rules */
+
+.intro { margin: 0; font-size: 15px; line-height: 1.45; color: #3d434e; }
+.rules { list-style: none; margin: 0; padding: 0; display: grid; }
+.rules li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; align-items: start; padding: 9px 0; font-size: 14px; line-height: 1.45; color: #3d434e; }
+.rules li + li { border-top: 1px solid rgba(20, 21, 24, 0.08); }
+.ruleNum { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: color-mix(in oklab, #c9dcfa 70%, white); color: #2d4c9c; font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.submit { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; align-items: start; margin: 0; padding: 10px 12px; border-radius: 12px; background: #f7f6f2; font-size: 13px; line-height: 1.4; color: #3d434e; }
+.submitIcon { width: 22px; height: 22px; --ic-face: #c9dcfa; --ic-line: #2d4c9c; }

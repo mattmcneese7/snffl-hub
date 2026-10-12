@@ -1,0 +1,40 @@
+/* Trades in Pool: each trade a widget, its sides stacked with the swap
+   between them, what each side got as faces and lines. */
+
+
+.sides { display: grid; }
+.sideWrap { display: grid; }
+/* The swap mark sits on the rule between the two sides. */
+.swap { position: relative; display: grid; place-items: center; height: 24px; }
+.swap::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; border-top: 1px solid rgba(20, 21, 24, 0.08); }
+.swapIcon { position: relative; width: 28px; height: 28px; padding: 4px; border-radius: 50%; background: #fff; --ic-face: #c9dcfa; --ic-line: #2d4c9c; transform: rotate(90deg); }
+
+.side { display: grid; gap: 2px; }
+/* Your side: the powder wash, run to the card's edges. */
+.mine { margin: 0 -16px; padding: 4px 16px; background: color-mix(in oklab, #c9dcfa 32%, white); }
+
+.sideHead { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 12px; align-items: center; padding: 2px 0; color: inherit; text-decoration: none; }
+.sideHead:active { opacity: 0.6; }
+.face { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; background: color-mix(in oklab, #c9dcfa 60%, white); }
+.face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sideText { display: grid; gap: 2px; min-width: 0; }
+.teamName { font-size: 17px; line-height: 1.2; font-weight: 700; letter-spacing: -0.01em; overflow-wrap: anywhere; }
+
+/* What they got, indented under the team so the side reads as one block. */
+.gets { list-style: none; margin: 0; padding: 0 0 0 52px; display: grid; }
+.gets > li + li { border-top: 1px solid rgba(20, 21, 24, 0.08); }
+.player { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 10px; align-items: center; padding: 8px 0; color: inherit; text-decoration: none; }
+.player:active { opacity: 0.6; }
+.headshot { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; background: color-mix(in oklab, #c9dcfa 60%, white); }
+.headshot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pText { display: grid; gap: 1px; min-width: 0; }
+.pName { font-size: 15px; line-height: 1.2; font-weight: 600; overflow-wrap: anywhere; }
+
+.extra { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 10px; align-items: center; padding: 8px 0; font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.extraMark { display: inline-flex; justify-content: center; align-items: center; height: 20px; border-radius: 6px; font-size: 10px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #2d4c9c; background: color-mix(in oklab, #c9dcfa 65%, white); }
+.money { font-weight: 700; }
+.nothing { padding: 8px 0; font-size: 14px; font-weight: 500; color: #5a616d; }
+
+/* Nothing to show: Squirt asleep beside the line, one compact card. */
+.emptyCard { grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 12px; }
+.emptyCard p { margin: 0; }

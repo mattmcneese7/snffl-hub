@@ -17,6 +17,16 @@ const nextConfig: NextConfig = {
     return [
       { source: '/power-rankings', destination: '/standings#power', permanent: true },
       { source: '/playoffs', destination: '/standings#playoffs', permanent: true },
+      // Splash 3.0. Home is "/", the v2 Matchups section is the Scoreboard,
+      // and the links people saved from the /testing preview land on the
+      // real page. Not permanent, so the paths can still change.
+      { source: '/home', destination: '/', permanent: false },
+      { source: '/matchups', destination: '/scoreboard', permanent: false },
+      { source: '/matchups/:week', destination: '/scoreboard/:week', permanent: false },
+      { source: '/matchups/:week/:matchupId', destination: '/scoreboard/:week/:matchupId', permanent: false },
+      { source: '/testing', destination: '/', permanent: false },
+      { source: '/testing/home', destination: '/', permanent: false },
+      { source: '/testing/:path*', destination: '/:path*', permanent: false },
     ];
   },
 

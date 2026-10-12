@@ -1,0 +1,100 @@
+/* Players: the browser and the player page, in the Home's widget language.
+   Controls sit on paper inside a white card, the way the NFL mini cards do;
+   rows keep the 12px to 14px rhythm and the same hairlines. */
+
+.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- The controls ---------- */
+
+.controls { display: grid; gap: 12px; min-width: 0; }
+.searchWrap { display: block; }
+.search {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 14px;
+  background: #f7f6f2;
+  color: #141518;
+  font: inherit;
+  font-size: 16px;
+  box-shadow: inset 0 0 0 1px rgba(20, 21, 24, 0.08);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.search::placeholder { color: #5a616d; }
+.search:focus-visible { outline: 2px solid #2d4c9c; outline-offset: 2px; }
+
+.field { display: grid; gap: 6px; min-width: 0; }
+.sorts { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+.sorts::-webkit-scrollbar { display: none; }
+.sort {
+  flex: none;
+  height: 34px;
+  padding: 0 13px;
+  border: 0;
+  border-radius: 999px;
+  background: #f7f6f2;
+  color: #3d434e;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px rgba(20, 21, 24, 0.08);
+  -webkit-tap-highlight-color: transparent;
+}
+.sortOn { background: #c9dcfa; color: #141518; font-weight: 700; box-shadow: none; }
+.sort:focus-visible { outline: 2px solid #2d4c9c; outline-offset: 2px; }
+
+.selects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 8px; }
+/* NFL team names are full ("Arizona Cardinals"), so that select gets a row. */
+.selects > :nth-child(2) { grid-column: 1 / -1; order: 3; }
+.select {
+  width: 100%;
+  min-width: 0;
+  height: 40px;
+  padding: 0 26px 0 10px;
+  border: 0;
+  border-radius: 12px;
+  background: #f7f6f2 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5l3 3 3-3' fill='none' stroke='%232d4c9c' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 9px center / 12px 12px;
+  color: #141518;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  box-shadow: inset 0 0 0 1px rgba(20, 21, 24, 0.08);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.select:focus-visible { outline: 2px solid #2d4c9c; outline-offset: 2px; }
+
+/* The free agent switch: a real checkbox under a drawn track. */
+.toggle { position: relative; display: inline-flex; align-items: center; gap: 10px; min-height: 32px; font-size: 14px; font-weight: 600; color: #141518; cursor: pointer; }
+.toggle input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.switch { position: relative; flex: none; width: 40px; height: 24px; border-radius: 12px; background: #f7f6f2; box-shadow: inset 0 0 0 1px rgba(20, 21, 24, 0.16); transition: background 160ms; }
+.switch::after { content: ''; position: absolute; left: 3px; top: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(20, 21, 24, 0.3); transition: transform 160ms; }
+.toggle input:checked + .switch { background: #2d4c9c; box-shadow: none; }
+.toggle input:checked + .switch::after { transform: translateX(16px); }
+.toggle input:focus-visible + .switch { outline: 2px solid #2d4c9c; outline-offset: 2px; }
+
+.notice { margin: 0; padding: 10px 12px; border-radius: 12px; background: #ecf88a; font-size: 13px; line-height: 1.35; color: #141518; }
+
+/* ---------- The rows ---------- */
+
+.row { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 0; color: inherit; text-decoration: none; }
+.row:active { opacity: 0.7; }
+.face { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; background: color-mix(in oklab, #c9dcfa 60%, white); }
+.face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.text { display: grid; gap: 2px; min-width: 0; }
+.name { font-size: 15px; line-height: 1.2; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.meta { font-size: 12px; color: #5a616d; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.inj { display: inline-flex; align-items: center; height: 16px; margin-left: 6px; padding: 0 5px; border-radius: 4px; font-size: 10px; font-weight: 700; color: #141518; background: #ecf88a; vertical-align: 1px; }
+.fig { display: grid; justify-items: end; gap: 1px; line-height: 1.1; }
+.fig b { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.fig span { font-size: 11px; color: #5a616d; }
+.none { color: #5a616d; font-weight: 500 !important; }
+
+.emptyRow { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: center; }
+.emptyHead { display: block; font-size: 15px; font-weight: 700; color: #141518; }
+.moreRow { display: flex; justify-content: center; padding-top: 2px; }
+.moreBtn { border: 0; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }

@@ -1,0 +1,109 @@
+/* My Team in Pool: decisions first, then the lineup, then the plumbing. Rows
+   match the home's lists: 13px vertical, hairlines between. */
+
+/* The team picker, here and in Settings. 17px so iPhone doesn't zoom on
+   focus; the caret drawn in deep blue. */
+.select {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  padding: 0 40px 0 14px;
+  border: 0;
+  border-radius: 14px;
+  background: #f7f6f2 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4' fill='none' stroke='%232d4c9c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 14px center / 16px 16px;
+  box-shadow: inset 0 0 0 1px rgba(20, 21, 24, 0.08);
+  color: #141518;
+  font: inherit;
+  font-size: 17px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+.select:focus-visible { outline: 2px solid #2d4c9c; outline-offset: 2px; }
+
+.pickIntro { margin: 0; font-size: 15px; line-height: 1.4; color: #3d434e; }
+.pick { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: center; }
+
+/* The head: the projected total, big, and the game it's for. */
+.top { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; align-items: end; }
+.total { font-size: 34px; line-height: 1; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.totalLabel { grid-column: 1 / -1; font-size: 13px; color: #5a616d; }
+.opp { display: inline-flex; align-items: center; gap: 2px; min-height: 44px; margin: -12px 0; font-size: 14px; font-weight: 600; color: #2d4c9c; text-decoration: none; text-align: right; }
+.oppTeam { grid-column: 1 / -1; font-size: 13px; color: #5a616d; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.caret { width: 12px; height: 12px; flex: none; }
+.scribble { display: inline-flex; align-items: center; gap: 8px; font-family: var(--hand), cursive; font-size: calc(17px * var(--hand-scale, 1)); font-weight: var(--hand-weight, 700); line-height: 1.1; color: #2d4c9c; }
+.change { font-size: 13px; font-weight: 600; color: #2d4c9c; text-decoration: none; }
+
+/* A player row: slot, face, name and what he is, the number on the right. */
+.row {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  gap: 4px 12px;
+  align-items: center;
+  padding: 10px 0;
+  color: inherit;
+  text-decoration: none;
+}
+.row:active { opacity: 0.6; }
+.lineRow { grid-template-columns: 34px 36px minmax(0, 1fr) auto; }
+.slot { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #2d4c9c; }
+.face { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; background: color-mix(in oklab, #c9dcfa 60%, white); }
+.face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.who { display: grid; gap: 3px; min-width: 0; }
+.name { font-size: 15px; line-height: 1.2; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; font-size: 12px; line-height: 1.3; color: #5a616d; min-width: 0; }
+.num { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
+.gain { font-size: 15px; font-weight: 800; color: #2d4c9c; font-variant-numeric: tabular-nums; }
+.logo { width: 13px; height: 13px; margin: 0 3px 0 1px; object-fit: contain; }
+.chipEven { color: #3d434e; background: #f0efea; }
+
+.act { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding-top: 4px; }
+.swapBtn { border: 0; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+.swapBtn:disabled { opacity: 0.6; }
+.swapDone { font-size: 14px; font-weight: 700; color: #2d4c9c; }
+
+/* Movement: a mark for the kind, the sentence, when. */
+.move { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: baseline; padding: 10px 0; color: inherit; text-decoration: none; }
+.moveText { font-size: 14px; line-height: 1.35; font-weight: 500; min-width: 0; overflow-wrap: anywhere; }
+.when { font-size: 12px; color: #5a616d; white-space: nowrap; }
+
+/* Sleeper connect: v2's component as it is, behind a disclosure, with its
+   night glass classes redrawn for a white card. */
+.details { display: grid; gap: 12px; padding-top: 4px; border-top: 1px solid rgba(20, 21, 24, 0.08); }
+.details > summary { display: flex; align-items: center; gap: 6px; min-height: 44px; margin: -12px 0; list-style: none; cursor: pointer; font-size: 14px; font-weight: 600; color: #2d4c9c; }
+.details > summary::-webkit-details-marker { display: none; }
+.details > summary::after { content: ''; width: 7px; height: 7px; margin-left: 2px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translate(-2px, -2px); transition: transform 160ms ease; }
+.details[open] > summary::after { transform: rotate(225deg) translate(-2px, -2px); }
+.connect { padding-top: 12px; }
+.connect :global(.snffl-connect) { display: grid; gap: 12px; justify-items: start; }
+.connect :global(.snffl-connect-note) { margin: 0; font-size: 14px; line-height: 1.45; color: #3d434e; }
+.connect :global(.snffl-connect-dev) { width: 100%; display: grid; gap: 10px; }
+.connect :global(.snffl-connect-dev summary) { font-family: inherit; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #2d4c9c; cursor: pointer; }
+.connect :global(.snffl-connect-input) { width: 100%; height: 44px; padding: 0 12px; border: 0; border-radius: 12px; background: #f7f6f2; box-shadow: inset 0 0 0 1px rgba(20, 21, 24, 0.12); color: #141518; font-family: inherit; font-size: 17px; }
+.connect :global(.snffl-invite-go),
+.connect :global(.snffl-connect-off) {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: var(--pill-ring);
+  color: #2d4c9c;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  cursor: pointer;
+}
+.connect :global(.snffl-invite-go:disabled) { opacity: 0.5; }
+
+.note { margin: 0; font-size: 12px; line-height: 1.4; color: #5a616d; }
+
+/* Bench and injured reserve under the lineup, each with its count. */
+.rosterHead { padding-top: 10px; }
+.rosterHead:first-child { padding-top: 0; }

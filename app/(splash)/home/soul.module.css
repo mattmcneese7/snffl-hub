@@ -1,0 +1,188 @@
+/* Soul: Squirt, the voice, the lore and the theatre, in Pool. */
+
+/* ---------- Squirt ---------- */
+
+.squirt { position: relative; display: inline-block; flex: none; }
+.squirtSvg { width: 100%; height: 100%; display: block; overflow: visible; }
+.body { fill: #c9dcfa; stroke: #2d4c9c; stroke-width: 2.4; stroke-linejoin: round; }
+.laces path { stroke: rgba(45, 76, 156, 0.45); stroke-width: 1.6; stroke-linecap: round; fill: none; }
+.eye { fill: #fff; stroke: #2d4c9c; stroke-width: 1.4; }
+.pupil { fill: #141518; }
+.lid { fill: #c9dcfa; stroke: #2d4c9c; stroke-width: 1.4; stroke-linejoin: round; }
+.line { fill: none; stroke: #2d4c9c; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.bead { fill: #ffffff; stroke: #2d4c9c; stroke-width: 1; }
+
+/* A little life: smug sways, sweat jitters and its bead runs, gloom sags. */
+.smug .squirtSvg { animation: sway 3.2s ease-in-out infinite; transform-origin: 50% 90%; }
+@keyframes sway {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+.sweat .squirtSvg { animation: jitter 1.6s ease-in-out infinite; }
+@keyframes jitter {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-0.6px); }
+  40% { transform: translateX(0.6px); }
+}
+.sweat .bead { animation: run 1.8s ease-in infinite; }
+@keyframes run {
+  0% { transform: translateY(0); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateY(10px); opacity: 0; }
+}
+.gloom .squirtSvg { animation: sag 4s ease-in-out infinite; transform-origin: 50% 100%; }
+@keyframes sag {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.97); }
+}
+
+/* Asleep: two small z's drift up off his head. */
+.sleep .squirtSvg { animation: sag 5s ease-in-out infinite; transform-origin: 50% 100%; }
+.zzz { position: absolute; right: -6%; top: -4%; display: grid; font-weight: 800; color: #2d4c9c; line-height: 0.8; pointer-events: none; }
+.zzz span { font-size: 0.24em; animation: rise 2.6s ease-in infinite; }
+.zzz span + span { margin-left: 0.3em; font-size: 0.18em; animation-delay: 1.3s; }
+@keyframes rise {
+  0% { transform: translateY(4px); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateY(-8px); opacity: 0; }
+}
+/* Props from the icon set, worn in Pool: a powder face, a deep blue line. */
+.crown,
+.stein { position: absolute; color: #2d4c9c; }
+.crown [opacity],
+.stein [opacity] { fill: #ecf88a; opacity: 1; }
+.crown { left: 50%; top: -26%; width: 52%; height: 52%; transform: translateX(-50%) rotate(-8deg); }
+.stein { right: -22%; bottom: 2%; width: 48%; height: 48%; transform: rotate(14deg); }
+
+/* ---------- The voice: Squirt speaks ---------- */
+
+.says { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: end; gap: 10px; padding: 0 12px; }
+.bubble {
+  position: relative;
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 18px 18px 18px 6px;
+  background: #fff;
+  box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.06), 0 8px 20px -12px rgba(30, 26, 20, 0.25);
+  font-size: 14px;
+  line-height: 1.35;
+  color: #141518;
+}
+.bubble b { font-weight: 700; }
+.who { display: block; margin-bottom: 2px; font-size: 11px; font-weight: 700; color: #2d4c9c; }
+
+/* ---------- Marker annotation, in the hand (Caveat) ---------- */
+
+.ouch { position: relative; display: inline-block; }
+.circle { position: absolute; left: -10px; right: -10px; top: -6px; bottom: -8px; width: calc(100% + 20px); height: calc(100% + 14px); overflow: visible; pointer-events: none; }
+.circle path { fill: none; stroke: #2d4c9c; stroke-width: 2.2; stroke-linecap: round; stroke-dasharray: 260; stroke-dashoffset: 260; animation: draw 700ms 1100ms cubic-bezier(0.5, 0, 0.2, 1) forwards; }
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+.note {
+  position: absolute;
+  right: -6px;
+  top: -22px;
+  font-family: var(--hand, 'Caveat'), 'Bradley Hand', cursive;
+  font-size: calc(21px * var(--hand-scale, 1));
+  line-height: 1;
+  font-weight: var(--hand-weight, 700);
+  color: #2d4c9c;
+  transform: rotate(-8deg);
+  white-space: nowrap;
+  opacity: 0;
+  animation: show 300ms 1700ms ease forwards;
+}
+@keyframes show {
+  to { opacity: 1; }
+}
+
+/* ---------- Lore ---------- */
+
+.lore { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.loreChip {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 7px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #2d4c9c;
+  background: color-mix(in oklab, #c9dcfa 55%, white);
+  white-space: nowrap;
+}
+.loreHot { color: #141518; background: #ecf88a; }
+
+/* ---------- Theatre ---------- */
+
+/* The live drop drips: it falls a hair and squashes, every few seconds. */
+.drip { animation: drip 2.8s ease-in infinite; transform-origin: 50% 100%; }
+@keyframes drip {
+  0%, 70%, 100% { transform: translateY(0) scale(1); }
+  80% { transform: translateY(1.5px) scale(0.92, 1.12); }
+  90% { transform: translateY(0) scale(1.08, 0.9); }
+}
+
+/* ---------- Squirt on the Shart's stamp ---------- */
+
+/* One ink, like a rubber stamp: the body and lids go white, the line and
+   pupils deep blue, and he holds still. */
+.stamp .body,
+.stamp .lid { fill: #fff; }
+.stamp .pupil { fill: #2d4c9c; }
+.stamp .squirtSvg { animation: none; }
+
+/* ---------- The marker, on a word in the voice ---------- */
+
+/* The one place lime marks text: a word in Squirt's voice. */
+.marker { position: relative; z-index: 0; background: none; color: inherit; }
+.marker::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: -3px;
+  right: -2px;
+  top: 52%;
+  height: 0.46em;
+  background: #ecf88a;
+  border-radius: 4px 10px 5px 12px;
+  transform: rotate(-1.5deg) skewX(-8deg);
+  transform-origin: left center;
+  animation: swipe 520ms 300ms cubic-bezier(0.5, 0, 0.2, 1) both;
+}
+@keyframes swipe {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+/* ---------- Bench: soul toggles ---------- */
+
+.toggles { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 -8px; padding: 0 20px 4px; }
+.toggles::-webkit-scrollbar { display: none; }
+.toggle {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #3d434e;
+  text-decoration: none;
+  background: #fff;
+  box-shadow: 0 0 0 0.5px rgba(20, 21, 24, 0.12);
+}
+.toggleOn { background: #c9dcfa; color: #141518; font-weight: 600; }
+
+@media (prefers-reduced-motion: reduce) {
+  .squirtSvg,
+  .zzz span,
+  .bead,
+  .drip,
+  .marker::before { animation: none !important; }
+  .circle path { animation: none; stroke-dashoffset: 0; }
+  .note { animation: none; opacity: 1; }
+}

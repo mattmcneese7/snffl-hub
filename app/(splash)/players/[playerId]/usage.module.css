@@ -1,0 +1,9 @@
+/* Usage: a small table, the week then four numbers, on the list hairlines. */
+.table { display: grid; grid-template-columns: minmax(56px, 1fr) repeat(4, minmax(0, 1fr)); column-gap: 8px; }
+.row { display: grid; grid-column: 1 / -1; grid-template-columns: subgrid; align-items: end; }
+.line { align-items: center; padding: 9px 0; border-top: 1px solid rgba(20, 21, 24, 0.08); }
+.row:first-child { padding-bottom: 6px; }
+.week { font-size: 14px; font-weight: 600; color: #141518; white-space: nowrap; }
+.num { text-align: right; font-size: 14px; font-variant-numeric: tabular-nums; color: #3d434e; }
+.row:first-child .num { font-size: 10px; line-height: 1.2; letter-spacing: 0.04em; color: #2d4c9c; }
+.pending { font-size: 12px; color: #5a616d; }

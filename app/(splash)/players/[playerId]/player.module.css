@@ -1,0 +1,122 @@
+/* The player page. The hero is powder, not his NFL team's colors: Pool
+   carries the structure and his team is a small logo. Everything else is
+   the Home's widget language. */
+
+/* ---------- Hero ---------- */
+
+/* Every line of the hero starts on one left edge, the card's 16px. The top
+   is powder: the back link, the name and his team, with the picture beside
+   them standing on the foot. The foot is white and runs the card's width:
+   who has him (avatar on the edge, status on the right), then the one thing
+   to do about it, full width so it has no edge of its own to misalign. */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 124px;
+  grid-template-areas: 'back shot' 'who shot' 'foot foot';
+  gap: 0 8px;
+  padding-bottom: 0;
+  overflow: hidden;
+  background: color-mix(in oklab, #c9dcfa 72%, white);
+}
+.back { grid-area: back; justify-self: start; display: inline-flex; align-items: center; gap: 4px; margin: -8px 0 0 -2px; min-height: 32px; font-size: 13px; font-weight: 600; color: #2d4c9c; text-decoration: none; }
+.back svg { width: 12px; height: 12px; }
+.who { grid-area: who; display: grid; justify-items: start; align-content: start; gap: 8px; min-width: 0; padding: 2px 0 18px; }
+.heroName { margin: 0; font-size: 30px; line-height: 1.02; font-weight: 900; letter-spacing: -0.03em; color: #141518; text-wrap: balance; }
+/* The position is text on the edge, not a tag, so nothing sits inset. */
+.heroTeam { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 14px; font-weight: 600; color: #3d434e; }
+.heroTeam img { width: 20px; height: 20px; object-fit: contain; flex: none; }
+.heroTeam > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pos { flex: none; padding-right: 8px; border-right: 1px solid rgba(45, 76, 156, 0.25); font-size: 14px; font-weight: 800; color: #2d4c9c; text-decoration: none; letter-spacing: 0.02em; }
+.hot { display: inline-flex; align-items: center; min-height: 22px; padding: 2px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; color: #141518; background: #ecf88a; }
+.foot { grid-area: foot; display: grid; gap: 12px; margin: 0 -16px; padding: 14px 16px 16px; background: #fff; }
+.ownerRow { display: flex; align-items: center; gap: 12px; min-height: 36px; }
+.owner { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; color: inherit; text-decoration: none; }
+.ownerFace { width: 36px; height: 36px; flex: none; border-radius: 50%; overflow: hidden; background: #c9dcfa; }
+.ownerFace img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ownerText { display: grid; min-width: 0; line-height: 1.25; }
+.ownerText b { font-size: 15px; font-weight: 700; color: #141518; }
+.ownerText span { font-size: 13px; font-weight: 500; color: #5a616d; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bugOwned,
+.bugFree { flex: none; display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+.bugOwned { margin-left: auto; color: #2d4c9c; background: color-mix(in oklab, #c9dcfa 60%, white); }
+.bugFree { color: #141518; background: #ecf88a; }
+/* The Sleeper pill at full width: the same pill, centered. */
+.foot > a { width: 100%; height: 40px; justify-content: center; font-size: 14px; }
+.cutout { grid-area: shot; position: relative; align-self: stretch; min-height: 128px; margin: -14px -16px 0 0; }
+.cutoutImg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: right bottom; }
+.headshotImg { position: absolute; right: 16px; bottom: 14px; width: 88px; height: 88px; border-radius: 50%; object-fit: cover; background: #fff; }
+
+/* ---------- Season stats ---------- */
+
+.blocks { display: grid; gap: 12px; }
+.block { display: grid; gap: 6px; }
+.pairs { margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.pair { display: grid; gap: 1px; padding: 8px 10px; border-radius: 10px; background: #f7f6f2; min-width: 0; }
+.pair dt { font-size: 11px; line-height: 1.2; color: #5a616d; overflow-wrap: anywhere; }
+.pair dd { margin: 0; font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* ---------- Outlook ---------- */
+
+.injury { margin: 0; padding: 10px 12px; border-radius: 12px; background: #ecf88a; font-size: 13px; line-height: 1.35; font-weight: 600; color: #141518; }
+.outTop { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.outCell { display: grid; align-content: start; gap: 2px; padding: 10px; border-radius: 12px; background: #f7f6f2; min-width: 0; }
+.cellSoft { background: color-mix(in oklab, #c9dcfa 60%, white); }
+.cellHard { background: #ecf88a; }
+.cellHard .outNote { color: #141518; }
+.outBig { font-size: 24px; line-height: 1; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.outNote { font-size: 12px; line-height: 1.3; color: #3d434e; }
+.read { margin: 0; font-size: 15px; line-height: 1.45; color: #3d434e; }
+.odds { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.odd { display: grid; gap: 1px; padding: 8px 10px; border-radius: 10px; }
+.odd b { font-size: 20px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.odd span { font-size: 12px; color: #3d434e; }
+.boom { background: color-mix(in oklab, #c9dcfa 60%, white); }
+.bust { background: #f7f6f2; }
+.working { margin: 0; font-size: 13px; line-height: 1.4; color: #3d434e; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.role { color: #fff; background: #2d4c9c; }
+.chipEven { color: #3d434e; background: #f7f6f2; }
+.ahead { display: grid; gap: 8px; }
+
+/* ---------- News ---------- */
+
+.news { display: grid; gap: 3px; padding: 10px 0; color: inherit; text-decoration: none; }
+.news b { font-size: 14px; line-height: 1.3; font-weight: 600; }
+.newsSum { font-size: 13px; line-height: 1.4; color: #3d434e; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+.newsCredit { font-size: 12px; color: #5a616d; }
+
+/* ---------- The week card ---------- */
+
+.game { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px; border-radius: 12px; background: #f7f6f2; color: inherit; text-decoration: none; }
+.game:active { opacity: 0.7; }
+.gameLogo { width: 36px; height: 36px; object-fit: contain; }
+.gameText { display: grid; gap: 2px; min-width: 0; }
+.gameText b { font-size: 15px; font-weight: 700; }
+.gameText span { font-size: 12px; line-height: 1.3; color: #5a616d; }
+.caret { width: 14px; height: 14px; color: #2d4c9c; }
+.cells { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.cell { display: grid; gap: 1px; padding: 8px 10px; border-radius: 10px; background: #f7f6f2; min-width: 0; }
+.cell b { font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.cells > .cell:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.hurt { display: flex; flex-wrap: wrap; gap: 6px; }
+.note { margin: 0; font-size: 13px; line-height: 1.4; color: #3d434e; }
+.note b { font-weight: 700; color: #141518; }
+
+/* ---------- Rostered by, game log ---------- */
+
+.owner { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 0; color: inherit; text-decoration: none; }
+.log { display: grid; grid-template-columns: minmax(0, 1fr) auto 64px; gap: 10px; align-items: center; padding: 9px 0; font-size: 14px; }
+.logWeek { font-weight: 600; }
+.logTag { display: inline-flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 6px; font-size: 11px; font-weight: 600; color: #2d4c9c; background: color-mix(in oklab, #c9dcfa 55%, white); }
+.logBench { color: #3d434e; background: #f7f6f2; }
+.logPts { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* Sleeper props: Sleeper's mark in the head, then one prop a row, the line
+   in ink and what each side pays in ink-3 under or beside it. */
+.propsMark { width: 20px; height: 20px; flex: none; border-radius: 5px; }
+.props { list-style: none; margin: 0; padding: 0; display: grid; }
+.prop { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 12px; padding: 9px 0; font-size: 14px; line-height: 1.35; color: #141518; }
+.prop + .prop { border-top: 1px solid rgba(20, 21, 24, 0.08); }
+.prop:last-child { padding-bottom: 0; }
+.propLine b { font-weight: 700; font-variant-numeric: tabular-nums; }
+.propPays { font-size: 12px; color: #5a616d; font-variant-numeric: tabular-nums; }

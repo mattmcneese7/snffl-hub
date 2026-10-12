@@ -1,0 +1,7 @@
+.option { grid-column: 1 / -1; display: grid; gap: 8px; }
+.caption { display: grid; gap: 2px; padding: 4px 16px 0; }
+.caption b { font-size: 17px; font-weight: 800; color: #141518; text-shadow: 0 0 10px #f7f6f2; }
+.caption span { font-size: 13px; line-height: 1.35; color: #3d434e; text-shadow: 0 0 8px #f7f6f2; }
+.head { display: flex; align-items: center; }
+/* The mark's place: 28px, powder face, deep blue line, like every widget icon at a larger size. */
+.icon { width: 30px; height: 30px; flex: none; margin-left: -3px; --ic-face: #c9dcfa; --ic-line: #2d4c9c; }

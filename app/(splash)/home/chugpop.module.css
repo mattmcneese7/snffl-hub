@@ -1,0 +1,78 @@
+/* The chug, popped up: the app stays visible behind a soft scrim, the film
+   sits in a white card with the widget head language, and "Tap for sound" is
+   the one loud control, in the app's own pill. */
+
+.wrap {
+  position: fixed;
+  inset: 0;
+  /* Above the page's stage (z 1000, testing.module.css). */
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  padding: calc(16px + env(safe-area-inset-top, 0px)) 16px calc(16px + env(safe-area-inset-bottom, 0px));
+  animation: fade 220ms ease both;
+}
+.scrim { position: absolute; inset: 0; border: 0; padding: 0; background: rgba(20, 21, 24, 0.42); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.card {
+  position: relative;
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  max-width: 380px;
+  padding: 14px 16px 16px;
+  border-radius: 24px;
+  background: #fff;
+  color: #141518;
+  box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.06), 0 24px 60px -20px rgba(20, 21, 24, 0.5);
+  animation: rise 320ms cubic-bezier(0.2, 0.9, 0.3, 1.15) both;
+}
+.head { display: flex; align-items: center; gap: 8px; }
+.icon { width: 20px; height: 20px; flex: none; --ic-face: #c9dcfa; --ic-line: #2d4c9c; }
+.title { display: grid; min-width: 0; line-height: 1.2; }
+.title b { font-size: 16px; font-weight: 700; }
+.title span { font-size: 12px; color: #5a616d; }
+.close {
+  margin-left: auto;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 999px;
+  background: #f7f6f2;
+  color: #3d434e;
+  cursor: pointer;
+}
+.close svg { width: 14px; height: 14px; }
+.close:focus-visible, .sound:focus-visible { outline: 2px solid #2d4c9c; outline-offset: 3px; }
+.film { position: relative; overflow: hidden; border-radius: 16px; background: #141518; }
+.video { display: block; width: 100%; max-height: 62vh; object-fit: contain; background: #141518; }
+/* The app's pill, over the film's foot. */
+.sound {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  translate: -50% 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  color: #2d4c9c;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.07), 0 8px 20px -8px rgba(20, 21, 24, 0.45);
+}
+.sound svg { width: 16px; height: 16px; }
+
+@keyframes fade { from { opacity: 0; } }
+@keyframes rise { from { opacity: 0; transform: translateY(18px) scale(0.97); } }
+@media (prefers-reduced-motion: reduce) {
+  .wrap, .card { animation: none; }
+}

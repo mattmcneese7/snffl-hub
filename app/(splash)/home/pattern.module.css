@@ -1,0 +1,6 @@
+/* The paper's pattern sits behind everything on the stage and never takes a
+   tap. Its planes are taller than the screen by one tile, so they can drift
+   a tile's height without showing an edge. */
+.pattern { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.layer { position: absolute; left: 0; right: 0; top: 0; will-change: transform; }
+.layer svg { display: block; }

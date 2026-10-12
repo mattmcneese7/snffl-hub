@@ -141,7 +141,7 @@ function sitVerdict(side: GameSide, manager: string, input: OracleInput): Verdic
       saying: pick(
         [
           `${named(starter)} is listed ${status.toUpperCase()} and is still in ${manager}'s lineup. A slot spent on a man who is not playing scores exactly nothing.`,
-          `${manager} is starting ${named(starter)}, who is ${status.toUpperCase()}. The wise man reads the injury report before kickoff, not after.`,
+          `${manager} is starting ${named(starter)}, who is ${status.toLowerCase()}. The wise man reads the injury report before kickoff, not after.`,
           `No projection saves a starter who is ${status.toUpperCase()}. ${named(starter)} is still in ${manager}'s lineup all the same.`,
         ],
         `${starter.id}:${input.week}`

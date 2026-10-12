@@ -1,0 +1,23 @@
+.sheet { font-family: 'Switzer', system-ui, sans-serif; background: #f7f6f2; color: #141518; }
+.page { max-width: 440px; margin: 0 auto; padding: 28px 12px 64px; display: grid; gap: 20px; }
+.intro { display: grid; gap: 8px; padding: 0 16px; }
+.h1 { margin: 0; font-size: 34px; line-height: 1.05; font-weight: 900; letter-spacing: -0.03em; }
+.lede { margin: 0; font-size: 15px; line-height: 1.45; color: #3d434e; }
+
+.card { display: grid; gap: 16px; padding: 18px 16px 20px; border-radius: 22px; background: #fff; box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.06), 0 2px 4px rgba(30, 26, 20, 0.04), 0 14px 30px -14px rgba(30, 26, 20, 0.2); }
+.cardHead { display: grid; gap: 4px; }
+.cardHead b { font-size: 17px; font-weight: 800; }
+.cardHead span { font-size: 14px; line-height: 1.4; color: #3d434e; }
+
+/* A slice of a home screen: a soft wallpaper, four apps in a row. */
+.homeScreen { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); justify-items: center; padding: 18px 8px 14px; border-radius: 18px; background: linear-gradient(160deg, #e8e4dc, #c9d3e2); }
+.app { display: grid; justify-items: center; gap: 6px; }
+.blank { width: 60px; height: 60px; border-radius: 13.4px; background: rgba(255, 255, 255, 0.55); box-shadow: inset 0 0 0 0.5px rgba(20, 21, 24, 0.08); }
+.label { font-size: 11px; font-weight: 500; color: #141518; }
+
+.sizes { display: flex; align-items: end; justify-content: space-between; gap: 12px; }
+.size { display: grid; justify-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: #5a616d; }
+.tab { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 8px 8px 0 0; background: #eceae4; font-size: 12px; font-weight: 500; color: #141518; }
+
+.links { display: flex; flex-wrap: wrap; gap: 8px; }
+.link { display: inline-flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 999px; background: #fff; color: #2d4c9c; font-size: 14px; font-weight: 600; text-decoration: none; box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.07), 0 1px 3px rgba(30, 26, 20, 0.05), 0 8px 20px -8px rgba(30, 26, 20, 0.16); }

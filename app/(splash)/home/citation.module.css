@@ -1,0 +1,77 @@
+/* Shart of the Week as a citation, in Pool. A white card like every other on
+   the home, with the ticket's own conventions: small set labels, a
+   perforation with notches where the stub would tear, and one stamp. */
+
+.ticket {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px 16px;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.05), 0 2px 4px rgba(30, 26, 20, 0.04), 0 16px 36px -14px rgba(30, 26, 20, 0.16);
+}
+
+.top { display: flex; justify-content: space-between; }
+.label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #2d4c9c; }
+
+.issued { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; column-gap: 12px; padding-top: 4px; }
+.avatar { width: 32px; height: 32px; border-radius: 50%; overflow: hidden; background: #c9dcfa; box-shadow: 0 0 0 1.5px #fff, 0 0 0 2.5px rgba(20, 21, 24, 0.12); }
+.avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.who { display: grid; gap: 2px; min-width: 0; line-height: 1.2; }
+.team { font-size: 15px; font-weight: 600; color: #141518; overflow-wrap: anywhere; }
+.score { font-size: 32px; line-height: 1; font-weight: 700; letter-spacing: -0.02em; color: #141518; font-variant-numeric: tabular-nums; }
+.lost { margin: 0; font-size: 13px; line-height: 1.35; color: #3d434e; font-variant-numeric: tabular-nums; }
+
+/* The perforation: a dashed tear line with a notch bitten out of each edge. */
+.perf {
+  position: relative;
+  height: 0;
+  margin: 4px 0;
+  border-top: 1.5px dashed rgba(20, 21, 24, 0.16);
+}
+.perf::before,
+.perf::after {
+  content: '';
+  position: absolute;
+  top: -8px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #f7f6f2;
+  box-shadow: inset 0 0 0 0.5px rgba(30, 26, 20, 0.08);
+}
+.perf::before { left: -23px; }
+.perf::after { right: -23px; }
+
+/* The docket: each charge numbered in deep blue on the 20px line. */
+.charges { list-style: none; counter-reset: charge; margin: 0; padding: 0; display: grid; gap: 8px; }
+.charges li {
+  counter-increment: charge;
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  font-size: 14px;
+  line-height: 1.4;
+  color: #3d434e;
+}
+.charges li::before { content: counter(charge); font-size: 13px; font-weight: 700; color: #2d4c9c; font-variant-numeric: tabular-nums; line-height: 1.5; }
+.charges b { font-weight: 600; color: #141518; }
+
+.sentence { display: grid; gap: 2px; min-height: 64px; align-content: end; }
+.sentence b { font-size: 20px; line-height: 1.1; font-weight: 700; color: #141518; }
+
+/* The stamp: rubber stamped on at an angle, bottom right, in deep blue. */
+.stamp {
+  position: absolute;
+  right: 18px;
+  bottom: 16px;
+  width: 92px;
+  height: 92px;
+  transform: rotate(-12deg);
+  opacity: 0.92;
+}
+.stampRing { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.ringOuter { fill: none; stroke: #2d4c9c; stroke-width: 2.6; }
+.ringInner { fill: none; stroke: #2d4c9c; stroke-width: 1.2; }
+.stampText { fill: #2d4c9c; font-family: 'Switzer', system-ui, sans-serif; font-size: 10.5px; font-weight: 800; letter-spacing: 0.16em; }
+.stampFace { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -54%); }

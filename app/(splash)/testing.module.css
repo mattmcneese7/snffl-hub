@@ -1,0 +1,83 @@
+/* The redesign bench. A CSS module, so every class here is hashed and scoped to
+   /testing and cannot match anything on a live page. The live tokens in
+   globals.css are not read or redefined; this file defines its own. */
+
+.stage {
+  /* Its own full screen layer above the root layout, so the site wide intro,
+     chug and field background sit underneath unseen, with no edit to them. */
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+
+  /* Clear glass on a light ground cannot carry white type, so the type is a
+     deep navy, stepping down through three weights of it. */
+  --ink: #121c30;
+  --ink-2: #222d44;
+  --ink-3: #333f58;
+  --line: rgba(18, 28, 48, 0.16);
+
+  color: var(--ink);
+  font-family: 'Switzer', system-ui, sans-serif;
+}
+
+/* ---------- The ground: glow ---------- */
+
+/* Aurora's periwinkle easing into tide's sea glass, lifted into light, with a
+   whisper of warmth laid over it: a near white bloom up top, pale gold, peach
+   and rose, and one cool blue low down to keep it from going sweet. The WebGL
+   canvas redraws this exact ground, so the two must change together. */
+.glow {
+  background: linear-gradient(172deg, #b3b8cf 0%, #c7cadc 30%, #c3d6d4 65%, #aacdc7 100%);
+}
+
+.orbs {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.orbs span {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+}
+.orbWhite { width: 80vw; height: 80vw; left: 32vw; top: calc(4vh - 40vw); background: rgba(255, 246, 222, 0.6); }
+.orbGold { width: 52vw; height: 52vw; left: 14vw; top: calc(18vh - 26vw); background: rgba(255, 238, 180, 0.28); }
+.orbPeach { width: 68vw; height: 68vw; left: -26vw; top: calc(42vh - 34vw); background: rgba(255, 214, 170, 0.3); }
+.orbRose { width: 64vw; height: 64vw; left: 60vw; top: calc(70vh - 32vw); background: rgba(255, 180, 196, 0.22); }
+.orbBlue { width: 72vw; height: 72vw; left: -6vw; top: calc(92vh - 36vw); background: rgba(150, 190, 255, 0.2); }
+
+.canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+/* ---------- Glass ---------- */
+
+/* The canvas draws every data-glass surface once WebGL is running. Until then,
+   or if it never can, this is the stand in: near clear, a hairline edge, and a
+   tight shadow just off the ground. */
+.glassC {
+  position: relative;
+  background: rgba(246, 249, 251, 0.08);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow:
+    0 1px 1px rgba(20, 30, 50, 0.07),
+    0 2px 6px -3px rgba(20, 30, 50, 0.12);
+}
+.stage[data-webgl='on'] .glassC {
+  background: none;
+  border-color: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}

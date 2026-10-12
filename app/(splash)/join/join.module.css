@@ -1,0 +1,15 @@
+/* The invite, in Pool: centered, the icon as it will look, one clear step. */
+.sheet { font-family: 'Switzer', system-ui, sans-serif; background: #f7f6f2; color: #141518; }
+.page { position: relative; z-index: 1; max-width: 440px; min-height: 100%; margin: 0 auto; padding: 64px 28px 48px; display: grid; justify-items: center; align-content: center; gap: 14px; text-align: center; }
+.icon { filter: drop-shadow(0 0 0.5px rgba(20, 21, 24, 0.25)) drop-shadow(0 16px 28px rgba(30, 26, 20, 0.18)); margin-bottom: 8px; }
+.name { margin: 0; font-size: 46px; line-height: 1; font-weight: 800; letter-spacing: -0.04em; }
+.line { margin: 0; max-width: 300px; font-size: 16px; line-height: 1.45; color: #3d434e; text-wrap: balance; }
+.steps { display: grid; justify-items: center; gap: 12px; width: 100%; margin-top: 18px; }
+.primary { appearance: none; border: 0; margin: 0; font: inherit; display: inline-flex; align-items: center; justify-content: center; width: 100%; max-width: 320px; height: 52px; border-radius: 999px; background: #fff; color: #2d4c9c; font-size: 16px; font-weight: 600; text-decoration: none; cursor: pointer; box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.07), 0 1px 3px rgba(30, 26, 20, 0.05), 0 8px 20px -8px rgba(30, 26, 20, 0.16); }
+.primary:active { transform: scale(0.98); }
+.primary:focus-visible,
+.secondary:focus-visible { outline: 2px solid #2d4c9c; outline-offset: 4px; }
+.how { margin: 0; max-width: 300px; font-size: 14px; line-height: 1.45; color: #3d434e; }
+.how svg { display: inline-block; width: 18px; height: 18px; vertical-align: -3px; stroke: #2d4c9c; }
+.secondary { appearance: none; border: 0; margin: 8px 0 0; font: inherit; height: 44px; padding: 0 12px; border-radius: 999px; background: none; color: #2d4c9c; font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: underline; text-decoration-color: #c9dcfa; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.link { margin: 0; font-size: 13px; color: #141518; user-select: all; overflow-wrap: anywhere; }

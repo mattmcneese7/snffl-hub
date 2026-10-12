@@ -1,0 +1,553 @@
+/* Home, reworked in Pool. Plain warm paper, white cards with a soft lift, and
+   the three Pool jobs: powder for structure and selection, lime for emphasis
+   only, deep blue for links, live drops and accents in type. Switzer on the
+   balanced map; sizes on the scale. Every line of type starts 28px in. */
+
+.pool {
+  font-family: 'Switzer', system-ui, sans-serif;
+  background: #f7f6f2;
+  --paper: #f7f6f2;
+  --powder: #c9dcfa;
+  --lime: #ecf88a;
+  --deep: #2d4c9c;
+  --ink: #141518;
+  --ink-2: #3d434e;
+  --ink-3: #5a616d;
+  --hair: rgba(20, 21, 24, 0.08);
+  --lift: 0 0 0 0.5px rgba(30, 26, 20, 0.05), 0 2px 4px rgba(30, 26, 20, 0.04), 0 16px 36px -14px rgba(30, 26, 20, 0.16);
+
+  /* Every pill on the page is the menu bar's own material: a white face,
+     a hairline and a soft lift, no rims, no glints. One button language. */
+  --pill-face: #ffffff;
+  --pill-ring: 0 0 0 0.5px rgba(30, 26, 20, 0.07), 0 1px 3px rgba(30, 26, 20, 0.05), 0 8px 20px -8px rgba(30, 26, 20, 0.16);
+  color: var(--ink);
+}
+
+/* The top: the menu alone, floating. Nothing behind it, no band: the page
+   shows all round the white bar, and the strip it sits in lets taps through
+   to whatever is underneath. */
+.top {
+  position: sticky;
+  z-index: 5;
+  top: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  padding: calc(6px + env(safe-area-inset-top, 0px)) 0 0;
+  pointer-events: none;
+}
+.top nav { pointer-events: auto; }
+
+/* The app's name and the week, floating above the menu on nothing at all. A
+   soft halo of paper behind the letters keeps them readable when a card
+   passes underneath. */
+.topLine {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 440px;
+  width: 100%;
+  margin: 0 auto;
+  /* Spanning the menu: the mark and the week line up with the bar's ends,
+     sitting just above it. */
+  /* On the page's alignment line, 20px in: the mark above the Home icon. */
+  padding: 0 28px 5px;
+  text-shadow: 0 0 10px #f7f6f2, 0 0 4px #f7f6f2, 0 0 2px #f7f6f2;
+}
+/* The lockup is the way home: a link, tappable through the bar's
+   pass-through strip. */
+.topBrand { display: inline-flex; align-items: center; gap: 6px; color: inherit; text-decoration: none; pointer-events: auto; -webkit-tap-highlight-color: transparent; }
+.topBrand .mastMark,
+.topBrand .mastMark svg { width: 20px; height: 20px; filter: drop-shadow(0 0 6px #f7f6f2); }
+/* The drop in deep blue, as on the app icon; the word stays ink. */
+.topBrand .mastMark { color: var(--deep); }
+.topBrand .wordmark { font-size: 19px; }
+.topWeek { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
+.topDrop { width: 10px; height: 10px; fill: var(--deep); }
+.menuDock { display: flex; justify-content: center; padding: 0 12px; min-width: 0; }
+
+.page {
+  position: relative;
+  max-width: 440px;
+  margin: 0 auto;
+  /* Clipped, so the Shart fly's take-off point off the card's edge can never
+     widen the page; rails and lanes bleed only into its own padding. */
+  overflow-x: clip;
+  /* Above the paper's pattern. */
+  z-index: 1;
+  /* One alignment for the whole page: outer edges 8px in, the same as the
+     menu bar, so cards and bar share a width; every line of text and every
+     leading icon frame 20px in, under the mark. */
+  padding: 10px 12px calc(48px + env(safe-area-inset-bottom, 0px));
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+.sub { font-size: 12px; line-height: 1.3; font-weight: 400; color: var(--ink-3); }
+
+/* ---------- The hero group ---------- */
+
+/* The week, its film and its game read as one thing: held close together,
+   with the generous gap only after it. */
+.heroGroup { display: grid; gap: 14px; }
+.brandLine { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+.brandLine .mastMark,
+.brandLine .mastMark svg { width: 20px; height: 20px; }
+.brandLine .wordmark { font-size: 17px; }
+
+/* ---------- Masthead ---------- */
+
+.masthead { display: flex; align-items: center; gap: 8px; padding: 0 12px; }
+.mastMark { display: block; width: 26px; height: 26px; color: var(--ink); }
+.mastMark svg { width: 26px; height: 26px; display: block; }
+.wordmark { font-size: 24px; line-height: 1; font-weight: 800; letter-spacing: -0.04em; color: var(--ink); }
+.i { position: relative; display: inline-block; }
+.tittle { position: absolute; left: 50%; top: -0.02em; width: 0.28em; height: 0.28em; transform: translateX(-50%); fill: var(--deep); }
+
+/* ---------- The week, instead of "Home" ---------- */
+
+.hero { display: grid; gap: 6px; padding: 0 12px; }
+.kicker { margin: 0; font-size: 13px; font-weight: 600; color: var(--deep); }
+.headline { margin: 0; font-size: 34px; line-height: 1.05; font-weight: 900; letter-spacing: -0.03em; color: var(--ink); text-wrap: balance; }
+/* "live", marked with the highlighter: the one bit of lime up top. */
+.mark { position: relative; z-index: 0; background: none; color: inherit; }
+.mark::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: -4px;
+  right: -6px;
+  top: 50%;
+  height: 0.5em;
+  background: var(--lime);
+  border-radius: 4px 10px 5px 12px;
+  transform: rotate(-1.5deg) skewX(-8deg);
+}
+.deck { margin: 0; font-size: 15px; line-height: 1.4; color: var(--ink-2); }
+
+/* ---------- Ticker: two lanes ---------- */
+
+.lanes { display: grid; gap: 4px; max-width: 440px; width: 100%; margin: 0 auto; }
+.lane { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 6px; padding-left: 16px; }
+/* Each lane is labelled by its source's own logo on a small white chip. */
+.laneLabel {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.08), 0 2px 6px -2px rgba(30, 26, 20, 0.18);
+}
+.laneLogo { width: 18px; height: 18px; object-fit: contain; display: block; }
+.laneRound { border-radius: 5px; }
+.hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.laneTrack {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 18px, #000 calc(100% - 28px), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 18px, #000 calc(100% - 28px), transparent);
+}
+.laneRun { display: flex; width: max-content; animation: drift var(--secs) linear infinite; }
+.laneCopy { display: flex; }
+@keyframes drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.held { overflow-x: auto; scrollbar-width: none; }
+.held .laneRun { animation: none; }
+.laneItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  white-space: nowrap;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.laneTeam { color: var(--ink-2); }
+.abbr { font-weight: 600; color: var(--ink-2); }
+.logo { width: 16px; height: 16px; object-fit: contain; }
+.clock { font-size: 12px; color: var(--ink-3); }
+.up { font-weight: 700; color: var(--deep); }
+.down { font-weight: 500; color: var(--ink-3); }
+.laneDrop { width: 8px; height: 8px; fill: var(--deep); flex: none; }
+
+/* ---------- Film ---------- */
+
+.media { display: flex; gap: 12px; margin: -6px -8px; padding: 6px 20px 14px; overflow-x: auto; scrollbar-width: none; }
+.media::-webkit-scrollbar { display: none; }
+/* Film as pills in the menu bar's material: a round thumbnail with a play mark, then the name. */
+.film {
+  appearance: none;
+  border: 0;
+  margin: 0;
+  font: inherit;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 14px 0 5px;
+  border-radius: 999px;
+  background: var(--pill-face);
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: var(--pill-ring);
+  transition: transform 160ms cubic-bezier(0.3, 1.3, 0.5, 1);
+}
+.film:active { transform: scale(0.97); }
+.film:focus-visible { outline: 2px solid var(--deep); outline-offset: 6px; }
+.filmThumb { position: relative; width: 34px; height: 34px; flex: none; overflow: hidden; border-radius: 50%; background: var(--powder); }
+.filmThumb img,
+.filmThumb video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.filmPlay { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(10, 12, 18, 0.28); color: #fff; }
+.filmPlay svg { width: 14px; height: 14px; margin-left: 2px; }
+.filmText { display: grid; line-height: 1.15; }
+.filmText b { font-size: 14px; font-weight: 700; }
+.filmText span { font-size: 11px; color: var(--ink-3); }
+.tile {
+  position: relative;
+  appearance: none;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  height: 108px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--powder);
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--lift);
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 180ms cubic-bezier(0.3, 1.3, 0.5, 1);
+}
+.tile:active { transform: scale(0.97); }
+.tile:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.tileChug { background: #2b2116; }
+.tileArt { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.tileShade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10, 12, 18, 0) 30%, rgba(10, 12, 18, 0.72) 100%); }
+.tilePlay {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #ffffff, #eef0f3);
+  color: var(--ink);
+  /* The glass button's rim, small: dark hairline, clear band, faint edge. */
+  box-shadow:
+    inset 0 0 0 1px rgba(20, 21, 24, 0.6),
+    0 0 0 3px rgba(255, 255, 255, 0.85),
+    0 0 0 4px rgba(20, 21, 24, 0.12);
+}
+.tilePlay svg { width: 13px; height: 13px; margin-left: 2px; }
+.tileText { position: absolute; left: 12px; right: 12px; bottom: 10px; display: grid; }
+.tileText b { font-size: 15px; font-weight: 700; line-height: 1.15; }
+.tileText span { font-size: 12px; opacity: 0.92; }
+
+.filmModal { position: fixed; inset: 0; z-index: 2000; display: grid; place-items: center; background: rgba(10, 12, 18, 0.92); padding: 16px; }
+.filmVideo { width: 100%; max-width: 440px; max-height: 80vh; border-radius: 12px; background: #000; }
+.filmClose {
+  position: absolute;
+  top: calc(16px + env(safe-area-inset-top, 0px));
+  right: 16px;
+  appearance: none;
+  border: 0;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+/* ---------- Blocks ---------- */
+
+.block { display: grid; gap: 12px; }
+/* A section head, after a paper's: the drop, the name at 900, and a rule
+   running out to the way further in. */
+.head { display: flex; align-items: center; gap: 6px; padding: 0 12px; }
+/* The drop in the mark's 20px frame: it shares the mark's center line, and
+   the title starts where the wordmark does. */
+.headDrop { width: 12px; height: 12px; flex: none; fill: var(--deep); margin: -2px 4px 0; }
+.title { margin: 0; font-size: 22px; line-height: 1.1; font-weight: 900; letter-spacing: -0.03em; color: var(--ink); white-space: nowrap; }
+.rule { flex: 1; height: 1.5px; min-width: 16px; background: linear-gradient(90deg, rgba(20, 21, 24, 0.22), rgba(20, 21, 24, 0.08)); border-radius: 1px; }
+.more { display: inline-flex; align-items: center; gap: 3px; min-height: 44px; margin: -12px 0; font-size: 13px; font-weight: 600; color: var(--deep); text-decoration: none; white-space: nowrap; }
+.caret { width: 13px; height: 13px; }
+
+/* A rail: cards side by side, swiped, snapping, bleeding to the screen edge
+   so it is plain there is more. */
+.rail {
+  display: flex;
+  gap: 10px;
+  margin: 0 -8px;
+  padding: 2px 8px 18px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 0 8px;
+  scrollbar-width: none;
+}
+.rail::-webkit-scrollbar { display: none; }
+
+/* ---------- The Rag ---------- */
+
+.story {
+  flex: none;
+  width: 248px;
+  display: grid;
+  grid-template-rows: 150px auto;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #fff;
+  color: inherit;
+  text-decoration: none;
+  scroll-snap-align: start;
+  box-shadow: var(--lift);
+}
+.lead { width: 300px; grid-template-rows: 190px auto; }
+.storyArt { position: relative; overflow: hidden; background: var(--powder); }
+.artPhoto { width: 100%; height: 100%; object-fit: cover; display: block; }
+.artEmpty { display: block; width: 100%; height: 100%; background: linear-gradient(160deg, color-mix(in oklab, var(--powder) 60%, white), var(--powder)); }
+.artPlayer { position: absolute; inset: 0; background: linear-gradient(160deg, color-mix(in oklab, var(--powder) 55%, white), var(--powder)); }
+.artCutout { position: absolute; left: 50%; bottom: 0; height: 104%; transform: translateX(-50%); object-fit: contain; }
+.artLogo { position: absolute; right: -14px; top: -10px; width: 120px; height: 120px; object-fit: contain; opacity: 0.22; }
+.storyBody { display: grid; gap: 6px; align-content: start; padding: 12px 12px 14px; }
+.tag {
+  justify-self: start;
+  height: 22px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--deep);
+  background: color-mix(in oklab, var(--powder) 70%, white);
+}
+.storyHead { font-size: 17px; line-height: 1.2; font-weight: 700; letter-spacing: -0.01em; text-wrap: balance; }
+.lead .storyHead { font-size: 20px; }
+
+/* ---------- The matchup ---------- */
+
+.nudge { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 12px; font-size: 13px; line-height: 1.35; color: var(--ink-2); }
+.cardFoot { display: flex; padding: 4px 0 16px; }
+.blockFoot { display: flex; padding: 4px 12px 0; }
+
+/* ---------- The pill button ---------- */
+
+/* The menu bar's material at button size: white, a hairline, a soft lift,
+   deep blue words. Pressed, it gives a little. */
+.pillBtn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: var(--pill-face);
+  color: var(--deep);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: var(--pill-ring);
+  transition: transform 160ms cubic-bezier(0.3, 1.3, 0.5, 1);
+}
+.pillBtn:active { transform: scale(0.96); }
+.pillBtn:focus-visible { outline: 2px solid var(--deep); outline-offset: 4px; }
+.pillSmall { height: 32px; padding: 0 14px; font-size: 13px; flex: none; }
+/* Small to look at, full size to hit: the tap area runs past the pill. */
+.pillBtn::after { content: ''; position: absolute; inset: -6px -2px; }
+
+.card { display: grid; gap: 12px; padding: 14px 16px 0; border-radius: 16px; background: #fff; box-shadow: var(--lift); }
+.pick { font-size: 13px; font-weight: 600; color: var(--deep); text-decoration: underline; text-decoration-color: var(--powder); text-decoration-thickness: 3px; text-underline-offset: 3px; }
+.live { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 700; color: var(--ink); }
+.liveDrop { width: 11px; height: 11px; fill: var(--deep); }
+.state { font-size: 13px; font-weight: 500; color: var(--ink-3); }
+
+.sides { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(5, auto); column-gap: 12px; }
+.side { display: grid; grid-row: span 5; grid-template-rows: subgrid; row-gap: 2px; justify-items: start; align-items: end; min-width: 0; }
+.right { justify-items: end; text-align: right; }
+.avatar { width: 40px; height: 40px; margin-bottom: 8px; border-radius: 50%; overflow: hidden; background: var(--mgr); box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--mgr); }
+.avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.team { font-size: 15px; line-height: 1.15; font-weight: 600; overflow-wrap: anywhere; }
+.score { margin-top: 4px; font-size: 46px; line-height: 1; font-weight: 500; letter-spacing: -0.02em; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.winning { font-weight: 700; color: var(--ink); }
+.proj { font-size: 12px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.proj b { font-weight: 600; color: var(--ink-2); }
+
+.odds { display: grid; gap: 4px; }
+.bar { display: flex; gap: 2px; height: 6px; border-radius: 3px; overflow: hidden; }
+.bar span { display: block; height: 100%; }
+.barFav { background: var(--deep); }
+.barDog { background: var(--powder); }
+.oddsRow { display: flex; align-items: baseline; justify-content: space-between; font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.left { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.left b { font-weight: 600; color: var(--ink-2); }
+
+.strip { margin: 0 -16px; padding: 0 16px; min-height: 46px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--hair); font-size: 15px; font-weight: 600; color: var(--deep); text-decoration: none; border-radius: 0 0 16px 16px; }
+.strip:active { background: color-mix(in oklab, var(--powder) 35%, transparent); }
+
+/* ---------- Hardware ---------- */
+
+/* Hardware as chips: the trophy, its name and its winner on one line. */
+.chipRail { padding-bottom: 12px; gap: 8px; }
+.trophy {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px 8px 8px;
+  border-radius: 999px;
+  background: #fff;
+  scroll-snap-align: start;
+  box-shadow: var(--lift);
+}
+.trophyText { display: grid; line-height: 1.15; }
+.trophyName { font-size: 12px; font-weight: 600; color: var(--deep); white-space: nowrap; }
+.trophyWinner { font-size: 15px; font-weight: 700; white-space: nowrap; }
+
+/* The award icon: a powder disc, a white face, a deep blue line. */
+.award { display: grid; place-items: center; width: 34px; height: 34px; flex: none; border-radius: 50%; background: color-mix(in oklab, #c9dcfa 70%, white); }
+.award svg { width: 22px; height: 22px; display: block; overflow: visible; }
+
+/* ---------- Standings ---------- */
+
+.table { list-style: none; margin: 0; padding: 0 12px; display: grid; grid-template-columns: 24px 1fr auto 60px; column-gap: 12px; }
+.row { display: grid; grid-column: 1 / -1; grid-template-columns: subgrid; align-items: center; padding: 8px 0; border-top: 1px solid var(--hair); }
+.thead { padding: 0 0 4px; border-top: 0; }
+.thead + .row { border-top: 0; }
+.cutline { border-bottom: 1.5px solid rgba(20, 21, 24, 0.3); }
+.cutline + .row { border-top: 0; }
+.colhead { font-size: 11px; font-weight: 500; color: var(--ink-3); }
+/* The seed as a plain number on the 20px line, no team color. */
+.seed { font-size: 13px; font-weight: 600; color: var(--ink-3); font-variant-numeric: tabular-nums; text-align: center; }
+.who { display: grid; min-width: 0; }
+.rowTeam { font-size: 15px; line-height: 1.18; font-weight: 500; overflow-wrap: anywhere; }
+.cell { font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.end { text-align: right; }
+
+@media (prefers-reduced-motion: reduce) {
+  .laneTrack { overflow-x: auto; scrollbar-width: none; }
+  .laneRun { animation: none; }
+  .laneCopy { display: none; }
+  .tile { transition: none; }
+}
+
+/* ---------- Bench: the ticker treatment switcher ---------- */
+
+.switch { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px 4px; }
+.switch::-webkit-scrollbar { display: none; }
+.switchItem {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+  text-decoration: none;
+  background: #fff;
+  box-shadow: 0 0 0 0.5px rgba(20, 21, 24, 0.12);
+}
+.switchItem b { font-weight: 800; color: var(--deep); }
+.switchOn { background: var(--powder); color: var(--ink); }
+/* Room for the bottom line, so the last row is never under it. */
+.clearBottom { padding-bottom: calc(118px + env(safe-area-inset-bottom, 0px)); }
+
+/* ---------- The matchup as a score bug ---------- */
+
+.bug { position: relative; display: grid; gap: 12px; padding: 14px 16px; border-radius: 20px; background: #fff; box-shadow: var(--lift); }
+.bug:has(.bugLink:active) { transform: scale(0.99); }
+.bugLink { position: absolute; inset: 0; z-index: 1; border-radius: inherit; }
+.bugLink:focus-visible { outline: 2px solid var(--deep); outline-offset: 2px; }
+.bug .pick { position: relative; z-index: 2; }
+/* The way in: a caret after the state, so the tap is obvious. */
+.bug > .bugCaret { position: absolute; top: 18px; right: 12px; width: 14px; height: 14px; color: var(--ink-3); }
+.bug > :nth-child(2) { padding-right: 14px; }
+.bugRows { display: grid; gap: 0; }
+.bugRow { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; column-gap: 12px; padding: 10px 0; }
+.bugRow + .bugRow { border-top: 1px solid var(--hair); }
+.bugAvatar { width: 32px; height: 32px; border-radius: 50%; overflow: hidden; background: var(--powder); box-shadow: 0 0 0 1.5px #fff, 0 0 0 2.5px rgba(20, 21, 24, 0.12); }
+.bugAvatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.bugWho { display: grid; gap: 2px; min-width: 0; line-height: 1.2; }
+.bugTeam { font-size: 15px; font-weight: 600; overflow-wrap: anywhere; }
+.bugRight { display: grid; gap: 3px; justify-items: end; line-height: 1.15; }
+.bugScore { font-size: 32px; line-height: 1; font-weight: 500; letter-spacing: -0.02em; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.oddsLine { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px; padding-top: 2px; font-size: 13px; font-variant-numeric: tabular-nums; }
+.oddsLine b { font-weight: 600; }
+/* The game's top scorer: one compact bug across both sides. */
+.topScorer { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 12px; border-radius: 14px; background: color-mix(in oklab, #c9dcfa 32%, white); }
+.topScorer img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background: #fff; }
+.tsText { display: grid; gap: 1px; min-width: 0; }
+.tsLabel { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #2d4c9c; }
+.tsText b { font-size: 15px; font-weight: 600; color: #141518; }
+.tsLine { font-size: 12px; color: #3d434e; font-variant-numeric: tabular-nums; }
+.tsPts { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; color: #141518; font-variant-numeric: tabular-nums; }
+.lastMet { margin: 0; padding: 10px 12px; border-radius: 12px; background: #f7f6f2; font-size: 13px; line-height: 1.35; color: #3d434e; }
+.bugFoot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 2px; }
+.bugScore.winning { font-weight: 700; color: var(--ink); }
+
+/* ---------- Top bar treatments ---------- */
+
+/* 1. Collapse on scroll: the name line sits in the page and scrolls away like
+   a heading; only the menu sticks. */
+.topLineFlow { padding-top: calc(14px + env(safe-area-inset-top, 0px)); padding-bottom: 2px; text-shadow: none; }
+
+/* 2. Soft edge: a blur that ramps in toward the top of the screen, so the
+   page melts into a frosted haze as it slides under the name and menu.
+   Blurred and lifted toward paper at the very top, clear by the menu's foot. */
+.topSoft { padding-bottom: 16px; }
+/* The soft edge needs its 16px of fade below the menu, but the first card
+   sits the same 12px under the menu as cards sit under each other. */
+.topSoft + .page { margin-top: -14px; }
+.edge {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(247, 246, 242, 0.86) 0%, rgba(247, 246, 242, 0.6) 55%, rgba(247, 246, 242, 0) 100%);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  backdrop-filter: blur(14px) saturate(1.15);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 52%, rgba(0, 0, 0, 0.6) 76%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 52%, rgba(0, 0, 0, 0.6) 76%, transparent 100%);
+}
+.topSoft .topLine { text-shadow: none; }
+
+/* 3. One capsule: the name line and the menu share one frosted glass card;
+   the menu is its lower half, with no shadow of its own. */
+.topCapsule {
+  margin: 0 12px;
+  padding: calc(8px + env(safe-area-inset-top, 0px)) 0 4px;
+  border-radius: 0 0 24px 24px;
+  background: rgba(255, 255, 255, 0.78);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  backdrop-filter: blur(20px) saturate(1.4);
+  box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.06), 0 12px 30px -14px rgba(30, 26, 20, 0.2);
+  pointer-events: auto;
+}
+.topCapsule .topLine { padding: 4px 16px 6px; text-shadow: none; }
+.topCapsule .menuDock { padding: 0 4px; }
+.topCapsule nav { box-shadow: none; background: transparent; }
+
+/* 4. Mark in the menu: the week becomes the headline's kicker. */
+.kicker { margin: 0; font-size: 13px; font-weight: 600; color: var(--deep); }
+
+/* The voice headline: a sentence, not a label, so a step smaller than the
+   week headline and allowed to run to three lines. */
+.voice { font-size: 28px; line-height: 1.1; letter-spacing: -0.025em; }

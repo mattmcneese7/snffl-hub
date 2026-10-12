@@ -1,0 +1,189 @@
+/* Type options, round 3. Layout is shared and dense, so a phone shows the
+   matchup, the standings and the start of the Rag above the fold; each option
+   below sets only type. The ink colors come from the bench stage and are a
+   placeholder.
+
+   No all caps: labels are sentence case, set by size, weight and face.
+   Capitals are kept for heavy, deliberate emphasis only, like a game being
+   live right now. */
+
+/* ---------- Shared layout, dense ---------- */
+
+.page {
+  position: relative;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: calc(14px + env(safe-area-inset-top, 0px)) 12px
+    calc(28px + env(safe-area-inset-bottom, 0px));
+  display: grid;
+  gap: 8px;
+}
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0 4px 2px;
+}
+.eyebrow { color: var(--ink-2); }
+.title { margin: 0; color: var(--ink); }
+
+.pane {
+  display: grid;
+  gap: 8px;
+  padding: 11px 13px 12px;
+  border-radius: 8px;
+}
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.sides {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(4, auto);
+  column-gap: 12px;
+}
+.side {
+  display: grid;
+  grid-row: span 4;
+  grid-template-rows: subgrid;
+  row-gap: 1px;
+  justify-items: start;
+  align-items: end;
+  min-width: 0;
+}
+.right { justify-items: end; text-align: right; }
+
+.team {
+  color: var(--ink);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.meta { color: var(--ink-3); }
+.score { margin-top: 3px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.lead { color: var(--ink); }
+.num { color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.pct { color: var(--ink); font-variant-numeric: tabular-nums; }
+.label { color: var(--ink-2); }
+.pane .label.emph { text-transform: uppercase; letter-spacing: 0.08em; }
+
+.table {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  /* One set of columns for every row, so records and points line up. */
+  grid-template-columns: 18px 1fr auto auto;
+  column-gap: 10px;
+}
+.tr {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: baseline;
+  padding: 5px 0;
+  border-top: 1px solid rgba(18, 28, 48, 0.09);
+}
+.tr:first-child { border-top: 0; padding-top: 0; }
+.tr > .num:last-child { text-align: right; }
+.seed { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.who { display: grid; gap: 0; min-width: 0; }
+.rowTeam {
+  color: var(--ink);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.headline { margin: 0; color: var(--ink); text-wrap: balance; }
+.deck { margin: 0; color: var(--ink-2); }
+
+.about { display: grid; gap: 6px; padding: 6px 4px 0; }
+.switcher { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.switcher a {
+  color: var(--ink-2);
+  text-decoration: none;
+  padding-bottom: 1px;
+  border-bottom: 2px solid transparent;
+}
+.switcher a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.switcher .on { color: var(--ink); border-bottom-color: var(--ink); }
+.note { margin: 0; color: var(--ink-2); max-width: 46ch; }
+
+/* ---------- A. Recursive, Linear cut ----------
+   CASL stays at its default 0 (linear), slant 0. Words at MONO 0; every
+   figure at MONO 1, so numbers are monospaced in the same family. */
+
+.va { font-family: var(--ta-sans), system-ui, sans-serif; font-variation-settings: 'MONO' 0; }
+.va .score,
+.va .num,
+.va .pct,
+.va .seed { font-variation-settings: 'MONO' 1; }
+.va .title { font-size: 26px; line-height: 1.1; font-weight: 600; letter-spacing: -0.02em; }
+.va .eyebrow { font-size: 12px; font-weight: 500; }
+.va .label { font-size: 11.5px; line-height: 1.2; font-weight: 500; }
+.va .team { font-size: 14.5px; line-height: 1.18; font-weight: 600; letter-spacing: -0.01em; }
+.va .meta { font-size: 11.5px; line-height: 1.25; font-weight: 400; }
+.va .score { font-size: 30px; line-height: 1; font-weight: 500; letter-spacing: -0.04em; }
+.va .num { font-size: 11.5px; line-height: 1.25; font-weight: 400; }
+.va .pct { font-size: 15px; line-height: 1; font-weight: 500; }
+.va .seed { font-size: 12px; line-height: 1.25; font-weight: 500; }
+.va .rowTeam { font-size: 13.5px; line-height: 1.18; font-weight: 500; letter-spacing: -0.01em; }
+.va .headline { font-size: 19px; line-height: 1.15; font-weight: 600; letter-spacing: -0.015em; }
+.va .deck { font-size: 13.5px; line-height: 1.4; font-weight: 400; }
+.va .switcher a { font-size: 12.5px; font-weight: 500; }
+.va .note { font-size: 12px; line-height: 1.4; }
+
+/* ---------- B. Google Sans Flex, tuned ----------
+   ROND 0 for crisp terminals, GRAD 0, width 92, optical size following
+   each role's size. */
+
+.vb {
+  font-family: var(--tb-sans), system-ui, sans-serif;
+  font-variation-settings: 'ROND' 0, 'GRAD' 0;
+  font-optical-sizing: auto;
+  font-stretch: 92%;
+}
+.vb .title { font-size: 27px; line-height: 1.1; font-weight: 560; letter-spacing: -0.02em; }
+.vb .eyebrow { font-size: 12px; font-weight: 500; }
+.vb .label { font-size: 11.5px; line-height: 1.2; font-weight: 500; }
+.vb .team { font-size: 14.5px; line-height: 1.18; font-weight: 580; }
+.vb .meta { font-size: 11.5px; line-height: 1.25; font-weight: 420; }
+.vb .score { font-size: 32px; line-height: 1; font-weight: 480; font-stretch: 80%; letter-spacing: -0.01em; }
+.vb .num { font-size: 11.5px; line-height: 1.25; font-weight: 450; font-stretch: 88%; }
+.vb .pct { font-size: 15.5px; line-height: 1; font-weight: 520; font-stretch: 88%; }
+.vb .seed { font-size: 12px; line-height: 1.25; font-weight: 520; font-stretch: 88%; }
+.vb .rowTeam { font-size: 13.5px; line-height: 1.18; font-weight: 540; }
+.vb .headline { font-size: 19px; line-height: 1.15; font-weight: 580; letter-spacing: -0.01em; }
+.vb .deck { font-size: 13.5px; line-height: 1.4; font-weight: 400; }
+.vb .switcher a { font-size: 12.5px; font-weight: 520; }
+.vb .note { font-size: 12px; line-height: 1.4; }
+
+/* ---------- C. Encode Sans, width cut ----------
+   Words at 87.5% width, figures at 75%: the densest of the three. */
+
+.vc { font-family: var(--tc-sans), system-ui, sans-serif; font-stretch: 87.5%; }
+.vc .score,
+.vc .num,
+.vc .pct,
+.vc .seed { font-stretch: 75%; }
+.vc .title { font-size: 27px; line-height: 1.1; font-weight: 600; letter-spacing: -0.02em; }
+.vc .eyebrow { font-size: 12px; font-weight: 500; }
+.vc .label { font-size: 11.5px; line-height: 1.2; font-weight: 500; }
+.vc .team { font-size: 15px; line-height: 1.15; font-weight: 600; }
+.vc .meta { font-size: 12px; line-height: 1.25; font-weight: 400; }
+.vc .score { font-size: 34px; line-height: 1; font-weight: 500; letter-spacing: -0.01em; }
+.vc .num { font-size: 12px; line-height: 1.25; font-weight: 450; }
+.vc .pct { font-size: 16px; line-height: 1; font-weight: 550; }
+.vc .seed { font-size: 12.5px; line-height: 1.25; font-weight: 550; }
+.vc .rowTeam { font-size: 14px; line-height: 1.15; font-weight: 550; }
+.vc .headline { font-size: 20px; line-height: 1.12; font-weight: 600; letter-spacing: -0.01em; }
+.vc .deck { font-size: 14px; line-height: 1.38; font-weight: 400; }
+.vc .switcher a { font-size: 13px; font-weight: 550; }
+.vc .note { font-size: 12.5px; line-height: 1.4; }

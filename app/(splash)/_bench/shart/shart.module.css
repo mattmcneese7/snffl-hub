@@ -1,0 +1,278 @@
+/* Shart of the Week. Locked: the grime (a painted gouache overlay multiplied
+   onto the glass) and the fly. Open: the card itself, three tight layouts.
+   Scores are Switzer 500 or heavier. Sizes stay on the scale 11, 12, 13, 15,
+   17, 20, 28, 46; only the height chart's marks, part of the drawing, sit
+   below it. Caps are kept for the sentence alone. */
+
+.switzer { font-family: 'Switzer', system-ui, sans-serif; }
+
+.page {
+  position: relative;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: calc(14px + env(safe-area-inset-top, 0px)) 12px
+    calc(40px + env(safe-area-inset-bottom, 0px));
+  display: grid;
+  gap: 16px;
+}
+.head { display: flex; align-items: baseline; justify-content: space-between; padding: 0 4px; }
+.title { margin: 0; font-size: 28px; font-weight: 900; letter-spacing: -0.02em; color: var(--ink); }
+.sub { font-size: 12px; font-weight: 400; color: var(--ink-2); }
+
+.option { display: grid; gap: 6px; }
+.optLabel { margin: 0; padding: 0 4px; font-size: 13px; font-weight: 500; color: var(--ink); }
+.optLabel span { font-weight: 400; color: var(--ink-2); }
+
+/* ---------- The pane and its grime (locked) ---------- */
+
+.pane {
+  position: relative;
+  display: grid;
+  gap: 9px;
+  padding: 12px 14px 22px;
+  border-radius: 8px;
+}
+.pane > :not(.fly) { position: relative; z-index: 1; }
+
+/* Clipped to the pane, under the type, multiplied onto the glass beneath. The
+   blend sits on the layer so it composites against the glass. */
+.pane > .grime {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+/* The overlay fades where the type sits: filthy edges, readable words. */
+.overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  display: block;
+  opacity: 0.88;
+  -webkit-mask-image: radial-gradient(ellipse 78% 62% at 42% 46%, rgba(0, 0, 0, 0.28) 0%, rgba(0, 0, 0, 0.45) 55%, #000 100%);
+  mask-image: radial-gradient(ellipse 78% 62% at 42% 46%, rgba(0, 0, 0, 0.28) 0%, rgba(0, 0, 0, 0.45) 55%, #000 100%);
+}
+
+/* ---------- Shared card parts ---------- */
+
+.cardHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(18, 28, 48, 0.12);
+}
+.tag {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.week { font-size: 12px; font-weight: 500; color: var(--ink); font-variant-numeric: tabular-nums; }
+.team { font-size: 17px; line-height: 1.15; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); }
+.meta { font-size: 12px; line-height: 1.3; font-weight: 400; color: var(--ink-3); }
+.nums { font-weight: 500; font-variant-numeric: tabular-nums; }
+.verdict { margin: 0; font-size: 13px; line-height: 1.35; font-weight: 400; color: var(--ink); }
+.verdict strong { font-weight: 700; }
+
+/* ---------- The booking ---------- */
+
+.booking {
+  display: grid;
+  grid-template-columns: 116px 1fr;
+  column-gap: 12px;
+  align-items: start;
+}
+
+/* The mugshot: a built booking photo, not a generated picture. */
+.mug {
+  position: relative;
+  margin: 0;
+  width: 116px;
+  height: 148px;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset, 0 2px 6px rgba(40, 28, 16, 0.28);
+}
+.wall { position: absolute; inset: 0; width: 100%; height: 100%; }
+.wallLabel { font-family: 'Switzer', system-ui, sans-serif; font-size: 6.5px; font-weight: 600; fill: #3a352d; }
+.subject {
+  position: absolute;
+  left: 50%;
+  top: 13px;
+  width: 76px;
+  height: 76px;
+  transform: translateX(-50%);
+}
+/* Sleeper avatars are square with their own ground; cut to the circle Sleeper
+   shows them in, so no hard box sits on the wall. */
+.subject img { border-radius: 50%; }
+/* Washed and flat, the way a booking camera flattens a face. */
+.subject img,
+.subject svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  filter: saturate(0.55) contrast(1.08) sepia(0.18) drop-shadow(0 3px 3px rgba(30, 22, 12, 0.35));
+}
+.mugGrime {
+  position: absolute;
+  inset: -6px;
+  width: calc(100% + 12px);
+  height: calc(100% + 12px);
+  object-fit: cover;
+  mix-blend-mode: multiply;
+  opacity: 0.8;
+  pointer-events: none;
+}
+/* The flash: hot in the middle, falling off to the corners. */
+.flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(80% 60% at 50% 42%, rgba(255, 255, 255, 0.22), rgba(40, 28, 14, 0.28) 100%);
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+.placard {
+  position: absolute;
+  left: 7px;
+  right: 7px;
+  bottom: 7px;
+  display: grid;
+  justify-items: center;
+  gap: 0;
+  padding: 3px 7px 4px;
+  border-radius: 2px;
+  background: #1c1a17;
+  color: #f1ede4;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+.placard span { font-size: 11px; line-height: 1.2; font-weight: 500; }
+.placard b { font-size: 12px; line-height: 1.2; font-weight: 700; max-width: 100%; overflow-wrap: anywhere; text-align: center; }
+/* Week and score at either end of the placard's last line. */
+.placard .placardRow { justify-self: stretch; display: flex; justify-content: space-between; font-weight: 500; }
+
+/* The charge sheet beside it. */
+.sheet { display: grid; gap: 2px; min-width: 0; align-content: start; }
+.chargesLabel {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.charges {
+  margin: 2px 0 0;
+  padding-left: 16px;
+  display: grid;
+  gap: 5px;
+  font-size: 12px;
+  line-height: 1.3;
+  font-weight: 400;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.charges b { font-weight: 600; }
+.charges li::marker { font-weight: 700; }
+
+/* Heavy emphasis, so it earns the caps. */
+.sentence {
+  margin: 0;
+  padding-top: 8px;
+  border-top: 1px solid rgba(18, 28, 48, 0.12);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+/* ---------- On the flow system (/flow) ---------- */
+
+/* The shared block: 12px in, the header on top, the footer strip flush to
+   the bottom edge and sharing the card's corners.
+
+   On the night ground it is the one milky pane: the same glass, fogged and
+   filthy, so the grime has a light surface to multiply into. It keeps its
+   own dark ink whatever the page around it uses. */
+.pane.paneFlow {
+  border-radius: var(--r, 8px);
+  gap: 12px;
+  padding: 12px 12px 0;
+  --ink: #121c30;
+  --ink-2: #222d44;
+  --ink-3: #333f58;
+  color: var(--ink);
+  background: linear-gradient(180deg, rgba(246, 243, 236, 0.96), rgba(232, 228, 219, 0.94));
+  -webkit-backdrop-filter: blur(22px) saturate(1.2);
+  backdrop-filter: blur(22px) saturate(1.2);
+  border: 0;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2),
+    0 1px 1px rgba(0, 0, 0, 0.3),
+    0 22px 44px -18px rgba(0, 0, 0, 0.7);
+}
+/* The header row sits in the heaviest grime, so the overlay thins to 60%
+   under it and comes back to full by the photo. */
+.paneFlow .overlay {
+  -webkit-mask-image:
+    radial-gradient(ellipse 78% 62% at 42% 46%, rgba(0, 0, 0, 0.28) 0%, rgba(0, 0, 0, 0.45) 55%, #000 100%),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0, rgba(0, 0, 0, 0.6) 40px, #000 64px);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    radial-gradient(ellipse 78% 62% at 42% 46%, rgba(0, 0, 0, 0.28) 0%, rgba(0, 0, 0, 0.45) 55%, #000 100%),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0, rgba(0, 0, 0, 0.6) 40px, #000 64px);
+  mask-composite: intersect;
+}
+.headFlow { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.titleFlow { font-size: 15px; line-height: 1.2; font-weight: 700; color: var(--ink); }
+/* Full ink here, not ink-2: the top right corner is where the grime is heaviest. */
+.metaFlow { font-size: 13px; font-weight: 500; color: var(--ink); font-variant-numeric: tabular-nums; }
+.stripFlow {
+  margin: 0 -12px;
+  min-height: 44px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid rgba(18, 28, 48, 0.12);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+/* ---------- The fly ---------- */
+
+.fly {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  width: 15px;
+  height: 17px;
+  margin: -8px 0 0 -7px;
+  pointer-events: none;
+  opacity: 0;
+  filter: drop-shadow(0 1.5px 1px rgba(20, 16, 12, 0.35));
+}
+.wings { transform-origin: 10px 10px; }
+.fly[data-state='flying'] .wings { animation: buzz 45ms linear infinite; }
+@keyframes buzz {
+  0% { transform: scaleX(1); opacity: 0.9; }
+  50% { transform: scaleX(1.35) scaleY(0.8); opacity: 0.45; }
+  100% { transform: scaleX(1); opacity: 0.9; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fly { display: none; }
+}
+
+/* A player's face in front of his name in a charge, sat on the line. */
+.face { display: inline-block; width: 22px; height: 22px; margin: 0 4px 0 1px; vertical-align: -6px; border-radius: 50%; object-fit: cover; background: color-mix(in oklab, #c9dcfa 60%, white); }

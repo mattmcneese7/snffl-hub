@@ -140,7 +140,7 @@
    "8121",
    "12518",
    "12512",
-   "7021",
+   "5844",
    "11539",
    "SEA"
   ],
@@ -167,7 +167,7 @@
    "6770",
    "8228",
    "6786",
-   "4177",
+   "13301",
    "12517",
    "12489",
    "12495",
@@ -183,9 +183,9 @@
   "avatar": "1fe089e517448d9fe207b8607ca8e81b",
   "avatarUrl": "https://sleepercdn.com/avatars/thumbs/1fe089e517448d9fe207b8607ca8e81b",
   "colors": {
-   "contrast": 5.55,
+   "contrast": 5.52,
    "onPrimary": "#FFFFFF",
-   "primary": "#40743e",
+   "primary": "#3e744b",
    "secondary": "#5980a6"
   },
   "losses": 2,
@@ -319,7 +319,7 @@
    "8112",
    "8146",
    "9484",
-   "9500",
+   "13279",
    "7588",
    "12185",
    "CLE"
@@ -330,13 +330,13 @@
   "wins": 3
  },
  {
-  "avatar": "578c6b253dd7b4bab45382e1af102204",
-  "avatarUrl": "https://sleepercdn.com/avatars/thumbs/578c6b253dd7b4bab45382e1af102204",
+  "avatar": "aebb25f7b5296b94cd96ac464cefca78",
+  "avatarUrl": "https://sleepercdn.com/avatars/thumbs/aebb25f7b5296b94cd96ac464cefca78",
   "colors": {
-   "contrast": 4.88,
+   "contrast": 4.66,
    "onPrimary": "#FFFFFF",
-   "primary": "#11832c",
-   "secondary": "#220913"
+   "primary": "#956d30",
+   "secondary": "#c5d06d"
   },
   "losses": 1,
   "manager": "jwslaney",

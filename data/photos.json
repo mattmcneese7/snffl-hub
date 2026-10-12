@@ -539,41 +539,116 @@
   ],
   "5": [
     {
-      "url": "https://a.espncdn.com/photo/2026/1002/r1724970_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Lions running back Jahmyr Gibbs has five rushing TDs and two receiving scores through four games.",
-      "gameId": "401872980",
-      "week": 5,
-      "playerIds": [
-        "9221"
-      ],
-      "score": 10
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/1008/r1727863_3_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Aaron Rodgers threw for 299 yards and three TDs last week, and Jaylen Warren had 126 total yards.",
-      "gameId": "401872980",
-      "week": 5,
-      "playerIds": [
-        "96",
-        "8228"
-      ],
-      "score": 7
-    },
-    {
-      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1007/ss_20261007_104735712_3687674/ss_20261007_104735712_3687674.jpg",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/1011/adade2e7-2a22-4d4c-8194-73a7fb26d219/adade2e7-2a22-4d4c-8194-73a7fb26d219.jpg",
       "width": 576,
       "height": 324,
-      "caption": "Why Mike Clay is finally backing Jared Goff in Week 5",
+      "caption": "Jameis Winston hits Malik Nabers in the end zone to pull Giants even ",
+      "gameId": "401872988",
+      "week": 5,
+      "playerIds": [
+        "11632"
+      ],
+      "score": 10.64
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1008/c45625c728be428db843f1cffd134b131391/c45625c728be428db843f1cffd134b131391.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "George Pickens hauls in an impressive TD catch for Cowboys",
       "gameId": "401872980",
       "week": 5,
       "playerIds": [
-        "3163"
+        "8137"
       ],
-      "score": 4
+      "score": 10.5
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1011/r1729392_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "Jaylen Warren led the Pittsburgh Steelers in rushing and receiving yards in a win over the Indianapolis Colts on Sunday.",
+      "gameId": "401872987",
+      "week": 5,
+      "playerIds": [
+        "8228"
+      ],
+      "score": 9
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1011/r1729485_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "Mike Evans",
+      "gameId": "401872987",
+      "week": 5,
+      "playerIds": [
+        "2216"
+      ],
+      "score": 8.29
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1012/r1729561_600x600_1-1.jpg",
+      "width": 600,
+      "height": 600,
+      "caption": "Mike Evans had four catches for 75 yards on a go-ahead drive in the fourth quarter that was capped by his 2-point conversion catch.",
+      "gameId": "401872987",
+      "week": 5,
+      "playerIds": [
+        "2216"
+      ],
+      "score": 8.29
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/1011/17f51612-164b-4817-8f81-4df8f3608255/17f51612-164b-4817-8f81-4df8f3608255.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Mike Evans checks back of Trevon Diggs' jersey after trash-talk exchange",
+      "gameId": "401872987",
+      "week": 5,
+      "playerIds": [
+        "2216"
+      ],
+      "score": 7.29
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1011/43af3849842249fbb3a307c0defbfb84964/43af3849842249fbb3a307c0defbfb84964.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Byron Murphy Jr. grabs late-game interception for the Vikings",
+      "gameId": "401872987",
+      "week": 5,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/1011/c251b5e9-258f-47b4-9bb7-81336d93f9af/c251b5e9-258f-47b4-9bb7-81336d93f9af.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Will Anderson Jr. sacks Cam Ward three times in the 4th quarter",
+      "gameId": "401872984",
+      "week": 5,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1011/fdeea296f25241fc9e128c382a6634351343/fdeea296f25241fc9e128c382a6634351343.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Brandin Cooks scores go-ahead TD for San Francisco",
+      "gameId": "401872992",
+      "week": 5,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1012/r1729592_600x400_3-2.jpg",
+      "width": 600,
+      "height": 400,
+      "caption": "Tyler Huntley \"doesn't really get rattled,\" said coach Jesse Minter. \"He just is always the same and he keeps such a good demeanor about him, keeps his composure. He played with more and more confidence as the game went on and as the moments got bigger.\"",
+      "gameId": "401872987",
+      "week": 5,
+      "playerIds": [],
+      "score": 1
     }
   ]
 }

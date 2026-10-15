@@ -1,7 +1,7 @@
 {
  "season": "2026",
  "throughWeek": 5,
- "builtAt": "2026-10-14T08:24:05.814Z",
+ "builtAt": "2026-10-15T08:25:50.772Z",
  "shrinkGames": 4,
  "positionMean": {
   "QB": 17.01,
@@ -37,7 +37,7 @@
    "TE": {
     "perGame": 9.94,
     "games": 5,
-    "adjusted": 11.63,
+    "adjusted": 11.64,
     "vsAverage": 0.846,
     "rank": 22
    },
@@ -95,8 +95,8 @@
    "DEF": {
     "perGame": 10,
     "games": 5,
-    "adjusted": 8.35,
-    "vsAverage": 1.327,
+    "adjusted": 8.36,
+    "vsAverage": 1.326,
     "rank": 6
    }
   },
@@ -125,7 +125,7 @@
    "TE": {
     "perGame": 6.36,
     "games": 5,
-    "adjusted": 9.64,
+    "adjusted": 9.65,
     "vsAverage": 0.701,
     "rank": 32
    },
@@ -169,7 +169,7 @@
    "TE": {
     "perGame": 8.16,
     "games": 5,
-    "adjusted": 10.64,
+    "adjusted": 10.65,
     "vsAverage": 0.774,
     "rank": 29
    },
@@ -183,7 +183,7 @@
    "DEF": {
     "perGame": 0.6,
     "games": 5,
-    "adjusted": 3.13,
+    "adjusted": 3.14,
     "vsAverage": 0.497,
     "rank": 30
    }
@@ -228,7 +228,7 @@
     "perGame": 8.8,
     "games": 5,
     "adjusted": 7.69,
-    "vsAverage": 1.221,
+    "vsAverage": 1.22,
     "rank": 7
    }
   },
@@ -257,7 +257,7 @@
    "TE": {
     "perGame": 16.64,
     "games": 5,
-    "adjusted": 15.35,
+    "adjusted": 15.36,
     "vsAverage": 1.117,
     "rank": 8
    },
@@ -302,7 +302,7 @@
     "perGame": 19.28,
     "games": 5,
     "adjusted": 16.82,
-    "vsAverage": 1.224,
+    "vsAverage": 1.223,
     "rank": 5
    },
    "K": {
@@ -316,7 +316,7 @@
     "perGame": 6.6,
     "games": 5,
     "adjusted": 6.47,
-    "vsAverage": 1.027,
+    "vsAverage": 1.026,
     "rank": 17
    }
   },
@@ -403,7 +403,7 @@
    "DEF": {
     "perGame": 2.6,
     "games": 5,
-    "adjusted": 4.24,
+    "adjusted": 4.25,
     "vsAverage": 0.674,
     "rank": 28
    }
@@ -434,7 +434,7 @@
     "perGame": 12.8,
     "games": 5,
     "adjusted": 13.22,
-    "vsAverage": 0.962,
+    "vsAverage": 0.961,
     "rank": 18
    },
    "K": {
@@ -447,7 +447,7 @@
    "DEF": {
     "perGame": 2.8,
     "games": 5,
-    "adjusted": 4.35,
+    "adjusted": 4.36,
     "vsAverage": 0.691,
     "rank": 27
    }
@@ -492,7 +492,7 @@
     "perGame": 7.6,
     "games": 5,
     "adjusted": 7.02,
-    "vsAverage": 1.115,
+    "vsAverage": 1.114,
     "rank": 10
    }
   },
@@ -521,8 +521,8 @@
    "TE": {
     "perGame": 31.9,
     "games": 5,
-    "adjusted": 23.83,
-    "vsAverage": 1.734,
+    "adjusted": 23.84,
+    "vsAverage": 1.733,
     "rank": 1
    },
    "K": {
@@ -610,7 +610,7 @@
     "perGame": 10,
     "games": 5,
     "adjusted": 11.67,
-    "vsAverage": 0.849,
+    "vsAverage": 0.848,
     "rank": 21
    },
    "K": {
@@ -624,7 +624,7 @@
     "perGame": 10.2,
     "games": 5,
     "adjusted": 8.47,
-    "vsAverage": 1.344,
+    "vsAverage": 1.343,
     "rank": 5
    }
   },
@@ -651,10 +651,10 @@
     "rank": 18
    },
    "TE": {
-    "perGame": 14.18,
+    "perGame": 14.38,
     "games": 5,
-    "adjusted": 13.99,
-    "vsAverage": 1.017,
+    "adjusted": 14.1,
+    "vsAverage": 1.025,
     "rank": 15
    },
    "K": {
@@ -665,10 +665,10 @@
     "rank": 32
    },
    "DEF": {
-    "perGame": 8.4,
+    "perGame": 8.6,
     "games": 5,
-    "adjusted": 7.47,
-    "vsAverage": 1.185,
+    "adjusted": 7.58,
+    "vsAverage": 1.202,
     "rank": 8
    }
   },
@@ -697,7 +697,7 @@
    "TE": {
     "perGame": 13.18,
     "games": 5,
-    "adjusted": 13.43,
+    "adjusted": 13.44,
     "vsAverage": 0.977,
     "rank": 17
    },
@@ -712,7 +712,7 @@
     "perGame": 7.6,
     "games": 5,
     "adjusted": 7.02,
-    "vsAverage": 1.115,
+    "vsAverage": 1.114,
     "rank": 11
    }
   },
@@ -741,8 +741,8 @@
    "TE": {
     "perGame": 15.92,
     "games": 5,
-    "adjusted": 14.95,
-    "vsAverage": 1.088,
+    "adjusted": 14.96,
+    "vsAverage": 1.087,
     "rank": 10
    },
    "K": {
@@ -755,8 +755,8 @@
    "DEF": {
     "perGame": 6.4,
     "games": 5,
-    "adjusted": 6.35,
-    "vsAverage": 1.009,
+    "adjusted": 6.36,
+    "vsAverage": 1.008,
     "rank": 19
    }
   },
@@ -786,7 +786,7 @@
     "perGame": 14.58,
     "games": 5,
     "adjusted": 14.21,
-    "vsAverage": 1.034,
+    "vsAverage": 1.033,
     "rank": 13
    },
    "K": {
@@ -799,8 +799,8 @@
    "DEF": {
     "perGame": 7.8,
     "games": 5,
-    "adjusted": 7.13,
-    "vsAverage": 1.133,
+    "adjusted": 7.14,
+    "vsAverage": 1.132,
     "rank": 9
    }
   },
@@ -843,8 +843,8 @@
    "DEF": {
     "perGame": 4.4,
     "games": 5,
-    "adjusted": 5.24,
-    "vsAverage": 0.833,
+    "adjusted": 5.25,
+    "vsAverage": 0.832,
     "rank": 22
    }
   },
@@ -887,8 +887,8 @@
    "DEF": {
     "perGame": 11.6,
     "games": 5,
-    "adjusted": 9.24,
-    "vsAverage": 1.468,
+    "adjusted": 9.25,
+    "vsAverage": 1.467,
     "rank": 2
    }
   },
@@ -918,7 +918,7 @@
     "perGame": 7.7,
     "games": 5,
     "adjusted": 10.39,
-    "vsAverage": 0.756,
+    "vsAverage": 0.755,
     "rank": 30
    },
    "K": {
@@ -932,7 +932,7 @@
     "perGame": 6.6,
     "games": 5,
     "adjusted": 6.47,
-    "vsAverage": 1.027,
+    "vsAverage": 1.026,
     "rank": 18
    }
   },
@@ -976,7 +976,7 @@
     "perGame": 11,
     "games": 5,
     "adjusted": 8.91,
-    "vsAverage": 1.415,
+    "vsAverage": 1.414,
     "rank": 3
    }
   },
@@ -1093,8 +1093,8 @@
    "TE": {
     "perGame": 9.78,
     "games": 5,
-    "adjusted": 11.54,
-    "vsAverage": 0.84,
+    "adjusted": 11.55,
+    "vsAverage": 0.839,
     "rank": 24
    },
    "K": {
@@ -1108,7 +1108,7 @@
     "perGame": 12.6,
     "games": 5,
     "adjusted": 9.8,
-    "vsAverage": 1.556,
+    "vsAverage": 1.555,
     "rank": 1
    }
   },
@@ -1137,7 +1137,7 @@
    "TE": {
     "perGame": 7.62,
     "games": 5,
-    "adjusted": 10.34,
+    "adjusted": 10.35,
     "vsAverage": 0.752,
     "rank": 31
    },
@@ -1152,7 +1152,7 @@
     "perGame": 7.6,
     "games": 5,
     "adjusted": 7.02,
-    "vsAverage": 1.115,
+    "vsAverage": 1.114,
     "rank": 12
    }
   },
@@ -1225,7 +1225,7 @@
    "TE": {
     "perGame": 9.6,
     "games": 5,
-    "adjusted": 11.44,
+    "adjusted": 11.45,
     "vsAverage": 0.832,
     "rank": 25
    },
@@ -1270,7 +1270,7 @@
     "perGame": 14.58,
     "games": 5,
     "adjusted": 14.21,
-    "vsAverage": 1.034,
+    "vsAverage": 1.033,
     "rank": 14
    },
    "K": {
@@ -1284,7 +1284,7 @@
     "perGame": 10.4,
     "games": 5,
     "adjusted": 8.58,
-    "vsAverage": 1.362,
+    "vsAverage": 1.361,
     "rank": 4
    }
   },
@@ -1327,8 +1327,8 @@
    "DEF": {
     "perGame": 4.4,
     "games": 5,
-    "adjusted": 5.24,
-    "vsAverage": 0.833,
+    "adjusted": 5.25,
+    "vsAverage": 0.832,
     "rank": 23
    }
   },
@@ -1415,7 +1415,7 @@
    "DEF": {
     "perGame": -0.25,
     "games": 4,
-    "adjusted": 3.02,
+    "adjusted": 3.03,
     "vsAverage": 0.48,
     "rank": 31
    }
@@ -1970,14 +1970,14 @@
   },
   "3269": {
    "weeks": 4,
-   "snapShare": 0.474,
+   "snapShare": 0.365,
    "targetShare": 0.058,
    "carryShare": 0,
    "redZone": 0.25,
    "pointsPerGame": 3.83,
    "recent": {
     "weeks": 2,
-    "snapShare": 0.516,
+    "snapShare": 0.286,
     "targetShare": 0.02,
     "carryShare": 0,
     "redZone": 0.5,
@@ -7403,14 +7403,14 @@
    "targetShare": 0.026,
    "carryShare": 0,
    "redZone": 0,
-   "pointsPerGame": 0.72,
+   "pointsPerGame": 0.92,
    "recent": {
     "weeks": 3,
     "snapShare": 0.205,
     "targetShare": 0.034,
     "carryShare": 0,
     "redZone": 0,
-    "pointsPerGame": 0.4
+    "pointsPerGame": 0.73
    }
   },
   "11994": {
@@ -10133,14 +10133,14 @@
    "targetShare": 0,
    "carryShare": 0,
    "redZone": 0,
-   "pointsPerGame": 4.8,
+   "pointsPerGame": 5,
    "recent": {
     "weeks": 3,
     "snapShare": 0,
     "targetShare": 0,
     "carryShare": 0,
     "redZone": 0,
-    "pointsPerGame": 7.67
+    "pointsPerGame": 8
    }
   },
   "ATL": {

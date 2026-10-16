@@ -664,5 +664,82 @@
       "playerIds": [],
       "score": 3
     }
+  ],
+  "6": [
+    {
+      "url": "https://a.espncdn.com/photo/2026/1016/r1731446_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "J.K. Dobbins (No. 27) had 17 carries for 41 yards and one touchdown in the Broncos' win.",
+      "gameId": "401872995",
+      "week": 6,
+      "playerIds": [
+        "6806"
+      ],
+      "score": 9.7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1016/r1731448_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "RJ Harvey, Bo Nix",
+      "gameId": "401872995",
+      "week": 6,
+      "playerIds": [
+        "11563",
+        "12489"
+      ],
+      "score": 6.83
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1016/r1731494_600x400_3-2.jpg",
+      "width": 600,
+      "height": 400,
+      "caption": "Seahawks quarterback Sam Darnold was picked in the fourth quarter and overtime Thursday night and has thrown seven interceptions in his past four games.",
+      "gameId": "401872995",
+      "week": 6,
+      "playerIds": [],
+      "score": 4
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1016/r1731462_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "Seahawks QB Sam Darnold spent a lot of Thursday's game scrambling in and out of the pocket as he was sacked five times.",
+      "gameId": "401872995",
+      "week": 6,
+      "playerIds": [],
+      "score": 4
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/1016/a05c56d4-29c6-4bf1-8a22-8b27c3581041/a05c56d4-29c6-4bf1-8a22-8b27c3581041.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Kris Abrams-Draine picks off Sam Darnold late",
+      "gameId": "401872995",
+      "week": 6,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1016/r1731476_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "Rashid Shaheed",
+      "gameId": "401872995",
+      "week": 6,
+      "playerIds": [],
+      "score": 1
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1016/r1731410_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "Sam Darnold",
+      "gameId": "401872995",
+      "week": 6,
+      "playerIds": [],
+      "score": 1
+    }
   ]
 }

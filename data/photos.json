@@ -667,79 +667,58 @@
   ],
   "6": [
     {
-      "url": "https://a.espncdn.com/photo/2026/1016/r1731446_608x342_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/1015/r1731282_2_608x342_16-9.jpg",
       "width": 608,
       "height": 342,
-      "caption": "J.K. Dobbins (No. 27) had 17 carries for 41 yards and one touchdown in the Broncos' win.",
+      "caption": "Drake London",
       "gameId": "401872995",
       "week": 6,
       "playerIds": [
-        "6806"
+        "8112"
       ],
-      "score": 9.7
+      "score": 5
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1016/r1731448_608x342_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/1015/r1731372_608x342_16-9.jpg",
       "width": 608,
       "height": 342,
-      "caption": "RJ Harvey, Bo Nix",
+      "caption": "When asked about Omarion Hampton's decreased snap count, coach Jim Harbaugh told reporters: \"There's three outstanding backs, but love them, love them all.\"",
       "gameId": "401872995",
       "week": 6,
       "playerIds": [
-        "11563",
-        "12489"
+        "12507"
       ],
-      "score": 6.83
+      "score": 5
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1016/r1731494_600x400_3-2.jpg",
-      "width": 600,
-      "height": 400,
-      "caption": "Seahawks quarterback Sam Darnold was picked in the fourth quarter and overtime Thursday night and has thrown seven interceptions in his past four games.",
+      "url": "https://a.espncdn.com/photo/2026/1016/r1731709_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "",
       "gameId": "401872995",
       "week": 6,
       "playerIds": [],
-      "score": 4
+      "score": 2
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1016/r1731462_608x342_16-9.jpg",
-      "width": 608,
-      "height": 342,
-      "caption": "Seahawks QB Sam Darnold spent a lot of Thursday's game scrambling in and out of the pocket as he was sacked five times.",
+      "url": "https://a.espncdn.com/photo/2026/1015/r1731267_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "",
       "gameId": "401872995",
       "week": 6,
       "playerIds": [],
-      "score": 4
+      "score": 2
     },
     {
-      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/1016/a05c56d4-29c6-4bf1-8a22-8b27c3581041/a05c56d4-29c6-4bf1-8a22-8b27c3581041.jpg",
-      "width": 576,
-      "height": 324,
-      "caption": "Kris Abrams-Draine picks off Sam Darnold late",
+      "url": "https://a.espncdn.com/photo/2026/1015/r1731275_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "",
       "gameId": "401872995",
       "week": 6,
       "playerIds": [],
-      "score": 3
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/1016/r1731476_608x342_16-9.jpg",
-      "width": 608,
-      "height": 342,
-      "caption": "Rashid Shaheed",
-      "gameId": "401872995",
-      "week": 6,
-      "playerIds": [],
-      "score": 1
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/1016/r1731410_608x342_16-9.jpg",
-      "width": 608,
-      "height": 342,
-      "caption": "Sam Darnold",
-      "gameId": "401872995",
-      "week": 6,
-      "playerIds": [],
-      "score": 1
+      "score": 2
     }
   ]
 }

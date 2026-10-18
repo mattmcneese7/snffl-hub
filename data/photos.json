@@ -667,31 +667,197 @@
   ],
   "6": [
     {
-      "url": "https://a.espncdn.com/photo/2026/1015/r1731282_2_608x342_16-9.jpg",
-      "width": 608,
-      "height": 342,
-      "caption": "Drake London",
+      "url": "https://a.espncdn.com/photo/2026/0902/r1710593_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Jameson Williams is off to a slow start with six catches for 78 yards and no touchdowns for a Lions team that has 62 points in two games.",
       "gameId": "401872995",
       "week": 6,
       "playerIds": [
-        "8112"
+        "8148"
       ],
-      "score": 5
+      "score": 10
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1015/r1731372_608x342_16-9.jpg",
-      "width": 608,
-      "height": 342,
-      "caption": "When asked about Omarion Hampton's decreased snap count, coach Jim Harbaugh told reporters: \"There's three outstanding backs, but love them, love them all.\"",
+      "url": "https://a.espncdn.com/photo/2026/0928/r1723051_2_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Denzel Boston, Cleveland Browns wide receiver",
       "gameId": "401872995",
       "week": 6,
       "playerIds": [
-        "12507"
+        "13346"
       ],
-      "score": 5
+      "score": 7
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1016/r1731709_1296x729_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/0903/r1711041_2_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Christian Watson, Green Bay Packers wide receiver",
+      "gameId": "401872995",
+      "week": 6,
+      "playerIds": [
+        "8167"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0914/r1716699_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Jonathan Taylor, Indianapolis Colts running back",
+      "gameId": "401872995",
+      "week": 6,
+      "playerIds": [
+        "6813"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0903/r1711051_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Justin Jefferson, Minnesota Vikings wide receiver",
+      "gameId": "401872995",
+      "week": 6,
+      "playerIds": [
+        "6794"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0903/r1711058_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "CeeDee Lamb, Dallas Cowboys wide receiver",
+      "gameId": "401872995",
+      "week": 6,
+      "playerIds": [
+        "6786"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0922/r1720547_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Kenneth Walker III, Kansas City Chiefs running back",
+      "gameId": "401872995",
+      "week": 6,
+      "playerIds": [
+        "8151"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0927/r1722612_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Jahmyr Gibbs #0 of the Detroit Lions runs the ball against the New York Jets during the second quarter at Ford Field on September 27, 2026 in Detroit, Michigan.",
+      "gameId": "401872995",
+      "week": 6,
+      "playerIds": [
+        "9221"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0903/r1711047_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Saquon Barkley, Philadelphia Eagles running back",
+      "gameId": "401872995",
+      "week": 6,
+      "playerIds": [
+        "4866"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1016/dm_261016_Saints_Gayle_Benson_IA/dm_261016_Saints_Gayle_Benson_IA.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Katherine Terrell recaps Benson's statement about the team's record and Tyler Shough's response.",
+      "gameId": "401872995",
+      "week": 6,
+      "playerIds": [
+        "12545"
+      ],
+      "score": 4
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1017/r1732147_2_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Caleb Williams is set to return after missing the past three weeks due to a hamstring injury.",
+      "gameId": "401872995",
+      "week": 6,
+      "playerIds": [
+        "11560"
+      ],
+      "score": 4
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1011/ss_20261011_215820392_3694185/ss_20261011_215820392_3694185.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "What is Tyler Warren's ceiling in fantasy after Week 5?",
+      "gameId": "401872995",
+      "week": 6,
+      "playerIds": [
+        "12518"
+      ],
+      "score": 4
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1011/dm_261011_Watchfolder_Aaron_Rodgers_FFIA/dm_261011_Watchfolder_Aaron_Rodgers_FFIA.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Why Aaron Rodgers is a viable fantasy option in Week 6 vs. the Bucs",
+      "gameId": "401872995",
+      "week": 6,
+      "playerIds": [
+        "96"
+      ],
+      "score": 4
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1014/dm_261014_ffp_dopp_on_dk_metcalf/dm_261014_ffp_dopp_on_dk_metcalf.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Where Daniel Dopp is ranking DK Metcalf in Week 6",
+      "gameId": "401872995",
+      "week": 6,
+      "playerIds": [
+        "5846"
+      ],
+      "score": 4
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1016/ss_20261016_110157453_3698216/ss_20261016_110157453_3698216.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Why Tony Pollard could be primed to have a big fantasy showing in Week 6",
+      "gameId": "401872995",
+      "week": 6,
+      "playerIds": [
+        "5967"
+      ],
+      "score": 4
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0914/r1716707_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Michael Pittman Jr., Pittsburgh Steelers wide receiver",
+      "gameId": "401872995",
+      "week": 6,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1017/r1731913_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
       "caption": "",
@@ -701,17 +867,7 @@
       "score": 2
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1015/r1731267_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "",
-      "gameId": "401872995",
-      "week": 6,
-      "playerIds": [],
-      "score": 2
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/1015/r1731275_1296x729_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/1004/r1725951_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
       "caption": "",

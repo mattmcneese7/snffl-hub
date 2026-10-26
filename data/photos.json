@@ -784,106 +784,58 @@
   ],
   "7": [
     {
-      "url": "https://a.espncdn.com/photo/2026/0902/r1710593_1296x729_16-9.jpg",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/1025/f33faea7-a079-4e84-8e9c-9278b1b3249c/f33faea7-a079-4e84-8e9c-9278b1b3249c.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Quinshon Judkins scores his 2nd TD of the 1st half",
+      "gameId": "401873013",
+      "week": 7,
+      "playerIds": [
+        "12512"
+      ],
+      "score": 9.93
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0121/r1603677_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
-      "caption": "Jameson Williams is off to a slow start with six catches for 78 yards and no touchdowns for a Lions team that has 62 points in two games.",
+      "caption": "Kyren Williams, Los Angeles Rams running back",
       "gameId": "401873010",
       "week": 7,
       "playerIds": [
-        "8148"
+        "8150"
       ],
-      "score": 10
+      "score": 9.26
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/0928/r1723051_2_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Denzel Boston, Cleveland Browns wide receiver",
+      "url": "https://a.espncdn.com/photo/2026/1026/r1736362_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "Jaxon Smith-Njigba and the Seattle Seahawks host the Chicago Bears in Week 8 on \"Monday Night Football\" on ESPN.",
       "gameId": "401873010",
       "week": 7,
       "playerIds": [
-        "13346"
+        "9488"
       ],
-      "score": 7
+      "score": 8.91
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/0903/r1711041_2_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Christian Watson, Green Bay Packers wide receiver",
-      "gameId": "401873010",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1025/e0f48c3058e04f96b4d7c497dae89ffb1128/e0f48c3058e04f96b4d7c497dae89ffb1128.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Trey McBride slants in for a Cardinals TD",
+      "gameId": "401873019",
       "week": 7,
       "playerIds": [
-        "8167"
+        "8130"
       ],
-      "score": 7
+      "score": 7.39
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/0903/r1711051_1296x729_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/1022/nfl_cowboys-eagles_16x9.jpg",
       "width": 1296,
       "height": 729,
-      "caption": "Justin Jefferson, Minnesota Vikings wide receiver",
-      "gameId": "401873010",
-      "week": 7,
-      "playerIds": [
-        "6794"
-      ],
-      "score": 7
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0914/r1716699_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Jonathan Taylor, Indianapolis Colts running back",
-      "gameId": "401873010",
-      "week": 7,
-      "playerIds": [
-        "6813"
-      ],
-      "score": 7
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0903/r1711058_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "CeeDee Lamb, Dallas Cowboys wide receiver",
-      "gameId": "401873010",
-      "week": 7,
-      "playerIds": [
-        "6786"
-      ],
-      "score": 7
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0922/r1720547_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Kenneth Walker III, Kansas City Chiefs running back",
-      "gameId": "401873010",
-      "week": 7,
-      "playerIds": [
-        "8151"
-      ],
-      "score": 7
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0927/r1722612_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Jahmyr Gibbs #0 of the Detroit Lions runs the ball against the New York Jets during the second quarter at Ford Field on September 27, 2026 in Detroit, Michigan.",
-      "gameId": "401873010",
-      "week": 7,
-      "playerIds": [
-        "9221"
-      ],
-      "score": 7
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0903/r1711047_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Saquon Barkley, Philadelphia Eagles running back",
+      "caption": "\"The NFC East is struggling and the NFC East is really asking for someone to take it over,\" Eagles running back Saquon Barkley said ahead of the MNF matchup.",
       "gameId": "401873010",
       "week": 7,
       "playerIds": [
@@ -892,63 +844,51 @@
       "score": 7
     },
     {
-      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1018/dm_261018_FFIA_Carnell_Tate/dm_261018_FFIA_Carnell_Tate.jpg",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1025/22347de730ca4e85ba69d4783317e654776/22347de730ca4e85ba69d4783317e654776.jpg",
       "width": 576,
       "height": 324,
-      "caption": "Why Carnell Tate is becoming a solid flex option in fantasy",
-      "gameId": "401873010",
+      "caption": "Aaron Rodgers scrambles for crucial late game first down ",
+      "gameId": "401873011",
       "week": 7,
       "playerIds": [
-        "13279"
+        "96"
       ],
-      "score": 4
+      "score": 5.64
     },
     {
-      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1021/dm_261021_ffp_dopp_on_malik_nabers/dm_261021_ffp_dopp_on_malik_nabers.jpg",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1026/ss_20261025_201955396_371158716/ss_20261025_201955396_371158716.jpg",
       "width": 576,
       "height": 324,
-      "caption": "Dopp: Lock in WR1 Malik Nabers in Week 7",
-      "gameId": "401873010",
+      "caption": "Garrett Wilson frustrated on the Jets' sidelines",
+      "gameId": "401873015",
       "week": 7,
       "playerIds": [
-        "11632"
+        "8146"
       ],
-      "score": 4
+      "score": 4.58
     },
     {
-      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1021/dm_261021_FFP_TAYLOR706/dm_261021_FFP_TAYLOR706.jpg",
-      "width": 576,
-      "height": 324,
-      "caption": "Daniel Dopp confident in Jonathan Taylor despite tough matchup in Week 7",
-      "gameId": "401873010",
-      "week": 7,
-      "playerIds": [
-        "6813"
-      ],
-      "score": 4
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0914/r1716707_1296x729_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/1026/r1736465_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
-      "caption": "Michael Pittman Jr., Pittsburgh Steelers wide receiver",
+      "caption": "Zaire Franklin",
       "gameId": "401873010",
       "week": 7,
       "playerIds": [],
       "score": 3
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/0903/r1711074_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Will Anderson Jr. and Danielle Hunter, Houston Texans edge rushers",
-      "gameId": "401873010",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1026/ae6005db1e9b44788f80abb361972e287/ae6005db1e9b44788f80abb361972e287.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Daniel Jones picked off by Harrison Smith to seal Vikings victory",
+      "gameId": "401873014",
       "week": 7,
       "playerIds": [],
       "score": 3
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1024/r1735483_1296x729_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/1026/r1736492_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
       "caption": "",
@@ -958,14 +898,24 @@
       "score": 2
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1004/r1725951_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "",
+      "url": "https://a.espncdn.com/photo/2026/1021/r1733885_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "Sean Mannion has been lauded for his acumen and work ethic, offering hope that he can get things on track.",
       "gameId": "401873010",
       "week": 7,
       "playerIds": [],
-      "score": 2
+      "score": 1
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1022/r1734580_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "Joey Porter Jr. might not cure the Cowboys' inability to intercept passes but the team hopes his coverage skills give a struggling pass rush an extra tick.",
+      "gameId": "401873010",
+      "week": 7,
+      "playerIds": [],
+      "score": 1
     }
   ]
 }

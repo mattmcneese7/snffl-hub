@@ -226,12 +226,40 @@ export type Candidate = {
   signOff?: string;
 };
 
+/**
+ * Roasts and nicknames are welcome; confusion is not. A Sleeper handle may
+ * land a joke, but the piece must also name him by first name so the league
+ * knows who it is, and a headline (read with no context) uses first names.
+ */
+function checkHandles(headline: string, prose: string, handles: { handle: string; firstName: string }[]): Violation[] {
+  const out: Violation[] = [];
+  const word = (w: string) => new RegExp(`(?<![A-Za-z0-9])${w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![A-Za-z0-9])`, 'i');
+  for (const { handle, firstName } of handles) {
+    const re = word(handle);
+    if (re.test(headline)) out.push({ kind: 'handle', detail: `headline uses the Sleeper handle "${handle}"; use ${firstName}` });
+    else if (re.test(prose) && !word(firstName).test(prose))
+      out.push({ kind: 'handle', detail: `uses "${handle}" without ever saying ${firstName}; name him so the league knows who it is` });
+  }
+  return out;
+}
+
+/**
+ * A raw field name leaking into prose ("pointsFor stuck at 411.76"): a lower
+ * camelCase token is never English. Proper nouns are redacted first.
+ */
+function checkTokens(prose: string): Violation[] {
+  const hits = prose.match(/\b[a-z]+[A-Z][A-Za-z]*\b/g) ?? [];
+  return [...new Set(hits)].map((t) => ({ kind: 'token', detail: `raw field name "${t}" in the prose` }));
+}
+
 export function validateArticle(
   candidate: Candidate,
   allowed: Set<string>,
   names: string[] = [],
   /** Legitimate counts, from countsFrom. Omitted means counts go unchecked. */
-  counts?: Set<number>
+  counts?: Set<number>,
+  /** Handles with first names: a handle never stands in for the name. */
+  handles: { handle: string; firstName: string }[] = []
 ): { ok: boolean; violations: Violation[] } {
   const prose = [candidate.headline, candidate.deck, ...candidate.body, candidate.signOff ?? '']
     .filter(Boolean)
@@ -244,6 +272,8 @@ export function validateArticle(
     ...(counts ? checkCounts(redactNames(prose, names), counts) : []),
     ...checkDashes(prose),
     ...checkHeadline(candidate.headline, names),
+    ...checkHandles(candidate.headline, prose, handles),
+    ...checkTokens(redactNames(prose, names)),
   ];
 
   if (!candidate.headline.trim()) violations.push({ kind: 'empty', detail: 'no headline' });

@@ -167,11 +167,10 @@
   font: inherit;
   min-height: 48px;
   border-radius: 999px;
-  background: #141518;
-  color: #fff;
   font-size: 15px;
-  font-weight: 600;
   cursor: pointer;
+  /* The app's one pill. */
+  background: #fff; color: #2d4c9c; font-weight: 600; box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.07), 0 1px 3px rgba(30, 26, 20, 0.05), 0 8px 20px -8px rgba(30, 26, 20, 0.16);
 }
 
 @media (prefers-reduced-motion: reduce) {

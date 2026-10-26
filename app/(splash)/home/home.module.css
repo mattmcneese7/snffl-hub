@@ -241,7 +241,7 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: linear-gradient(180deg, #ffffff, #eef0f3);
+  background: linear-gradient(180deg, #ffffff, #f7f6f2);
   color: var(--ink);
   /* The glass button's rim, small: dark hairline, clear band, faint edge. */
   box-shadow:

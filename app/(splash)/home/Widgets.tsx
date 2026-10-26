@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { firstNameOf } from '@/config/managers';
 import type { Article as RagArticle } from '@/lib/rag';
 import type { StoryArt } from '@/lib/story-images';
 import type { FeedItem } from '@/lib/feed-view';
@@ -93,7 +94,7 @@ export function RagHero({
       </ul>
       <div className={w.heroFoot}>
         <PillLink href={`/rag/${week}`} small>
-          All {total} stories
+          Read the issue
         </PillLink>
       </div>
     </Widget>
@@ -409,7 +410,7 @@ export function StandingsWidget({
               </span>
             ) : null}
           </span>
-          <span className={w.sub}>{t.manager}</span>
+          <span className={w.sub}>{firstNameOf(t.rosterId) ?? t.manager}</span>
         </span>
         <span className={w.cell}>
           {record(t)}

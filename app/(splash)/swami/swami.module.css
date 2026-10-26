@@ -25,7 +25,7 @@
 .facts { display: grid; gap: 6px; min-width: 0; }
 .pairs { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; min-width: 0; }
 .source { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #2d4c9c; }
-.pair { display: inline-flex; align-items: center; gap: 3px; height: 20px; padding: 0 7px; border-radius: 6px; font-size: 11px; font-weight: 500; color: #3d434e; background: #f0efea; white-space: nowrap; }
+.pair { display: inline-flex; align-items: center; gap: 3px; height: 20px; padding: 0 7px; border-radius: 6px; font-size: 11px; font-weight: 500; color: #3d434e; background: #f7f6f2; white-space: nowrap; }
 .pair b { font-weight: 700; color: #141518; font-variant-numeric: tabular-nums; }
 .line { font-size: 13px; line-height: 1.4; color: #3d434e; overflow-wrap: anywhere; }
 .line b { font-weight: 600; color: #141518; }
@@ -62,7 +62,7 @@
 .dot { position: absolute; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: #141518; box-shadow: 0 0 0 2px #fff; }
 
 .tags { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; }
-.chipEven { color: #3d434e; background: #f0efea; }
+.chipEven { color: #3d434e; background: #f7f6f2; }
 
 .note { margin: 0; font-size: 12px; line-height: 1.4; color: #5a616d; }
 

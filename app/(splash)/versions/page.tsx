@@ -88,15 +88,15 @@ const ERAS: Era[] = [
   },
   {
     name: 'Splash',
-    built: 'In progress',
-    build: 'Not released',
+    built: 'Since October 12, 2026',
+    build: '3.0',
     line: 'The v3 redesign: light, one theme, and every v2 feature kept and improved.',
     highlights: [
-      'A new menu: Home, Scores, Standings, Rag, Swami, Feed, More',
+      'One menu: Home, The Rag, Scoreboard, The Feed, Standings, The Swami, More',
       'Squirt says up to six verdicts, yours first',
       'Clips move off ESPN',
     ],
-    // At release this becomes the production domain, https://www.squirtnite.live
+    // The production site, https://www.squirtnite.live
     href: '/',
     external: false,
   },

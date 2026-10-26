@@ -70,10 +70,9 @@
   height: 36px;
   padding: 0 16px;
   border-radius: 999px;
-  background: #2d4c9c;
-  color: #fff;
   font-size: 14px;
-  font-weight: 700;
   cursor: pointer;
+  /* The app's one pill. */
+  background: #fff; color: #2d4c9c; font-weight: 600; box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.07), 0 1px 3px rgba(30, 26, 20, 0.05), 0 8px 20px -8px rgba(30, 26, 20, 0.16);
 }
 .watch:focus-visible { outline: 2px solid #2d4c9c; outline-offset: 3px; }

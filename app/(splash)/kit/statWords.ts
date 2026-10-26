@@ -37,6 +37,13 @@ export function statWords(line: string | null | undefined): string {
     .replace(/(\d+)\/(\d+)([\s\u00a0])catches\b/g, '$1$3catches on $2 targets')
     // A passer's "19/28" opens his line: "19 of 28 passes".
     .replace(/^(\d+)\/(\d+),/, '$1 of $2 passes,')
+    // A kicker's "1/1 field goals, 4/4 extra points": "1 of 1 field goals".
+    .replace(/(\d+)\/(\d+)([\s\u00a0])(field goals|extra points)\b/g, '$1 of $2$3$4')
+    .replace(/\b1 of 1 (field goal|extra point)s\b/g, '1 of 1 $1')
+    .replace(/\blong (\d+)\b/g, 'longest $1 yards')
+    // A defense's "1 FR": a fumble recovery.
+    .replace(/\b1 FR\b/g, '1 fumble recovery')
+    .replace(/\bFR\b/g, 'fumble recoveries')
     .replace(/\bon 1 targets\b/g, 'on 1 target')
     .replace(/^1 of 1 passes,/, '1 of 1 pass,');
   return spelled.replace(

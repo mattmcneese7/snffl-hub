@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import LiveRefresh from '@/components/LiveRefresh';
 import { toFeature } from '@/lib/feature';
-import { getWeekGames } from '@/lib/league';
+import { getWeekGames, league } from '@/lib/league';
 import { getMatchupContext, markInPlay, outlookOf, startersByNflTeam, winProbabilities } from '@/lib/matchup-live';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { leagueVerdicts, oracleFor } from '@/lib/squirt-says';
@@ -22,6 +22,7 @@ import { SleeperPill } from '../parts/shared';
 import Slate from '../parts/Slate';
 import Verdicts from '../parts/Verdicts';
 import s from '../sb.module.css';
+import { weekParam } from '../../kit/weekParam';
 
 export const metadata: Metadata = { title: { absolute: 'Scoreboard, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -36,12 +37,14 @@ export const dynamic = 'force-dynamic';
  */
 export default async function ScoreboardWeek({ params }: { params: Promise<{ week: string }> }) {
   const { week: raw } = await params;
-  const week = Math.min(17, Math.max(1, Number(raw) || 1));
+  const week = weekParam(raw);
 
   const [rawGames, ctx, oracle, jar, lore] = await Promise.all([
     getWeekGames(week).catch(() => []),
     getMatchupContext(week).catch(() => ({ nfl: [], lines: {}, stats: {}, projections: {} })),
-    oracleFor(week).catch(() => null),
+    // Squirt reads lineups against today's injury report, so his verdicts
+    // only mean anything for the week being played now.
+    week === league.state.week ? oracleFor(week).catch(() => null) : Promise.resolve(null),
     cookies(),
     loreTable(),
   ]);
@@ -56,7 +59,7 @@ export default async function ScoreboardWeek({ params }: { params: Promise<{ wee
   // Full names in every saying, never "D. Maye": the sayings are built from
   // each player's short name, so short is the full name here.
   const full = <T extends { name: string }>(p: T): T => ({ ...p, short: p.name });
-  const verdicts = oracle
+  const verdicts = oracle && games.some((g) => g.status !== 'final')
     ? leagueVerdicts(
         oracle.sides.map(({ side, manager }) => ({ side: { ...side, lineup: side.lineup.map(full), bench: side.bench?.map(full) }, manager })),
         oracle.input,
@@ -122,7 +125,7 @@ export default async function ScoreboardWeek({ params }: { params: Promise<{ wee
           </Widget>
         )}
 
-        <Verdicts verdicts={verdicts} mine={mine} week={week} />
+        {week === league.state.week ? <Verdicts verdicts={verdicts} mine={mine} week={week} /> : null}
 
         <section className={`${w.widget} ${w.m} ${s.tick}`}>
           <WidgetHead icon="football" title={myGame ? 'Every other game' : 'Every game'} />

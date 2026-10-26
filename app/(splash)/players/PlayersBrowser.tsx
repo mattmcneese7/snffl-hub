@@ -52,9 +52,9 @@ function figure(row: PlayerRow, k: SortKey): { value: string; unit: string } {
     case 'points':
       return { value: row.points.toFixed(2), unit: 'points' };
     case 'projected':
-      return { value: row.projected == null ? 'None' : row.projected.toFixed(2), unit: 'projected' };
+      return { value: row.projected == null ? '' : row.projected.toFixed(2), unit: 'projected' };
     case 'posRank':
-      return { value: row.posRank == null ? 'None' : `${row.position}${row.posRank}`, unit: 'position rank' };
+      return { value: row.posRank == null ? '' : `${row.position}${row.posRank}`, unit: 'position rank' };
     case 'yards':
       return { value: row.yards.toLocaleString('en-US'), unit: 'yards' };
     case 'touchdowns':
@@ -244,8 +244,13 @@ export default function PlayersBrowser({
                       </span>
                     </span>
                     <span className={p.fig}>
-                      <b className={f.value === 'None' ? p.none : undefined}>{f.value}</b>
-                      <span>{f.unit}</span>
+                      {/* Nothing to show is shown as nothing, not "None". */}
+                      {f.value ? (
+                        <>
+                          <b>{f.value}</b>
+                          <span>{f.unit}</span>
+                        </>
+                      ) : null}
                     </span>
                   </Link>
                 </li>

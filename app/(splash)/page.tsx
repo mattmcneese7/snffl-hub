@@ -54,6 +54,7 @@ import Widget, { WidgetHead } from './home/Widget';
 import { ClipRail, ChugMeter, FeedDigest, LatestTrade, NflScores, QuickLinks, RagHero, Scoreboard, StandingsWidget, TopScorers } from './home/Widgets';
 import w from './home/widgets.module.css';
 import styles from './home/home.module.css';
+import { nflTeamName } from './kit/nflTeams';
 
 /**
  * Home, reworked in Pool, with the flow of the live v2 home. Every figure,
@@ -250,8 +251,13 @@ function Matchup({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={topScorer.player.headshot} alt="" loading="lazy" />
           <span className={styles.tsText}>
-            <span className={styles.tsLabel}>Top scorer | {topScorer.owner}</span>
+            <span className={styles.tsLabel}>Top scorer</span>
             <b>{topScorer.player.name}</b>
+            {/* Whose he is, then what he is: "Jack's QB, Detroit Lions". */}
+            <span className={styles.tsLine}>
+              {topScorer.owner}&rsquo;s {topScorer.player.position}
+              {topScorer.player.team ? `, ${nflTeamName(topScorer.player.team)}` : ''}
+            </span>
             {topScorer.line ? <span className={styles.tsLine}>{topScorer.line}</span> : null}
           </span>
           <span className={styles.tsPts}>{topScorer.player.points.toFixed(2)}</span>
@@ -366,7 +372,9 @@ export default async function ReworkedHome({
   const ragWeeks = publishedWeeks();
   const ragWeek = ragWeeks.length ? ragWeeks[ragWeeks.length - 1] : null;
   const issue = ragWeek ? readIssue(ragWeek) : null;
-  const articles = (issue?.articles ?? []).filter((a) => !a.retracted).slice(0, 8);
+  // Every live story counts; the hero shows the first few.
+  const allArticles = (issue?.articles ?? []).filter((a) => !a.retracted);
+  const articles = allArticles.slice(0, 8);
   const [ragClips, ragFeatured] = ragWeek
     ? await Promise.all([getHighlights(ragWeek, 200), featuredPlayers(ragWeek)])
     : [[], []];
@@ -665,7 +673,7 @@ export default async function ReworkedHome({
             <RagHero
               week={ragWeek}
               articles={articles.filter((a) => a.id !== 'shart')}
-              total={articles.length}
+              total={allArticles.length}
               art={art}
               mast={mast}
               publishedAt={issue?.publishedAt ?? null}

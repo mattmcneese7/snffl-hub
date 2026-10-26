@@ -154,12 +154,12 @@ export default async function NflGamePage({ params }: { params: Promise<{ gameId
   const when = [game.state === 'pre' ? kickoffLong(game.kickoff) : post ? 'Final' : quarter(game.period, game.clock), game.broadcast].filter(Boolean).join(' | ');
   const season = extras.season.length === 2 ? extras.season : null;
   const ROWS: [string, (t: SeasonLine) => string][] = [
-    ['Scored', (t) => (t.played ? (t.pointsFor / t.played).toFixed(1) : '-')],
-    ['Allowed', (t) => (t.played ? (t.pointsAgainst / t.played).toFixed(1) : '-')],
+    ['Scored', (t) => (t.played ? (t.pointsFor / t.played).toFixed(1) : '')],
+    ['Allowed', (t) => (t.played ? (t.pointsAgainst / t.played).toFixed(1) : '')],
     [
       'Margin',
       (t) => {
-        if (!t.played) return '-';
+        if (!t.played) return '';
         const d = (t.pointsFor - t.pointsAgainst) / t.played;
         return `${d > 0 ? '+' : ''}${d.toFixed(1)}`;
       },
@@ -294,14 +294,18 @@ export default async function NflGamePage({ params }: { params: Promise<{ gameId
           {lines ? (
             <>
               <div className={`${n.facts} ${n.facts2}`}>
-                <span className={n.fact}>
-                  <span className={sb.label}>Spread</span>
-                  <span className={n.factText}>{lines.details ?? '-'}</span>
-                </span>
-                <span className={n.fact}>
-                  <span className={sb.label}>Total</span>
-                  <span className={n.factNum}>{lines.overUnder ?? '-'}</span>
-                </span>
+                {lines.details ? (
+                  <span className={n.fact}>
+                    <span className={sb.label}>Spread</span>
+                    <span className={n.factText}>{lines.details}</span>
+                  </span>
+                ) : null}
+                {lines.overUnder != null ? (
+                  <span className={n.fact}>
+                    <span className={sb.label}>Total</span>
+                    <span className={n.factNum}>{lines.overUnder}</span>
+                  </span>
+                ) : null}
               </div>
               {/* Each team's moneyline and the total the spread and the
                   over under imply for it, one team a row. */}
@@ -318,15 +322,19 @@ export default async function NflGamePage({ params }: { params: Promise<{ gameId
                       <img src={side.logo} alt="" />
                       <span className={n.lineName}>{nflTeamName(side.abbr)}</span>
                       <span className={n.linePairs}>
-                        <span className={n.pair}>
-                          <span className={sb.label}>Moneyline</span>
-                          {win ?? money(book.moneyline) ?? '-'}
-                          {win && book.moneyline != null ? <small className={n.pairSub}>{money(book.moneyline)}</small> : null}
-                        </span>
-                        <span className={n.pair}>
-                          <span className={sb.label}>Implied total</span>
-                          {implied != null ? Number(implied).toFixed(1) : 'None'}
-                        </span>
+                        {win ?? money(book.moneyline) ? (
+                          <span className={n.pair}>
+                            <span className={sb.label}>Moneyline</span>
+                            {win ?? money(book.moneyline)}
+                            {win && book.moneyline != null ? <small className={n.pairSub}>{money(book.moneyline)}</small> : null}
+                          </span>
+                        ) : null}
+                        {implied != null ? (
+                          <span className={n.pair}>
+                            <span className={sb.label}>Implied total</span>
+                            {Number(implied).toFixed(1)}
+                          </span>
+                        ) : null}
                       </span>
                     </div>
                   );
@@ -402,7 +410,7 @@ export default async function NflGamePage({ params }: { params: Promise<{ gameId
                               </span>
                               {game.state === 'pre' ? (
                                 <span className={n.pNum}>
-                                  {proj != null ? proj.toFixed(1) : '-'}
+                                  {proj != null && proj > 0 ? proj.toFixed(1) : '\u2013'}
                                   <span>Projected</span>
                                 </span>
                               ) : (

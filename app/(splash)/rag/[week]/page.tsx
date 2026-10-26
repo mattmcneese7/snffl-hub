@@ -10,6 +10,7 @@ import { PillLink } from '../../home/Glass';
 import w from '../../home/widgets.module.css';
 import r from '../rag.module.css';
 import { Art, RetractedTag, StoryRows, dayOf, issueArt, scheduleDay, weekFrom } from '../parts';
+import { weekParam } from '../../kit/weekParam';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,7 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ week: str
  */
 export default async function RagWeek({ params }: { params: Promise<{ week: string }> }) {
   const { week: raw } = await params;
-  const week = weekFrom(raw);
+  const week = weekParam(raw);
   const issue = readIssue(week);
   const published = publishedWeeks();
   const latest = published.length ? published[published.length - 1] : null;

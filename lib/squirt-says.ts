@@ -199,7 +199,7 @@ function trapVerdict(side: GameSide, manager: string, input: OracleInput): Verdi
     manager,
     saying: pick(
       [
-        `${named(worst.player)} plays the quietest game on the board, ${money(worst.total)} points expected between both teams. There are only so many to go round.`,
+        `${named(worst.player)} plays the quietest game on the board, ${money(worst.total)} points expected between both teams. There are only so many to go around.`,
         `${manager} is asking ${named(worst.player)} to feed from a table set for ${money(worst.total)}. Nobody leaves that one full.`,
         `The book expects ${money(worst.total)} points in ${named(worst.player)}'s game. ${manager} needs some of them.`,
       ],

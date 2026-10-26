@@ -20,16 +20,12 @@ export const nameOf = (rosterId: number, fallback = '') => firstNameOf(rosterId)
 /** Lib copy is written with straight apostrophes; on screen they curl. */
 export const curl = (text: string) => text.replace(/(\w)'(\w)/g, '$1’$2').replace(/'/g, '’');
 
-/** "Sun 12 PM", Central, the way v2's slate prints a kickoff. */
+/** "Monday, 7:15 PM CT": Central, the same wording as every kickoff in the app. */
 export function kickoff(iso: string): string {
-  return new Intl.DateTimeFormat('en-US', {
-    weekday: 'short',
-    hour: 'numeric',
-    minute: '2-digit',
-    timeZone: 'America/Chicago',
-  })
-    .format(new Date(iso))
-    .replace(':00', '');
+  const at = new Date(iso);
+  const day = new Intl.DateTimeFormat('en-US', { weekday: 'long', timeZone: 'America/Chicago' }).format(at);
+  const time = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/Chicago' }).format(at);
+  return `${day}, ${time} CT`;
 }
 
 /** "Q3 4:12", or "OT 2:00". */

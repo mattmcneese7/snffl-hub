@@ -248,6 +248,19 @@ export async function buildWeekFacts(week: number): Promise<WeekFacts> {
  * managers spell their own handles (nunnells, bearcat2789) and the style guide
  * requires reproducing them exactly.
  */
+/**
+ * Each manager's Sleeper handle with his first name, for the clarity check:
+ * a handle may be used for a joke, but never without his first name in the
+ * same piece, and never in a headline. Handles that are also team names, or
+ * already his first name, are left out.
+ */
+export function handlesOf(facts: WeekFacts): { handle: string; firstName: string }[] {
+  const teams = new Set(facts.standings.map((s) => s.team.trim().toLowerCase()));
+  return facts.managers
+    .filter((m) => m.manager && m.manager !== m.firstName && !teams.has(m.manager.trim().toLowerCase()))
+    .map((m) => ({ handle: m.manager, firstName: m.firstName }));
+}
+
 export function properNouns(facts: WeekFacts): string[] {
   const out = new Set<string>();
   const add = (value: string | null | undefined) => {

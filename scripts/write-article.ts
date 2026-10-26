@@ -8,7 +8,7 @@
 // Run with Node 24, which strips TypeScript types natively.
 
 import { ARTICLE_ORDER, ARTICLE_SPECS, type ArticleId } from '../config/style-guide.ts';
-import { allowedNumbers, buildWeekFacts, properNouns } from '../lib/fact-packets.ts';
+import { allowedNumbers, buildWeekFacts, handlesOf, properNouns } from '../lib/fact-packets.ts';
 import { readIssue, readTimeOf, slugFor, snapshotFrom, writeIssue } from '../lib/rag.ts';
 import { retryArticle } from '../lib/rag-writer.ts';
 import { templateFor } from '../lib/templates.ts';
@@ -38,7 +38,7 @@ let fromTemplate = false;
 for (let attempt = 1; attempt <= 2 && !candidate; attempt++) {
   const draft = await retryArticle(id, facts);
   if (!draft) continue;
-  const check = validateArticle(draft, allowed, names, counts);
+  const check = validateArticle(draft, allowed, names, counts, handlesOf(facts));
   if (check.ok) candidate = draft;
   else console.warn(`  attempt ${attempt} failed: ${check.violations.map((v) => v.detail).join('; ')}`);
 }

@@ -34,7 +34,7 @@ const managerOf = (rosterId: number) => firstNameOf(rosterId) ?? teams.find((t) 
 /** Snap share, and the last few weeks beside it when they moved. Kickers and defenses have no role to read. */
 function UsageChips({ usage, trend, position }: { usage: UsageEntry | null; trend: string | null; position: string }) {
   if (position === 'K' || position === 'DEF') return null;
-  if (!usage) return <Chip label="Snap share" value="None yet" plain />;
+  if (!usage) return null;
   const moved = usage.recent && trend && trend !== 'steady';
   return (
     <>

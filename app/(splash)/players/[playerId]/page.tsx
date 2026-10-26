@@ -4,12 +4,12 @@ import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { CaretLeft, CaretRight } from '@phosphor-icons/react/dist/ssr';
 import { SleeperPill } from '../../scoreboard/parts/shared';
-import { nflTeamName } from '../../kit/nflTeams';
+import { NFL_TEAMS, nflTeamName } from '../../kit/nflTeams';
 import { firstNameOf } from '@/config/managers';
 import { dsRos, dsWeekly } from '@/lib/draftsharks';
 import { ESPN_CUTOUT } from '@/lib/espn';
 import { formatMoneyline, gamesByTeam, getGameLines, getNflGames, impliedTeamTotal } from '@/lib/gameday';
-import { league, scoredWeek, teamByRoster } from '@/lib/league';
+import { league, playerOf, scoredWeek, teamByRoster } from '@/lib/league';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { filed, newsFor } from '@/lib/news';
 import { outlookFor, roleOf } from '@/lib/outlook';
@@ -33,6 +33,7 @@ import p from '../players.module.css';
 import pp from './player.module.css';
 import { POSITION } from '../../kit/positions';
 import { gameStatus } from '../../kit/gameStatus';
+import { notFound } from 'next/navigation';
 
 export const metadata: Metadata = { title: { absolute: 'Player, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -64,6 +65,9 @@ const kickoff = (iso: string) =>
  */
 export default async function PlayerPage({ params }: { params: Promise<{ playerId: string }> }) {
   const { playerId } = await params;
+  // A real player, or a real team's defense; anything else is a 404, not a
+  // made-up defense page.
+  if (/^\d+$/.test(playerId) ? playerOf(playerId).name === 'Unknown Player' : !NFL_TEAMS[playerId]) notFound();
   // state.week is the week actually in progress. display_week lags it, and
   // projecting off the lagging value would show last week as next week.
   const upcoming = league.state.week;
@@ -124,7 +128,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ playerI
       label: 'DraftSharks range',
       value: weekly?.floor != null && weekly?.ceiling != null ? `${weekly.floor.toFixed(1)} to ${weekly.ceiling.toFixed(1)}` : 'None',
     },
-    { label: 'DraftSharks rank', value: weekly ? `${weekly.position}${weekly.posRank}` : 'Unranked' },
+    { label: 'DraftSharks rank', value: weekly ? `${weekly.position}${weekly.posRank}` : 'None' },
     { label: 'Implied total', value: teamTotal != null ? String(teamTotal) : 'None' },
     ...(showLine
       ? [

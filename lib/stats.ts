@@ -29,24 +29,7 @@ function line(stats: RawStats, key: string, label: string, digits = 0): StatLine
 /** Two counting stats that read as one, such as completions and attempts. */
 function pair(stats: RawStats, a: string, b: string, label: string): StatLine | null {
   if (stats[a] == null && stats[b] == null) return null;
-  return { label, value: `${num(stats[a])}/${num(stats[b])}` };
-}
-
-/**
- * Share of the team's offensive snaps. Sleeper reports the player's snaps and
- * the team's separately, so the percentage has to be derived.
- */
-function snapShare(stats: RawStats): StatLine | null {
-  const offense = Boolean(stats.off_snp != null && stats.tm_off_snp);
-  const played = offense ? stats.off_snp : stats.st_snp;
-  const team = offense ? stats.tm_off_snp : stats.tm_st_snp;
-  if (played == null || !team) return null;
-  // A kicker has no offensive snaps, so the figure comes from special teams.
-  // Labeling that "Snap Share" would read as offensive usage, which it is not.
-  return {
-    label: offense ? 'Snap Share' : 'ST Snap Share',
-    value: `${((played / team) * 100).toFixed(0)}%`,
-  };
+  return { label, value: `${num(stats[a])} of ${num(stats[b])}` };
 }
 
 function block(title: string, lines: (StatLine | null)[]): StatBlock | null {
@@ -56,8 +39,8 @@ function block(title: string, lines: (StatLine | null)[]): StatBlock | null {
 
 function passing(stats: RawStats): StatBlock | null {
   return block('Passing', [
-    pair(stats, 'pass_cmp', 'pass_att', 'Comp/Att'),
-    line(stats, 'cmp_pct', 'Comp %', 1),
+    pair(stats, 'pass_cmp', 'pass_att', 'Completions'),
+    line(stats, 'cmp_pct', 'Completion rate', 1),
     line(stats, 'pass_yd', 'Yards'),
     line(stats, 'pass_td', 'Touchdowns'),
     line(stats, 'pass_int', 'Interceptions'),
@@ -72,9 +55,9 @@ function rushing(stats: RawStats): StatBlock | null {
     line(stats, 'rush_att', 'Attempts'),
     line(stats, 'rush_yd', 'Yards'),
     line(stats, 'rush_td', 'Touchdowns'),
-    line(stats, 'rush_ypa', 'Yards per Carry', 1),
+    line(stats, 'rush_ypa', 'Yards per carry', 1),
     line(stats, 'rush_lng', 'Long'),
-    line(stats, 'rush_fd', 'First Downs'),
+    line(stats, 'rush_fd', 'First downs'),
   ]);
 }
 
@@ -85,9 +68,9 @@ function receiving(stats: RawStats): StatBlock | null {
     line(stats, 'rec_tgt', 'Targets'),
     line(stats, 'rec_yd', 'Yards'),
     line(stats, 'rec_td', 'Touchdowns'),
-    line(stats, 'rec_ypr', 'Yards per Catch', 1),
+    line(stats, 'rec_ypr', 'Yards per catch', 1),
     line(stats, 'rec_lng', 'Long'),
-    line(stats, 'rec_fd', 'First Downs'),
+    line(stats, 'rec_fd', 'First downs'),
     line(stats, 'rec_drop', 'Drops'),
   ]);
 }
@@ -95,35 +78,35 @@ function receiving(stats: RawStats): StatBlock | null {
 function kicking(stats: RawStats): StatBlock[] {
   // The league scores field goals by distance, 3 points inside 40 rising to 6
   // from 60, so the bands are the story and a bare make total would mislead.
-  const bands = block('Field Goals by Distance', [
-    line(stats, 'fgm_0_19', 'Made, Inside 20'),
-    line(stats, 'fgm_20_29', 'Made, 20 to 29'),
-    line(stats, 'fgm_30_39', 'Made, 30 to 39'),
-    line(stats, 'fgm_40_49', 'Made, 40 to 49'),
-    line(stats, 'fgm_50_59', 'Made, 50 to 59'),
-    line(stats, 'fgm_60p', 'Made, 60 Plus'),
+  const bands = block('Field goals by distance', [
+    line(stats, 'fgm_0_19', 'Inside 20 yards'),
+    line(stats, 'fgm_20_29', '20 to 29 yards'),
+    line(stats, 'fgm_30_39', '30 to 39 yards'),
+    line(stats, 'fgm_40_49', '40 to 49 yards'),
+    line(stats, 'fgm_50_59', '50 to 59 yards'),
+    line(stats, 'fgm_60p', '60 yards or more'),
   ]);
   const totals = block('Kicking', [
-    pair(stats, 'fgm', 'fga', 'FG Made/Att'),
-    line(stats, 'fgm_pct', 'FG %', 1),
+    pair(stats, 'fgm', 'fga', 'Field goals'),
+    line(stats, 'fgm_pct', 'Field goal rate', 1),
     line(stats, 'fgm_lng', 'Long'),
     line(stats, 'fgmiss', 'Missed'),
-    pair(stats, 'xpm', 'xpa', 'XP Made/Att'),
-    line(stats, 'xpmiss', 'XP Missed'),
+    pair(stats, 'xpm', 'xpa', 'Extra points'),
+    line(stats, 'xpmiss', 'Extra points missed'),
   ]);
   return [totals, bands].filter((entry): entry is StatBlock => entry !== null);
 }
 
 function defense(stats: RawStats): StatBlock[] {
-  const takeaways = block('Takeaways and Pressure', [
+  const takeaways = block('Takeaways and pressure', [
     line(stats, 'sack', 'Sacks', 1),
     line(stats, 'int', 'Interceptions'),
-    line(stats, 'ff', 'Forced Fumbles'),
-    line(stats, 'fum_rec', 'Fumbles Recovered'),
+    line(stats, 'ff', 'Forced fumbles'),
+    line(stats, 'fum_rec', 'Fumbles recovered'),
     line(stats, 'safe', 'Safeties'),
-    line(stats, 'def_td', 'Defensive TDs'),
-    line(stats, 'qb_hit', 'QB Hits'),
-    line(stats, 'def_pass_def', 'Passes Defended'),
+    line(stats, 'def_td', 'Defensive touchdowns'),
+    line(stats, 'qb_hit', 'Quarterback hits'),
+    line(stats, 'def_pass_def', 'Passes defended'),
   ]);
   // Both are scored in bands that run from plus 5 to minus 7, so they belong
   // together and they belong on the page.
@@ -131,23 +114,16 @@ function defense(stats: RawStats): StatBlock[] {
     line(stats, 'pts_allow', 'Points'),
     line(stats, 'yds_allow', 'Yards'),
     line(stats, 'tkl', 'Tackles'),
-    line(stats, 'tkl_loss', 'Tackles for Loss'),
+    line(stats, 'tkl_loss', 'Tackles for loss'),
   ]);
   return [takeaways, allowed].filter((entry): entry is StatBlock => entry !== null);
 }
 
 function fantasy(stats: RawStats): StatBlock | null {
-  return block('Fantasy', [
-    // Named for what it is. This is Sleeper's standard PPR total, not what
-    // the player scored in this league, and the two differ for defences and
-    // kickers. Labelling it "Fantasy Points" here would contradict every
-    // other number on the page.
-    line(stats, 'pts_ppr', 'Standard PPR', 2),
-    line(stats, 'pos_rank_ppr', 'Position Rank'),
-    line(stats, 'gp', 'Games Played'),
-    line(stats, 'gs', 'Games Started'),
-    snapShare(stats),
-  ]);
+  // Only what no other part of the player page says. Sleeper's standard PPR
+  // total, games played and started lag this league's own numbers by a week
+  // and contradicted the Season card; snap share lives in Usage.
+  return block('Fantasy', [line(stats, 'pos_rank_ppr', 'Position rank')]);
 }
 
 /**

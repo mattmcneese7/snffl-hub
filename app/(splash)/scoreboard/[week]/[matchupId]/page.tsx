@@ -24,6 +24,7 @@ import { nameOf, pts, SleeperPill } from '../../parts/shared';
 import Slate from '../../parts/Slate';
 import SwamiPanel from '../../parts/SwamiPanel';
 import s from '../../sb.module.css';
+import { weekParam } from '../../../kit/weekParam';
 
 export const metadata: Metadata = { title: { absolute: 'Matchup, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -36,7 +37,7 @@ export const dynamic = 'force-dynamic';
  */
 export default async function MatchupPage({ params }: { params: Promise<{ week: string; matchupId: string }> }) {
   const { week: rawWeek, matchupId: rawId } = await params;
-  const week = Math.min(17, Math.max(1, Number(rawWeek) || 1));
+  const week = weekParam(rawWeek);
   const matchupId = Number(rawId);
 
   const [rawGames, espnCtx, lore, jar] = await Promise.all([

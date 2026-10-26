@@ -109,7 +109,7 @@ export default async function TrophiesPage() {
                 <span className={styles.shelfWho}>
                   <b>{team.teamName}</b>
                   <span className={styles.blurb}>
-                    {nameOf(team.rosterId)} | {total ? `${total} ${total === 1 ? 'award' : 'awards'}` : 'None yet'}
+                    {nameOf(team.rosterId)} | {total ? `${total} ${total === 1 ? 'award' : 'awards'}` : 'No awards yet'}
                   </span>
                 </span>
                 <span className={styles.pieces}>

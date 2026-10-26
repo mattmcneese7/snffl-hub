@@ -140,7 +140,7 @@ export default function RulesPage() {
     { label: 'Playoff teams', value: league.playoffTeams },
     { label: 'Playoffs start', value: `Week ${league.playoffWeekStart}` },
     { label: 'Bench', value: bench },
-    { label: 'IR', value: ir || 'None' },
+    ...(ir ? [{ label: 'IR', value: ir }] : []),
   ];
 
   return (

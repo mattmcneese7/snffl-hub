@@ -10,6 +10,7 @@ import Icon from '../../../home/Icons';
 import w from '../../../home/widgets.module.css';
 import r from '../../rag.module.css';
 import { Art, LinkedNames, StoryRows, dayOf, issueArt, weekFrom } from '../../parts';
+import { weekParam } from '../../../kit/weekParam';
 
 export const dynamic = 'force-dynamic';
 
@@ -34,7 +35,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
  */
 export default async function RagArticle({ params }: Params) {
   const { week: raw, slug } = await params;
-  const week = weekFrom(raw);
+  const week = weekParam(raw);
   const issue = readIssue(week);
   const article = issue?.articles.find((a) => a.slug === slug);
   if (!issue || !article) notFound();

@@ -34,6 +34,6 @@ export const CHUG_REMINDERS = [
 
 /** Where the videos live, so the Rules page can say so plainly. */
 export const CHUG_SUBMISSION =
-  'Record it and send it through Instagram. Videos are archived in Google Drive, not on this site.';
+  'Record it and send it through Instagram. Every chug lands on the Chug Meter page.';
 
 export const CUSTOM_RULES: RuleSection[] = [CHUG_RULES];

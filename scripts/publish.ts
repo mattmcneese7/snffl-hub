@@ -11,7 +11,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ARTICLE_ORDER, ARTICLE_SPECS, BYLINE, type ArticleId } from '../config/style-guide.ts';
 import { collectBatch, recordSpend, spendSummary } from '../lib/claude.ts';
-import { allowedNumbers, buildWeekFacts, properNouns, type WeekFacts } from '../lib/fact-packets.ts';
+import { allowedNumbers, buildWeekFacts, handlesOf, properNouns, type WeekFacts } from '../lib/fact-packets.ts';
 import { countsFrom } from '../lib/validate.ts';
 import {
   readTimeOf,
@@ -126,7 +126,7 @@ for (const id of ARTICLE_ORDER) {
 
   if (result?.ok) {
     const data = result.data as Candidate;
-    const check = validateArticle(data, allowed, names, counts);
+    const check = validateArticle(data, allowed, names, counts, handlesOf(facts));
     if (check.ok) {
       candidate = data;
     } else {
@@ -147,7 +147,7 @@ for (const id of ARTICLE_ORDER) {
   if (!candidate && result?.ok) {
     const retry = await retryArticle(id, facts);
     if (retry) {
-      const check = validateArticle(retry, allowed, names, counts);
+      const check = validateArticle(retry, allowed, names, counts, handlesOf(facts));
       if (check.ok) {
         candidate = retry;
         console.log(`  ${id} passed on retry`);

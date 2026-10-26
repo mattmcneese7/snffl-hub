@@ -57,7 +57,7 @@
 .num { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
 .gain { font-size: 15px; font-weight: 800; color: #2d4c9c; font-variant-numeric: tabular-nums; }
 .logo { width: 13px; height: 13px; margin: 0 3px 0 1px; object-fit: contain; }
-.chipEven { color: #3d434e; background: #f0efea; }
+.chipEven { color: #3d434e; background: #f7f6f2; }
 
 .act { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding-top: 4px; }
 .swapBtn { border: 0; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }

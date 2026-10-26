@@ -16,11 +16,13 @@ const ordinal = (n: number) => {
 export function templateFor(id: ArticleId, facts: WeekFacts): Candidate {
   const spec = ARTICLE_SPECS[id];
   const week = `Week ${facts.week}`;
+  // Managers by first name, never their Sleeper handles ("DFWGilly").
+  const first = (handle: string) => facts.managers.find((m) => m.manager === handle)?.firstName || handle;
 
   switch (id) {
     case 'shart':
       return {
-        headline: `${facts.shart.manager} Takes the Shart in ${week}`,
+        headline: `${first(facts.shart.manager)} Takes the Shart in ${week}`,
         deck: `Lowest score of the week, ${facts.shart.points.toFixed(2)} points.`,
         body: [
           `${facts.shart.team} scored ${facts.shart.points.toFixed(2)} in ${week}, the lowest total in the league.`,
@@ -43,7 +45,7 @@ export function templateFor(id: ArticleId, facts: WeekFacts): Candidate {
 
     case 'manager':
       return {
-        headline: `${facts.managerOfWeek.manager} Is Manager of the Week`,
+        headline: `${first(facts.managerOfWeek.manager)} Is Manager of the Week`,
         deck: `${facts.managerOfWeek.points.toFixed(2)} points, the best in the league.`,
         body: [
           `${facts.managerOfWeek.team} put up ${facts.managerOfWeek.points.toFixed(2)} points in ${week}, the highest total of the week.`,
@@ -53,11 +55,11 @@ export function templateFor(id: ArticleId, facts: WeekFacts): Candidate {
     case 'game': {
       const g = facts.gameOfWeek;
       return {
-        headline: `${g.winner} Edges ${g.loser} in the Game of the Week`,
+        headline: `${first(g.winner)} Edges ${first(g.loser)} in the Game of the Week`,
         deck: `Decided by ${g.margin.toFixed(2)} points.`,
         body: [
           `${g.away.team} scored ${g.away.points.toFixed(2)} and ${g.home.team} scored ${g.home.points.toFixed(2)}.`,
-          `${g.winner} took it by ${g.margin.toFixed(2)}.`,
+          `${first(g.winner)} took it by ${g.margin.toFixed(2)}.`,
         ],
       };
     }
@@ -68,7 +70,7 @@ export function templateFor(id: ArticleId, facts: WeekFacts): Candidate {
         deck: `Every result from ${week}.`,
         body: facts.games.map(
           (g) =>
-            `${g.away.team} ${g.away.points.toFixed(2)}, ${g.home.team} ${g.home.points.toFixed(2)}. ${g.winner} wins by ${g.margin.toFixed(2)}.`
+            `${g.away.team} ${g.away.points.toFixed(2)}, ${g.home.team} ${g.home.points.toFixed(2)}. ${first(g.winner)} wins by ${g.margin.toFixed(2)}.`
         ),
       };
 
@@ -77,7 +79,7 @@ export function templateFor(id: ArticleId, facts: WeekFacts): Candidate {
         headline: `Big Performances From ${week}`,
         deck: `The top individual scores.`,
         body: facts.topPerformers.map(
-          (p) => `${p.name}, ${p.position}, scored ${p.points.toFixed(2)} for ${p.manager}.`
+          (p) => `${p.name}, ${p.position}, scored ${p.points.toFixed(2)} for ${first(p.manager)}.`
         ),
       };
 
@@ -86,7 +88,7 @@ export function templateFor(id: ArticleId, facts: WeekFacts): Candidate {
         headline: `Power Rankings After ${week}`,
         deck: `All ${facts.teamCount} teams.`,
         body: facts.powerRankings.map(
-          (r) => `${ordinal(r.rank)}. ${r.team}, ${r.manager}, ${r.record}.`
+          (r) => `${ordinal(r.rank)}. ${r.team}, ${first(r.manager)}, ${r.record}.`
         ),
       };
 

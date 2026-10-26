@@ -43,9 +43,20 @@ export default function Island({ week, mine, initial }: { week: number; mine: nu
   useEffect(() => {
     const el = document.querySelector('[data-island-anchor]');
     if (!el) return setAnchored(false);
-    const io = new IntersectionObserver(([e]) => setAnchored(e.isIntersecting), { threshold: 0.15 });
-    io.observe(el);
-    return () => io.disconnect();
+    const stage = el.closest('[data-stage]') ?? window;
+    const check = () => {
+      const r = el.getBoundingClientRect();
+      // On screen when at least a fifth of the card is inside the viewport.
+      const seen = Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0);
+      setAnchored(seen > r.height * 0.2);
+    };
+    check();
+    stage.addEventListener('scroll', check, { passive: true });
+    window.addEventListener('resize', check);
+    return () => {
+      stage.removeEventListener('scroll', check);
+      window.removeEventListener('resize', check);
+    };
   }, [path]);
   const data = useLive(week, (events) => {
     for (const e of events.slice(0, 3)) {

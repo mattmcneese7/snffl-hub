@@ -1,0 +1,384 @@
+/* The week in stories. One full screen layer over the lab shell on a phone,
+   a 9:16 card on paper on a desktop. Paper slides carry ink type on the Pool
+   ground; photo slides carry white type over a dark scrim, the only place a
+   dark ground is allowed. The white pill is the one button, the lime mark
+   is the one thing to notice on each slide. */
+
+.layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+  display: grid;
+  place-items: center;
+  font-family: 'Switzer', system-ui, sans-serif;
+  color: #141518;
+  overscroll-behavior: contain;
+  --paper: #f7f6f2;
+  --powder: #c9dcfa;
+  --deep: #2d4c9c;
+  --lime: #ecf88a;
+  --ink: #141518;
+  --ink-2: #3d434e;
+  --ink-3: #5a616d;
+  --lift: 0 0 0 0.5px rgba(30, 26, 20, 0.06), 0 2px 4px rgba(30, 26, 20, 0.04), 0 14px 30px -14px rgba(30, 26, 20, 0.2);
+  --pill-face: #ffffff;
+  --pill-ring: 0 0 0 0.5px rgba(30, 26, 20, 0.07), 0 1px 3px rgba(30, 26, 20, 0.05), 0 8px 20px -8px rgba(30, 26, 20, 0.16);
+}
+.veil { position: absolute; inset: 0; background: var(--paper); }
+
+.mover {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  transform-origin: 50% 20%;
+  touch-action: none;
+}
+
+.frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--paper);
+  border-radius: max(var(--drag-r, 0px), var(--hold-r, 0px));
+  transition: border-radius 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: default;
+  isolation: isolate;
+}
+.frame[data-held] { --hold-r: 22px; }
+
+@media (min-width: 600px) {
+  .frame {
+    width: min(440px, calc((100dvh - 48px) * 9 / 16));
+    height: auto;
+    aspect-ratio: 9 / 16;
+    border-radius: 28px;
+    box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.08), 0 4px 10px rgba(30, 26, 20, 0.05), 0 40px 80px -30px rgba(30, 26, 20, 0.35);
+  }
+}
+
+/* Photo */
+
+.photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 30%;
+  pointer-events: none;
+}
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 21, 24, 0.7) 0%,
+    rgba(20, 21, 24, 0.38) 12%,
+    rgba(20, 21, 24, 0) 22%,
+    rgba(20, 21, 24, 0) 30%,
+    rgba(20, 21, 24, 0.8) 50%,
+    rgba(20, 21, 24, 0.94) 100%
+  );
+}
+
+/* Top: bars and the head */
+
+.top {
+  position: absolute;
+  z-index: 3;
+  inset: 0 0 auto;
+  display: grid;
+  gap: 8px;
+  padding: calc(10px + env(safe-area-inset-top, 0px)) 12px 0;
+  pointer-events: none;
+}
+@media (min-width: 600px) { .top { padding-top: 12px; } }
+.bars { display: flex; gap: 4px; }
+.bar { flex: 1; height: 3px; border-radius: 2px; overflow: hidden; background: rgba(20, 21, 24, 0.14); }
+.fill { display: block; width: 100%; height: 100%; background: var(--ink); transform: scaleX(0); transform-origin: 0 50%; }
+.done { transform: scaleX(1); }
+.now { animation-name: grow; animation-timing-function: linear; animation-fill-mode: forwards; }
+@keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+.head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-left: 4px; }
+.headText { display: inline-flex; align-items: baseline; gap: 10px; font-size: 13px; font-weight: 600; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.headText b { font-size: 15px; font-weight: 700; color: var(--ink); }
+.close {
+  pointer-events: auto;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-right: -4px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.close svg {
+  width: 36px;
+  height: 36px;
+  padding: 9px;
+  border-radius: 999px;
+  background: var(--pill-face);
+  box-shadow: var(--pill-ring);
+}
+.close:focus-visible { outline: none; }
+.close:focus-visible svg { outline: 2px solid var(--deep); outline-offset: 2px; }
+
+.frame[data-tone='photo'] .bar { background: rgba(255, 255, 255, 0.35); }
+.frame[data-tone='photo'] .fill { background: #fff; }
+.frame[data-tone='photo'] .headText { color: rgba(255, 255, 255, 0.94); text-shadow: 0 1px 2px rgba(20, 21, 24, 0.4); }
+.frame[data-tone='photo'] .headText b { color: #fff; }
+
+/* The slide */
+
+.slide {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: grid;
+  padding: calc(86px + env(safe-area-inset-top, 0px)) 22px calc(76px + env(safe-area-inset-bottom, 0px));
+  pointer-events: none;
+}
+@media (min-width: 600px) { .slide { padding: 86px 22px 76px; } }
+.slide [data-control] { pointer-events: auto; }
+
+.bottom, .center { display: grid; gap: 14px; min-width: 0; }
+.bottom { align-content: end; }
+.center { align-content: center; }
+
+.frame[data-tone='photo'] .slide { color: #fff; text-shadow: 0 1px 2px rgba(20, 21, 24, 0.3); }
+.frame[data-tone='photo'] .slide :is(.kicker, .lime, .chipRow, .stats, .pills) { text-shadow: none; }
+
+.kicker {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px 0 9px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: var(--pill-ring);
+}
+.icon { width: 18px; height: 18px; color: var(--deep); }
+.icon [opacity] { fill: var(--powder); opacity: 1; }
+
+.mega {
+  margin: 0;
+  font-size: 46px;
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+.title {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.headline {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.team { margin: 6px 0 0; font-size: 17px; font-weight: 600; color: var(--ink-3); }
+.frame[data-tone='photo'] .team { color: rgba(255, 255, 255, 0.94); }
+.line { margin: 0; font-size: 17px; font-weight: 500; line-height: 1.4; color: var(--ink-2); text-wrap: pretty; }
+.frame[data-tone='photo'] .line { color: #fff; }
+.hint { margin: 0; font-size: 13px; font-weight: 500; color: var(--ink-3); }
+.frame[data-tone='photo'] .hint { color: rgba(255, 255, 255, 0.92); }
+
+/* The number: big, tabular, and the lime mark when it is the thing. */
+.big { font-size: 46px; font-weight: 900; letter-spacing: -0.03em; line-height: 1; }
+.lime, .plain {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 6px 14px 8px;
+  border-radius: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.lime { background: var(--lime); color: var(--ink); }
+.plain { padding-left: 0; }
+.lime small, .plain small { font-size: 15px; font-weight: 700; }
+
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.stats > span {
+  display: grid;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: #fff;
+  color: var(--ink-3);
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: var(--lift);
+}
+.stats b { font-size: 20px; font-weight: 800; color: var(--ink); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+
+/* Faces and cutouts */
+
+.face { flex: none; display: block; border-radius: 50%; object-fit: cover; background: #e3ecfb; box-shadow: 0 0 0 2px #fff; }
+.cutoutWrap { justify-self: center; }
+.cutout {
+  display: block;
+  width: 168px;
+  height: 168px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 0;
+  background: #fff;
+  box-shadow: 0 0 0 6px var(--powder), var(--lift);
+}
+.cutoutSmall { flex: none; width: 52px; height: 52px; border-radius: 50%; object-fit: cover; object-position: 50% 0; background: #e3ecfb; }
+.middle { justify-items: center; text-align: center; }
+.middle > .kicker { justify-self: center; }
+
+.chipRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px 8px 8px;
+  border-radius: 20px;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: var(--lift);
+}
+
+/* Rows */
+
+.rows { display: grid; gap: 8px; }
+.row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 10px 14px 10px 10px;
+  border-radius: 14px;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: var(--lift);
+}
+.rowText { display: grid; gap: 1px; min-width: 0; line-height: 1.25; }
+.rowText b { font-size: 17px; font-weight: 700; }
+.rowText span { font-size: 13px; font-weight: 500; color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rowNum { padding: 2px 8px; border-radius: 10px; font-size: 20px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.rowWin { background: var(--lime); }
+.rowMeta { display: grid; justify-items: end; gap: 1px; font-variant-numeric: tabular-nums; }
+.rowMeta b { font-size: 17px; font-weight: 800; }
+.rowMeta span { font-size: 13px; font-weight: 500; color: var(--ink-3); }
+.seed {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--paper);
+  font-size: 17px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.cut {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 2px 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--deep);
+}
+.cut::before, .cut::after { content: ''; flex: 1; height: 0; border-top: 1.5px dashed var(--powder); }
+
+.move { display: inline-flex; align-items: center; gap: 4px; font-size: 17px; font-weight: 600; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.move b { font-size: 20px; font-weight: 800; color: var(--ink); }
+.up, .down, .to { width: 16px; height: 16px; }
+.up { color: var(--deep); }
+.down { color: var(--ink-3); }
+.to { width: 13px; height: 13px; color: var(--ink-3); }
+
+/* The bench miss */
+
+.duel { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.duelSide {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 14px 10px;
+  border-radius: 20px;
+  background: #fff;
+  text-align: center;
+  box-shadow: var(--lift);
+}
+.duelSide .cutout { width: 104px; height: 104px; box-shadow: 0 0 0 4px var(--powder); margin-bottom: 6px; }
+.duelSide + .duelSide .cutout { box-shadow: 0 0 0 4px var(--paper); filter: saturate(0.6); }
+.duelLabel { font-size: 12px; font-weight: 600; color: var(--ink-3); }
+.duelName { font-size: 15px; font-weight: 700; line-height: 1.2; text-wrap: balance; }
+.limeSmall, .plainSmall { margin-top: 4px; padding: 2px 10px; border-radius: 10px; font-size: 28px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.limeSmall { background: var(--lime); }
+.plainSmall { color: var(--ink-3); }
+
+/* The Rag */
+
+.clip {
+  display: grid;
+  gap: 10px;
+  padding: 20px 20px 22px;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: var(--lift);
+}
+.clipCat { font-size: 13px; font-weight: 600; color: var(--ink-3); }
+.deck { margin: 0; font-size: 17px; line-height: 1.4; color: var(--ink-2); text-wrap: pretty; }
+
+/* Pills */
+
+.pills { display: flex; flex-wrap: wrap; gap: 10px; }
+.middle > .pills { justify-content: center; }
+.pillIcon { gap: 6px; border: 0; font-family: inherit; cursor: pointer; }
+.pillIcon svg { width: 16px; height: 16px; }
+
+.foot {
+  position: absolute;
+  z-index: 3;
+  inset: auto 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 16px calc(16px + env(safe-area-inset-bottom, 0px));
+}
+@media (min-width: 600px) { .foot { padding-bottom: 16px; } }
+
+/* Behind: the lab page under the story */
+
+.weeks { display: flex; flex-wrap: wrap; gap: 8px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .now { animation: none; transform: scaleX(1); }
+  .frame { transition: none; }
+}

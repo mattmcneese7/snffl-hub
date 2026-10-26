@@ -1,0 +1,62 @@
+.hero { gap: 14px; }
+.versus { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.side { position: relative; display: grid; justify-items: center; gap: 6px; padding: 14px 8px 10px; border: 0; border-radius: 16px; background: #f7f6f2; font: inherit; color: inherit; cursor: pointer; overflow: hidden; }
+.sideInner { display: grid; justify-items: center; gap: 2px; text-align: center; min-width: 0; max-width: 100%; }
+.face { display: block; margin-bottom: 6px; border-radius: 50%; overflow: hidden; background: var(--mgr); box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--mgr); }
+.face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.name { font-size: 20px; font-weight: 800; letter-spacing: -0.015em; }
+.team { max-width: 100%; font-size: 12px; color: #5a616d; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rec { font-size: 13px; font-weight: 600; color: #3d434e; font-variant-numeric: tabular-nums; }
+.change { font-size: 12px; font-weight: 600; color: #2d4c9c; }
+.swap {
+  position: absolute; left: 50%; top: 50%; width: 40px; height: 40px; margin: -20px 0 0 -20px;
+  display: grid; place-items: center; border: 0; border-radius: 50%; padding: 0;
+  background: #fff; color: #2d4c9c; font-size: 17px; cursor: pointer;
+  box-shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.08), 0 6px 16px -6px rgba(30, 26, 20, 0.3);
+}
+.series { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.35; text-align: center; text-wrap: balance; }
+
+.tapes { list-style: none; margin: 0; padding: 0; display: grid; }
+.tape { display: grid; grid-template-columns: 76px minmax(0, 1fr) 76px; align-items: center; gap: 10px; padding: 9px 0; }
+.tape + .tape { border-top: 1px solid rgba(20, 21, 24, 0.07); }
+.tapeA, .tapeB { display: grid; gap: 1px; min-width: 0; }
+.tapeA { justify-items: start; }
+.tapeB { justify-items: end; text-align: right; }
+.val { font-size: 17px; font-weight: 700; font-variant-numeric: tabular-nums; color: #3d434e; }
+.win { color: #141518; font-weight: 800; background: linear-gradient(transparent 58%, #ecf88a 58%, #ecf88a 92%, transparent 92%); }
+.tapeNote { font-size: 11px; font-weight: 600; color: #5a616d; font-variant-numeric: tabular-nums; }
+.tapeMid { display: grid; gap: 6px; justify-items: center; min-width: 0; }
+.tapeLabel { font-size: 12px; font-weight: 600; color: #5a616d; white-space: nowrap; }
+.bars { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+.barL, .barR { display: flex; height: 6px; border-radius: 3px; background: #f1f0eb; overflow: hidden; }
+.barL { justify-content: flex-end; }
+.bar { display: block; height: 100%; border-radius: 3px; background: #c9dcfa; }
+.barWin { background: #2d4c9c; }
+
+.legend { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: #3d434e; white-space: nowrap; }
+.keyA, .keyB { width: 14px; height: 3px; border-radius: 2px; background: #2d4c9c; }
+.keyB { background: #8fa9e0; margin-left: 6px; }
+.chart { width: 100%; height: auto; overflow: visible; }
+.grid { stroke: rgba(20, 21, 24, 0.08); stroke-width: 1; }
+.axis { font-size: 10px; font-weight: 600; fill: #5a616d; font-family: 'Switzer', system-ui, sans-serif; }
+.lineA, .lineB { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.lineA { stroke: #2d4c9c; }
+.lineB { stroke: #8fa9e0; }
+.dotA { fill: #2d4c9c; stroke: #fff; stroke-width: 1.5; }
+.dotB { fill: #8fa9e0; stroke: #fff; stroke-width: 1.5; }
+
+.games { list-style: none; margin: 0; padding: 0; display: grid; }
+.games li { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 40px; }
+.games li + li { border-top: 1px solid rgba(20, 21, 24, 0.07); }
+.gWeek { font-size: 13px; font-weight: 700; }
+.gScore { display: inline-flex; align-items: baseline; gap: 6px; font-size: 13px; color: #5a616d; font-variant-numeric: tabular-nums; }
+.gScore b { font-size: 15px; font-weight: 700; color: #3d434e; }
+.gScore b.win { color: #141518; }
+.gState { font-size: 12px; font-weight: 600; color: #2d4c9c; }
+
+.pickGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.pick { display: grid; justify-items: center; gap: 2px; padding: 12px 4px 10px; border: 0; border-radius: 16px; background: #f7f6f2; font: inherit; color: inherit; cursor: pointer; text-align: center; }
+.pick .face { margin-bottom: 4px; }
+.pick b { font-size: 14px; font-weight: 700; }
+.pick span:last-child { font-size: 12px; color: #5a616d; font-variant-numeric: tabular-nums; }
+.pickOn { background: #c9dcfa; }

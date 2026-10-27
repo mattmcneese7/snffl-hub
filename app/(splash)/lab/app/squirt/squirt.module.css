@@ -1,5 +1,6 @@
-/* Squirt: a transparent still under two transparent players, all stacked. */
+/* Squirt: a transparent still under two transparent players, all stacked.
+   Only one layer shows at a time; clips cut, never crossfade, since two
+   transparent poses at once read as a double. */
 .rig { position: relative; flex: none; transform-origin: 50% 92%; will-change: transform; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .still, .clip { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
-.clip { opacity: 0; transition: opacity 180ms ease-out; }
-@media (prefers-reduced-motion: reduce) { .clip { transition: none; } }
+.clip { opacity: 0; }

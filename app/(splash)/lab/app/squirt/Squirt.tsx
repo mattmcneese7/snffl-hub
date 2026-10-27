@@ -35,6 +35,7 @@ const D = 14;
 
 export default function Squirt({ mood: moodProp = 'calm', award, size = 160, listen = false, still: stillOnly = false, className, label }: Props) {
   const rig = useRef<HTMLDivElement>(null);
+  const stillImg = useRef<HTMLImageElement>(null);
   const vids = [useRef<HTMLVideoElement>(null), useRef<HTMLVideoElement>(null)];
   const front = useRef(0);
   const [mood, setMood] = useState<Mood>(moodProp);
@@ -74,15 +75,24 @@ export default function Squirt({ mood: moodProp = 'calm', award, size = 160, lis
       v.load();
     }
     v.currentTime = 0;
+    // Every layer has a transparent background, so two poses on screen at
+    // once read as a double. The new clip cuts in on its first frame, the old
+    // one and the still go in the same instant.
     const go = () => {
       // A newer clip was asked for while this one loaded: it wins.
       if (ticket !== seq.current) return;
       v.style.opacity = '1';
-      if (cur) cur.style.opacity = '0';
+      if (cur && cur !== v) { cur.style.opacity = '0'; cur.pause(); }
+      if (stillImg.current) stillImg.current.style.opacity = '0';
       front.current = next;
-      window.setTimeout(() => cur?.pause(), 200);
     };
-    v.play().then(go).catch(() => undefined);
+    const ready = () => (v.requestVideoFrameCallback ? v.requestVideoFrameCallback(() => go()) : go());
+    v.play().then(ready).catch(() => {
+      // Autoplay refused or the file failed: fall back to the new pose's still.
+      if (ticket !== seq.current) return;
+      for (const r of vids) if (r.current) r.current.style.opacity = '0';
+      if (stillImg.current) stillImg.current.style.opacity = '1';
+    });
   }, [lite, vids]);
 
   const idle = useCallback((m: Mood) => {
@@ -125,7 +135,10 @@ export default function Squirt({ mood: moodProp = 'calm', award, size = 160, lis
     setPose(AWARD_ART[award] ?? 'calm');
     if (AWARD_LOOPS.has(award)) play(awardClip(award), true);
     else if (AWARD_ARRIVE[award]) play(AWARD_ARRIVE[award], false);
-    else for (const r of vids) { if (r.current) { r.current.style.opacity = '0'; r.current.pause(); } }
+    else {
+      for (const r of vids) { if (r.current) { r.current.style.opacity = '0'; r.current.pause(); } }
+      if (stillImg.current) stillImg.current.style.opacity = '1';
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [award, play, kick]);
 
@@ -190,7 +203,7 @@ export default function Squirt({ mood: moodProp = 'calm', award, size = 160, lis
       aria-label={label ?? `Squirt, ${award ? 'with his award' : mood}`}
       onClick={() => kick(1.4, -2.2, (Math.random() > 0.5 ? 1 : -1) * 26, 40)}
     >
-      <img className={s.still} src={still(pose, size > 240 ? 960 : 480)} alt="" draggable={false} />
+      <img ref={stillImg} className={s.still} src={still(pose, size > 240 ? 960 : 480)} alt="" draggable={false} />
       {lite ? null : (
         <>
           <video ref={vids[0]} className={s.clip} muted playsInline preload="none" aria-hidden />

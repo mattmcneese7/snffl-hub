@@ -22,11 +22,11 @@
 /* Top of screen: the lockup on Home, the section's icon and name elsewhere. */
 .head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 0 0 4px; margin-bottom: -12px; }
 .lockup { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; font: 900 24px/1 var(--brand); letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
-.lockupMark { width: 20px; height: 20px; color: var(--blue); --lace: var(--paper); }
+/* The lockup is one color: the drop takes the word's ink, its laces cut out in paper, in both themes. */
+.lockupMark { width: 20px; height: 20px; color: var(--ink); --lace: var(--paper); }
 .secHead { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin: 0; font: 900 24px/1 var(--brand); letter-spacing: -0.03em; }
 .secHead svg { width: 22px; height: 22px; color: var(--deep); }
 @media (prefers-color-scheme: dark) {
-  .lockupMark { color: var(--on-blue); --lace: var(--blue); }
   .secHead svg { color: var(--ink); }
 }
 .headR { display: inline-flex; align-items: center; gap: 4px; }

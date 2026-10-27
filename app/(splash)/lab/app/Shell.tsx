@@ -4,6 +4,8 @@ import { CUT_WIDTH, LACE_SPINE, LACE_STITCHES, SEAM_FOOT, SEAM_TOP } from '../..
 import Pattern from '../../home/Pattern';
 import { Ms, type MsName } from './icons';
 import ScoreBar from './ScoreBar';
+import PlayerSheet from './PlayerSheet';
+import { teamByRoster } from '@/lib/league';
 import type { V4Data } from './data';
 import s from './v4.module.css';
 
@@ -25,28 +27,44 @@ export function Drop({ className }: { className?: string }) {
   );
 }
 
+/** Your avatar, top right on every screen: it opens your account. */
+export function Account({ mine }: { mine: number | null }) {
+  const t = mine != null ? teamByRoster(mine) : undefined;
+  return (
+    <Link href="/lab/app/account" className={s.acct} aria-label="Account and settings" style={t ? { ['--mgr' as string]: t.colors?.primary } : undefined}>
+      {t?.avatarUrl ? <img src={t.avatarUrl} alt="" /> : <Ms name="account" />}
+    </Link>
+  );
+}
+
 /** Home's top line: the lowercase lockup, drop sized like a letter. */
-export function HomeHead({ week }: { week: number }) {
+export function HomeHead({ week, mine }: { week: number; mine: number | null }) {
   return (
     <div className={s.head}>
       <Link href="/lab/app" className={s.lockup} aria-label="splash, home">
         <Drop className={s.lockupMark} />
         splash
       </Link>
-      <span className={s.wk}>Week {week}</span>
+      <span className={s.headR}>
+        <span className={s.wk}>Week {week}</span>
+        <Account mine={mine} />
+      </span>
     </div>
   );
 }
 
 /** Every other tab: its own icon and name, in the same Switzer as the lockup. */
-export function SectionHead({ icon, word, week }: { icon: MsName; word: string; week: number }) {
+export function SectionHead({ icon, word, week, mine }: { icon: MsName; word: string; week: number; mine: number | null }) {
   return (
     <div className={s.head}>
       <h1 className={s.secHead}>
         <Ms name={icon} />
         {word}
       </h1>
-      <span className={s.wk}>Week {week}</span>
+      <span className={s.headR}>
+        <span className={s.wk}>Week {week}</span>
+        <Account mine={mine} />
+      </span>
     </div>
   );
 }
@@ -54,9 +72,9 @@ export function SectionHead({ icon, word, week }: { icon: MsName; word: string; 
 const TABS: { key: string; label: string; icon: MsName; href: string }[] = [
   { key: 'home', label: 'Home', icon: 'home', href: '/lab/app' },
   { key: 'scores', label: 'Scores', icon: 'football', href: '/lab/app/matchup' },
-  { key: 'rag', label: 'The Rag', icon: 'rag', href: '/rag' },
-  { key: 'league', label: 'League', icon: 'league', href: '/standings' },
-  { key: 'swami', label: 'Swami', icon: 'swami', href: '/swami' },
+  { key: 'rag', label: 'The Rag', icon: 'rag', href: '/lab/app/rag' },
+  { key: 'league', label: 'League', icon: 'league', href: '/lab/app/league' },
+  { key: 'swami', label: 'Swami', icon: 'swami', href: '/lab/app/swami' },
 ];
 
 /**
@@ -76,7 +94,7 @@ export default function Shell({ data, active, children }: { data: V4Data; active
         {mine ? (
           <ScoreBar week={data.week} state={data.state} rows={[mine.a, mine.b]} href="/lab/app/matchup" />
         ) : (
-          <Link href="/settings" className={s.bar} style={{ textDecoration: 'none' }}>
+          <Link href="/lab/app/account" className={s.bar} style={{ textDecoration: 'none' }}>
             <span className={s.barHead}>
               <b>Week {data.week} Matchup</b>
               <span>Pick your team</span>
@@ -92,6 +110,7 @@ export default function Shell({ data, active, children }: { data: V4Data; active
           ))}
         </nav>
       </div>
+      <PlayerSheet />
     </div>
   );
 }

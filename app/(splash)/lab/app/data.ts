@@ -110,6 +110,7 @@ function view(m: LiveMatchup, state: BarState): GameView {
 
 export type V4Data = {
   week: number;
+  myRoster: number | null;
   state: BarState;
   mine: GameView | null;
   /** Mine first among the two sides. */
@@ -134,5 +135,5 @@ export async function getV4Data(myRoster: number | null): Promise<V4Data> {
       mine = v.a.rosterId === myRoster ? v : { ...v, a: v.b, b: v.a };
     } else others.push(v);
   }
-  return { week, state, mine, others, games, live };
+  return { week, myRoster, state, mine, others, games, live };
 }

@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { cookies } from 'next/headers';
-import { ESPN_TEAM_LOGO } from '@/lib/espn';
+import { ESPN_CUTOUT, ESPN_TEAM_LOGO } from '@/lib/espn';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import type { LivePlayer } from '@/lib/matchup-live';
-import { getV4Data, sleeperWinProb, type SideView } from '../data';
+import { getV4Data, sleeperWinProb, type GameView, type SideView } from '../data';
 import Shell, { SectionHead } from '../Shell';
 import s from '../v4.module.css';
 
@@ -34,7 +34,7 @@ function Player({ p, right }: { p: LivePlayer; right?: boolean }) {
   const r = resultOf(p);
   const pre = p.gameState === 'pre';
   return (
-    <span className={`${s.pl} ${right ? s.r : ''}`}>
+    <button type="button" data-player={p.id} className={`${s.plTap} ${s.pl} ${right ? s.r : ''}`} aria-label={`${p.name}, open player`}>
       <span className={s.plTop}>
         <span className={s.face}>
           {p.position === 'DEF' && p.team ? <img src={ESPN_TEAM_LOGO(p.team)} alt="" style={{ objectFit: 'contain', padding: 4 }} /> : <img src={p.headshot} alt="" />}
@@ -55,7 +55,85 @@ function Player({ p, right }: { p: LivePlayer; right?: boolean }) {
         {r.text}
       </span>
       {!pre && p.statLine ? <span className={s.plLine}>{p.statLine}</span> : null}
+    </button>
+  );
+}
+
+/** Top Performers: a ticket in the team's color, the box score on the strip. */
+function Ticket({ p, owner }: { p: LivePlayer; owner: string }) {
+  const color = p.nfl?.team.color ?? '#2d4c9c';
+  const r = resultOf(p);
+  return (
+    <button type="button" data-player={p.id} className={s.tk} style={{ ['--tk' as string]: darken(color) }} aria-label={`${p.name}, open player`}>
+      {p.team ? <img className={s.tkLogo} src={ESPN_TEAM_LOGO(p.team)} alt="" /> : null}
+      <span className={s.tkCut}>{p.espnId ? <img src={ESPN_CUTOUT(p.espnId)} alt="" /> : <img src={p.headshot} alt="" />}</span>
+      <span className={s.tkMid}>
+        <b>{shortName(p.name, p.position, p.team)}</b>
+        <span>
+          {p.position} &middot; {owner}
+        </span>
+        <em>{r.wl ? `${r.wl} ${r.text}` : r.text}</em>
+      </span>
+      <span className={s.tkPts}>
+        <b>{p.points.toFixed(2)}</b>
+        <small>Proj {(p.projected ?? 0).toFixed(2)}</small>
+      </span>
+      <span className={s.tkStrip}>{p.statLine || 'Yet to play'}</span>
+    </button>
+  );
+}
+
+/** Darken a team color until white text clears 4.6:1. */
+function darken(hex: string): string {
+  const lum = (c: number[]) => {
+    const f = (v: number) => (v /= 255) <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+    return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]);
+  };
+  let c = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) || 0);
+  for (let k = 0; k < 12 && 1.05 / (lum(c) + 0.05) < 4.6; k++) c = c.map((v) => Math.round(v * 0.88));
+  return `rgb(${c.join(',')})`;
+}
+
+/** Next Game: the NFL game your earliest remaining starter plays in, with logo tiles and venue chips. */
+function NextGame({ players }: { players: LivePlayer[] }) {
+  const pre = players.filter((p) => p.gameState === 'pre' && p.nfl).sort((a, b) => (a.nfl!.game.kickoff < b.nfl!.game.kickoff ? -1 : 1));
+  const first = pre[0];
+  if (!first?.nfl) return null;
+  const g = first.nfl.game;
+  const inIt = pre.filter((p) => p.nfl?.game.id === g.id);
+  const lines = first.lines;
+  const side = (t: typeof g.home) => (
+    <span className={s.ngT}>
+      <span className={s.tile} style={{ ['--tc' as string]: t.color ?? '#5a616d' }}>
+        <img src={t.logo} alt="" />
+      </span>
+      <span>{t.name}</span>
+      <span className={s.ngR}>{t.record ?? ''}</span>
     </span>
+  );
+  return (
+    <section className={s.ng} aria-label="Next game">
+      <div className={s.ngTop}>
+        <span>
+          {g.status}
+          {g.broadcast ? ` · ${g.broadcast}` : ''}
+        </span>
+        <span>{[lines?.details, lines?.overUnder ? `O/U ${lines.overUnder}` : null].filter(Boolean).join(' \u00b7 ')}</span>
+      </div>
+      {side(g.away)}
+      {side(g.home)}
+      {g.venue ? (
+        <div className={s.venue}>
+          <i>{g.venue}</i>
+        </div>
+      ) : null}
+      <div className={s.ngYou}>
+        <span>In this game</span>
+        {inIt.map((p) => (
+          <b key={p.id}>{shortName(p.name, p.position, p.team)}</b>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -75,19 +153,22 @@ function HeroRow({ side, lost }: { side: SideView; lost: boolean }) {
 }
 
 /** Your matchup: the two teams large on brand blue, then every slot head to head. */
-export default async function V4Matchup() {
+export default async function V4Matchup({ searchParams }: { searchParams: Promise<{ id?: string }> }) {
+  const q = await searchParams;
   const jar = await cookies();
   const mineId = parseTeam(jar.get(TEAM_COOKIE)?.value);
   const data = await getV4Data(mineId);
-  const mine = data.mine;
+  const asked = Number(q.id);
+  const other: GameView | undefined = Number.isInteger(asked) ? data.others.find((g) => g.id === asked) : undefined;
+  const mine = other ?? data.mine;
   const live = mine ? data.live.get(mine.id) : undefined;
 
   if (!mine || !live) {
     return (
       <Shell data={data} active="scores">
-        <SectionHead icon="football" word="scores" week={data.week} />
+        <SectionHead icon="football" word="scores" week={data.week} mine={data.myRoster} />
         <p className={s.empty}>
-          Pick your team to see your matchup. <Link href="/settings">Settings</Link>
+          Pick your team to see your matchup. <Link href="/lab/app/account">Account</Link>
         </p>
       </Shell>
     );
@@ -103,7 +184,7 @@ export default async function V4Matchup() {
 
   return (
     <Shell data={data} active="scores">
-      <SectionHead icon="football" word="scores" week={data.week} />
+      <SectionHead icon="football" word="scores" week={data.week} mine={data.myRoster} />
       <section className={s.hero} aria-label={`Week ${data.week} matchup`}>
         <div className={s.heroTop}>
           <span>Week {data.week} Matchup</span>
@@ -158,6 +239,26 @@ export default async function V4Matchup() {
           );
         })}
       </div>
+      <div className={s.title}>
+        <h2>Top Performers</h2>
+      </div>
+      <div className={s.tks}>
+        {[...meSide.lineup.map((p) => ({ p, owner: mine.a.team })), ...themSide.lineup.map((p) => ({ p, owner: mine.b.team }))]
+          .filter(({ p }) => p.gameState !== 'pre')
+          .sort((x, y) => y.p.points - x.p.points)
+          .slice(0, 3)
+          .map(({ p, owner }) => (
+            <Ticket key={p.id} p={p} owner={owner} />
+          ))}
+      </div>
+      {meSide.lineup.concat(themSide.lineup).some((p) => p.gameState === 'pre') ? (
+        <>
+          <div className={s.title}>
+            <h2>Next Game</h2>
+          </div>
+          <NextGame players={meSide.lineup.concat(themSide.lineup)} />
+        </>
+      ) : null}
     </Shell>
   );
 }

@@ -78,7 +78,7 @@ function PickRow({ read, value, children }: { read: RosRead; value: string; chil
   );
 }
 
-export default async function Waivers({ query, mine }: { query: SwamiQuery; mine: number | null }) {
+export default async function Waivers({ query, mine, base = '/swami' }: { query: SwamiQuery; mine: number | null; base?: string }) {
   const { ctx, rosters, readOf, unrostered } = await rosBoard();
 
   // A team in the URL wins, so a pasted link shows what its sender saw. With
@@ -105,8 +105,8 @@ export default async function Waivers({ query, mine }: { query: SwamiQuery; mine
 
   const weakSlots = new Set((teamView?.picks ?? []).slice(0, 3).flatMap((p) => (p.replaces ? [p.replaces.read.player.id] : [])));
 
-  const teamHref = (t: number | 'league') => swamiHref(query, { team: String(t) });
-  const posHref = (p: string | null) => swamiHref(query, { team: team ? String(team) : 'league', wpos: p });
+  const teamHref = (t: number | 'league') => swamiHref(query, { team: String(t) }, base);
+  const posHref = (p: string | null) => swamiHref(query, { team: team ? String(team) : 'league', wpos: p }, base);
   const ordered = [...teams].sort((x, y) => Number(y.rosterId === mine) - Number(x.rosterId === mine));
   const window = windowLabel(ctx);
   const Window = window.charAt(0).toUpperCase() + window.slice(1);

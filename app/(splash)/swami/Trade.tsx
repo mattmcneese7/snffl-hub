@@ -113,7 +113,7 @@ function SideCard({ side, result, which }: { side: TradeSide; result: TradeEval;
   );
 }
 
-export default async function Trade({ query, mine }: { query: SwamiQuery; mine: number | null }) {
+export default async function Trade({ query, mine, base = '/swami' }: { query: SwamiQuery; mine: number | null; base?: string }) {
   const [board, deadline] = await Promise.all([
     rosBoard(),
     getLeague()
@@ -143,7 +143,7 @@ export default async function Trade({ query, mine }: { query: SwamiQuery; mine: 
       b: nb ? String(nb) : null,
       pa: npa.length ? npa.join(',') : null,
       pb: npb.length ? npb.join(',') : null,
-    });
+    }, base);
   };
 
   const ready = a && b && (pa.length || pb.length);

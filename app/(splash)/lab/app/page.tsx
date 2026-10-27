@@ -36,7 +36,7 @@ function Row({ side }: { side: SideView }) {
 
 function GameRow({ g, week }: { g: GameView; week: number }) {
   return (
-    <Link href={`/scoreboard/${week}/${g.id}`} className={s.game}>
+    <Link href={`/lab/app/matchup?id=${g.id}`} className={s.game}>
       <Row side={g.a} />
       <Row side={g.b} />
       <small className={s.foot}>{g.foot}</small>
@@ -71,7 +71,7 @@ export default async function V4Home() {
 
   return (
     <Shell data={data} active="home">
-      <HomeHead week={data.week} />
+      <HomeHead week={data.week} mine={data.myRoster} />
       {issue && lead ? (
         <article className={s.rag}>
           <Link href={`/rag/${issue.week}`} className={s.ragTop} style={{ textDecoration: 'none' }}>
@@ -105,7 +105,7 @@ export default async function V4Home() {
       ) : null}
       <div className={s.title}>
         <h2>All Matchups</h2>
-        <Link href="/scoreboard">Scoreboard</Link>
+        
       </div>
       {data.others.length ? (
         <div className={s.list}>

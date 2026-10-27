@@ -51,13 +51,13 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 24px;
   padding: calc(14px + env(safe-area-inset-top, 0px)) max(var(--gutter), env(safe-area-inset-right, 0px)) 200px max(var(--gutter), env(safe-area-inset-left, 0px));
 }
 .page > * { flex: none; }
 
 /* Top of screen: the lockup on Home, the section's icon and name elsewhere */
-.head { display: flex; align-items: center; justify-content: space-between; padding: 8px 4px 4px; }
+.head { display: flex; align-items: center; justify-content: space-between; padding: 8px 4px 4px; margin-bottom: -12px; }
 .lockup { display: inline-flex; align-items: baseline; gap: 0.16em; font: 900 24px/1 var(--brand); letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
 .lockupMark { width: 0.84em; height: 0.84em; align-self: center; color: #2d4c9c; --lace: var(--paper); margin-bottom: -0.06em; }
 @media (prefers-color-scheme: dark) { .lockupMark { color: #fff; --lace: #2d4c9c; } }
@@ -382,7 +382,7 @@
 }
 
 /* Top bar: below a tab's top page. Back to where you were, the title, your avatar. */
-.topBar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 15; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 8px; min-height: 44px; margin: -14px calc(-1 * var(--gutter)) 0; padding: 0 var(--gutter); background: var(--paper); box-shadow: 0 -60px 0 var(--paper), 0 1px 0 var(--hair); }
+.topBar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 15; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 8px; min-height: 44px; margin: -14px calc(-1 * var(--gutter)) -12px; padding: 0 var(--gutter); background: var(--paper); box-shadow: 0 -60px 0 var(--paper), 0 1px 0 var(--hair); }
 .topTitle { display: inline-flex; align-items: center; gap: 6px; font: 900 18px/1 var(--brand); letter-spacing: -0.03em; white-space: nowrap; overflow: hidden; max-width: 52vw; opacity: 0; transform: translateY(4px); transition: opacity 160ms ease-out, transform 160ms ease-out; }
 .topTitle svg { flex: none; color: var(--deep); }
 .topTitle[data-shown="true"] { opacity: 1; transform: none; }

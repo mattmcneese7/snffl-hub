@@ -10,7 +10,6 @@
 
 /* Section: a title row and its content, 8 apart; sections sit 24 apart. */
 .section { display: grid; gap: 8px; }
-.section + .section { margin-top: 12px; }
 .sectionHead { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 0 14px; }
 .sectionHead h2 { margin: 0; font: 900 18px/1.1 var(--brand); letter-spacing: -0.02em; }
 .sectionHead a { display: inline-flex; align-items: center; min-height: 44px; margin: -14px 0; font-size: 13px; font-weight: 600; color: var(--deep); text-decoration: none; }
@@ -49,6 +48,11 @@
 .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .crest { display: grid; place-items: center; flex: none; border-radius: 10px; background: #ffffff; box-shadow: inset 0 0 0 1px rgba(20, 21, 24, 0.08); }
 .crest img { width: 76%; height: 76%; object-fit: contain; }
+/* A player: the headshot in a circle with his club's badge at the corner. Defenses show the club alone. */
+.face { position: relative; flex: none; }
+.face > img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: top; background: var(--powder-soft); display: block; }
+.faceBadge { position: absolute; right: -3px; bottom: -2px; width: 45%; height: 45%; border-radius: 50%; background: #ffffff; display: grid; place-items: center; box-shadow: 0 0 0 1.5px var(--card); }
+.faceBadge img { width: 74%; height: 74%; object-fit: contain; }
 .art { display: grid; place-items: center; flex: none; }
 .art img { width: 100%; height: 100%; object-fit: contain; }
 .rank { width: 20px; font: italic 900 18px/1 var(--brand); color: var(--deep); text-align: center; }
@@ -64,6 +68,25 @@
 .heroScore { font-size: 38px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
 .heroLost .title, .heroLost .heroScore { color: rgba(255, 255, 255, 0.7); font-weight: 400; }
 .heroFoot { display: grid; gap: 8px; font-size: 13px; color: rgba(255, 255, 255, 0.85); }
+
+/* Pair: a contest with two sides. In a List each is a row; big leads a page. */
+.pair { display: grid; gap: 8px; padding: 12px 0; border-top: 1px solid var(--hair); color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+.pair:first-child { border-top: 0; }
+.pairTop { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); }
+.pairSide { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; gap: 12px; align-items: center; }
+.pairSide > :first-child:empty { display: none; }
+.pairMark { min-width: 24px; font-size: 11px; font-weight: 600; color: var(--ink-3); text-align: right; font-variant-numeric: tabular-nums; }
+.pairLost .title, .pairLost .value { color: var(--ink-3); font-weight: 400; }
+.pairFoot { padding-left: 40px; }
+.pairBig { gap: 12px; padding: 0; border-top: 0; }
+.valueBig { font-size: 38px; line-height: 1; }
+
+/* Versus: two sides compared, value, label, value. */
+.versus { display: grid; }
+.versusRow { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 12px; align-items: center; min-height: 44px; border-top: 1px solid var(--hair); text-align: center; }
+.versusRow:first-child { border-top: 0; min-height: 40px; }
+.versusRow > :first-child { justify-self: start; }
+.versusEnd { justify-self: end; }
 
 /* Meter: a chance or a share, 6 tall. */
 .meter { display: flex; height: 6px; border-radius: 3px; overflow: hidden; background: var(--hair); }
@@ -128,3 +151,34 @@
 .swatch i { display: block; height: 40px; border-radius: 10px; box-shadow: inset 0 0 0 1px var(--hair); }
 .spaceRow { display: flex; align-items: flex-end; gap: 12px; }
 .spaceRow i { display: block; width: 16px; background: var(--powder); border-radius: 2px; }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* The Rag: brand blue masthead slab, the lead, two more stories. One card. */
+.rag { display: grid; border-radius: 20px; overflow: hidden; background: var(--card); box-shadow: var(--shadow); }
+.ragTop { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 12px 14px; background: var(--blue); color: var(--on-blue); text-decoration: none; }
+.ragTop b { font: italic 900 24px/1 var(--brand); letter-spacing: -0.04em; text-transform: uppercase; white-space: nowrap; }
+.ragTop .label { color: rgba(255, 255, 255, 0.85); }
+.ragLead { display: grid; color: inherit; text-decoration: none; }
+.ragLead .media { border-radius: 0; }
+.ragBody { display: grid; gap: 8px; padding: 14px; }
+.ragMore { display: grid; padding: 0 14px; }
+.ragMore .ragRow:first-child { border-top: 1px solid var(--hair); }
+.thumb { width: 72px; height: 72px; border-radius: 10px; object-fit: cover; display: block; }
+.rag > .ragRow { padding: 12px 14px; }
+
+/* Deck: Squirt fixed at the left, the slides swipe beside him. */
+.deck { grid-template-columns: 120px minmax(0, 1fr); align-items: center; }
+.deckStage { display: grid; place-items: center; width: 120px; height: 120px; }
+.deckSide { display: grid; gap: 4px; min-width: 0; }
+.deckTrack { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
+.deckTrack::-webkit-scrollbar { display: none; }
+.deckSlide { flex: 0 0 100%; scroll-snap-align: start; display: grid; gap: 4px; min-width: 0; min-height: 52px; color: inherit; text-decoration: none; }
+.deckSlide .title { font-size: 18px; font-weight: 800; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.deckSlide .sub { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.deckMine .title { color: var(--deep); }
+.dots { display: flex; align-items: center; margin-left: -8px; }
+.dots button { position: relative; width: 16px; height: 44px; border: 0; background: none; cursor: pointer; }
+.dots button::after { content: ''; position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--hair); transition: transform 160ms ease-out, background 160ms ease-out; }
+.dots .dotOn::after { background: var(--deep); transform: scale(1.35); }
+.dots .label { margin-left: 8px; }

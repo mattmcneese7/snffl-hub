@@ -70,7 +70,9 @@ export function Row({
   valueSub,
   muted,
   data,
+  trail,
 }: Href & {
+  trail?: ReactNode;
   lead?: ReactNode;
   label?: ReactNode;
   title: ReactNode;
@@ -89,7 +91,8 @@ export function Row({
         <span className={cx(u.title, strong && u.strong, muted && u.muted)}>{title}</span>
         {sub ? <span className={u.sub}>{sub}</span> : null}
       </span>
-      {value != null || valueSub ? (
+      {trail ? <span className={u.trail}>{trail}</span> : null}
+      {!trail && (value != null || valueSub) ? (
         <span className={u.trail}>
           {value != null ? <span className={cx(u.value, muted && u.muted)}>{value}</span> : null}
           {valueSub ? <span className={u.valueSub}>{valueSub}</span> : null}
@@ -113,8 +116,27 @@ export function Avatar({ src, color, size = 28 }: { src?: string | null; color?:
 }
 
 /** An NFL club's logo on a white tile, so it reads in both themes. */
-export function Crest({ src, size = 28 }: { src?: string | null; size?: 20 | 24 | 28 | 40 }) {
+export function Crest({ src, size = 28 }: { src?: string | null; size?: 20 | 24 | 28 | 32 | 40 }) {
   return <span className={u.crest} style={{ width: size, height: size }}>{src ? <img src={src} alt="" /> : null}</span>;
+}
+
+/**
+ * A player: Sleeper's headshot with his club's badge, the way the apps show
+ * him. A defense is its club's logo on a white tile instead.
+ */
+export function Face({ id, team, size = 40, defense = false }: { id: string; team?: string | null; size?: 32 | 40 | 48; defense?: boolean }) {
+  const logo = team ? `https://a.espncdn.com/i/teamlogos/nfl/500/${team === 'WAS' ? 'wsh' : team.toLowerCase()}.png` : null;
+  if (defense) return <Crest src={logo} size={size === 48 ? 40 : size} />;
+  return (
+    <span className={u.face} style={{ width: size, height: size }}>
+      <img src={`https://sleepercdn.com/content/nfl/players/thumb/${id}.jpg`} alt="" loading="lazy" />
+      {logo ? (
+        <span className={u.faceBadge}>
+          <img src={logo} alt="" />
+        </span>
+      ) : null}
+    </span>
+  );
 }
 
 /** Art in a square: Squirt's poses, cutouts. */
@@ -161,6 +183,112 @@ export function Hero({ href, label, state, sides, foot, id }: Href & { label: st
   ) : (
     <div id={id} className={u.hero}>
       {body}
+    </div>
+  );
+}
+
+export type RagStory = { href: string; category: string; headline: string };
+
+/**
+ * The Rag on a page: the brand blue masthead slab, then the lead (full: the
+ * 16:9 art with its category, the headline, the deck; compact: a thumbnail
+ * row), then two more stories as rows. One card, corners 20.
+ */
+export function RagCard({ issueHref, meta, lead, art, deck, readTime, more, compact = false }: { issueHref: string; meta: string; lead: RagStory; art?: string | null; deck?: string; readTime?: number; more: RagStory[]; compact?: boolean }) {
+  return (
+    <article className={u.rag}>
+      <Link href={issueHref} className={u.ragTop}>
+        <b>The Rag</b>
+        <span className={u.label}>{meta}</span>
+      </Link>
+      {compact ? (
+        <Link href={lead.href} className={cx(u.row, u.ragRow)}>
+          {art ? <img className={u.thumb} src={art} alt="" /> : <span />}
+          <span className={u.body}>
+            <span className={cx(u.label, u.labelBrand)}>{lead.category}</span>
+            <span className={cx(u.title, u.strong)}>{lead.headline}</span>
+          </span>
+        </Link>
+      ) : (
+        <Link href={lead.href} className={u.ragLead}>
+          {art ? <Media src={art} tag={<Tag tone="gold">{lead.category}</Tag>} /> : null}
+          <span className={u.ragBody}>
+            <span className={u.display}>{lead.headline}</span>
+            {deck ? <span className={u.bodyText}>{deck}</span> : null}
+            {readTime ? <span className={u.label}>{readTime} min read</span> : null}
+          </span>
+        </Link>
+      )}
+      {more.length ? (
+        <span className={u.ragMore}>
+          {more.map((a) => (
+            <Link key={a.href} href={a.href} className={cx(u.row, u.rowNoLead, u.ragRow)}>
+              <span className={u.body}>
+                <span className={cx(u.label, u.labelBrand)}>{a.category}</span>
+                <span className={u.title}>{a.headline}</span>
+              </span>
+            </Link>
+          ))}
+        </span>
+      ) : null}
+    </article>
+  );
+}
+
+export type PairSide = { lead?: ReactNode; title: ReactNode; sub?: ReactNode; value?: ReactNode; mark?: ReactNode; lost?: boolean };
+
+/**
+ * A contest with two sides: a fantasy matchup, an NFL game, a bracket game.
+ * Two lines (lead, name and sub, value, mark), a status label on top when it
+ * has one, a foot label under. In a List it is one row; `big` sets the value
+ * at the hero size for a page that leads with one game.
+ */
+export function Pair({ href, sides, status, foot, big = false, label, data }: Href & { sides: [PairSide, PairSide]; status?: ReactNode; foot?: ReactNode; big?: boolean; label?: string; data?: Record<string, string> }) {
+  const body = (
+    <>
+      {status ? <span className={u.pairTop}>{status}</span> : null}
+      {sides.map((x, i) => (
+        <span key={i} className={cx(u.pairSide, x.lost && u.pairLost)}>
+          {x.lead ?? <span />}
+          <span className={u.body}>
+            <span className={cx(u.title, u.strong)}>{x.title}</span>
+            {x.sub ? <span className={u.sub}>{x.sub}</span> : null}
+          </span>
+          <span className={cx(u.value, big && u.valueBig)}>{x.value ?? ''}</span>
+          {x.mark !== undefined ? <span className={u.pairMark}>{x.mark}</span> : null}
+        </span>
+      ))}
+      {foot ? <span className={cx(u.label, u.pairFoot)}>{foot}</span> : null}
+    </>
+  );
+  const attrs = Object.fromEntries(Object.entries(data ?? {}).map(([k, v]) => [`data-${k}`, v]));
+  return href ? (
+    <Link href={href} className={cx(u.pair, big && u.pairBig)} aria-label={label} {...attrs}>
+      {body}
+    </Link>
+  ) : (
+    <div className={cx(u.pair, big && u.pairBig)} aria-label={label} {...attrs}>
+      {body}
+    </div>
+  );
+}
+
+/** Two sides compared line by line: the left value, what it is, the right value. */
+export function Versus({ left, right, rows }: { left: ReactNode; right: ReactNode; rows: { label: string; a: ReactNode; b: ReactNode }[] }) {
+  return (
+    <div className={u.versus}>
+      <span className={u.versusRow}>
+        <span>{left}</span>
+        <span />
+        <span className={u.versusEnd}>{right}</span>
+      </span>
+      {rows.map((r) => (
+        <span key={r.label} className={u.versusRow}>
+          <span className={u.value}>{r.a}</span>
+          <span className={u.label}>{r.label}</span>
+          <span className={cx(u.value, u.versusEnd)}>{r.b}</span>
+        </span>
+      ))}
     </div>
   );
 }

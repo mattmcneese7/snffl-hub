@@ -15,6 +15,7 @@ import {
   Chips,
   Crest,
   Empty,
+  Face,
   Hero,
   Label,
   List,
@@ -164,10 +165,10 @@ export default async function Kit() {
         </List>
         <Spec>Like items are one card with divided rows, never a grid of boxes. A row: lead, title 15, sub 13, and a value 18 with its own label on the right.</Spec>
         <List>
-          <Row lead={<Crest src={ESPN_TEAM_LOGO('KC')} size={40} />} label="QB · KC vs LV" title="P. Mahomes" sub="24/31, 286 YD, 3 TD" value="27.44" valueSub="Proj 21.10" />
-          <Row lead={<Crest src={ESPN_TEAM_LOGO('CIN')} size={40} />} label="WR · CIN @ PIT" title="J. Chase" sub="9 REC, 148 YD, 1 TD" value="29.80" valueSub="Proj 18.40" />
+ <Row data={{ player: '4046' }} lead={<Face id="4046" team="KC" />} label="QB · KC vs LV" title="P. Mahomes" sub="24/31, 286 YD, 3 TD" value="27.44" valueSub="Proj 21.10" />
+ <Row data={{ player: '7564' }} lead={<Face id="7564" team="CIN" />} label="WR · CIN @ PIT" title="J. Chase" sub="9 REC, 148 YD, 1 TD" value="29.80" valueSub="Proj 18.40" />
         </List>
-        <Spec>Players in rows: K. Cousins style names, box score lines as Sleeper prints them, points over projection.</Spec>
+        <Spec>Players in rows: the headshot with his club&rsquo;s badge, K. Cousins style names, box score lines as Sleeper prints them, points over projection. A row opens the player sheet.</Spec>
         <List>
           <Row lead={<Art src="/squirt/crown-480.webp" size={56} />} label={<span style={{ color: 'var(--gold)' }}>Manager of the Week</span>} title={t(2).teamName} sub={`${who(2)} · 130.40 points`} />
           <Row lead={<Art src="/squirt/shart-480.webp" size={56} />} label={<span style={{ color: 'var(--gold)' }}>The Shart</span>} title={t(3).teamName} sub={`${who(3)} · 63.58 points`} />

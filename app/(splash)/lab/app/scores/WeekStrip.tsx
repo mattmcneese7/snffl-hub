@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
-import x from './scores.module.css';
+import { ui } from '../ui';
 
 /**
  * Weeks 1 to the last fantasy week as one row of chips, the week on screen
@@ -15,9 +15,9 @@ export default function WeekStrip({ week, last, base, query = false }: { week: n
     if (on && row.current) row.current.scrollLeft = on.offsetLeft - row.current.clientWidth / 2 + on.clientWidth / 2;
   }, [week]);
   return (
-    <nav ref={row} className={x.weeks} aria-label="Weeks">
+    <nav ref={row} className={ui.rail} aria-label="Weeks">
       {Array.from({ length: last }, (_, i) => i + 1).map((w) => (
-        <Link key={w} href={query ? `${base}?week=${w}` : `${base}/${w}`} className={`${x.wkChip} ${w === week ? x.wkOn : ''}`} aria-current={w === week ? 'page' : undefined}>
+        <Link key={w} href={query ? `${base}?week=${w}` : `${base}/${w}`} className={`${ui.chip} ${w === week ? ui.chipOn : ''}`} aria-current={w === week ? 'page' : undefined}>
           Week {w}
         </Link>
       ))}

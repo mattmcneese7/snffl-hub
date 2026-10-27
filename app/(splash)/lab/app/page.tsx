@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { photosForWeek } from '@/lib/game-photos';
 import { getHighlights } from '@/lib/highlights';
@@ -22,8 +21,8 @@ import ChugRow from './modules/ChugRow';
 import StoryPill from './modules/StoryPill';
 import { latestWeekStory } from '@/lib/week-story';
 import Shell, { HomeHead } from './Shell';
+import { Empty, RagCard, Section } from './ui';
 import MatchupRows from './modules/MatchupRows';
-import s from './v4.module.css';
 
 export const metadata: Metadata = { title: { absolute: 'Home, Splash 4.0' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -70,77 +69,27 @@ export default async function V4Home({ searchParams }: { searchParams: Promise<{
   const slides = order.includes('story') ? await latestWeekStory(data.week).catch(() => []) : [];
   const storyIntro = slides.find((x) => x.kind === 'intro');
   const storyWeek = storyIntro && storyIntro.kind === 'intro' ? storyIntro.week : data.week;
-  const ragTop = issue ? (
-    <Link href={`/lab/app/rag/${issue.week}`} className={s.ragTop} style={{ textDecoration: 'none' }}>
-      <b>The Rag</b>
-      <span>
-        Week {issue.week} &middot; {CT_DATE.format(new Date(issue.publishedAt))}
-      </span>
-    </Link>
-  ) : null;
+  const ragProps =
+    issue && lead
+      ? {
+          issueHref: `/lab/app/rag/${issue.week}`,
+          meta: `Week ${issue.week} · ${CT_DATE.format(new Date(issue.publishedAt))}`,
+          lead: { href: `/lab/app/rag/${issue.week}/${lead.slug}`, category: lead.category, headline: lead.headline },
+          art: leadSrc,
+          deck: lead.deck,
+          readTime: lead.readTime,
+          more: articles.slice(1, 3).map((x) => ({ href: `/lab/app/rag/${issue.week}/${x.slug}`, category: x.category, headline: x.headline })),
+        }
+      : null;
   const modules: Record<ModuleKey, ReactNode> = {
     awards: board ? <Hardware board={board} mine={mine} /> : null,
     chug: <ChugRow board={board} week={data.week} moment={moment} />,
-    rag:
-      issue && lead ? (
-        <article className={s.rag}>
-          {ragTop}
-          <Link href={`/lab/app/rag/${issue.week}/${lead.slug}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-            {leadSrc ? (
-              <span className={s.ragArt} style={{ display: 'block' }}>
-                <img src={leadSrc} alt="" />
-                <span className={s.ragTag}>{lead.category}</span>
-              </span>
-            ) : null}
-            <span className={s.ragBody}>
-              <h3>{lead.headline}</h3>
-              <p>{lead.deck}</p>
-              <span className={s.ragBy}>{lead.readTime} min read</span>
-            </span>
-          </Link>
-          <div className={s.ragList}>
-            {articles.slice(1, 3).map((a) => (
-              <Link key={a.slug} href={`/lab/app/rag/${issue.week}/${a.slug}`} className={s.ragRow}>
-                <small>{a.category}</small>
-                <b>{a.headline}</b>
-              </Link>
-            ))}
-          </div>
-        </article>
-      ) : null,
-    ragCompact:
-      issue && lead ? (
-        <article className={s.rag}>
-          {ragTop}
-          <Link href={`/lab/app/rag/${issue.week}/${lead.slug}`} className={s.ragLead}>
-            {leadSrc ? <img src={leadSrc} alt="" /> : null}
-            <span>
-              <small>{lead.category}</small>
-              <b>{lead.headline}</b>
-            </span>
-          </Link>
-          <div className={s.ragList}>
-            {articles.slice(1, 3).map((a) => (
-              <Link key={a.slug} href={`/lab/app/rag/${issue.week}/${a.slug}`} className={s.ragRow}>
-                <small>{a.category}</small>
-                <b>{a.headline}</b>
-              </Link>
-            ))}
-          </div>
-        </article>
-      ) : null,
+    rag: ragProps ? <RagCard {...ragProps} /> : null,
+    ragCompact: ragProps ? <RagCard {...ragProps} compact /> : null,
     matchups: (
-      <>
-        <div className={s.title}>
-          <h2>{live ? 'Live Matchups' : 'All Matchups'}</h2>
-          <Link href="/lab/app/feed">Feed</Link>
-        </div>
-        {data.others.length ? (
-          <MatchupRows games={data.others} week={data.week} live={data.state === 'live'} />
-        ) : (
-          <p className={s.empty}>No matchups for week {data.week} yet.</p>
-        )}
-      </>
+      <Section title={live ? 'Live Matchups' : 'All Matchups'} action={{ href: '/lab/app/feed', label: 'Feed' }}>
+        {data.others.length ? <MatchupRows games={data.others} week={data.week} live={data.state === 'live'} /> : <Empty>No matchups for week {data.week} yet.</Empty>}
+      </Section>
     ),
     story: slides.length ? <StoryPill slides={slides} week={storyWeek} /> : null,
   };

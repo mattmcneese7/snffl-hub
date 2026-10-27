@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { lastFantasyWeek } from '@/lib/league';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
@@ -6,52 +5,39 @@ import type { NflGame } from '@/lib/gameday';
 import { getV4Data, type GameView } from '../data';
 import Shell, { SectionHead } from '../Shell';
 import MatchupRows from '../modules/MatchupRows';
-import { LiveChip, kickoffText, quarter } from './parts';
+import { kickoffText, quarter } from './parts';
 import { weekView, type WeekView } from './weekData';
 import WeekStrip from './WeekStrip';
 import { LivePoints, LiveStart } from '../live/Live';
-import s from '../v4.module.css';
-import x from './scores.module.css';
+import { Crest, Empty, Hero, Label, LiveTag, Meter, Rail, Section, Tile, TileRow } from '../ui';
 
-/** Your game on brand blue, trimmed to the scores and where it stands; the card opens the full matchup. */
+/** Your game on brand blue: both teams, the scores and where it stands. One tap into the full matchup. */
 function YourGame({ g, wv }: { g: GameView; wv: WeekView }) {
   const m = wv.live.get(g.id)!;
   const final = wv.state === 'final' || m.game.status === 'final';
+  const live = m.game.inPlay && !final;
   const pct = Number(g.a.mark.replace('%', ''));
-  const chip = m.game.inPlay ? <LiveChip /> : <span>{final ? 'Final' : wv.state === 'preview' ? 'Preview' : 'Live'}</span>;
+  const score = (x: GameView['a']) => (live ? <LivePoints week={wv.week} rosterId={x.rosterId} fallback={x.score} /> : x.score.toFixed(2));
   return (
-    <Link id="yourGame" href={`/lab/app/matchup?id=${g.id}&week=${wv.week}`} className={`${s.hero} ${x.heroLink}`} aria-label={`Week ${wv.week} matchup, open the full matchup`}>
-      <span className={s.heroTop}>
-        <span>Week {wv.week} Matchup</span>
-        {chip}
-      </span>
-      {[g.a, g.b].map((side) => (
-        <span key={side.rosterId} className={`${s.heroRow} ${side.lost ? s.heroLost : ''}`}>
-          <span className={s.av} style={{ width: 34, height: 34, ['--mgr' as string]: side.color }}>
-            {side.avatar ? <img src={side.avatar} alt="" /> : null}
-          </span>
-          <span className={s.heroWho}>
-            <b>{side.team}</b>
-            <small>{side.manager}</small>
-          </span>
-          <span className={s.heroScore}>{m.game.inPlay && !final ? <LivePoints week={wv.week} rosterId={side.rosterId} fallback={side.score} /> : side.score.toFixed(2)}</span>
-        </span>
-      ))}
-      <span className={s.heroWin}>
-        {!final && Number.isFinite(pct) ? (
+    <Hero
+      id="yourGame"
+      href={`/lab/app/matchup?id=${g.id}&week=${wv.week}`}
+      label={`Week ${wv.week} Matchup`}
+      state={live ? <LiveTag /> : <Label>{final ? 'Final' : wv.state === 'preview' ? 'Preview' : 'Live'}</Label>}
+      sides={[g.a, g.b].map((x) => ({ avatar: x.avatar, color: x.color, team: x.team, manager: x.manager, score: score(x), lost: x.lost }))}
+      foot={
+        !final && Number.isFinite(pct) ? (
           <>
-            <i>
-              <u style={{ width: `${pct}%` }} />
-            </i>
+            <Meter pct={pct} label={`${pct}% to win`} />
             <span>
               <b>{pct}%</b> to win &middot; {g.a.lines[0]}
             </span>
           </>
         ) : (
           <span>{g.a.lines[0]}</span>
-        )}
-      </span>
-    </Link>
+        )
+      }
+    />
   );
 }
 
@@ -60,26 +46,18 @@ function NflTile({ game, week }: { game: NflGame; week: number }) {
   const post = game.state === 'post';
   const a = game.away.score ?? 0;
   const h = game.home.score ?? 0;
-  const side = (t: NflGame['away'], lost: boolean) => (
-    <span className={`${x.tkRow} ${lost ? x.tkLost : ''}`}>
-      {t.logo ? <img src={t.logo} alt="" loading="lazy" /> : <span />}
-      <b>{t.abbr}</b>
-      <span className={x.tkScore}>{game.state === 'pre' ? '' : (t.score ?? 0)}</span>
-    </span>
-  );
   return (
-    <Link href={`/lab/app/nfl/${game.id}?week=${week}`} className={x.tk} aria-label={`${game.away.name} at ${game.home.name}`}>
-      <span className={x.tkHead}>{game.state === 'in' ? <LiveChip text={quarter(game.period, game.clock)} /> : post ? 'Final' : kickoffText(game.kickoff)}</span>
-      {side(game.away, post && a < h)}
-      {side(game.home, post && h < a)}
-    </Link>
+    <Tile href={`/lab/app/nfl/${game.id}?week=${week}`} label={`${game.away.name} at ${game.home.name}`} head={game.state === 'in' ? <LiveTag text={quarter(game.period, game.clock)} /> : post ? 'Final' : kickoffText(game.kickoff)}>
+      <TileRow crest={<Crest src={game.away.logo} size={24} />} name={game.away.abbr} value={game.state === 'pre' ? undefined : a} lost={post && a < h} />
+      <TileRow crest={<Crest src={game.home.logo} size={24} />} name={game.home.abbr} value={game.state === 'pre' ? undefined : h} lost={post && h < a} />
+    </Tile>
   );
 }
 
 /**
- * The Scores tab, a scoreboard: pick a week, your game first, then every
- * league matchup as one list, then the NFL games as a ticker. Each opens
- * its own page; the depth lives there, not here.
+ * Scores, a scoreboard: pick a week, your game first, then every league
+ * matchup as one list, then the NFL scores as a ticker. Each opens its own
+ * page; the depth lives there.
  */
 export default async function ScoresWeek({ week }: { week?: number }) {
   const jar = await cookies();
@@ -99,30 +77,21 @@ export default async function ScoresWeek({ week }: { week?: number }) {
       {wv.mine ? (
         <YourGame g={wv.mine} wv={wv} />
       ) : (
-        <p className={s.empty}>
-          {mine != null ? `No game for your team in week ${wk}.` : 'Pick your team to see your game first.'} {mine == null ? <Link href="/lab/app/account">Account</Link> : null}
-        </p>
+        <Empty action={mine == null ? { href: '/lab/app/account', label: 'Pick your team' } : undefined}>
+          {mine != null ? `No game for your team in week ${wk}.` : 'Pick your team and your game leads this page.'}
+        </Empty>
       )}
-      <div className={s.title}>
-        <h2>League Matchups</h2>
-      </div>
-      {wv.others.length ? (
-        <MatchupRows games={wv.others} week={wk} live={wv.state === 'live'} current={wk === data.week} />
-      ) : (
-        <p className={s.empty}>No matchups posted for week {wk}.</p>
-      )}
+      <Section title="League Matchups">
+        {wv.others.length ? <MatchupRows games={wv.others} week={wk} live={wv.state === 'live'} current={wk === data.week} /> : <Empty>No matchups posted for week {wk}.</Empty>}
+      </Section>
       {nfl.length ? (
-        <>
-          <div className={s.title}>
-            <h2>NFL Games</h2>
-            <Link href={`/lab/app/nfl?week=${wk}`}>Full slate</Link>
-          </div>
-          <div className={`${s.rail} ${x.tks}`}>
+        <Section title="NFL Scores" action={{ href: `/lab/app/nfl?week=${wk}`, label: 'All games' }}>
+          <Rail label="NFL scores">
             {nfl.map((g) => (
               <NflTile key={g.id} game={g} week={wk} />
             ))}
-          </div>
-        </>
+          </Rail>
+        </Section>
       ) : null}
     </Shell>
   );

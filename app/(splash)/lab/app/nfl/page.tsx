@@ -1,24 +1,25 @@
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
-import { LiveStart } from '../live/Live';
+import type { NflGame } from '@/lib/gameday';
+import { lastFantasyWeek } from '@/lib/league';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
-import { bookFrom, mainBook, slateLines } from '../../../lib/odds-books';
 import { getV4Data } from '../data';
-import Shell, { SectionHead } from '../Shell';
-import { Slate } from '../scores/parts';
+import { LiveStart } from '../live/Live';
+import { kickoffText, startersIn } from '../scores/parts';
+import NflRow from './NflRow';
 import { weekView } from '../scores/weekData';
 import WeekStrip from '../scores/WeekStrip';
-import { lastFantasyWeek } from '@/lib/league';
-import s from '../v4.module.css';
-import x from '../scores/scores.module.css';
+import Shell, { SectionHead } from '../Shell';
+import { Empty, List, Section } from '../ui';
 
-export const metadata: Metadata = { title: { absolute: 'NFL, Splash 4.0' }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: 'NFL Scores, Splash 4.0' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
+const DAY = new Intl.DateTimeFormat('en-US', { weekday: 'long', timeZone: 'America/Chicago' });
+
 /**
- * The NFL week from this league's side: every game, live first, then each
- * day's kickoffs, then the finals, with the line, the win chance and who here
- * is starting in it. Each opens its own game page.
+ * NFL Scores: every game of the week, live first, then each day's kickoffs,
+ * then the finals. Each row opens its game; the odds live there.
  */
 export default async function V4Nfl({ searchParams }: { searchParams: Promise<{ week?: string }> }) {
   const q = await searchParams;
@@ -28,18 +29,36 @@ export default async function V4Nfl({ searchParams }: { searchParams: Promise<{ 
   const asked = Number(q.week);
   const week = Number.isInteger(asked) && asked >= 1 && asked <= 18 ? asked : data.week;
   const wv = await weekView(week, mine, data);
-  const lines = await slateLines(wv.ctx.nfl, wv.ctx.lines, bookFrom(jar)).catch(() => wv.ctx.lines);
-  const lineBook = mainBook(Object.values(lines));
+  const games = [...wv.ctx.nfl].sort((a, b) => a.kickoff.localeCompare(b.kickoff));
+  const live = games.filter((g) => g.state === 'in');
+  const final = games.filter((g) => g.state === 'post');
+  const days = new Map<string, NflGame[]>();
+  for (const g of games.filter((x) => x.state === 'pre')) {
+    const d = DAY.format(new Date(g.kickoff));
+    days.set(d, [...(days.get(d) ?? []), g]);
+  }
+  const starters = (g: NflGame) => startersIn(wv.games, [g.away.abbr, g.home.abbr], mine).count;
+  const group = (list: NflGame[]) => (
+    <List tap>
+      {list.map((g) => (
+        <NflRow key={g.id} g={g} week={week} starters={g.state === 'post' ? 0 : starters(g)} />
+      ))}
+    </List>
+  );
+
   return (
     <Shell data={data} active="scores">
-      <LiveStart live={wv.ctx.nfl.some((g) => g.state === 'in')} week={week} />
-      <SectionHead icon="football" word="nfl" title="NFL Slate" week={data.week} mine={data.myRoster} back={{ href: `/lab/app/scores/${week}`, label: `Week ${week} Scores` }} />
+      <LiveStart live={live.length > 0} week={week} />
+      <SectionHead icon="football" word="nfl" week={data.week} mine={data.myRoster} back={{ href: `/lab/app/scores/${week}`, label: 'Scores' }} />
       <WeekStrip week={week} last={lastFantasyWeek()} base="/lab/app/nfl" query />
-      <div className={s.title}>
-        <h2>NFL Week {week}</h2>
-      </div>
-      <Slate games={wv.ctx.nfl} lines={lines} leagueGames={wv.games} mine={mine} lineBook={lineBook} week={week} />
-      <span className={x.via}>Sources: ESPN{lineBook ? `, ${lineBook}` : ''}, Sleeper</span>
+      {!games.length ? <Empty>ESPN has not posted the week {week} games yet.</Empty> : null}
+      {live.length ? <Section title="Live">{group(live)}</Section> : null}
+      {[...days.entries()].map(([d, list]) => (
+        <Section key={d} title={d} label={`${d}, ${kickoffText(list[0].kickoff).split(' ')[0]}`}>
+          {group(list)}
+        </Section>
+      ))}
+      {final.length ? <Section title="Final">{group(final)}</Section> : null}
     </Shell>
   );
 }

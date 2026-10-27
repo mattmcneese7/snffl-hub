@@ -1,7 +1,5 @@
-import type { CSSProperties } from 'react';
 import type { Metadata } from 'next';
 import { weekProjections } from '../../cached';
-import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { LiveStart } from '../../live/Live';
 import { getGameExtras, getGameLines, getNflGames, impliedTeamTotal, leagueEntriesInGame, type NflGame, type NflSide, type SeasonLine } from '@/lib/gameday';
@@ -13,40 +11,19 @@ import { getV4Data } from '../../data';
 import Shell, { SectionHead } from '../../Shell';
 import Clips from '../../scores/Clips';
 import { railOf } from '../../scores/clipData';
-import { kickoffText, LiveChip, managerOf, quarter, WinBar } from '../../scores/parts';
+import { kickoffText, managerOf, quarter } from '../../scores/parts';
 import { shortName, weekView } from '../../scores/weekData';
-import BookTable from '../BookTable';
-import s from '../../v4.module.css';
-import x from '../../scores/scores.module.css';
+import { Avatar, Card, Crest, Empty, Face, List, LiveTag, Meter, Pair, Row, Section, Stats, Tag, Versus, ui } from '../../ui';
 
 export const metadata: Metadata = { title: { absolute: 'NFL game, Splash 4.0' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 const money = (v: number | null) => (v == null ? null : v > 0 ? `+${v}` : `${v}`);
 
-function BoardRow({ side, game, lost }: { side: NflSide; game: NflGame; lost: boolean }) {
-  return (
-    <div className={`${x.bRow} ${lost ? x.bLost : ''}`}>
-      <span className={`${s.tile} ${x.crest}`} style={{ ['--tc' as string]: side.color ?? '#5a616d' }}>
-        <img src={side.logo} alt="" />
-      </span>
-      <span className={x.bWho}>
-        <b>{side.name}</b>
-        <small>
-          {side.record ?? ''}
-          {game.state === 'in' && game.possession === side.abbr ? ' · Ball' : ''}
-        </small>
-      </span>
-      {game.state !== 'pre' ? <span className={x.bScore}>{side.score ?? 0}</span> : null}
-    </div>
-  );
-}
-
 /**
- * One NFL game from this league's side. Nobody opens Jets at Patriots for
- * the football; they open it because three of their starters are in it. So:
- * the board, the weather at kickoff, both clubs' seasons, the line and every
- * book's, then every league player in the game by team, and the tape.
+ * One NFL game from this league's side: the game itself, the weather before
+ * kickoff, both clubs' season, the odds, every league player in it by team,
+ * and the highlights. Built from the kit; nothing here styles itself.
  */
 export default async function V4NflGame({ params, searchParams }: { params: Promise<{ gameId: string }>; searchParams: Promise<{ week?: string }> }) {
   const [{ gameId }, q] = await Promise.all([params, searchParams]);
@@ -66,10 +43,8 @@ export default async function V4NflGame({ params, searchParams }: { params: Prom
   if (!game) {
     return (
       <Shell data={data} active="scores">
-        <SectionHead icon="football" word="nfl" week={data.week} mine={data.myRoster} />
-        <p className={s.empty}>
-          That game is not on ESPN&rsquo;s slate for week {week}. <Link href={`/lab/app/nfl?week=${week}`}>NFL Week {week}</Link>
-        </p>
+        <SectionHead icon="football" word="nfl" week={data.week} mine={data.myRoster} back={{ href: `/lab/app/nfl?week=${week}`, label: 'NFL Scores' }} />
+        <Empty action={{ href: `/lab/app/nfl?week=${week}`, label: 'NFL Scores' }}>That game is not on ESPN&rsquo;s week {week} schedule.</Empty>
       </Shell>
     );
   }
@@ -131,225 +106,156 @@ export default async function V4NflGame({ params, searchParams }: { params: Prom
     game.broadcast,
   ].filter(Boolean) as string[];
 
+  const awayName = game.away.name;
+  const homeName = game.home.name;
+  const favorite = awayWin != null ? (awayWin >= 0.5 ? { name: awayName, pct: awayWin } : { name: homeName, pct: 1 - awayWin }) : null;
+  const status =
+    game.state === 'in' ? (
+      <>
+        <LiveTag text={when} />
+        <span>{game.broadcast ?? ''}</span>
+      </>
+    ) : (
+      <>
+        <span>{when}</span>
+        <span>{game.broadcast ?? ''}</span>
+      </>
+    );
+
   return (
     <Shell data={data} active="scores">
       <LiveStart live={game.state === 'in'} week={week} />
-      <SectionHead icon="football" word="nfl" title="NFL Game" week={data.week} mine={data.myRoster} back={{ href: `/lab/app/nfl?week=${week}`, label: `NFL Week ${week}` }} />
-      <section className={x.board}>
-        <div className={x.art} style={{ '--home': game.home.color ?? '#2d4c9c' } as CSSProperties}>
-          {extras.venue?.image ? <img src={extras.venue.image} alt="" /> : null}
-          <span className={x.artShade} aria-hidden />
-          {game.state === 'in' ? (
-            <span className={x.artPill} style={{ background: 'none', padding: 0 }}>
-              <LiveChip text={when} />
+      <SectionHead icon="football" word="nfl" week={data.week} mine={data.myRoster} back={{ href: `/lab/app/nfl?week=${week}`, label: 'NFL Scores' }} />
+      <h1 className={ui.sr}>
+        {awayName} at {homeName}
+      </h1>
+      <Card>
+        <Pair
+          big
+          status={status}
+          sides={[
+            { lead: <Crest src={game.away.logo} size={40} />, title: awayName, sub: game.away.record ?? undefined, value: game.state === 'pre' ? undefined : a, lost: post && a < h },
+            { lead: <Crest src={game.home.logo} size={40} />, title: homeName, sub: game.home.record ?? undefined, value: game.state === 'pre' ? undefined : h, lost: post && h < a },
+          ]}
+        />
+        {game.state === 'in' && game.situation ? <span className={ui.sub}>{game.situation}</span> : null}
+        {favorite && !post ? (
+          <>
+            <Meter pct={(awayWin ?? 0) * 100} label={`${favorite.name} ${Math.round(favorite.pct * 100)}% to win`} />
+            <span className={ui.sub}>
+              {favorite.name} {Math.round(favorite.pct * 100)}% to win &middot; {game.state === 'in' ? 'live' : 'from the moneyline'}
             </span>
-          ) : (
-            <span className={x.artPill}>{when}</span>
-          )}
-        </div>
-        <div className={x.boardBody}>
-          <h1 className={s.sr}>
-            {game.away.name} at {game.home.name}
-          </h1>
-          <BoardRow side={game.away} game={game} lost={post && a < h} />
-          <BoardRow side={game.home} game={game} lost={post && h < a} />
-          {game.state === 'in' && game.situation ? <span className={s.note}>{game.situation}</span> : null}
-          {awayWin != null && !post ? <WinBar first={awayWin} caption={game.state === 'in' ? 'Live win chance' : 'Moneyline, no vig'} /> : null}
-          {venueChips.length ? (
-            <div className={s.venue}>
-              {venueChips.map((c) => (
-                <i key={c}>{c}</i>
-              ))}
-            </div>
-          ) : null}
-        </div>
-      </section>
+          </>
+        ) : null}
+        {venueChips.length ? (
+          <span style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            {venueChips.filter((c) => c !== game.broadcast && !/attendance/.test(c)).map((c) => (
+              <Tag key={c}>{c}</Tag>
+            ))}
+          </span>
+        ) : null}
+      </Card>
 
       {game.state === 'pre' && extras.weather ? (
-        <>
-          <div className={s.title}>
-            <h2>At Kickoff</h2>
-          </div>
-          <section className={s.card}>
-            <div className={x.facts}>
-              {extras.weather.temperature != null ? (
-                <span className={x.fact}>
-                  <small>Temp</small>
-                  <b>{extras.weather.temperature}&deg;</b>
-                </span>
-              ) : null}
-              {extras.weather.windSpeed != null ? (
-                <span className={x.fact}>
-                  <small>Wind {extras.weather.windDirection ?? ''}</small>
-                  <b>
-                    {extras.weather.windSpeed}
-                    <small> mph</small>
-                  </b>
-                </span>
-              ) : null}
-              {extras.weather.precipitation != null ? (
-                <span className={x.fact}>
-                  <small>Precip</small>
-                  <b>{extras.weather.precipitation}%</b>
-                </span>
-              ) : null}
-            </div>
-            {extras.weather.summary ? <p className={s.note}>{extras.weather.summary}</p> : null}
-          </section>
-        </>
+        <Section title="Weather">
+          <Card>
+            <Stats
+              items={[
+                ...(extras.weather.temperature != null ? [{ value: `${extras.weather.temperature}°`, label: 'Temp' }] : []),
+                ...(extras.weather.windSpeed != null ? [{ value: `${extras.weather.windSpeed} mph`, label: `Wind ${extras.weather.windDirection ?? ''}`.trim() }] : []),
+                ...(extras.weather.precipitation != null ? [{ value: `${extras.weather.precipitation}%`, label: 'Precip' }] : []),
+              ]}
+            />
+            {extras.weather.summary ? <span className={ui.sub}>{extras.weather.summary}</span> : null}
+          </Card>
+        </Section>
       ) : null}
 
       {season ? (
-        <>
-          <div className={s.title}>
-            <h2>Season So Far</h2>
-          </div>
-          <section className={s.card}>
-            <div className={x.sea}>
-              <div className={x.seaRow}>
-                <img className={x.seaLogo} src={game.away.logo} alt={game.away.name} />
-                <small>Per game</small>
-                <img className={x.seaLogo} src={game.home.logo} alt={game.home.name} style={{ justifySelf: 'end' }} />
-              </div>
-              {SEASON.map(([label, read]) => (
-                <div key={label} className={x.seaRow}>
-                  <span>{read(season[0])}</span>
-                  <small>{label}</small>
-                  <span>{read(season[1])}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-        </>
+        <Section title="Season Stats">
+          <Card>
+            <Versus
+              left={<Crest src={game.away.logo} size={28} />}
+              right={<Crest src={game.home.logo} size={28} />}
+              rows={SEASON.map(([label, read]) => ({ label: `${label} per game`, a: read(season[0]), b: read(season[1]) }))}
+            />
+          </Card>
+        </Section>
       ) : null}
 
-      <div className={s.title}>
-        <h2>The Line</h2>
-      </div>
-      <section className={s.card}>
+      <Section title="Odds">
         {lines && (lines.details || lines.overUnder != null) ? (
-          <>
-            <div className={`${x.facts} ${x.facts2}`}>
-              {lines.details ? (
-                <span className={x.fact}>
-                  <small>Spread</small>
-                  <span>{lines.details}</span>
-                </span>
-              ) : null}
-              {lines.overUnder != null ? (
-                <span className={x.fact}>
-                  <small>Total</small>
-                  <b>{lines.overUnder}</b>
-                </span>
-              ) : null}
-            </div>
-            <div>
-              {[game.away, game.home].map((side, i) => {
-                const book = i === 0 ? lines.away : lines.home;
-                const implied = impliedTeamTotal(lines, i === 1);
-                const win = lines.win ? moneyText(lines, i === 1) : null;
-                return (
-                  <div key={side.abbr} className={x.ln}>
-                    <span className={s.tile} style={{ ['--tc' as string]: side.color ?? '#5a616d' }}>
-                      <img src={side.logo} alt="" />
-                    </span>
-                    <b>{side.name}</b>
-                    <span className={x.lnPair}>
-                      {win ?? money(book.moneyline) ?? '–'}
-                      <small>Moneyline</small>
-                    </span>
-                    <span className={x.lnPair}>
-                      {implied != null ? implied.toFixed(1) : '–'}
-                      <small>Implied</small>
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-            <span className={x.via}>
-              Book: {lines.provider}
-              {lines.fallback ? `, ${bookName(chosen)} has no line on this game` : ''}
-            </span>
-          </>
+          <List>
+            {[game.away, game.home].map((side, i) => {
+              const book = i === 0 ? lines.away : lines.home;
+              const implied = impliedTeamTotal(lines, i === 1);
+              const win = lines.win ? moneyText(lines, i === 1) : null;
+              return (
+                <Row
+                  key={side.abbr}
+                  lead={<Crest src={side.logo} size={28} />}
+                  title={side.name}
+                  sub={`Moneyline ${win ?? money(book.moneyline) ?? 'none'}`}
+                  value={implied != null ? implied.toFixed(1) : undefined}
+                  valueSub={implied != null ? 'Implied' : undefined}
+                />
+              );
+            })}
+            <Row title="Spread and total" sub={`${lines.provider}${lines.fallback ? `, ${bookName(chosen)} has no line` : ''}`} value={lines.details ?? undefined} valueSub={lines.overUnder != null ? `O/U ${lines.overUnder}` : undefined} />
+            {across.length >= 2
+              ? across.map((b) => (
+                  <Row key={b.bookKey} title={b.provider} sub={b.details ?? undefined} value={b.overUnder != null ? `O/U ${b.overUnder}` : undefined} valueSub={b.home.moneyline != null ? `${game.home.abbr} ${money(b.home.moneyline)}` : undefined} />
+                ))
+              : null}
+          </List>
         ) : (
-          <p className={s.note}>No line posted yet.</p>
+          <Empty>No odds posted yet.</Empty>
         )}
-      </section>
+      </Section>
 
-      {across.length >= 2 ? (
-        <>
-          <div className={s.title}>
-            <h2>Lines Across Books</h2>
-          </div>
-          <section className={s.card}>
-            <BookTable game={game} rows={across} chosen={chosen} />
-            {odds?.pulledAt ? <span className={x.via}>Updated {new Date(odds.pulledAt).toLocaleString('en-US', { timeZone: 'America/Chicago', weekday: 'short', hour: 'numeric', minute: '2-digit' })} CT</span> : null}
-          </section>
-        </>
-      ) : null}
-
-      <div className={s.title}>
-        <h2>Who Has Skin in This</h2>
-        {entries.length ? (
-          <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--ink-3)' }}>
-            {starting} starting &middot; {entries.length - starting} benched
-          </span>
-        ) : null}
-      </div>
-      {groups.length ? (
-        <div className={x.skin}>
-          {groups.map(([rosterId, list]) => {
+      <Section title="League Players">
+        {groups.length ? (
+          groups.map(([rosterId, list]) => {
             const t = teamByRoster(rosterId);
             const started = list.filter((e) => e.slot).length;
             return (
-              <section key={rosterId} className={`${x.grp} ${rosterId === mine ? x.grpMine : ''}`}>
-                <div className={x.grpHead}>
-                  <span className={s.av} style={{ width: 28, height: 28, ['--mgr' as string]: t?.colors?.primary ?? 'var(--powder)' }}>
-                    {t?.avatarUrl ? <img src={t.avatarUrl} alt="" loading="lazy" /> : null}
-                  </span>
-                  <span className={s.who}>
-                    <b>{t?.teamName ?? list[0].teamName}</b>
-                    <small>{rosterId === mine ? `${managerOf(rosterId, list[0].manager)} · You` : managerOf(rosterId, list[0].manager)}</small>
-                  </span>
-                  <span className={s.tag}>{started ? `${started} starting` : 'Bench only'}</span>
-                </div>
+              <List key={rosterId}>
+                <Row
+                  href={`/lab/app/managers/${rosterId}`}
+                  lead={<Avatar src={t?.avatarUrl} color={t?.colors?.primary} size={28} />}
+                  title={t?.teamName ?? list[0].teamName}
+                  strong
+                  sub={rosterId === mine ? `${managerOf(rosterId, list[0].manager)} · You` : managerOf(rosterId, list[0].manager)}
+                  valueSub={started ? `${started} starting` : 'Bench only'}
+                />
                 {list.map((e) => {
                   const proj = projections[e.playerId];
-                  const beat = game.state !== 'pre' && proj != null && proj > 0 && e.points >= proj;
                   return (
-                    <button key={e.playerId} type="button" data-player={e.playerId} className={s.prow} aria-label={`${e.name}, open player`}>
-                      {e.position === 'DEF' ? <img className={x.logo32} src={e.headshot} alt="" loading="lazy" /> : <img className={x.face32} src={e.headshot} alt="" loading="lazy" />}
-                      <span className={s.prowName}>
-                        <b>{shortName(e.name, e.position, e.nflTeam)}</b>
-                        <small>
-                          <i className={`${s.pos} ${s[`p${e.position}`] ?? ''}`}>{e.position}</i>
-                          {e.slot ? (e.slot !== e.position ? e.slot.replace('SUPER_FLEX', 'SF') : 'Starting') : 'Bench'}
-                        </small>
-                      </span>
-                      <span className={s.prowPts}>
-                        <b className={beat ? s.win : undefined}>{game.state === 'pre' ? '–' : e.points.toFixed(2)}</b>
-                        <small>{proj != null && proj > 0 ? `Proj ${proj.toFixed(2)}` : ''}</small>
-                      </span>
-                    </button>
+                    <Row
+                      key={e.playerId}
+                      data={{ player: e.playerId }}
+                      lead={<Face id={e.playerId} team={e.nflTeam} size={32} defense={e.position === 'DEF'} />}
+                      label={`${e.position} · ${e.slot ? (e.slot !== e.position ? e.slot.replace('SUPER_FLEX', 'SF') : 'Starting') : 'Bench'}`}
+                      title={shortName(e.name, e.position, e.nflTeam)}
+                      value={game.state === 'pre' ? undefined : e.points.toFixed(2)}
+                      valueSub={proj != null && proj > 0 ? `Proj ${proj.toFixed(2)}` : undefined}
+                    />
                   );
                 })}
-              </section>
+              </List>
             );
-          })}
-        </div>
-      ) : (
-        <p className={s.empty}>No rostered players in this game.</p>
-      )}
+          })
+        ) : (
+          <Empty>No league players in this game.</Empty>
+        )}
+      </Section>
 
       {rail.length ? (
-        <>
-          <div className={s.title}>
-            <h2>This Game, on Tape</h2>
-          </div>
+        <Section title="Highlights">
           <Clips clips={rail} />
-        </>
+        </Section>
       ) : null}
-      <span className={x.via}>Sources: ESPN, Sleeper{lines?.provider ? `, ${lines.provider}` : ''}, YouTube</span>
+      <p className={ui.spec}>Sources: ESPN, Sleeper{lines?.provider ? `, ${lines.provider}` : ''}, YouTube</p>
     </Shell>
   );
 }

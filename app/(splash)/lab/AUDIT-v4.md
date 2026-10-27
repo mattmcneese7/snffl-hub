@@ -81,3 +81,30 @@ theme at 360, 390 or 430 px.
 - Item 9, Feed copy: the watcher's stored posts name managers first ("C'mon Man, Matt", "Andrew takes the lead"). The fix belongs in the watcher that writes them (`lib/feed`), outside the lab.
 - Shadows on read-only lists (Rules scoring, Season grids) remain from the shared `.list` card; splitting a non-tappable list style is a follow-up.
 - Switzer also sets the italic seed and week numerals and the `.title` section titles. Step 2 approved these in screenshots; flagging only.
+
+## Relics replaced (kit rebuild, 2026-10-27)
+
+| Page | Relic | Replaced by |
+|---|---|---|
+| NFL Scores | Score-bug slate tiles (win bar, implied totals, spread pairs, league-starters pill in one card) | Kit `Pair` rows in one `List` per group (Live, each kickoff day, Final); starters as the foot label; odds moved to the game page |
+| NFL Scores | Old week chips | Kit `Chip` in a kit `Rail` |
+| NFL game | Photo board header with venue art and win bar | One `Card` with a big `Pair`, a `Meter` and venue `Tag`s |
+| NFL game | Custom weather facts | Kit `Stats` |
+| NFL game | Custom season grid | Kit `Versus` |
+| NFL game | Line card with stacked pairs and BookTable (deleted) | One Odds `List` of kit `Row`s, every book as a row |
+| NFL game | Custom skin-in-the-game groups | One `List` per team: `Avatar` team row, then `Face` player rows |
+
+## Copy (kit rebuild)
+
+| Was | Now |
+|---|---|
+| NFL Slate | NFL Scores (page keeps the branded word "nfl") |
+| NFL Game | The game itself in the header; branded word "nfl" |
+| NFL Week N (section) | Live, each kickoff day, Final |
+| Full slate | All games |
+| At Kickoff | Weather |
+| Season So Far | Season Stats |
+| The Line / Lines Across Books | Odds (books as rows inside it) |
+| Who Has Skin in This | League Players |
+| This Game, on Tape | Highlights |
+| "‹ NFL Week N" back label | "‹ NFL Scores" |

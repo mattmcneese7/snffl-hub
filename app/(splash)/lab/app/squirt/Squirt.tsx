@@ -114,14 +114,11 @@ export default function Squirt({ mood: moodProp = 'calm', award, size = 160, lis
   useEffect(() => { if (!award) changeMood(moodProp); }, [moodProp, award, changeMood]);
 
   // Awards hold their pose: a loop where the award has one, its arrival clip
-  // (held on the last frame) where it has that, else the still alone. A
-  // change of award lands with a small squash, as when he is swiped to it.
-  const firstAward = useRef(true);
+  // (held on the last frame) where it has that, else the still alone. He
+  // stays put; only the clip changes.
   useEffect(() => {
     if (!award) return;
     setPose(AWARD_ART[award] ?? 'calm');
-    if (!firstAward.current) kick(0.8, -1.2, 0, 24);
-    firstAward.current = false;
     if (AWARD_LOOPS.has(award)) play(awardClip(award), true);
     else if (AWARD_ARRIVE[award]) play(AWARD_ARRIVE[award], false);
     else for (const r of vids) { if (r.current) { r.current.style.opacity = '0'; r.current.pause(); } }

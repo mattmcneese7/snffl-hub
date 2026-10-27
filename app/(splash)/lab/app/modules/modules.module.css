@@ -117,19 +117,20 @@
 .chugFilm video { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.9; }
 .chugPlay { position: absolute; left: 12px; bottom: 12px; display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border-radius: 999px; background: #ffffff; color: #141518; font-size: 13px; font-weight: 600; }
 
-/* Hardware deck: Squirt holds the stage, the awards slide under him. */
-.deck { padding: 14px 0; gap: 8px; }
-.deckStage { display: grid; place-items: center; height: 184px; }
+/* Hardware deck: Squirt fixed on the left, the awards slide beside him. Sized to content. */
+.deck { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px; align-items: center; padding: 14px; }
+.deckStage { display: grid; place-items: center; width: 120px; height: 120px; }
+.deckSide { display: grid; gap: 4px; min-width: 0; }
 .deckTrack { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
 .deckTrack::-webkit-scrollbar { display: none; }
-.deckSlide { flex: 0 0 100%; scroll-snap-align: center; display: grid; justify-items: center; gap: 4px; padding: 4px 14px; text-align: center; color: inherit; text-decoration: none; min-height: 52px; }
+.deckSlide { flex: 0 0 100%; scroll-snap-align: start; display: grid; gap: 4px; min-width: 0; min-height: 52px; color: inherit; text-decoration: none; }
 .deckSlide small { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--gold); }
-.deckSlide b { font-size: 18px; font-weight: 800; line-height: 1.2; }
-.deckSlide span { font-size: 13px; color: var(--ink-2); }
-.deckSlide.mine { box-shadow: none; padding-left: 14px; }
+.deckSlide b { font-size: 18px; font-weight: 800; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-wrap: balance; }
+.deckSlide span { font-size: 13px; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.deckSlide.mine { box-shadow: none; padding-left: 0; }
 .deckSlide.mine b { color: var(--deep); }
-.deckDots { display: flex; justify-content: center; align-items: center; gap: 2px; padding: 0 14px; }
-.deckDots button { position: relative; width: 22px; height: 44px; border: 0; background: none; cursor: pointer; }
+.deckDots { display: flex; align-items: center; margin-left: -8px; }
+.deckDots button { position: relative; width: 18px; height: 44px; border: 0; background: none; cursor: pointer; }
 .deckDots button::after { content: ''; position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--hair); transition: transform 160ms ease-out, background 160ms ease-out; }
 .deckDots .deckDotOn::after { background: var(--deep); transform: scale(1.35); }
-.deckCount { margin-left: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.deckCount { margin-left: 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); font-variant-numeric: tabular-nums; white-space: nowrap; }

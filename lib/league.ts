@@ -229,14 +229,16 @@ export type PowerRank = {
 /**
  * Power score blends winning, scoring and recent form. Deliberately boring
  * arithmetic: the funny one line roast is written by Claude in Checkpoint 6.
+ * Built from final results through a given week, not the live record, so last
+ * week's order can be rebuilt the same way as this week's.
  */
-function powerScore(team: Standing, results: WeeklyResult[], week: number): number {
-  const games = team.wins + team.losses + team.ties;
-  const winPct = games ? (team.wins + team.ties * 0.5) / games : 0;
-  const avgPoints = games ? team.pointsFor / games : 0;
-  const recent = results
-    .filter((r) => r.rosterId === team.rosterId && r.week > week - 3)
-    .map((r) => r.points);
+function powerScore(results: WeeklyResult[], rosterId: number, throughWeek: number): number {
+  const mine = results.filter((r) => r.rosterId === rosterId && r.week <= throughWeek);
+  const games = mine.length;
+  const wins = mine.filter((r) => r.won).length;
+  const winPct = games ? wins / games : 0;
+  const avgPoints = games ? mine.reduce((a, r) => a + r.points, 0) / games : 0;
+  const recent = mine.filter((r) => r.week > throughWeek - 3).map((r) => r.points);
   const recentAvg = recent.length ? recent.reduce((a, b) => a + b, 0) / recent.length : avgPoints;
   return winPct * 100 * 0.4 + avgPoints * 0.4 + recentAvg * 0.2;
 }
@@ -254,24 +256,23 @@ export async function getPowerRankings(): Promise<PowerRank[]> {
   const week = await scoredWeek();
   const results = await getSeasonResults(week);
 
-  const scored = standings.map((team) => ({
-    team,
-    score: powerScore(team, results, week),
-  }));
+  // The scored week is still in progress mid-week and only finals count, so
+  // rank through the last final week and compare with the week before it.
+  // Ranking through scoredWeek() - 1 gave both orders the same finals, and
+  // every team read even.
+  const lastFinal = results.reduce((max, r) => Math.max(max, r.week), 0);
+  const orderThrough = (week: number) =>
+    standings
+      .map((team) => ({ team, score: powerScore(results, team.rosterId, week) }))
+      .sort((a, b) => b.score - a.score);
+
+  const scored = orderThrough(lastFinal);
 
   // Last week's order, so the movement chip is real rather than decorative.
-  const previous = week > 1
-    ? standings
-        .map((team) => ({
-          rosterId: team.rosterId,
-          score: powerScore(team, results.filter((r) => r.week < week), week - 1),
-        }))
-        .sort((a, b) => b.score - a.score)
-        .map((r) => r.rosterId)
-    : [];
+  // One final week has nothing before it to move from.
+  const previous = lastFinal > 1 ? orderThrough(lastFinal - 1).map((r) => r.team.rosterId) : [];
 
   return scored
-    .sort((a, b) => b.score - a.score)
     .map(({ team, score }, i) => {
       const priorIndex = previous.indexOf(team.rosterId);
       const previousRank = priorIndex >= 0 ? priorIndex + 1 : null;

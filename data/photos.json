@@ -784,6 +784,30 @@
   ],
   "7": [
     {
+      "url": "https://a.espncdn.com/photo/2026/1025/r1736075_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Tony Pollard left the crowd in the dust Sunday with three rushing touchdowns and 129 yards on the ground.",
+      "gameId": "401873010",
+      "week": 7,
+      "playerIds": [
+        "5967"
+      ],
+      "score": 14
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1023/r1734955_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Bears quarterback Caleb Williams threw for 308 yards and two touchdowns in Chicago's Week 7 \"Thursday Night Football\" win against the New England Patriots.",
+      "gameId": "401873010",
+      "week": 7,
+      "playerIds": [
+        "11560"
+      ],
+      "score": 12.77
+    },
+    {
       "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/1025/f33faea7-a079-4e84-8e9c-9278b1b3249c/f33faea7-a079-4e84-8e9c-9278b1b3249c.jpg",
       "width": 576,
       "height": 324,
@@ -796,28 +820,16 @@
       "score": 9.93
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/0121/r1603677_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Kyren Williams, Los Angeles Rams running back",
-      "gameId": "401873010",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1026/55729124aaf54d38b1edddbed237f9a51405/55729124aaf54d38b1edddbed237f9a51405.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Javonte Williams waves bye after scoring a TD for Dallas",
+      "gameId": "401873009",
       "week": 7,
       "playerIds": [
-        "8150"
+        "7588"
       ],
-      "score": 9.26
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/1026/r1736362_608x342_16-9.jpg",
-      "width": 608,
-      "height": 342,
-      "caption": "Jaxon Smith-Njigba and the Seattle Seahawks host the Chicago Bears in Week 8 on \"Monday Night Football\" on ESPN.",
-      "gameId": "401873010",
-      "week": 7,
-      "playerIds": [
-        "9488"
-      ],
-      "score": 8.91
+      "score": 9.69
     },
     {
       "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1025/e0f48c3058e04f96b4d7c497dae89ffb1128/e0f48c3058e04f96b4d7c497dae89ffb1128.jpg",
@@ -832,16 +844,26 @@
       "score": 7.39
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1022/nfl_cowboys-eagles_16x9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "\"The NFC East is struggling and the NFC East is really asking for someone to take it over,\" Eagles running back Saquon Barkley said ahead of the MNF matchup.",
+      "url": "https://a.espncdn.com/photo/2026/1027/r1736920_576x324_16-9.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Dak Prescott and the Dallas offense put up 38 points in Philadelphia.",
       "gameId": "401873010",
       "week": 7,
       "playerIds": [
-        "4866"
+        "3294"
       ],
-      "score": 7
+      "score": 6.91
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1026/r1736488_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Davis Allen of the Los Angeles Rams caught two touchdown passes on Sunday.",
+      "gameId": "401873010",
+      "week": 7,
+      "playerIds": [],
+      "score": 6
     },
     {
       "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1025/22347de730ca4e85ba69d4783317e654776/22347de730ca4e85ba69d4783317e654776.jpg",
@@ -856,6 +878,18 @@
       "score": 5.64
     },
     {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1025/dm_261025_fantasy_pollard_moody/dm_261025_fantasy_pollard_moody.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "How should fantasy managers view Tony Pollard after big Week 7?",
+      "gameId": "401873010",
+      "week": 7,
+      "playerIds": [
+        "5967"
+      ],
+      "score": 5
+    },
+    {
       "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1026/ss_20261025_201955396_371158716/ss_20261025_201955396_371158716.jpg",
       "width": 576,
       "height": 324,
@@ -868,10 +902,10 @@
       "score": 4.58
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1026/r1736465_1296x729_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/0928/r1723177_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
-      "caption": "Zaire Franklin",
+      "caption": "Vega Ioane, Olaivavega Ioane",
       "gameId": "401873010",
       "week": 7,
       "playerIds": [],
@@ -886,36 +920,6 @@
       "week": 7,
       "playerIds": [],
       "score": 3
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/1026/r1736492_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "",
-      "gameId": "401873010",
-      "week": 7,
-      "playerIds": [],
-      "score": 2
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/1021/r1733885_608x342_16-9.jpg",
-      "width": 608,
-      "height": 342,
-      "caption": "Sean Mannion has been lauded for his acumen and work ethic, offering hope that he can get things on track.",
-      "gameId": "401873010",
-      "week": 7,
-      "playerIds": [],
-      "score": 1
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/1022/r1734580_608x342_16-9.jpg",
-      "width": 608,
-      "height": 342,
-      "caption": "Joey Porter Jr. might not cure the Cowboys' inability to intercept passes but the team hopes his coverage skills give a struggling pass rush an extra tick.",
-      "gameId": "401873010",
-      "week": 7,
-      "playerIds": [],
-      "score": 1
     }
   ]
 }

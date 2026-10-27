@@ -118,6 +118,11 @@ if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'production') {
   };
 }
 
+/** The latest live team and player points, for anything that reacts to them. */
+export function useLiveSnapshot() {
+  return useLive();
+}
+
 function useLive() {
   return useSyncExternalStore(
     subscribe,

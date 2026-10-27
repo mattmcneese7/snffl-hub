@@ -8,6 +8,7 @@ export { BackLink, Drop, TabBar, type Back };
 import ScoreBar from './ScoreBar';
 import PlayerSheet from './PlayerSheet';
 import { LiveStart } from './live/Live';
+import SquirtLive from './squirt/SquirtLive';
 import { teamByRoster } from '@/lib/league';
 import type { V4Data } from './data';
 import s from './v4.module.css';
@@ -87,6 +88,7 @@ export default function Shell({ data, active, children }: { data: V4Data; active
       </div>
       <PlayerSheet />
       <LiveStart live={data.state === 'live' && data.games.some((g) => g.inPlay)} week={data.week} />
+      {mine ? <SquirtLive week={data.week} state={data.state} me={mine.a.rosterId} them={mine.b.rosterId} base={[mine.a.score, mine.b.score]} /> : null}
     </div>
   );
 }

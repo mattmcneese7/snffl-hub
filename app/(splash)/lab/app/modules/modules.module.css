@@ -88,7 +88,11 @@
 .nflLive { color: var(--live-ink); font-weight: 800; }
 
 /* Squirt says: Squirt, then his reads as quoted lines */
-.squirt { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 12px; align-items: start; }
+.squirtLead { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 12px; align-items: center; }
+.squirtLine { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.35; }
+.squirtLine small { display: block; margin-bottom: 4px; font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--deep); }
+.squirtLead + .says { margin-top: 4px; border-top: 1px solid var(--hair); }
+.squirtLead + .says li:first-child { padding-top: 12px; }
 .says { display: grid; margin: 0; padding: 0; list-style: none; }
 .says li { padding: 12px 0; border-top: 1px solid var(--hair); font-size: 15px; line-height: 1.35; }
 .says li:first-child { border-top: 0; padding-top: 4px; }
@@ -108,6 +112,7 @@
 .chugRow { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: center; min-height: 52px; padding: 14px 0 0; }
 .chugState { display: grid; justify-items: end; gap: 4px; text-align: right; }
 .chugState small { font-size: 13px; color: var(--ink-2); }
+.chugSquirt { display: grid; place-items: center; padding: 8px 0 14px; border-top: 1px solid var(--hair); margin-top: 14px; }
 .chugFilm { position: relative; display: block; width: 100%; margin-top: 12px; padding: 0; border: 0; border-radius: 20px; overflow: hidden; background: #000; aspect-ratio: 16 / 9; cursor: pointer; }
 .chugFilm video { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.9; }
 .chugPlay { position: absolute; left: 12px; bottom: 12px; display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border-radius: 999px; background: #ffffff; color: #141518; font-size: 13px; font-weight: 600; }

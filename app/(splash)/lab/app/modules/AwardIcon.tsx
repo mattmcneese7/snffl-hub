@@ -37,7 +37,18 @@ export default function AwardIcon({ kind, size }: { kind: TrophyKey; size?: numb
  * /public/squirt) as they land. An award with no art yet falls back to its
  * gold icon, drawn to fill the same square slot.
  */
-export const AWARD_ART: Partial<Record<TrophyKey, string>> = {};
+/** Squirt's award poses, cut out of the studio background (public/squirt). */
+export const AWARD_ART: Partial<Record<TrophyKey, string>> = {
+  motw: '/squirt/crown-480.webp',
+  champion: '/squirt/trophy-480.webp',
+  shart: '/squirt/shart-480.webp',
+  blowout: '/squirt/blowout-480.webp',
+  squeaker: '/squirt/squeaker-480.webp',
+  heartbreaker: '/squirt/heartbreaker-480.webp',
+  lucky: '/squirt/lucky-480.webp',
+  bench: '/squirt/bench-480.webp',
+  plunger: '/squirt/plunger-480.webp',
+};
 
 export function AwardArt({ kind, size = 56, art }: { kind: TrophyKey; size?: number; art?: string }) {
   const src = art ?? AWARD_ART[kind];

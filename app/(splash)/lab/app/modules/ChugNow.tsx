@@ -3,6 +3,7 @@ import type { TrophyBoard } from '@/lib/trophies';
 import { latestChug } from '@/lib/chug-video';
 import { teamByRoster } from '@/lib/league';
 import { chugNow, CHUG_LABEL } from '../chug/status';
+import Squirt from '../squirt/Squirt';
 import { managerOf, teamOf } from './shared';
 import s from '../v4.module.css';
 import m from './modules.module.css';
@@ -41,6 +42,11 @@ export default function ChugNowCard({ board, week, title = 'The Chug', link = tr
             <small>{now.due}</small>
           </span>
         </div>
+        {now.state !== 'paid' ? (
+          <div className={m.chugSquirt}>
+            <Squirt award="chug" size={140} label={`Squirt with the beer ${managerOf(now.rosterId)} owes`} />
+          </div>
+        ) : null}
         {now.state === 'paid' && film ? (
           <button type="button" data-chug className={m.chugFilm} aria-label={`Watch the week ${film.week} chug`}>
             <video src={`${film.src}#t=1.5`} muted playsInline preload="metadata" aria-hidden />

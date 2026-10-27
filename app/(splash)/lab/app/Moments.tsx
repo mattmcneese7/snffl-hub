@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Ms } from './icons';
+import Squirt from './squirt/Squirt';
+import { tellSquirt } from './squirt/bus';
 import p from './pop.module.css';
 
 /**
@@ -81,14 +82,19 @@ export default function Moments({ week, won, sharted, name, force }: { week: num
     return () => clearTimeout(t);
   }, [kind]);
 
+  // Every Squirt on the page reacts too; the toast's own Squirt plays it large.
+  useEffect(() => {
+    if (!kind) return;
+    const t = setTimeout(() => tellSquirt({ kind: 'moment', moment: kind === 'win' ? 'win' : 'shart' }), 120);
+    return () => clearTimeout(t);
+  }, [kind]);
+
   if (!kind) return null;
   return (
     <>
       {kind === 'win' ? <div ref={confetti} className={p.confetti} aria-hidden /> : null}
       <div className={p.toast} role="status">
-        <span className={`${p.badge} ${kind === 'flush' ? p.spin : ''}`}>
-          <Ms name={kind === 'win' ? 'party' : 'flush'} size={20} />
-        </span>
+        <Squirt mood={kind === 'win' ? 'smug' : 'gloom'} size={112} listen label={kind === 'win' ? 'Squirt celebrates your win' : 'Squirt, the Shart of the week'} />
         <span className={p.title}>
           <b>{kind === 'win' ? (name ? `${name}, you took it` : 'You took it') : 'Flushed'}</b>
           <span>{kind === 'win' ? `Week ${week} goes in the win column.` : `${name ? `${name}, you're` : "You're"} the Shart of week ${week}.`}</span>

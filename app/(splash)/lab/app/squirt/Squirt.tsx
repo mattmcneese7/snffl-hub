@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AWARD_ART, AWARD_LOOPS, MOMENT_STILL, MOVES, clip, still } from './assets';
+import { AWARD_ART, AWARD_LOOPS, MOMENT_STILL, MOVES, awardClip, clip, still } from './assets';
 import { hearSquirt, type Mood, type Moment } from './bus';
 import s from './squirt.module.css';
 
@@ -118,7 +118,7 @@ export default function Squirt({ mood: moodProp = 'calm', award, size = 160, lis
     if (!award) return;
     const art = AWARD_ART[award] ?? 'calm';
     setPose(art);
-    if (AWARD_LOOPS.has(award)) play(`award-${award}`, true);
+    if (AWARD_LOOPS.has(award)) play(awardClip(award), true);
   }, [award, play]);
 
   // First paint: start the idle once the players exist and he is on screen.
@@ -131,7 +131,7 @@ export default function Squirt({ mood: moodProp = 'calm', award, size = 160, lis
       if (!e.isIntersecting) { v?.pause(); return; }
       if (lite) return;
       if (v?.dataset.name) void v.play().catch(() => undefined);
-      else if (award && AWARD_LOOPS.has(award)) play(`award-${award}`, true);
+      else if (award && AWARD_LOOPS.has(award)) play(awardClip(award), true);
       else if (!award) play(`idle-${mood}`, true);
     }, { threshold: 0.2 });
     io.observe(el);

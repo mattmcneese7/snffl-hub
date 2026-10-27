@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Xs } from './icons';
 import x from './scores.module.css';
+import { Ms } from '../icons';
 
 export type RailClip = { videoId: string; title: string; still: string; vertical: boolean; channel: string; owners: string[] };
 
@@ -28,7 +28,7 @@ export default function Clips({ clips }: { clips: RailClip[] }) {
           ) : (
             <button type="button" className={x.clipFrame} onClick={() => setOn(c.videoId)} aria-label={`Play ${c.title}`}>
               <img src={c.still} alt="" loading="lazy" />
-              <Xs name="play" className={x.clipPlay} />
+              <Ms name="playCircle" size={20} className={x.clipPlay} />
             </button>
           )}
           <span className={x.clipText}>

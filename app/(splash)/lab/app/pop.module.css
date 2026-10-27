@@ -1,20 +1,20 @@
 /* The chug pop and the Moments toast. Tokens come from .root in v4.module.css. */
-.wrap { position: fixed; inset: 0; z-index: 120; display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom)); }
+.wrap { position: fixed; inset: 0; z-index: 120; display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
 .scrim { position: absolute; inset: 0; border: 0; background: rgba(10, 14, 24, 0.55); cursor: pointer; }
-.card { position: relative; width: min(100%, 400px); display: grid; gap: 10px; padding: 12px; border-radius: 24px; background: var(--card); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3); }
-.head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; }
-.badge { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--deep); color: #fff; }
-.title { display: grid; gap: 1px; min-width: 0; }
-.title b { font-size: 15px; font-weight: 800; color: var(--ink); }
+.card { position: relative; display: grid; gap: 12px; width: fit-content; max-width: 100%; padding: 14px; border-radius: 20px; background: var(--card); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3); }
+.head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; width: 0; min-width: 100%; }
+.badge { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--deep); color: var(--on-deep); }
+.title { display: grid; gap: 4px; min-width: 0; }
+.title b { font-size: 15px; font-weight: 800; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .title span { font-size: 13px; color: var(--ink-2); }
-.close { display: grid; place-items: center; width: 36px; height: 36px; border: 0; border-radius: 50%; background: var(--hair); color: var(--ink); cursor: pointer; }
-.film { position: relative; overflow: hidden; border-radius: 16px; background: #000; aspect-ratio: 9 / 16; max-height: 64vh; }
-.film video { width: 100%; height: 100%; object-fit: cover; display: block; }
-.sound { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px; border: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.92); color: #141518; font-family: inherit; font-size: 15px; font-weight: 600; line-height: 1; cursor: pointer; }
-.toast { position: fixed; left: 50%; top: calc(env(safe-area-inset-top) + 14px); z-index: 120; transform: translateX(-50%); width: min(calc(100% - 28px), 400px); display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: center; padding: 10px 14px 10px 10px; border-radius: 20px; background: var(--card); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18); animation: drop 420ms cubic-bezier(0.32, 0.72, 0, 1); }
+.close { display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 50%; background: var(--hair); color: var(--ink); cursor: pointer; }
+.film { position: relative; overflow: hidden; border-radius: 10px; background: #000; line-height: 0; }
+.film video { display: block; max-width: 100%; }
+.film video:not([style]) { width: min(372px, calc(100vw - 60px)); aspect-ratio: 9 / 16; max-height: 60dvh; }
+.sound { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 16px; border: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.92); color: #141518; font-family: inherit; font-size: 15px; font-weight: 600; line-height: 1; cursor: pointer; }
+.toast { position: fixed; left: 50%; top: calc(env(safe-area-inset-top) + 14px); z-index: 120; transform: translateX(-50%); width: min(calc(100% - 28px), 400px); display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: center; padding: 12px 14px 12px 12px; border-radius: 20px; background: var(--card); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18); animation: drop 420ms cubic-bezier(0.32, 0.72, 0, 1); }
 .spin svg { animation: spin 1.4s cubic-bezier(0.32, 0.72, 0, 1) 2; }
 .confetti { position: fixed; inset: 0; z-index: 119; pointer-events: none; overflow: hidden; }
 .piece { position: absolute; top: -16px; width: 8px; height: 12px; border-radius: 2px; }
 @keyframes drop { from { transform: translate(-50%, -24px); opacity: 0; } }
 @keyframes spin { to { transform: rotate(-720deg); } }
-@media (prefers-color-scheme: dark) { .badge { color: #111318; } }

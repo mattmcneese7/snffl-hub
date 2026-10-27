@@ -1,20 +1,19 @@
 import type { TrophyKey } from '@/lib/trophy-names';
 import { TROPHY_NAMES } from '@/lib/trophy-names';
 import { MS } from '../icons';
-import { MX } from './icons';
 import m from './modules.module.css';
 
 /** Each award's Material symbol, drawn gold on its gold disc. */
 const AWARD_PATH: Record<TrophyKey, string> = {
-  motw: MX.crown,
-  shart: MX.shart,
-  blowout: MX.blowout,
-  squeaker: MX.timer,
-  heartbreaker: MX.heartBroken,
-  lucky: MX.pets,
-  bench: MX.couch,
+  motw: MS.crown,
+  shart: MS.shart,
+  blowout: MS.blowout,
+  squeaker: MS.timer,
+  heartbreaker: MS.heartBroken,
+  lucky: MS.pets,
+  bench: MS.couch,
   champion: MS.trophy,
-  plunger: MX.plunger,
+  plunger: MS.plunger,
 };
 
 /** The award's name, as the trophy case prints it. */
@@ -29,6 +28,22 @@ export default function AwardIcon({ kind, size }: { kind: TrophyKey; size?: numb
       <svg viewBox="0 -960 960 960" fill="currentColor">
         <path d={AWARD_PATH[kind]} />
       </svg>
+    </span>
+  );
+}
+
+/**
+ * Award art: Squirt's photoreal cutouts (transparent PNG or WebP under
+ * /public/squirt) as they land. An award with no art yet falls back to its
+ * gold icon, drawn to fill the same square slot.
+ */
+export const AWARD_ART: Partial<Record<TrophyKey, string>> = {};
+
+export function AwardArt({ kind, size = 56, art }: { kind: TrophyKey; size?: number; art?: string }) {
+  const src = art ?? AWARD_ART[kind];
+  return (
+    <span className={m.art} style={{ ['--sz' as string]: `${size}px` }} aria-hidden>
+      {src ? <img src={src} alt="" loading="lazy" /> : <AwardIcon kind={kind} size={Math.round(size * 0.72)} />}
     </span>
   );
 }

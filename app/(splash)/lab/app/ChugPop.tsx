@@ -6,6 +6,19 @@ import { Ms } from './icons';
 import p from './pop.module.css';
 
 const seenKey = (week: number) => `splash4.chug.seen.w${week}`;
+
+/**
+ * The film's size on this screen: as large as fits inside the viewport less
+ * the 16 px edges, the card's 14 px padding, its 44 px head and the gap,
+ * keeping the clip's own shape, so the card wraps the film with no dead space.
+ */
+function fit(vw: number, vh: number): { w: number; h: number } {
+  const view = window.visualViewport;
+  const W = (view?.width ?? window.innerWidth) - 32 - 28;
+  const H = (view?.height ?? window.innerHeight) - 32 - 28 - 44 - 12 - 40;
+  const k = Math.min(W / vw, H / vh, vw > vh ? 612 / vw : 372 / vw);
+  return { w: Math.round(vw * k), h: Math.round(vh * k) };
+}
 const EASE = 'cubic-bezier(0.32, 0.72, 0, 1)';
 
 /**
@@ -18,6 +31,7 @@ const EASE = 'cubic-bezier(0.32, 0.72, 0, 1)';
 export default function ChugPop({ week, src, who }: { week: number; src: string; who: string | null }) {
   const [open, setOpen] = useState(false);
   const [muted, setMuted] = useState(true);
+  const [size, setSize] = useState<{ w: number; h: number } | null>(null);
   const video = useRef<HTMLVideoElement>(null);
   const card = useRef<HTMLDivElement>(null);
 
@@ -62,6 +76,17 @@ export default function ChugPop({ week, src, who }: { week: number; src: string;
     return () => window.removeEventListener('keydown', onKey);
   }, [open, close]);
 
+  // Refit when the phone rotates.
+  useEffect(() => {
+    if (!open) return;
+    const onResize = () => {
+      const v = video.current;
+      if (v?.videoWidth) setSize(fit(v.videoWidth, v.videoHeight));
+    };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, [open]);
+
   // Muted is set on the node before play: React's prop can land too late for
   // a phone's autoplay check.
   useEffect(() => {
@@ -89,7 +114,17 @@ export default function ChugPop({ week, src, who }: { week: number; src: string;
           </button>
         </div>
         <div className={p.film}>
-          <video ref={video} src={src} playsInline autoPlay muted preload="auto" onEnded={close} />
+          <video
+            ref={video}
+            src={src}
+            playsInline
+            autoPlay
+            muted
+            preload="auto"
+            onEnded={close}
+            onLoadedMetadata={(e) => setSize(fit(e.currentTarget.videoWidth, e.currentTarget.videoHeight))}
+            style={size ? { width: size.w, height: size.h } : undefined}
+          />
           <button type="button" className={p.sound} onClick={() => setMuted((m) => !m)}>
             <Ms name={muted ? 'volumeOff' : 'volumeUp'} size={18} />
             {muted ? 'Sound off' : 'Sound on'}

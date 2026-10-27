@@ -3,6 +3,7 @@ import { formatStatLine } from '@/lib/sleeper-live';
 import type { UsageRow } from '../../../lib/deep/nflverse';
 import type { SleeperProp } from '../../../lib/sleeper-props';
 import { playerWeek, type WeekLines } from '../../../swami/week-lines';
+import s from '../v4.module.css';
 import r from './read.module.css';
 
 const pct = (n: number | undefined) => (n == null ? null : `${Math.round(n * 100)}%`);
@@ -74,14 +75,14 @@ export default function PlayerRead({
       {m || outlook.boomBust || role ? (
         <div className={r.chips}>
           {m ? (
-            <span className={`${r.chip} ${m.label === 'soft' ? r.good : m.label === 'hard' ? r.bad : ''}`}>
+            <span className={`${s.tag} ${m.label === 'soft' ? s.tagGood : m.label === 'hard' ? s.tagBad : ''}`}>
               {MATCHUP[m.label]} {m.home ? 'vs' : '@'} {m.opponent}
             </span>
           ) : null}
-          {m ? <span className={r.chip}>Defense rank {m.rank}</span> : null}
-          {outlook.boomBust ? <span className={r.chip}>Boom {Math.round(outlook.boomBust.boom * 100)}%</span> : null}
-          {outlook.boomBust ? <span className={r.chip}>Bust {Math.round(outlook.boomBust.bust * 100)}%</span> : null}
-          {role ? <span className={r.chip}>{role}</span> : null}
+          {m ? <span className={s.tag}>Defense rank {m.rank}</span> : null}
+          {outlook.boomBust ? <span className={s.tag}>Boom {Math.round(outlook.boomBust.boom * 100)}%</span> : null}
+          {outlook.boomBust ? <span className={s.tag}>Bust {Math.round(outlook.boomBust.bust * 100)}%</span> : null}
+          {role ? <span className={s.tag}>{role}</span> : null}
         </div>
       ) : null}
 

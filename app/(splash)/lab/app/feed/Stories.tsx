@@ -3,10 +3,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
-import { MX } from '../modules/icons';
 import m from '../modules/modules.module.css';
 import s from '../v4.module.css';
 import f from './feed.module.css';
+import { MS } from '../icons';
 
 /**
  * Stories: a ring per manager, and behind each one his week. A story is the
@@ -38,7 +38,7 @@ export default function Stories({ managers, week }: { managers: StoryManager[]; 
   const shut = useCallback(() => setOpen(null), []);
   return (
     <>
-      <div className={m.rail}>
+      <div className={s.rail}>
         {managers.map((mg) => {
           const lit = mg.clips > 0;
           return (
@@ -127,7 +127,7 @@ function Viewer({ manager, onClose }: { manager: StoryManager; onClose: () => vo
           </span>
         </span>
         <button ref={closeBtn} type="button" className={f.vClose} onClick={close} aria-label="Close story">
-          <Glyph d={MX.close} />
+          <Glyph d={MS.close} />
         </button>
       </header>
       <div className={f.vBody}>
@@ -149,7 +149,7 @@ function Viewer({ manager, onClose }: { manager: StoryManager; onClose: () => vo
               </span>
             ) : null}
             <a className={f.yt} href={slide.url} target="_blank" rel="noopener noreferrer">
-              <Glyph d={MX.play} />
+              <Glyph d={MS.play} />
               Watch on YouTube
             </a>
           </article>

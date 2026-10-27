@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import { applyFilter, byDay, EMPTY_FILTER, type Facet, type Facets, type FeedFilter, type FeedItem } from '@/lib/feed-view';
 import { MomentRow, type NameEntry } from './Rows';
+import s from '../v4.module.css';
 import f from './feed.module.css';
 
 /**
@@ -62,14 +63,14 @@ function Chips({ label, facets, active, onPick }: { label: string; facets: Facet
     <div className={f.filterRow}>
       <span>{label}</span>
       <div className={f.fchips}>
-        <button type="button" className={`${f.fchip} ${active === null ? f.fchipOn : ''}`} aria-pressed={active === null} onClick={() => onPick(null)}>
+        <button type="button" className={`${s.filter} ${active === null ? s.filterOn : ''}`} aria-pressed={active === null} onClick={() => onPick(null)}>
           All
         </button>
         {facets.map((facet) => (
           <button
             key={facet.value}
             type="button"
-            className={`${f.fchip} ${active === facet.value ? f.fchipOn : ''}`}
+            className={`${s.filter} ${active === facet.value ? s.filterOn : ''}`}
             aria-pressed={active === facet.value}
             onClick={() => onPick(active === facet.value ? null : facet.value)}
           >

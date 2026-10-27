@@ -11,6 +11,7 @@ import { qv, swamiHref, type SwamiQuery } from '../../../swami/moves-query';
 import { rosBoard } from '../cached';
 import CopyMove from './CopyMove';
 import { curl, Face, fmt, metaLine, Panel, Pos, RosMethod, RosWorking, short, Tag } from './parts';
+import s from '../v4.module.css';
 import w from './swami.module.css';
 
 /**
@@ -117,24 +118,24 @@ export default async function Waivers({ query, mine }: { query: SwamiQuery; mine
         <p className={w.sub}>
           Pickups For <b>&middot; {teamView ? teamView.teamName : 'The Whole League'}</b>
         </p>
-        <nav className={w.rail} aria-label="Team">
-          <Link href={teamHref('league')} scroll={false} className={`${w.chip} ${!team ? w.chipOn : ''}`} aria-current={!team ? 'true' : undefined}>
+        <nav className={s.filterRow} aria-label="Team">
+          <Link href={teamHref('league')} scroll={false} className={`${s.filter} ${!team ? s.filterOn : ''}`} aria-current={!team ? 'true' : undefined}>
             League
           </Link>
           {ordered.map((t) => {
             const on = t.rosterId === team;
             return (
-              <Link key={t.rosterId} href={teamHref(t.rosterId)} scroll={false} className={`${w.chip} ${on ? w.chipOn : ''}`} aria-current={on ? 'true' : undefined}>
+              <Link key={t.rosterId} href={teamHref(t.rosterId)} scroll={false} className={`${s.filter} ${on ? s.filterOn : ''}`} aria-current={on ? 'true' : undefined}>
                 {managerOf(t.rosterId)}
               </Link>
             );
           })}
         </nav>
-        <nav className={w.rail} aria-label="Position">
+        <nav className={s.filterRow} aria-label="Position">
           {[null, ...POSITIONS].map((p) => {
             const on = pos === p;
             return (
-              <Link key={p ?? 'all'} href={posHref(p)} scroll={false} className={`${w.chip} ${on ? w.chipOn : ''}`} aria-current={on ? 'true' : undefined}>
+              <Link key={p ?? 'all'} href={posHref(p)} scroll={false} className={`${s.filter} ${on ? s.filterOn : ''}`} aria-current={on ? 'true' : undefined}>
                 {p ?? 'All'}
               </Link>
             );

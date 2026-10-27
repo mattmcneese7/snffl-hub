@@ -6,8 +6,7 @@ import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { getInsights } from '../../../lib/deep/load';
 import type { DraftValueRow, UsageMove } from '../../../lib/deep/insights';
 import { getV4Data } from '../data';
-import Shell from '../Shell';
-import XHead from '../modules/Head';
+import Shell, { SectionHead } from '../Shell';
 import { managerOf, shortName, teamOf } from '../modules/shared';
 import m from '../modules/modules.module.css';
 import s from '../v4.module.css';
@@ -92,7 +91,7 @@ export default async function V4Insights() {
 
   return (
     <Shell data={data} active="league">
-      <XHead icon="insights" word="insights" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
+      <SectionHead icon="insights" word="insights" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
 
       <Head title="Draft Value" note={`Through week ${throughWeek}`} />
       {draft.steals.length || draft.busts.length ? (

@@ -10,6 +10,7 @@ import { rosBoard } from '../cached';
 import { Ms } from '../icons';
 import CopyMove from './CopyMove';
 import { curl, Face, fmt, metaLine, Panel, Pos, RosMethod, RosWorking, short, signed, Tag } from './parts';
+import s from '../v4.module.css';
 import w from './swami.module.css';
 
 /**
@@ -210,7 +211,7 @@ export default async function Trade({ query, mine }: { query: SwamiQuery; mine: 
               {which === 'a' ? 'First Team Sends' : 'Second Team Sends'}
               {id ? <b> &middot; {teamNameOf(id)}</b> : null}
             </p>
-            <nav className={w.rail} aria-label={which === 'a' ? 'First team' : 'Second team'}>
+            <nav className={s.filterRow} aria-label={which === 'a' ? 'First team' : 'Second team'}>
               {ordered
                 .filter((t) => t.rosterId !== other)
                 .map((t) => {
@@ -220,7 +221,7 @@ export default async function Trade({ query, mine }: { query: SwamiQuery; mine: 
                       key={t.rosterId}
                       href={href({ [which]: t.rosterId, [`p${which}`]: [] })}
                       scroll={false}
-                      className={`${w.chip} ${on ? w.chipOn : ''}`}
+                      className={`${s.filter} ${on ? s.filterOn : ''}`}
                       aria-current={on ? 'true' : undefined}
                     >
                       {managerOf(t.rosterId)}

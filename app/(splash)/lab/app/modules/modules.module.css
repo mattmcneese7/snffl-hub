@@ -1,74 +1,60 @@
 /* Splash 4.0 Home modules and the shared pieces of the league pages.
-   Built on the tokens ../v4.module.css sets on .root; the only new color here
-   is gold, the award color from Step 2, defined for both themes. */
-
-.gold, .award, .chipGold, .hwTile, .shelfPiece {
-  --gold: #8e6704; --gold-t: #fef2dc;
-}
-@media (prefers-color-scheme: dark) {
-  .gold, .award, .chipGold, .hwTile, .shelfPiece { --gold: #e3b84a; --gold-t: #3a2f12; }
-}
+   Every color comes from the tokens ../v4.module.css sets on .root,
+   gold (--gold, --gold-bg) included. */
 
 /* Award icon: the gold chip as a disc */
-.award { display: inline-grid; place-items: center; flex: none; width: var(--sz, 36px); height: var(--sz, 36px); border-radius: 50%; background: var(--gold-t); color: var(--gold); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gold) 28%, transparent); }
+.award { display: inline-grid; place-items: center; flex: none; width: var(--sz, 36px); height: var(--sz, 36px); border-radius: 50%; background: var(--gold-bg); color: var(--gold); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gold) 28%, transparent); }
 .award svg { width: 60%; height: 60%; }
-.chipGold { display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px 0 6px; border-radius: 999px; background: var(--gold-t); color: var(--gold); font-size: 11px; font-weight: 600; white-space: nowrap; }
+.chipGold { display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px 0 8px; border-radius: 999px; background: var(--gold-bg); color: var(--gold); font-size: 11px; font-weight: 600; white-space: nowrap; }
 .chipGold svg { width: 13px; height: 13px; }
 .chipGold b { font-weight: 800; letter-spacing: 0.04em; }
-
-/* Section head icon from this folder's set, same treatment as ../Shell */
-.secIcon { width: 22px; height: 22px; color: #2d4c9c; }
-@media (prefers-color-scheme: dark) { .secIcon { color: #fff; } }
-
-/* A horizontal rail that bleeds to the page edge and snaps */
-.rail { display: flex; gap: 10px; margin: 0 calc(-1 * var(--gutter)); padding: 2px var(--gutter) 8px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 var(--gutter); scrollbar-width: none; }
-.rail::-webkit-scrollbar { display: none; }
-.rail > * { scroll-snap-align: start; flex: none; }
-
 /* Feed marks: a letter label on a pastel, never color alone */
-.mk { display: inline-grid; place-items: center; min-width: 52px; height: 20px; padding: 0 6px; border-radius: 6px; font-size: 11px; font-weight: 800; letter-spacing: 0.04em; font-style: normal; color: var(--deep); background: var(--powder-soft); }
-.mkBad { color: #94352d; background: #fde4e1; }
-.mkGood { color: #047c50; background: #ddf8e8; }
+.mk { display: inline-grid; place-items: center; min-width: 52px; height: 20px; padding: 0 8px; border-radius: 10px; font-size: 11px; font-weight: 800; letter-spacing: 0.04em; font-style: normal; color: var(--deep); background: var(--powder-soft); }
+.mkBad { color: var(--bad-fg); background: var(--bad-bg); }
+.mkGood { color: var(--good-fg); background: var(--good-bg); }
 .mkQuiet { color: var(--ink-2); background: var(--hair); }
-@media (prefers-color-scheme: dark) {
-  .mkBad { color: #f08a7e; background: #3d1f1c; }
-  .mkGood { color: #4cc993; background: #13301f; }
-}
 
 /* A post row: mark, then the line and its detail */
-.post { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: start; padding: 12px 0; border-top: 1px solid var(--hair); color: inherit; text-decoration: none; }
+.post { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: start; padding: 12px 0; border-top: 1px solid var(--hair); color: inherit; text-decoration: none; }
 .post:first-child { border-top: 0; }
-.post > .mk { margin-top: 1px; }
-.postText { display: grid; gap: 2px; min-width: 0; }
+.post > .mk { margin-top: 0; }
+.postText { display: grid; gap: 4px; min-width: 0; }
 .postText b { font-size: 15px; font-weight: 600; line-height: 1.3; }
 .postText span { font-size: 13px; color: var(--ink-2); line-height: 1.35; }
 .postText small { font-size: 11px; color: var(--ink-3); }
 .mine { box-shadow: inset 3px 0 0 var(--deep); padding-left: 8px; }
 
 /* Film: the week in 90 seconds and the chug, two square tiles */
-.films { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.films { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+/* One film alone takes the full width at 16:9, so nothing sits beside empty space. */
+.films > :only-child { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
 .film { position: relative; display: block; aspect-ratio: 1; max-width: 100%; border: 0; padding: 0; border-radius: 20px; overflow: hidden; background: #1a1d24; box-shadow: var(--shadow); color: #fff; text-align: left; font: inherit; cursor: pointer; }
 .film > img, .film > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .filmShade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0.72)); }
 .filmPlay { position: absolute; top: 10px; right: 10px; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(255, 255, 255, 0.92); color: #141518; }
-.filmPlay svg { width: 18px; height: 18px; margin-left: 2px; }
-.filmText { position: absolute; left: 12px; right: 12px; bottom: 10px; display: grid; gap: 1px; }
+.filmPlay svg { width: 18px; height: 18px; margin-left: 4px; }
+.filmText { position: absolute; left: 12px; right: 12px; bottom: 10px; display: grid; gap: 4px; }
 .filmText small { font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255, 255, 255, 0.85); }
 .filmText b { font-size: 18px; font-weight: 800; line-height: 1.1; }
 .filmText span { font-size: 13px; color: rgba(255, 255, 255, 0.85); }
 .modal { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) 16px max(16px, env(safe-area-inset-bottom, 0px)); background: rgba(0, 0, 0, 0.92); }
-.modal video { width: 100%; max-width: 430px; max-height: 80dvh; border-radius: 16px; background: #000; }
+.modal video { width: 100%; max-width: 430px; max-height: 80dvh; border-radius: 20px; background: #000; }
 .modalClose { position: absolute; top: max(14px, env(safe-area-inset-top, 0px)); right: 14px; height: 36px; padding: 0 14px; border: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.16); color: #fff; font: 600 15px/1 var(--ui); }
 
-/* Hardware: one gold tile per award */
-.hwTile { display: grid; grid-template-rows: auto 2.4em auto; align-items: start; justify-items: start; gap: 6px; width: 140px; padding: 12px; border-radius: 20px; background: var(--card); box-shadow: var(--shadow); color: inherit; text-decoration: none; }
-.hwTile small { align-self: end; line-height: 1.2; font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--gold); }
-.hwTile b { font-size: 15px; font-weight: 600; line-height: 1.2; }
-.hwTile span { font-size: 11px; color: var(--ink-3); }
-.hwWho { display: grid; gap: 1px; min-width: 0; }
+/* Hardware: one tile per award. A square art slot (Squirt's cutouts, or
+   the gold icon until they land), then label, team, manager and the number. */
+.hw { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 12px; align-items: center; width: 248px; padding: 14px; border-radius: 20px; background: var(--card); box-shadow: var(--shadow); color: inherit; text-decoration: none; }
+.hwRow { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 12px; align-items: center; min-height: 52px; padding: 12px 0; border-top: 1px solid var(--hair); color: inherit; text-decoration: none; }
+.hwRow:first-child { border-top: 0; }
+.hwText { display: grid; gap: 4px; min-width: 0; }
+.hwText small { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--gold); }
+.hwText b { font-size: 15px; font-weight: 800; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hwText span { font-size: 13px; font-weight: 400; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.art { display: grid; place-items: center; width: var(--sz, 56px); height: var(--sz, 56px); flex: none; }
+.art img { width: 100%; height: 100%; object-fit: contain; }
 
 /* Ranked rows with a big number on the right */
-.rank { display: grid; grid-template-columns: 20px auto minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid var(--hair); color: inherit; text-decoration: none; }
+.rank { display: grid; grid-template-columns: 20px auto minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid var(--hair); color: inherit; text-decoration: none; }
 .rank:first-child { border-top: 0; }
 .rankN { font: italic 900 15px/1 var(--brand); color: var(--deep); text-align: center; }
 .big { font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; text-align: right; }
@@ -81,43 +67,47 @@
 .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
 
 /* Trade: two sides with what each gets */
-.trade { display: grid; gap: 10px; padding: 12px 0; border-top: 1px solid var(--hair); }
+.trade { display: grid; gap: 12px; padding: 12px 0; border-top: 1px solid var(--hair); }
 .trade:first-child { border-top: 0; }
 .tradeTop { display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); }
-.side { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: start; }
-.gets { display: flex; flex-wrap: wrap; gap: 4px 6px; margin-top: 4px; }
-.get { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 8px 0 3px; border: 0; border-radius: 999px; background: var(--paper); box-shadow: inset 0 0 0 1px var(--hair); color: var(--ink); font: 600 13px/1 var(--ui); cursor: pointer; }
+.side { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: start; }
+.gets { display: flex; flex-wrap: wrap; gap: 4px 8px; margin-top: 4px; }
+.get { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 8px 0 4px; border: 0; border-radius: 999px; background: var(--paper); box-shadow: inset 0 0 0 1px var(--hair); color: var(--ink); font: 600 13px/1 var(--ui); cursor: pointer; }
 .get img { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; object-position: top; background: var(--powder-soft); }
 .getX { padding-left: 8px; color: var(--ink-2); }
 
 /* NFL scores: two columns of compact game tiles */
 .nfl { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.nflGame { display: grid; gap: 4px; padding: 10px 12px; border-radius: 16px; background: var(--card); box-shadow: var(--shadow); color: inherit; text-decoration: none; }
-.nflSide { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; gap: 6px; align-items: center; font-size: 15px; }
+.nflGame { display: grid; gap: 4px; padding: 12px 14px; border-radius: 20px; background: var(--card); box-shadow: var(--shadow); color: inherit; text-decoration: none; }
+.nflSide { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; gap: 8px; align-items: center; font-size: 15px; }
 .nflSide img { width: 20px; height: 20px; object-fit: contain; }
 .nflSide b { font-weight: 800; font-variant-numeric: tabular-nums; }
 .nflLost { color: var(--ink-3); }
 .nflLost b { font-weight: 400; }
 .nflState { font-size: 11px; font-weight: 600; color: var(--ink-3); }
-.nflLive { color: var(--live); font-weight: 800; }
-@media (prefers-color-scheme: dark) { .nflLive { color: #ff7a8a; } }
+.nflLive { color: var(--live-ink); font-weight: 800; }
 
 /* Squirt says: Squirt, then his reads as quoted lines */
 .squirt { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 12px; align-items: start; }
 .says { display: grid; margin: 0; padding: 0; list-style: none; }
-.says li { padding: 10px 0; border-top: 1px solid var(--hair); font-size: 15px; line-height: 1.35; }
-.says li:first-child { border-top: 0; padding-top: 2px; }
-.says li.mine { padding-left: 10px; }
-.says small { display: block; margin-bottom: 2px; font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--deep); }
+.says li { padding: 12px 0; border-top: 1px solid var(--hair); font-size: 15px; line-height: 1.35; }
+.says li:first-child { border-top: 0; padding-top: 4px; }
+.says li.mine { padding-left: 12px; }
+.says small { display: block; margin-bottom: 4px; font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--deep); }
 
 /* Chug counts: steins in a row */
-.steins { display: flex; flex-wrap: wrap; gap: 2px; color: #b28206; }
+.steins { display: flex; flex-wrap: wrap; gap: 4px; color: var(--gold); }
 .steins svg { width: 16px; height: 16px; }
-@media (prefers-color-scheme: dark) { .steins { color: #e3b84a; } }
 
 /* A card's own foot line: the source or the way to more */
 .via { padding: 8px 0 12px; border-top: 1px solid var(--hair); font-size: 11px; color: var(--ink-3); }
-.cardPad { padding-bottom: 2px; }
-
 /* Player name button that opens the sheet, looking like text */
 .pBtn { width: 100%; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+/* The chug this week: who owes, by when, where it stands */
+.chugNow { padding-bottom: 14px; }
+.chugRow { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: center; min-height: 52px; padding: 14px 0 0; }
+.chugState { display: grid; justify-items: end; gap: 4px; text-align: right; }
+.chugState small { font-size: 13px; color: var(--ink-2); }
+.chugFilm { position: relative; display: block; width: 100%; margin-top: 12px; padding: 0; border: 0; border-radius: 20px; overflow: hidden; background: #000; aspect-ratio: 16 / 9; cursor: pointer; }
+.chugFilm video { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.9; }
+.chugPlay { position: absolute; left: 12px; bottom: 12px; display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border-radius: 999px; background: #ffffff; color: #141518; font-size: 13px; font-weight: 600; }

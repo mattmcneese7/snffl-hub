@@ -62,15 +62,17 @@ function Round({ round, all, mine, byes, shart = false }: { round: BracketRound;
   return (
     <div className={s.round}>
       <small>{round.name}</small>
-      {round.games.map((g) => (
-        <div key={g.matchId} className={s.bGame}>
-          {labelOf(g, shart) ? <small className={s.bLabel}>{labelOf(g, shart)}</small> : null}
-          <Side side={g.home} game={g} mine={mine} slot={slot} />
-          <Side side={g.away} game={g} mine={mine} slot={slot} />
-        </div>
-      ))}
+      <div className={s.bList}>
+        {round.games.map((g) => (
+          <div key={g.matchId} className={s.bGame}>
+            {labelOf(g, shart) ? <small className={s.bLabel}>{labelOf(g, shart)}</small> : null}
+            <Side side={g.home} game={g} mine={mine} slot={slot} />
+            <Side side={g.away} game={g} mine={mine} slot={slot} />
+          </div>
+        ))}
+      </div>
       {round.round === 1 && byes.length ? (
-        <p className={s.note} style={{ padding: '0 4px' }}>
+        <p className={s.note} style={{ padding: '0 14px' }}>
           Byes: {byes.map((id) => teamByRoster(id)?.teamName ?? '').filter(Boolean).join(', ')}
         </p>
       ) : null}
@@ -107,7 +109,7 @@ export default async function V4Bracket() {
         <h2>{started ? 'Playoffs' : 'If the Season Ended Today'}</h2>
       </div>
       {!started ? (
-        <p className={s.note} style={{ padding: '0 4px', marginTop: -6 }}>
+        <p className={s.note} style={{ padding: '0 14px', marginTop: -4 }}>
           Top {league.playoffTeams} make it. Playoffs start week {league.playoffWeekStart}.
         </p>
       ) : null}
@@ -121,7 +123,7 @@ export default async function V4Bracket() {
           <div className={s.title}>
             <h2>The Shart Bowl</h2>
           </div>
-          <p className={s.note} style={{ padding: '0 4px', marginTop: -6 }}>
+          <p className={s.note} style={{ padding: '0 14px', marginTop: -4 }}>
             Losers bracket. The loser chugs{shart ? `: ${shart.teamName}, ${firstNameOf(shart.rosterId) ?? shart.manager}` : ''}.
           </p>
           {post.shartBowl.map((r) => (

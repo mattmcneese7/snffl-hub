@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import { getChugCounts, type AwardTally } from '@/lib/awards';
 import { teamByRoster } from '@/lib/league';
-import { Mx } from './icons';
 import { managerOf, teamOf } from './shared';
 import s from '../v4.module.css';
 import m from './modules.module.css';
+import { Ms } from '../icons';
 
-/** Who Owes: the five managers with the most chugs owed, a stein per beer. */
+/** Chug Meter: the five teams with the most chugs owed, a stein per beer. */
 export default async function ChugCounts({ tallies, mine = null }: { tallies?: AwardTally[]; mine?: number | null }) {
   const all = tallies ?? (await getChugCounts().catch(() => [] as AwardTally[]));
   const owed = all.filter((t) => t.count > 0).sort((a, b) => b.count - a.count).slice(0, 5);
@@ -14,7 +14,7 @@ export default async function ChugCounts({ tallies, mine = null }: { tallies?: A
   return (
     <section aria-label="Who owes">
       <div className={s.title}>
-        <h2>Who Owes</h2>
+        <h2>Chug Meter</h2>
         <Link href="/lab/app/chug">Chug Meter</Link>
       </div>
       {owed.length ? (
@@ -41,8 +41,8 @@ export default async function ChugCounts({ tallies, mine = null }: { tallies?: A
             );
           })}
           <div className={m.via}>
-            <span className={m.steins} aria-hidden style={{ display: 'inline-flex', verticalAlign: 'middle', marginRight: 6 }}>
-              <Mx name="beer" size={14} />
+            <span className={m.steins} aria-hidden style={{ display: 'inline-flex', verticalAlign: 'middle', marginRight: 8 }}>
+              <Ms name="beer" size={14} />
             </span>
             {total} {total === 1 ? 'beer' : 'beers'} owed this season
           </div>

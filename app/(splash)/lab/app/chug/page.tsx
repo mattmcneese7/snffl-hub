@@ -7,14 +7,15 @@ import { scoredWeek, teams } from '@/lib/league';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { chugFilms } from '../../../lib/chug-films';
 import { getV4Data } from '../data';
-import Shell from '../Shell';
-import XHead from '../modules/Head';
+import Shell, { SectionHead } from '../Shell';
 import ShartCitation from '../modules/ShartCitation';
-import { Mx } from '../modules/icons';
+import ChugNowCard from '../modules/ChugNow';
+import { trophyBoard } from '../cached';
 import { managerOf, teamOf } from '../modules/shared';
 import m from '../modules/modules.module.css';
 import s from '../v4.module.css';
 import c from './chug.module.css';
+import { Ms } from '../icons';
 
 export const metadata: Metadata = { title: { absolute: 'Chug Meter, Splash 4.0' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -28,7 +29,7 @@ export default async function V4Chug() {
   const jar = await cookies();
   const mine = parseTeam(jar.get(TEAM_COOKIE)?.value);
   const week = await scoredWeek();
-  const [data, tallies, extremes] = await Promise.all([getV4Data(mine), getChugCounts().catch(() => []), getWeeklyExtremes().catch(() => ({ highs: [], lows: [] }))]);
+  const [data, tallies, extremes, board] = await Promise.all([getV4Data(mine), getChugCounts().catch(() => []), getWeeklyExtremes().catch(() => ({ highs: [], lows: [] })), trophyBoard().catch(() => null)]);
 
   const rows = teams
     .map((team) => {
@@ -45,10 +46,11 @@ export default async function V4Chug() {
 
   return (
     <Shell data={data} active="league">
-      <XHead icon="beer" word="chug" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
+      <SectionHead icon="beer" word="chug" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
 
+      <ChugNowCard board={board} week={week} title="This Week" link={false} />
       <div className={s.title}>
-        <h2>Who Owes</h2>
+        <h2>Chug Meter</h2>
         <span className={s.wk}>
           {total} {total === 1 ? 'beer' : 'beers'}
         </span>
@@ -68,7 +70,7 @@ export default async function V4Chug() {
               {r.count ? (
                 <span className={m.steins} aria-hidden>
                   {Array.from({ length: r.count }, (_, i) => (
-                    <Mx key={i} name="beer" />
+                    <Ms key={i} name="beer" />
                   ))}
                 </span>
               ) : null}

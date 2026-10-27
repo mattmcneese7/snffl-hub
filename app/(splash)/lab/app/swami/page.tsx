@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { cookies } from 'next/headers';
-import { firstNameOf } from '@/config/managers';
 import { allPlayers, league, teamByRoster } from '@/lib/league';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { outlookFor } from '@/lib/outlook';
@@ -9,7 +8,7 @@ import { weekProjections } from '../cached';
 import { getRosters } from '@/lib/sleeper';
 import { POSITIONS, type Pos } from '@/lib/spine';
 import { keepMoves, type SwamiQuery } from '../../../swami/moves-query';
-import { weekLine } from './parts';
+import { short, weekLine } from './parts';
 import Trade from './Trade';
 import Waivers from './Waivers';
 import { getV4Data } from '../data';
@@ -67,14 +66,14 @@ export default async function V4Swami({ searchParams }: { searchParams: Promise<
       </div>
       <nav className={s.chips} aria-label="Position">
         {[{ key: '', label: 'All' }, ...POSITIONS.map((p) => ({ key: p, label: p }))].map((p) => (
-          <Link key={p.label} href={href({ pos: p.key })} scroll={false} className={`${s.chipA} ${(pos ?? '') === p.key ? s.chipOn : ''}`}>
+          <Link key={p.label} href={href({ pos: p.key })} scroll={false} className={`${s.filter} ${(pos ?? '') === p.key ? s.filterOn : ''}`}>
             {p.label}
           </Link>
         ))}
       </nav>
       <nav className={s.chips} aria-label="Ownership">
         {OWN.map((o) => (
-          <Link key={o.key} href={href({ own: o.key })} scroll={false} className={`${s.chipA} ${own === o.key ? s.chipOn : ''}`}>
+          <Link key={o.key} href={href({ own: o.key })} scroll={false} className={`${s.filter} ${own === o.key ? s.filterOn : ''}`}>
             {o.label}
           </Link>
         ))}
@@ -88,12 +87,12 @@ export default async function V4Swami({ searchParams }: { searchParams: Promise<
                 <img src={p.headshot} alt="" />
               </span>
               <span className={s.prowName}>
-                <b>{p.name}</b>
+                <b>{short(p.name, p.position)}</b>
                 <small>
                   <i className={`${s.pos} ${s[`p${p.position}`] ?? ''}`}>{p.position}</i>
                   <span>{p.team ?? 'FA'}</span>
                   <span>&middot; {weekLine(o.matchup, p.team)}</span>
-                  <span>&middot; {t ? (firstNameOf(t.rosterId) ?? t.manager) : 'Free agent'}</span>
+                  <span>&middot; {t ? t.teamName : 'Free agent'}</span>
                 </small>
               </span>
               <span className={s.prowPts}>
@@ -106,7 +105,7 @@ export default async function V4Swami({ searchParams }: { searchParams: Promise<
           );
         })}
       </div>
-      <p className={s.note} style={{ padding: '0 4px' }}>
+      <p className={s.note} style={{ padding: '0 14px' }}>
         Proj on this league&rsquo;s rules; range is the 10th to 90th percentile. Sources: Sleeper, DraftSharks.
       </p>
     </Shell>

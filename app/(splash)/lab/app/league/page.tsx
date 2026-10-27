@@ -60,7 +60,7 @@ export default async function V4League() {
         <Link href="/lab/app/league/bracket">Bracket</Link>
       </div>
       <div className={s.list}>
-        <div className={s.stRow} style={{ paddingTop: 10, paddingBottom: 6 }}>
+        <div className={s.stRow} style={{ paddingTop: 12, paddingBottom: 8 }}>
           <span className={s.stH}>#</span>
           <span />
           <span className={s.stH}>Team</span>
@@ -98,7 +98,7 @@ export default async function V4League() {
           );
         })}
       </div>
-      <p className={s.note} style={{ padding: '0 4px' }}>
+      <p className={s.note} style={{ padding: '0 14px' }}>
         Top {cut} make the playoffs. Odds from 10,000 simulated seasons.
       </p>
       {power.length ? (
@@ -125,7 +125,7 @@ export default async function V4League() {
               </Link>
             ))}
           </div>
-          <p className={s.note} style={{ padding: '0 4px' }}>
+          <p className={s.note} style={{ padding: '0 14px' }}>
             Ranked on win rate, average score and the last three weeks.
           </p>
         </>

@@ -2,8 +2,6 @@
 
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
-import { Mx } from './modules/icons';
-import m from './modules/modules.module.css';
 import { Frame, SkCard, SkChips, SkList, SkRail, SkStatus, SkTitle } from './Skeleton';
 
 /**
@@ -210,7 +208,7 @@ const ROUTES: [RegExp, () => ReactNode][] = [
   [
     /^\/lab\/app\/feed$/,
     () => (
-      <Frame active="home" icon={<Mx name="feed" className={m.secIcon} />} word="feed" back={{ href: '/lab/app', label: 'Home' }}>
+      <Frame active="home" icon="feed" word="feed" back={{ href: '/lab/app', label: 'Home' }}>
         <SkStatus what="the feed" />
         <SkTitle />
         <SkRail n={5} w={64} h={64} round />
@@ -232,7 +230,7 @@ const ROUTES: [RegExp, () => ReactNode][] = [
   [
     /^\/lab\/app\/chug$/,
     () => (
-      <Frame active="league" icon={<Mx name="beer" className={m.secIcon} />} word="chug" back={{ href: '/lab/app/league', label: 'League' }}>
+      <Frame active="league" icon="beer" word="chug" back={{ href: '/lab/app/league', label: 'League' }}>
         <SkStatus what="the Chug Meter" />
         <SkTitle />
         <SkList rows={12} h={66} />
@@ -242,7 +240,7 @@ const ROUTES: [RegExp, () => ReactNode][] = [
   [
     /^\/lab\/app\/trades$/,
     () => (
-      <Frame active="league" icon={<Mx name="swap" className={m.secIcon} />} word="trades" back={{ href: '/lab/app/league', label: 'League' }}>
+      <Frame active="league" icon="swap" word="trades" back={{ href: '/lab/app/league', label: 'League' }}>
         <SkStatus what="trades" />
         <SkTitle />
         <SkCard h={180} />
@@ -252,7 +250,7 @@ const ROUTES: [RegExp, () => ReactNode][] = [
   [
     /^\/lab\/app\/insights$/,
     () => (
-      <Frame active="league" icon={<Mx name="insights" className={m.secIcon} />} word="insights" back={{ href: '/lab/app/league', label: 'League' }}>
+      <Frame active="league" icon="insights" word="insights" back={{ href: '/lab/app/league', label: 'League' }}>
         <SkStatus what="insights" />
         <SkTitle />
         <SkList rows={10} h={72} />
@@ -262,7 +260,7 @@ const ROUTES: [RegExp, () => ReactNode][] = [
   [
     /^\/lab\/app\/my-team$/,
     () => (
-      <Frame active="" icon={<Mx name="person" className={m.secIcon} />} word="my team" back={{ href: '/lab/app/account', label: 'Account' }}>
+      <Frame active="" icon="person" word="my team" back={{ href: '/lab/app/account', label: 'Account' }}>
         <SkStatus what="your team" />
         <SkCard h={154} blue />
         <SkTitle link />

@@ -148,7 +148,7 @@ export default async function V4NflGame({ params, searchParams }: { params: Prom
           )}
         </div>
         <div className={x.boardBody}>
-          <h1 style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0 0 0 0)' }}>
+          <h1 className={s.sr}>
             {game.away.name} at {game.home.name}
           </h1>
           <BoardRow side={game.away} game={game} lost={post && a < h} />
@@ -311,7 +311,7 @@ export default async function V4NflGame({ params, searchParams }: { params: Prom
                     <b>{t?.teamName ?? list[0].teamName}</b>
                     <small>{rosterId === mine ? `${managerOf(rosterId, list[0].manager)} · You` : managerOf(rosterId, list[0].manager)}</small>
                   </span>
-                  <span className={x.chip}>{started ? `${started} starting` : 'Bench only'}</span>
+                  <span className={s.tag}>{started ? `${started} starting` : 'Bench only'}</span>
                 </div>
                 {list.map((e) => {
                   const proj = projections[e.playerId];
@@ -344,7 +344,7 @@ export default async function V4NflGame({ params, searchParams }: { params: Prom
       {rail.length ? (
         <>
           <div className={s.title}>
-            <h2>This Game, On Tape</h2>
+            <h2>This Game, on Tape</h2>
           </div>
           <Clips clips={rail} />
         </>

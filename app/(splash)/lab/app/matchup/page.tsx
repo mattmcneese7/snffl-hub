@@ -16,11 +16,11 @@ import Shell, { SectionHead } from '../Shell';
 import { LivePoints, LiveStart } from '../live/Live';
 import Clips from '../scores/Clips';
 import { railOf } from '../scores/clipData';
-import { Xs } from '../scores/icons';
 import { kickoffText, LoreChips, record, Slate } from '../scores/parts';
 import { weekView } from '../scores/weekData';
 import s from '../v4.module.css';
 import x from '../scores/scores.module.css';
+import { Ms } from '../icons';
 
 export const metadata: Metadata = { title: { absolute: 'Matchup, Splash 4.0' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -239,7 +239,7 @@ function SlotRow({ me, them, label, wk }: { me?: LivePlayer; them?: LivePlayer; 
           {me ? <Player p={me} wk={wk} /> : <span />}
           <span className={x.slotCol}>
             <span className={s.slotChip} style={{ marginTop: 0 }}>{label}</span>
-            <Xs name="next" className={x.caret} />
+            <Ms name="next" size={20} className={x.caret} />
           </span>
           {them ? <Player p={them} right wk={wk} /> : <span />}
         </div>
@@ -297,7 +297,7 @@ function Swami({ live }: { live: LiveMatchup }) {
             <span className={x.swLabel}>Matchups</span>
             <span className={x.chipRow}>
               {read.edges.map((e) => (
-                <span key={e.player.id} className={`${x.chip} ${e.matchup!.label === 'hard' ? x.hot : e.matchup!.label === 'soft' ? x.good : ''}`}>
+                <span key={e.player.id} className={`${s.tag} ${e.matchup!.label === 'hard' ? s.tagBad : e.matchup!.label === 'soft' ? s.tagGood : ''}`}>
                   {shortName(e.player.name, e.player.position, e.player.team)} {e.matchup!.label} vs {e.matchup!.opponent}
                 </span>
               ))}
@@ -410,7 +410,7 @@ export default async function V4Matchup({ searchParams }: { searchParams: Promis
       <section className={s.hero} aria-label={`Week ${week} matchup`}>
         <div className={s.heroTop}>
           <span>{isMine ? `Week ${week} Matchup` : `Week ${week}`}</span>
-          <span className={chip === 'Live' ? s.liveChip : undefined} style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+          <span className={chip === 'Live' ? s.liveChip : undefined} style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
             {chip === 'Live' ? <i className={s.liveDot} aria-hidden /> : null}
             {chip}
           </span>
@@ -432,13 +432,8 @@ export default async function V4Matchup({ searchParams }: { searchParams: Promis
       </section>
       {!final ? (
         <div className={x.out}>
-          {isMine ? (
-            <a className={x.outBtn} href={sleeperLink('lineup')} target="_blank" rel="noopener noreferrer">
-              Set Lineup
-            </a>
-          ) : null}
-          <a className={x.outBtn} href={sleeperLink('matchup')} target="_blank" rel="noopener noreferrer">
-            Open in Sleeper
+          <a className={x.outBtn} href={sleeperLink(isMine ? 'lineup' : 'matchup')} target="_blank" rel="noopener noreferrer">
+            Open Sleeper
           </a>
         </div>
       ) : null}
@@ -525,7 +520,7 @@ export default async function V4Matchup({ searchParams }: { searchParams: Promis
       {rail.length ? (
         <>
           <div className={s.title}>
-            <h2>This Game, On Tape</h2>
+            <h2>This Game, on Tape</h2>
           </div>
           <Clips clips={rail} />
         </>

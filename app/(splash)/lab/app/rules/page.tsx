@@ -132,7 +132,7 @@ export default async function V4Rules() {
           </section>
         </>
       ) : null}
-      <p className={s.note} style={{ padding: '0 4px' }}>
+      <p className={s.note} style={{ padding: '0 14px' }}>
         Setup and scoring come from Sleeper&rsquo;s league settings.
       </p>
     </Shell>

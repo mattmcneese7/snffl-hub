@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import s from '../v4.module.css';
 import p from './p4.module.css';
+import { injAbbr } from '../injury';
 
 export type Row = {
   id: string;
@@ -119,7 +120,7 @@ export default function Browser({
           <span className={p.label}>Position</span>
           <div className={p.scroller} role="group" aria-label="Position">
             {POSITIONS.map((v) => (
-              <button key={v} type="button" className={`${p.opt} ${pos === v ? p.optOn : ''}`} aria-pressed={pos === v} onClick={() => reset(() => setPos(v))}>
+              <button key={v} type="button" className={`${s.filter} ${pos === v ? s.filterOn : ''}`} aria-pressed={pos === v} onClick={() => reset(() => setPos(v))}>
                 {v}
               </button>
             ))}
@@ -129,7 +130,7 @@ export default function Browser({
           <span className={p.label}>Sort by</span>
           <div className={p.scroller} role="group" aria-label="Sort by">
             {SORTS.map((x) => (
-              <button key={x.key} type="button" className={`${p.opt} ${sort === x.key ? p.optOn : ''}`} aria-pressed={sort === x.key} onClick={() => reset(() => setSort(x.key))}>
+              <button key={x.key} type="button" className={`${s.filter} ${sort === x.key ? s.filterOn : ''}`} aria-pressed={sort === x.key} onClick={() => reset(() => setSort(x.key))}>
                 {x.label(week)}
               </button>
             ))}
@@ -196,9 +197,9 @@ export default function Browser({
                   <b>{r.short}</b>
                   <small>
                     <i className={`${s.pos} ${s[`p${r.position}`] ?? ''}`}>{r.position}</i>
+                    {r.injury ? <i className={s.inj}>{injAbbr(r.injury)}</i> : null}
                     {r.position === 'DEF' ? null : <span>{r.team || 'FA'}</span>}
                     <span>{r.ownerTeam ?? 'Free agent'}</span>
-                    {r.injury ? <span className={p.inj}>{r.injury}</span> : null}
                   </small>
                 </span>
                 <span className={p.rowPts}>

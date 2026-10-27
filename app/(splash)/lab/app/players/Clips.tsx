@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { autoplayVars, FATAL_ERRORS, loadYouTube, STATE, YT_HOST, type YTPlayer } from '../../../lib/yt-player';
-import { Glyph } from './glyphs';
+import s from '../v4.module.css';
 import p from './p4.module.css';
+import { Ms } from '../icons';
 
 export type Clip = { videoId: string; title: string; still: string; stillTall: string; vertical: boolean; channel: string };
 
@@ -19,7 +20,7 @@ export default function Clips({ clips }: { clips: Clip[] }) {
   const shown = clips.filter((c) => !gone.includes(c.videoId));
   if (!shown.length) return <p className={p.via}>None of these clips play here yet.</p>;
   return (
-    <div className={p.rail}>
+    <div className={s.rail}>
       {shown.map((c) => (
         <Tile key={c.videoId} clip={c} on={active === c.videoId} onPick={() => setActive(c.videoId)} onFail={() => setGone((g) => [...g, c.videoId])} />
       ))}
@@ -99,14 +100,14 @@ function Tile({ clip, on, onPick, onFail }: { clip: Clip; on: boolean; onPick: (
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={still} alt="" loading="lazy" onError={() => setStill(clip.still)} />
             <span className={p.clipPlay}>
-              <Glyph name="play" size={26} />
+              <Ms name="play" size={26} />
             </span>
           </button>
         ) : null}
         <span ref={host} className={p.clipHost} style={playing ? undefined : { opacity: 0 }} />
         {on && playing ? (
           <button type="button" className={p.clipSound} onClick={sound} aria-label={muted ? 'Turn sound on' : 'Turn sound off'}>
-            <Glyph name={muted ? 'soundOff' : 'soundOn'} size={16} />
+            <Ms name={muted ? 'volumeOff' : 'volumeUp'} size={16} />
             {muted ? 'Sound off' : 'Sound on'}
           </button>
         ) : null}

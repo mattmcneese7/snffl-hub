@@ -18,6 +18,7 @@ import Shell, { SectionHead } from '../../Shell';
 import PointsBars from '../../players/PointsBars';
 import s from '../../v4.module.css';
 import p from '../../players/p4.module.css';
+import { injAbbr } from '../../injury';
 
 export const dynamic = 'force-dynamic';
 type Params = { params: Promise<{ rosterId: string }> };
@@ -34,8 +35,8 @@ const kickoff = (iso: string) => new Intl.DateTimeFormat('en-US', { weekday: 'sh
 // Best hardware first, the Shart and the Plunger last.
 const SHELF: TrophyKey[] = ['champion', 'motw', 'blowout', 'squeaker', 'lucky', 'heartbreaker', 'bench', 'shart', 'plunger'];
 const MOVE: Record<MovementEvent['kind'], { mark: string; tone: string }> = {
-  add: { mark: 'ADD', tone: p.good },
-  drop: { mark: 'DROP', tone: p.bad },
+  add: { mark: 'ADD', tone: s.tagGood },
+  drop: { mark: 'DROP', tone: s.tagBad },
   start: { mark: 'START', tone: p.blue },
   bench: { mark: 'BENCH', tone: p.neutral },
 };
@@ -134,13 +135,13 @@ export default async function V4Manager({ params }: Params) {
   const lore: { text: string; tone: string }[] = [];
   const streak = standing?.streak ?? '';
   const run = Number(streak.slice(1));
-  if (run >= 2) lore.push({ text: streak.startsWith('W') ? `${run} game win streak` : `${run} game losing streak`, tone: streak.startsWith('W') ? p.good : p.bad });
+  if (run >= 2) lore.push({ text: streak.startsWith('W') ? `${run} game win streak` : `${run} game losing streak`, tone: streak.startsWith('W') ? s.tagGood : s.tagBad });
   const motw = all.filter((a) => a.kind === 'motw' && a.rosterId === rosterId);
-  if (motw.length) lore.push({ text: `Manager of the Week ${weeksOf(motw.map((a) => a.week))}`, tone: p.gold });
+  if (motw.length) lore.push({ text: `Manager of the Week ${weeksOf(motw.map((a) => a.week))}`, tone: s.tagGold });
   const sharts = all.filter((a) => a.kind === 'shart' && a.rosterId === rosterId);
-  if (sharts.length) lore.push({ text: `Shart ${weeksOf(sharts.map((a) => a.week))}`, tone: p.bad });
+  if (sharts.length) lore.push({ text: `Shart ${weeksOf(sharts.map((a) => a.week))}`, tone: s.tagBad });
   const chugged = chugs.find((c) => c.rosterId === rosterId)?.weeks ?? [];
-  if (chugged.length) lore.push({ text: `Chugged ${weeksOf(chugged)}`, tone: p.bad });
+  if (chugged.length) lore.push({ text: `Chugged ${weeksOf(chugged)}`, tone: s.tagBad });
 
   const mineAwards = all.filter((a) => a.rosterId === rosterId);
   const shelf = SHELF.map((kind) => ({ kind, list: mineAwards.filter((a) => a.kind === kind) })).filter((x) => x.list.length);
@@ -169,9 +170,9 @@ export default async function V4Manager({ params }: Params) {
           <b>{short(id)}</b>
           <small>
             <i className={`${s.pos} ${s[`p${pl.position}`] ?? ''}`}>{pl.position}</i>
+            {lp?.injury || pl.injuryStatus ? <i className={s.inj}>{injAbbr((lp?.injury ?? pl.injuryStatus) as string)}</i> : null}
             {pl.position === 'DEF' ? null : <span>{pl.team ?? 'FA'}</span>}
             {gameOf(lp) ? <span>{gameOf(lp)}</span> : null}
-            {lp?.injury || pl.injuryStatus ? <span className={p.inj}>{lp?.injury ?? pl.injuryStatus}</span> : null}
           </small>
           {!pre && lp?.statLine ? <em>{lp.statLine}</em> : null}
         </span>
@@ -202,9 +203,9 @@ export default async function V4Manager({ params }: Params) {
           </div>
           {rosterId === mine || lore.length ? (
             <div className={p.chips}>
-              {rosterId === mine ? <span className={`${p.chip} ${p.blue}`}>Your team</span> : null}
+              {rosterId === mine ? <span className={`${s.tag} ${p.blue}`}>Your team</span> : null}
               {lore.map((l) => (
-                <span key={l.text} className={`${p.chip} ${l.tone}`}>
+                <span key={l.text} className={`${s.tag} ${l.tone}`}>
                   {l.text}
                 </span>
               ))}
@@ -256,7 +257,7 @@ export default async function V4Manager({ params }: Params) {
           </div>
           {odds ? (
             <div className={p.chips}>
-              <span className={`${p.chip} ${odds.tag === 'Clinched' || odds.tag === 'Clinch Watch' ? p.good : odds.tag === 'Bubble' ? '' : p.bad}`}>{odds.tag}</span>
+              <span className={`${s.tag} ${odds.tag === 'Clinched' || odds.tag === 'Clinch Watch' ? s.tagGood : odds.tag === 'Bubble' ? '' : s.tagBad}`}>{odds.tag}</span>
             </div>
           ) : null}
         </section>

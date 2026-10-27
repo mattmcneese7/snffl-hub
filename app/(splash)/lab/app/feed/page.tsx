@@ -14,9 +14,9 @@ import type { Game, GameSide } from '@/lib/types';
 import { embedClipsForWeek, type EmbedClip } from '../../../lib/embed-clips';
 import { isPhone } from '../../../lib/device';
 import { getV4Data } from '../data';
-import Shell from '../Shell';
+import Shell, { SectionHead } from '../Shell';
 import ClipRail, { type RailClip } from '../modules/ClipRail';
-import XHead from '../modules/Head';
+import FeedTabs from '../modules/FeedTabs';
 import { FEED_MARK as FEED_LETTERS, feedMarkClass as feedMark, MOVE_MARK, moveMarkClass, shortName, teamOf } from '../modules/shared';
 import m from '../modules/modules.module.css';
 import s from '../v4.module.css';
@@ -199,7 +199,7 @@ export default async function V4Feed() {
         for (const h of held) if (!byRoster.has(h.rosterId)) byRoster.set(h.rosterId, h);
         railOwners.set(
           clip.videoId,
-          [...byRoster.values()].slice(0, 2).map((h) => ({ name: nameOf(h.rosterId), started: h.started }))
+          [...byRoster.values()].slice(0, 2).map((h) => ({ name: teamOf(h.rosterId), started: h.started }))
         );
       }
       const known = byId.get(clip.videoId);
@@ -289,92 +289,108 @@ export default async function V4Feed() {
 
   return (
     <Shell data={v4} active="home">
-      <XHead icon="feed" word="feed" week={v4.week} mine={v4.myRoster} back={{ href: '/lab/app', label: 'Home' }} />
+      <SectionHead icon="feed" word="feed" week={v4.week} mine={v4.myRoster} back={{ href: '/lab/app', label: 'Home' }} />
 
-      <div className={s.title}>
-        <h2>Stories</h2>
-        <span className={s.wk}>Week {storyWeek}</span>
-      </div>
-      <Stories managers={stories} week={storyWeek} />
-
-      {movement.length ? (
-        <>
-          <div className={s.title}>
-            <h2>Movement</h2>
-          </div>
-          <ul className={s.list} style={{ margin: 0, listStyle: 'none' }}>
-            {movement.slice(0, 8).map((e) => (
-              <li key={e.id} className={`${m.post} ${e.rosterId === mine ? m.mine : ''}`}>
-                <i className={moveMarkClass(e.kind)}>{MOVE_MARK[e.kind]}</i>
-                <button type="button" data-player={e.playerId} className={`${m.postText} ${m.pBtn}`} aria-label={`${playerOf(e.playerId).name}, open player`}>
-                  <b>{sayingOf(e, ptsOf)}</b>
-                  <small>{timing(e.at)}</small>
-                </button>
+      <FeedTabs id="page">
+        <div className={f.pane} data-show="all clips">
+        <div className={s.title}>
+          <h2>Stories</h2>
+          <span className={s.wk}>Week {storyWeek}</span>
+        </div>
+        <Stories managers={stories} week={storyWeek} />
+        </div>
+        <div className={f.pane} data-show="all league">
+        {movement.length ? (
+          <>
+            <div className={s.title}>
+              <h2>Movement</h2>
+            </div>
+            <ul className={s.list} style={{ margin: 0, listStyle: 'none' }}>
+              {movement.slice(0, 8).map((e) => (
+                <li key={e.id} className={`${m.post} ${e.rosterId === mine ? m.mine : ''}`}>
+                  <i className={moveMarkClass(e.kind)}>{MOVE_MARK[e.kind]}</i>
+                  <button type="button" data-player={e.playerId} className={`${m.postText} ${m.pBtn}`} aria-label={`${playerOf(e.playerId).name}, open player`}>
+                    <b>{sayingOf(e, ptsOf)}</b>
+                    <small>{timing(e.at)}</small>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : null}
+        </div>
+        <div className={f.pane} data-show="all league">
+        <div className={s.title}>
+          <h2>Your Week</h2>
+          {mine == null ? <Link href="/lab/app/account">Pick your team</Link> : yours.length > 5 ? <span className={s.wk}>{yours.length} moments</span> : null}
+        </div>
+        {mine == null ? (
+          <p className={s.empty}>Pick your team to see your touchdowns, lead changes and callouts here.</p>
+        ) : yours.length ? (
+          <ol className={s.list} style={{ margin: 0, listStyle: 'none' }}>
+            {yours.slice(0, 5).map((item) => (
+              <MomentRow key={`mine-${item.kind}-${item.id}`} item={item} names={names} now={now} />
+            ))}
+          </ol>
+        ) : (
+          <p className={s.empty}>Nothing for {teamOf(mine)} yet this week.</p>
+        )}
+        </div>
+        <div className={f.pane} data-show="all">
+        <div className={s.title}>
+          <h2>NFL Clips</h2>
+          <span className={s.wk}>League players &middot; via YouTube</span>
+        </div>
+        {replayRail.length ? <ClipRail clips={replayRail.slice(0, 2)} phone={phone} stack /> : <p className={s.empty}>No league clips yet this week.</p>}
+        </div>
+        <div className={f.pane} data-show="clips">
+        <div className={s.title}>
+          <h2>NFL Clips</h2>
+          <span className={s.wk}>League players &middot; via YouTube</span>
+        </div>
+        {replayRail.length ? <ClipRail clips={replayRail} phone={phone} stack /> : <p className={s.empty}>No league clips yet this week.</p>}
+        </div>
+        <div className={f.pane} data-show="all league">
+        <div className={s.title}>
+          <h2>What Mattered</h2>
+        </div>
+        {top.length ? (
+          <ol className={s.list} style={{ margin: 0, listStyle: 'none' }}>
+            {top.map((item, i) => (
+              <li key={`top-${item.kind}-${item.id}`} className={`${f.ranked} ${mineId && item.managerIds.includes(mineId) ? m.mine : ''}`}>
+                <span className={f.rankN}>{i + 1}</span>
+                <span className={m.postText}>
+                  <b>
+                    <LinkedText text={item.title} names={names} />
+                  </b>
+                  {item.body ? (
+                    <span>
+                      <LinkedText text={item.body} names={names} />
+                    </span>
+                  ) : null}
+                </span>
+                <i className={feedMark(item.kind)}>{FEED_LETTERS[item.kind]}</i>
               </li>
             ))}
-          </ul>
-        </>
-      ) : null}
-
-      <div className={s.title}>
-        <h2>Your Week</h2>
-        {mine == null ? <Link href="/lab/app/account">Pick your team</Link> : yours.length > 5 ? <span className={s.wk}>{yours.length} moments</span> : null}
-      </div>
-      {mine == null ? (
-        <p className={s.empty}>Pick your team to see your touchdowns, lead changes and callouts here.</p>
-      ) : yours.length ? (
-        <ol className={s.list} style={{ margin: 0, listStyle: 'none' }}>
-          {yours.slice(0, 5).map((item) => (
-            <MomentRow key={`mine-${item.kind}-${item.id}`} item={item} names={names} now={now} />
-          ))}
-        </ol>
-      ) : (
-        <p className={s.empty}>Nothing for {teamOf(mine)} yet this week.</p>
-      )}
-
-      <div className={s.title}>
-        <h2>Replays</h2>
-        <span className={s.wk}>Via YouTube</span>
-      </div>
-      {replayRail.length ? <ClipRail clips={replayRail} phone={phone} /> : <p className={s.empty}>No league clips yet this week.</p>}
-
-      <div className={s.title}>
-        <h2>What Mattered</h2>
-      </div>
-      {top.length ? (
-        <ol className={s.list} style={{ margin: 0, listStyle: 'none' }}>
-          {top.map((item, i) => (
-            <li key={`top-${item.kind}-${item.id}`} className={`${f.ranked} ${mineId && item.managerIds.includes(mineId) ? m.mine : ''}`}>
-              <span className={f.rankN}>{i + 1}</span>
-              <span className={m.postText}>
-                <b>
-                  <LinkedText text={item.title} names={names} />
-                </b>
-                {item.body ? (
-                  <span>
-                    <LinkedText text={item.body} names={names} />
-                  </span>
-                ) : null}
-              </span>
-              <i className={feedMark(item.kind)}>{FEED_LETTERS[item.kind]}</i>
-            </li>
-          ))}
-        </ol>
-      ) : (
-        <p className={s.empty}>No touchdowns, lead changes or callouts yet this week.</p>
-      )}
-
-      <div className={s.title}>
-        <h2>History</h2>
-        <span className={s.wk}>Plays via ESPN &middot; Clips via YouTube</span>
-      </div>
-      {items.length ? (
-        <div className={s.list}>
-          <Record items={items} facets={facets} names={names} now={now} mine={mineId} />
+          </ol>
+        ) : (
+          <p className={s.empty}>No touchdowns, lead changes or callouts yet this week.</p>
+        )}
         </div>
-      ) : (
-        <p className={s.empty}>Nothing on the record yet.</p>
-      )}
+        <div className={f.pane} data-show="all league">
+        <div className={s.title}>
+          <h2>History</h2>
+          <span className={s.wk}>Plays via ESPN &middot; Clips via YouTube</span>
+        </div>
+        {items.length ? (
+          <div className={s.list}>
+            <Record items={items} facets={facets} names={names} now={now} mine={mineId} />
+          </div>
+        ) : (
+          <p className={s.empty}>Nothing on the record yet.</p>
+        )}
+        </div>
+      </FeedTabs>
     </Shell>
   );
 }

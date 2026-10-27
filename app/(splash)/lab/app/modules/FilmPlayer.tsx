@@ -3,12 +3,12 @@
 import { useEffect, useState } from 'react';
 import Story from './Story';
 import type { StorySlide } from '@/lib/week-story';
-import { MX } from './icons';
 import m from './modules.module.css';
+import { MS } from '../icons';
 
 const Play = () => (
   <svg viewBox="0 -960 960 960" fill="currentColor" aria-hidden>
-    <path d={MX.play} />
+    <path d={MS.play} />
   </svg>
 );
 

@@ -8,21 +8,22 @@ import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { outlookFor, roleOf } from '@/lib/outlook';
 import { getRosters } from '@/lib/sleeper';
 import { sleeperLink } from '@/lib/sleeper-links';
+import CopyMove from '../swami/CopyMove';
+import { injAbbr } from '../injury';
 import { scoredThisWeek } from './scored';
 import { recentUsage } from '../../../lib/deep/nflverse';
 import { bookFrom } from '../../../lib/odds-books';
 import { readSleeperProps, type SleeperProp } from '../../../lib/sleeper-props';
 import { weekLines } from '../../../swami/week-lines';
 import { getV4Data } from '../data';
-import Shell from '../Shell';
-import XHead from '../modules/Head';
+import Shell, { SectionHead } from '../Shell';
 import { managerOf, MOVE_MARK, moveMarkClass, shortName } from '../modules/shared';
 import m from '../modules/modules.module.css';
 import s from '../v4.module.css';
 import t from './mine.module.css';
 import r from './read.module.css';
 import PlayerRead from './Read';
-import { Xs } from '../scores/icons';
+import { Ms } from '../icons';
 
 export const metadata: Metadata = { title: { absolute: 'My Team, Splash 4.0' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -32,7 +33,6 @@ const pts = (n: number) => n.toFixed(2);
 const SITTING = new Set(['Out', 'Doubtful', 'IR', 'Sus', 'PUP', 'NA', 'DNR']);
 const FLEX = new Set(['RB', 'WR', 'TE']);
 /** Injury tags as Sleeper prints them. */
-const INJ: Record<string, string> = { Questionable: 'Q', Doubtful: 'D', Out: 'OUT', Sus: 'SUS' };
 
 /** A move on your own page: the mark says what kind, so the line is just who. */
 function moveLine(e: MovementEvent): string {
@@ -56,7 +56,7 @@ export default async function V4MyTeam() {
   if (!rosterId) {
     return (
       <Shell data={data} active="">
-        <XHead icon="person" word="my team" week={data.week} mine={null} back={{ href: '/lab/app/account', label: 'Account' }} />
+        <SectionHead icon="person" word="my team" week={data.week} mine={null} back={{ href: '/lab/app/account', label: 'Account' }} />
         <p className={s.empty}>
           Pick your team to see your lineup, what is wrong with it and your moves. <Link href="/lab/app/account">Account</Link>
         </p>
@@ -132,8 +132,8 @@ export default async function V4MyTeam() {
           <b>{shortName(x.player.name, x.player.position, x.player.team)}</b>
           <small>
             <i className={`${s.pos} ${s[`p${x.player.position}`] ?? ''}`}>{x.player.position}</i>
+            {x.player.injuryStatus ? <i className={s.inj}>{injAbbr(x.player.injuryStatus)}</i> : null}
             {x.player.team ?? ''} &middot; {meta}
-            {x.player.injuryStatus ? <i className={`${m.mk} ${m.mkBad} ${t.inj}`}>{INJ[x.player.injuryStatus] ?? x.player.injuryStatus.toUpperCase()}</i> : null}
           </small>
           {sub ? <span className={t.sub}>{sub}</span> : null}
         </span>
@@ -161,15 +161,15 @@ export default async function V4MyTeam() {
             <b>{shortName(x.player.name, x.player.position, x.player.team)}</b>
             <small>
               <i className={`${s.pos} ${s[`p${x.player.position}`] ?? ''}`}>{x.player.position}</i>
+              {x.player.injuryStatus ? <i className={s.inj}>{injAbbr(x.player.injuryStatus)}</i> : null}
               {x.player.team ?? ''} &middot; {meta}
-              {x.player.injuryStatus ? <i className={`${m.mk} ${m.mkBad} ${t.inj}`}>{INJ[x.player.injuryStatus] ?? x.player.injuryStatus.toUpperCase()}</i> : null}
             </small>
           </span>
           <span className={s.prowPts}>
             <b>{actual != null ? pts(actual) : '\u2013'}</b>
             <small>Proj {pts(x.outlook.adjusted)}</small>
           </span>
-          <Xs name="next" className={r.caret} />
+          <Ms name="next" size={20} className={r.caret} />
         </summary>
         <PlayerRead
           id={x.id}
@@ -188,7 +188,7 @@ export default async function V4MyTeam() {
 
   return (
     <Shell data={data} active="">
-      <XHead icon="person" word="my team" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/account', label: 'Account' }} />
+      <SectionHead icon="person" word="my team" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/account', label: 'Account' }} />
 
       <section className={t.hero} aria-label="Projected">
         <div className={t.heroTop}>
@@ -217,7 +217,7 @@ export default async function V4MyTeam() {
           <div className={s.title}>
             <h2>Fix This</h2>
             <a href={sleeperLink('lineup')} target="_blank" rel="noopener noreferrer">
-              Lineup in Sleeper
+              Open Sleeper
             </a>
           </div>
           <div className={s.list}>{problems.map((p) => row(p, why(p), { b: pts(p.outlook.adjusted), small: 'Proj' }))}</div>
@@ -237,9 +237,15 @@ export default async function V4MyTeam() {
                 small: `Proj ${pts(u.bench.outlook.adjusted)}`,
               }),
             )}
-            <a className={t.go} href={sleeperLink('lineup')} target="_blank" rel="noopener noreferrer">
-              Make the swap in Sleeper
-            </a>
+            <div style={{ padding: '4px 0 12px' }}>
+              <CopyMove
+                label="Copy swaps"
+                text={upgrades
+                  .slice(0, 4)
+                  .map((u) => `Start ${shortName(u.bench.player.name, u.bench.player.position, u.bench.player.team)} over ${shortName(u.starter.player.name, u.starter.player.position, u.starter.player.team)} at ${u.starter.slot}`)
+                  .join('. ')}
+              />
+            </div>
           </div>
         </>
       ) : null}

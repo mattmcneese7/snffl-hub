@@ -46,13 +46,13 @@ export default async function V4Managers() {
                       {t.rosterId === mine ? ' · You' : ''}
                     </small>
                     {held.length ? (
-                      <span className={p.chips} style={{ marginTop: 3 }}>
+                      <span className={p.chips} style={{ marginTop: 4 }}>
                         {held.slice(0, 2).map((k) => (
-                          <span key={k} className={`${p.chip} ${k === 'shart' || k === 'plunger' ? p.bad : p.gold}`}>
+                          <span key={k} className={`${s.tag} ${k === 'shart' || k === 'plunger' ? s.tagBad : s.tagGold}`}>
                             {TROPHIES[k].name}
                           </span>
                         ))}
-                        {held.length > 2 ? <span className={`${p.chip} ${p.gold}`}>+{held.length - 2}</span> : null}
+                        {held.length > 2 ? <span className={`${s.tag} ${s.tagGold}`}>+{held.length - 2}</span> : null}
                       </span>
                     ) : null}
                   </span>

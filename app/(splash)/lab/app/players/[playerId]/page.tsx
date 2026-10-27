@@ -8,10 +8,9 @@ import { league, playerOf, teamByRoster } from '@/lib/league';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { filed } from '@/lib/news';
 import { getPlayerSeason } from '@/lib/players';
-import { sleeperLink } from '@/lib/sleeper-links';
+import CopyMove from '../../swami/CopyMove';
 import { statBlocksFor, statsFor } from '@/lib/stats';
 import { NFL_TEAMS, nflTeamName } from '../../../../kit/nflTeams';
-import { SLEEPER_MARK } from '../../../../kit/sleeperMark';
 import { recentUsage, type UsageRow } from '../../../../lib/deep/nflverse';
 import { embedClipsForPlayers, type EmbedClip } from '../../../../lib/embed-clips';
 import { bookFrom } from '../../../../lib/odds-books';
@@ -64,7 +63,7 @@ const USAGE: Record<string, { label: string; value: (r: UsageRow) => string }[]>
   ],
 };
 const LABEL = { soft: 'Soft', even: 'Even', hard: 'Hard' } as const;
-const TONE = { soft: p.good, even: '', hard: p.bad } as const;
+const TONE = { soft: s.tagGood, even: '', hard: s.tagBad } as const;
 
 /**
  * A player's profile: the sheet, given the whole page and everything v3's
@@ -135,8 +134,8 @@ export default async function V4Player({ params }: Params) {
               </span>
               {injury || (pl.practice && pl.practice !== 'None') ? (
                 <span className={p.chips}>
-                  {injury ? <span className={`${p.chip} ${p.bad}`}>{injury}</span> : null}
-                  {pl.practice && pl.practice !== 'None' ? <span className={`${p.chip} ${p.bad}`}>{pl.practice} in practice</span> : null}
+                  {injury ? <span className={`${s.tag} ${s.tagBad}`}>{injury}</span> : null}
+                  {pl.practice && pl.practice !== 'None' ? <span className={`${s.tag} ${s.tagBad}`}>{pl.practice} in practice</span> : null}
                 </span>
               ) : null}
             </div>
@@ -153,7 +152,7 @@ export default async function V4Player({ params }: Params) {
                   {d.owner ? ` · ${d.owner.starts} starts · ${d.owner.points.toFixed(2)} pts for them` : ''}
                 </small>
               </span>
-              <span className={`${p.chip} ${p.blue}`}>Rostered</span>
+              <span className={`${s.tag} ${p.blue}`}>Rostered</span>
             </Link>
           ) : (
             <div className={p.owner}>
@@ -162,15 +161,16 @@ export default async function V4Player({ params }: Params) {
                 <b>Nobody</b>
                 <small>On waivers in this league</small>
               </span>
-              <span className={`${p.chip} ${p.good}`}>Free agent</span>
+              <span className={`${s.tag} ${s.tagGood}`}>Free agent</span>
             </div>
           )}
           {owner?.rosterId === mine ? null : (
-            <a className={p.sleeper} href={sleeperLink(owner ? 'trades' : 'players')} target="_blank" rel="noopener noreferrer">
-              <img src={SLEEPER_MARK} alt="" />
-              {owner ? 'Propose a trade' : unit ? 'Add this defense' : 'Claim on waivers'}
-              <span aria-hidden>&#8599;</span>
-            </a>
+            <div className={p.handoff}>
+              <CopyMove
+                label={owner ? 'Copy trade ask' : 'Copy claim'}
+                text={owner ? `Trade ask: ${pl.name} from ${owner.teamName}` : `Claim ${pl.name}${unit ? ' (defense)' : ''}`}
+              />
+            </div>
           )}
           {d.bio.length ? <div className={p.heroBio}>{d.bio.join(' · ')}</div> : null}
         </article>
@@ -269,10 +269,10 @@ export default async function V4Player({ params }: Params) {
           {o.read ? <p className={p.para}>{o.read}</p> : null}
           {o.boomBust ? (
             <div className={p.chips}>
-              <span className={`${p.chip} ${p.good}`}>
+              <span className={`${s.tag} ${s.tagGood}`}>
                 <b>{pct(o.boomBust.boom)}</b> Boom, {o.boomBust.boomLine}+
               </span>
-              <span className={`${p.chip} ${p.bad}`}>
+              <span className={`${s.tag} ${s.tagBad}`}>
                 <b>{pct(o.boomBust.bust)}</b> Bust, {o.boomBust.bustLine} or less
               </span>
             </div>
@@ -284,25 +284,25 @@ export default async function V4Player({ params }: Params) {
           ) : null}
           {o.role || o.usage ? (
             <div className={p.chips}>
-              {o.role ? <span className={`${p.chip} ${p.blue}`}>{o.role}</span> : null}
+              {o.role ? <span className={`${s.tag} ${p.blue}`}>{o.role}</span> : null}
               {o.usage ? (
                 <>
-                  <span className={p.chip}>
+                  <span className={s.tag}>
                     Snaps <b>{pct(o.usage.snaps)}</b>
                   </span>
                   {o.usage.share ? (
-                    <span className={p.chip}>
+                    <span className={s.tag}>
                       {o.usage.shareLabel} <b>{pct(o.usage.share)}</b>
                     </span>
                   ) : null}
                   {o.usage.redZone ? (
-                    <span className={p.chip}>
+                    <span className={s.tag}>
                       Red zone looks <b>{o.usage.redZone}</b> a game
                     </span>
                   ) : null}
                 </>
               ) : null}
-              {o.trend && o.trend !== 'steady' ? <span className={p.chip}>Usage {o.trend}</span> : null}
+              {o.trend && o.trend !== 'steady' ? <span className={s.tag}>Usage {o.trend}</span> : null}
             </div>
           ) : null}
           {o.ahead.length ? (
@@ -310,7 +310,7 @@ export default async function V4Player({ params }: Params) {
               <span className={p.label}>Coming up</span>
               <div className={p.chips}>
                 {o.ahead.map((f) => (
-                  <span key={f.week} className={`${p.chip} ${TONE[f.label]}`}>
+                  <span key={f.week} className={`${s.tag} ${TONE[f.label]}`}>
                     W{f.week} {f.home ? 'vs' : '@'} {f.opponent}
                   </span>
                 ))}
@@ -383,17 +383,17 @@ export default async function V4Player({ params }: Params) {
           {d.rostered != null || d.season.snapPct != null ? (
             <div className={p.chips}>
               {d.rostered != null ? (
-                <span className={p.chip}>
+                <span className={s.tag}>
                   Rostered on Sleeper <b>{Math.round(d.rostered)}%</b>
                 </span>
               ) : null}
               {d.started != null ? (
-                <span className={p.chip}>
+                <span className={s.tag}>
                   Started on Sleeper <b>{Math.round(d.started)}%</b>
                 </span>
               ) : null}
               {d.season.snapPct != null ? (
-                <span className={p.chip}>
+                <span className={s.tag}>
                   Snaps <b>{d.season.snapPct}%</b>
                 </span>
               ) : null}

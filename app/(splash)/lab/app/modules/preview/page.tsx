@@ -32,7 +32,7 @@ export default async function ModulesPreview({ searchParams }: { searchParams: P
       {on('SquirtSays') ? <SquirtSays week={data.week} mine={mine} /> : null}
       {on('TopScorers') ? <TopScorers week={data.week} mine={mine} /> : null}
       {on('NflScores') ? <NflScores week={data.week} /> : null}
-      {on('FeedDigest') ? <FeedDigest mine={mine} /> : null}
+      {on('FeedDigest') ? <FeedDigest mine={mine} week={data.week} games={data.games} /> : null}
       {on('ChugCounts') ? <ChugCounts mine={mine} /> : null}
       {on('LatestTrade') ? <LatestTrade mine={mine} /> : null}
     </Shell>

@@ -6,6 +6,7 @@ import { SITTING, type RosContext, type RosRead } from '@/lib/rest-of-season';
 import { spine } from '@/lib/spine';
 import { nflNickname, nflTeamName } from '../../../kit/nflTeams';
 import { Ms, type MsName } from '../icons';
+import s from '../v4.module.css';
 import w from './swami.module.css';
 
 /**
@@ -60,7 +61,7 @@ export function Face({ read }: { read: RosRead }) {
 }
 
 export function Pos({ pos }: { pos: string }) {
-  return <i className={`${w.pos} ${w[`p${pos}`] ?? ''}`}>{pos}</i>;
+  return <i className={`${s.pos} ${s[`p${pos}`] ?? ''}`}>{pos}</i>;
 }
 
 /** One labeled figure: "Per week +2.4". */

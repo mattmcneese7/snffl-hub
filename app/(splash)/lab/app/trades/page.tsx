@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { getTrades, type Trade } from '@/lib/trades';
 import { getV4Data } from '../data';
-import Shell from '../Shell';
-import XHead from '../modules/Head';
+import Shell, { SectionHead } from '../Shell';
 import { TradeRows } from '../modules/TradeCard';
 import s from '../v4.module.css';
 
@@ -23,13 +23,15 @@ export default async function V4Trades() {
   const yours = mine != null ? trades.filter((t) => t.sides.some((x) => x.rosterId === mine)).length : 0;
   return (
     <Shell data={data} active="league">
-      <XHead icon="swap" word="trades" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
+      <SectionHead icon="swap" word="trades" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
       <div className={s.title}>
         <h2>Every Trade</h2>
-        <span className={s.wk}>
-          {trades.length} {trades.length === 1 ? 'trade' : 'trades'}
-          {mine != null ? ` · ${yours} yours` : ''}
-        </span>
+        {trades.length ? (
+          <span className={s.wk}>
+            {trades.length} {trades.length === 1 ? 'trade' : 'trades'}
+            {mine != null && yours ? ` · ${yours} yours` : ''}
+          </span>
+        ) : null}
       </div>
       {trades.length ? (
         <div className={s.list}>
@@ -38,7 +40,9 @@ export default async function V4Trades() {
           ))}
         </div>
       ) : (
-        <p className={s.empty}>No trades yet this season.</p>
+        <p className={s.empty}>
+          No trades yet this season. <Link href="/lab/app/swami">Check a trade in Swami</Link>
+        </p>
       )}
     </Shell>
   );

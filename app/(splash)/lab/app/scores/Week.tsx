@@ -86,7 +86,7 @@ function YourGame({ g, wv, lore }: { g: GameView; wv: WeekView; lore: Awaited<Re
       <div className={x.heroFoot}>
         {!final ? (
           <a className={x.heroBtn} href={sleeperLink('lineup')} target="_blank" rel="noopener noreferrer">
-            Set Lineup
+            Open Sleeper
           </a>
         ) : null}
         <Link className={`${x.heroBtn} ${x.heroBtnSolid}`} href={`/lab/app/matchup?id=${g.id}&week=${wv.week}`}>

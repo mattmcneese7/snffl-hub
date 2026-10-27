@@ -6,7 +6,8 @@ import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { getTrophyBoard, type Award } from '@/lib/trophies';
 import { getV4Data } from '../data';
 import Shell, { SectionHead } from '../Shell';
-import AwardIcon, { AwardChip } from '../modules/AwardIcon';
+import { AwardArt, AwardChip } from '../modules/AwardIcon';
+import AwardTile from '../modules/AwardTile';
 import { managerOf, teamOf } from '../modules/shared';
 import m from '../modules/modules.module.css';
 import s from '../v4.module.css';
@@ -45,18 +46,9 @@ export default async function V4Trophies() {
           <div className={s.title}>
             <h2>Week {board.latestWeek} Hardware</h2>
           </div>
-          <div className={t.latest}>
+          <div className={s.list}>
             {board.latest.map((a) => (
-              <div key={a.kind} className={`${m.hwTile} ${t.tile} ${a.rosterId === mine ? m.mine : ''}`}>
-                <AwardIcon kind={a.kind} size={40} />
-                <small>{TROPHY_NAMES[a.kind].name}</small>
-                <span className={m.hwWho}>
-                  <b>{teamOf(a.rosterId)}</b>
-                  <span>
-                    {managerOf(a.rosterId)} &middot; {a.detail}
-                  </span>
-                </span>
-              </div>
+              <AwardTile key={a.kind} kind={a.kind} rosterId={a.rosterId} detail={a.detail} mine={a.rosterId === mine} row />
             ))}
           </div>
         </>
@@ -73,7 +65,7 @@ export default async function V4Trophies() {
           const most = [...tally.entries()].sort((a, b) => b[1] - a[1])[0];
           return (
             <div key={k} className={t.award}>
-              <AwardIcon kind={k} size={40} />
+              <AwardArt kind={k} size={48} />
               <span className={t.awardText}>
                 <b>{TROPHY_NAMES[k].name}</b>
                 <small>{TROPHY_NAMES[k].blurb}</small>

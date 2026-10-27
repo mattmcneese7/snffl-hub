@@ -1,11 +1,11 @@
-.sub { margin: 0; padding: 14px 0 2px; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); }
+.sub { margin: 0; padding: 14px 0 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); }
 .sub + * { border-top: 0 !important; }
-.chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
-.team { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid var(--hair); }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.team { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid var(--hair); }
 .team:first-child { border-top: 0; }
-.best { margin-top: 2px; font-size: 13px; font-weight: 600; color: var(--deep); }
+.best { margin-top: 4px; font-size: 13px; font-weight: 600; color: var(--deep); }
 .luckHead, .luck { display: grid; grid-template-columns: minmax(0, 1fr) 44px 52px 52px; gap: 8px; align-items: center; }
-.luckHead { padding: 12px 0 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); }
+.luckHead { padding: 12px 0 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); }
 .luckHead span:not(:first-child), .luck > span:not(:first-child), .luck > b { text-align: right; font-variant-numeric: tabular-nums; }
-.luck { padding: 10px 0; border-top: 1px solid var(--hair); font-size: 13px; }
+.luck { padding: 12px 0; border-top: 1px solid var(--hair); font-size: 13px; }
 .luck > b { font-size: 15px; font-weight: 800; }

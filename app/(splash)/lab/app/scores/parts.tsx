@@ -34,7 +34,7 @@ export const managerOf = (rosterId: number, fallback = '') => firstNameOf(roster
 
 export function LiveChip({ text = 'Live' }: { text?: string }) {
   return (
-    <span className={s.liveChip} style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+    <span className={s.liveChip} style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
       <i className={s.liveDot} aria-hidden />
       {text}
     </span>
@@ -62,7 +62,7 @@ export function LoreChips({ lore, max = 2 }: { lore: Lore; max?: number }) {
   return (
     <span className={x.chipRow}>
       {lore.slice(0, max).map((l) => (
-        <span key={l.text} className={`${x.chip} ${l.hot ? x.hot : /win streak|Manager/.test(l.text) ? x.good : ''}`}>
+        <span key={l.text} className={`${s.tag} ${l.hot ? s.tagBad : /win streak|Manager/.test(l.text) ? s.tagGood : ''}`}>
           {l.text.replace(' | ', ' ')}
         </span>
       ))}
@@ -146,7 +146,7 @@ export function GameCard({
               Margin <b>{margin.toFixed(2)}</b>
             </>
           )}
-          {close ? <span className={`${x.chip} ${x.close}`}>CLOSE</span> : null}
+          {close ? <span className={`${s.tag} ${s.tagWarn}`}>CLOSE</span> : null}
         </span>
         <span>{final ? 'Final' : preview ? 'Preview' : g.foot}</span>
       </span>
@@ -176,7 +176,7 @@ function Say({ v, mine }: { v: Verdict; mine: boolean }) {
           <b>{t?.teamName ?? v.manager}</b>
           <small>{mine ? `${v.manager} · You` : v.manager}</small>
         </span>
-        <span className={`${x.chip} ${HOT.has(v.kind) ? x.hot : GOOD.has(v.kind) ? x.good : ''}`}>{LABELS[v.kind]}</span>
+        <span className={`${s.tag} ${HOT.has(v.kind) ? s.tagBad : GOOD.has(v.kind) ? s.tagGood : ''}`}>{LABELS[v.kind]}</span>
       </span>
       <p>{v.saying.replace(/(\w)'(\w)/g, '$1’$2')}</p>
     </div>
@@ -303,7 +303,7 @@ export function SlateTile({
         ) : (
           <span />
         )}
-        {starters ? <span className={x.chip}>{starters} league {starters === 1 ? 'starter' : 'starters'}</span> : null}
+        {starters ? <span className={s.tag}>{starters} league {starters === 1 ? 'starter' : 'starters'}</span> : null}
         {yours.length ? (
           <span className={x.ntYours} style={{ flexBasis: '100%' }}>
             Yours {yours.map((n) => <b key={n}>{n}</b>)}
@@ -343,14 +343,16 @@ export function Slate({
     else groups.push({ head, list: [g] });
   }
   return (
-    <div className={x.games}>
+    <div className={x.slate}>
       {groups.map((grp) => (
-        <div key={grp.head} className={x.games}>
-          {grp.head !== 'Live' && grp.head !== 'Final' ? <span className={x.dayHead}>{grp.head}</span> : null}
-          {grp.list.map((g) => {
-            const st = startersIn(leagueGames, [g.away.abbr, g.home.abbr], mine);
-            return <SlateTile key={g.id} game={g} lines={lines[g.id]} starters={st.count} yours={st.yours} lineBook={lineBook} week={week} />;
-          })}
+        <div key={grp.head} className={x.slate}>
+          <span className={x.dayHead}>{grp.head}</span>
+          <div className={x.games}>
+            {grp.list.map((g) => {
+              const st = startersIn(leagueGames, [g.away.abbr, g.home.abbr], mine);
+              return <SlateTile key={g.id} game={g} lines={lines[g.id]} starters={st.count} yours={st.yours} lineBook={lineBook} week={week} />;
+            })}
+          </div>
         </div>
       ))}
     </div>

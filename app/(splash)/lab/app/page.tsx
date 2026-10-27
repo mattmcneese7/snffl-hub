@@ -20,6 +20,7 @@ import Moments, { type MomentKind } from './Moments';
 import ChugCounts from './modules/ChugCounts';
 import FeedDigest from './modules/FeedDigest';
 import FilmTile from './modules/FilmTile';
+import ChugNowCard from './modules/ChugNow';
 import Hardware from './modules/Hardware';
 import LatestTrade from './modules/LatestTrade';
 import NflScores from './modules/NflScores';
@@ -62,37 +63,6 @@ function GameRow({ g, week, live }: { g: GameView; week: number; live: boolean }
 }
 
 /**
- * The chug: whoever finished last that week, and whether they have paid.
- * Shown while the chug is owed.
- */
-function ChugCard({ rosterId, week }: { rosterId: number; week: number }) {
-  const t = teamByRoster(rosterId);
-  return (
-    <section aria-label={`Week ${week} chug`}>
-      <div className={s.title}>
-        <h2>The Chug</h2>
-        <Link href="/lab/app/chug">Chug Meter</Link>
-      </div>
-      <div className={s.chugCard}>
-        <span className={s.av} style={{ width: 40, height: 40, ['--mgr' as string]: t?.colors?.primary }}>
-          {t?.avatarUrl ? <img src={t.avatarUrl} alt="" /> : null}
-        </span>
-        <span className={s.who}>
-          <b>{t?.teamName ?? ''}</b>
-          <small>
-            {firstNameOf(rosterId) ?? t?.manager} &middot; Week {week} Shart
-          </small>
-        </span>
-        <span className={s.chugDue}>
-          <b>Owes a chug</b>
-          <small>Due Sunday 12:00 PM</small>
-        </span>
-      </div>
-    </section>
-  );
-}
-
-/**
  * Home, the front page. The same modules every week, in an order set by the
  * moment (see schedule.ts): the awards and the chug after a final, the Rag
  * midweek, Squirt's reads on a game day morning, every matchup once games
@@ -106,7 +76,6 @@ export default async function V4Home({ searchParams }: { searchParams: Promise<{
   const moment = momentOf(data.state, data.games.some((g) => g.inPlay), sp.at);
   const shart = board?.latest.find((a) => a.kind === 'shart');
   const chug = latestChug(data.week);
-  const paid = Boolean(shart && chug && chug.week === shart.week);
   const won = data.state === 'final' && data.mine?.a.mark === 'W';
   const sharted = mine != null && shart?.rosterId === mine;
   const forced = sp.moment === 'win' || sp.moment === 'flush' ? (sp.moment as MomentKind) : null;
@@ -160,10 +129,10 @@ export default async function V4Home({ searchParams }: { searchParams: Promise<{
           </div>
         </article>
       ) : null,
-    hardware: board ? <Hardware board={board} /> : null,
-    // Owed until the film is in; once paid, the Film tile carries it.
-    chug: shart?.week != null && !paid ? <ChugCard rosterId={shart.rosterId} week={shart.week} /> : null,
-    film: <FilmTile week={data.week} />,
+    hardware: board ? <Hardware board={board} mine={mine} /> : null,
+    // The chug lives in one place: who owes, by when, and the film once paid.
+    chug: <ChugNowCard board={board} week={data.week} />,
+    film: <FilmTile week={data.week} withChug={false} />,
     scorers: <TopScorers week={data.week} mine={mine} />,
     matchups: (
       <>
@@ -185,7 +154,7 @@ export default async function V4Home({ searchParams }: { searchParams: Promise<{
     nfl: <NflScores week={data.week} />,
     squirt: <SquirtSays week={data.week} mine={mine} />,
     trade: <LatestTrade mine={mine} />,
-    feed: <FeedDigest mine={mine} />,
+    feed: <FeedDigest mine={mine} week={data.week} games={data.games} />,
     chugs: <ChugCounts mine={mine} />,
   };
 

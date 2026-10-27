@@ -23,3 +23,13 @@ export function SelectField({ label, children, ...rest }: SelectHTMLAttributes<H
     </label>
   );
 }
+
+/** A 4-digit PIN, 44 tall, corners 10, digits hidden; its label is the caps label above. */
+export function PinField({ label, ...rest }: InputHTMLAttributes<HTMLInputElement> & { label: string }) {
+  return (
+    <label className={f.wrap}>
+      <span className={u.label}>{label}</span>
+      <input type="password" inputMode="numeric" pattern="[0-9]{4}" maxLength={4} autoComplete="off" enterKeyHint="go" className={`${f.field} ${f.pin}`} {...rest} />
+    </label>
+  );
+}

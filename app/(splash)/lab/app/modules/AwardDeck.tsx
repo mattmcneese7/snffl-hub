@@ -48,7 +48,7 @@ export default function AwardDeck({ awards }: { awards: DeckAward[] }) {
       <div className={ui.deckSide}>
         <div ref={track} className={ui.deckTrack} role="group" aria-roledescription="carousel" aria-label="This week's awards">
           {awards.map((x, i) => (
-            <Link key={x.kind} href={`/lab/app/managers/${x.rosterId}`} className={`${ui.deckSlide} ${x.mine ? ui.deckMine : ''}`} aria-roledescription="slide" aria-label={`${i + 1} of ${awards.length}: ${x.name}, ${x.team}`}>
+            <Link key={`${x.kind}-${x.rosterId}`} href={`/lab/app/managers/${x.rosterId}`} className={`${ui.deckSlide} ${x.mine ? ui.deckMine : ''}`} aria-roledescription="slide" aria-label={`${i + 1} of ${awards.length}: ${x.name}, ${x.team}`}>
               <span className={`${ui.label} ${x.kind === 'motw' ? ui.labelGold : ''}`}>{x.name}</span>
               <span className={ui.title}>{x.team}</span>
               <span className={ui.sub}>

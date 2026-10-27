@@ -16,6 +16,7 @@ export const dynamic = 'force-dynamic';
 
 const PAGES: [string, string][] = [
   ['Bracket', '/lab/app/league/bracket'],
+  ["Pick'em", '/lab/app/pickem'],
   ['Feed', '/lab/app/feed'],
   ['Managers', '/lab/app/managers'],
   ['Trades', '/lab/app/trades'],

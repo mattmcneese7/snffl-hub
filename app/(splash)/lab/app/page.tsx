@@ -16,7 +16,7 @@ import { momentOf, orderOf, type ModuleKey } from './schedule';
 import ChugPop from './ChugPop';
 import Moments, { type MomentKind } from './Moments';
 import Hardware from './modules/Hardware';
-import ChugRow from './modules/ChugRow';
+import PickemRow from './modules/PickemRow';
 import StoryPill from './modules/StoryPill';
 import { latestWeekStory } from '@/lib/week-story';
 import Shell, { HomeHead } from './Shell';
@@ -82,7 +82,7 @@ export default async function V4Home({ searchParams }: { searchParams: Promise<{
       : null;
   const modules: Record<ModuleKey, ReactNode> = {
     awards: board ? <Hardware board={board} mine={mine} /> : null,
-    chug: <ChugRow board={board} week={data.week} moment={moment} />,
+    pickem: <PickemRow state={data.state} week={data.week} mine={mine} />,
     rag: ragProps ? <RagCard {...ragProps} /> : null,
     ragCompact: ragProps ? <RagCard {...ragProps} compact /> : null,
     matchups: (

@@ -1,0 +1,82 @@
+/* The Feed in 4.0: stories, movement, your week, replays, what mattered, history. */
+
+/* Stories: a ring per manager, lit when his players have clips */
+.bubble { display: grid; justify-items: center; gap: 6px; width: 64px; }
+.ring { display: grid; place-items: center; width: 60px; height: 60px; padding: 0; border: 0; border-radius: 50%; background: var(--hair); cursor: pointer; }
+.ring:disabled { cursor: default; opacity: 0.6; }
+.ringLit { background: conic-gradient(#2d4c9c, #8fa8f5, #2d4c9c); }
+.ringAv { display: block; width: 54px; height: 54px; border-radius: 50%; overflow: hidden; background: var(--powder-soft); box-shadow: 0 0 0 2.5px var(--paper); }
+.ringAv img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ringAv b { display: grid; place-items: center; height: 100%; font-size: 15px; font-weight: 800; color: var(--deep); }
+.bubbleName { max-width: 64px; font-size: 11px; font-weight: 600; color: var(--ink-2); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* The story viewer: full screen, dark in both themes, like every stories player */
+.viewer { position: fixed; inset: 0; z-index: 70; display: grid; grid-template-rows: auto auto minmax(0, 1fr); padding-top: max(10px, env(safe-area-inset-top, 0px)); padding-bottom: env(safe-area-inset-bottom, 0px); background: #0d0f13; color: #fff; }
+.progress { display: flex; gap: 4px; width: 100%; max-width: 430px; margin: 0 auto; padding: 0 14px; box-sizing: border-box; }
+.progress i { flex: 1; height: 3px; border-radius: 2px; background: rgba(255, 255, 255, 0.28); }
+.progress .done, .progress .now { background: #fff; }
+.vHead { display: flex; align-items: center; gap: 10px; width: 100%; max-width: 430px; margin: 0 auto; padding: 10px 8px 6px 14px; box-sizing: border-box; }
+.vAv { width: 32px; height: 32px; border-radius: 50%; overflow: hidden; background: #22304f; flex: none; }
+.vAv img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.vWho { display: grid; min-width: 0; flex: 1; }
+.vWho b { font-size: 15px; font-weight: 800; }
+.vWho span { font-size: 11px; color: rgba(255, 255, 255, 0.75); }
+.vClose { display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%; background: rgba(255, 255, 255, 0.12); color: #fff; cursor: pointer; }
+.vClose svg { width: 22px; height: 22px; }
+.vBody { position: relative; display: grid; align-items: center; min-height: 0; overflow-y: auto; }
+.tap { position: absolute; top: 0; bottom: 0; z-index: 0; padding: 0; border: 0; background: transparent; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.tapBack { left: 0; width: 33%; }
+.tapNext { right: 0; width: 67%; }
+.vSlide { position: relative; z-index: 1; display: grid; gap: 12px; width: 100%; max-width: 430px; margin: 0 auto; padding: 8px 14px 24px; box-sizing: border-box; pointer-events: none; min-width: 0; }
+.vSlide a { pointer-events: auto; }
+.vStill { display: block; aspect-ratio: 16 / 9; max-width: 100%; overflow: hidden; border-radius: 20px; background: #22304f; }
+.vStill img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.vTitle { margin: 0; font-size: 18px; font-weight: 800; line-height: 1.2; text-wrap: balance; }
+.vTags { display: flex; flex-wrap: wrap; gap: 6px; }
+.vTag { display: inline-grid; place-items: center; height: 22px; padding: 0 8px; border-radius: 6px; background: rgba(255, 255, 255, 0.14); font-size: 11px; font-weight: 800; letter-spacing: 0.03em; }
+.vTagBad { background: #f08a7e; color: #141518; }
+.yt { justify-self: start; display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px 0 12px; border-radius: 999px; background: #fff; color: #141518; font-size: 15px; font-weight: 600; text-decoration: none; }
+.yt svg { width: 20px; height: 20px; }
+
+/* The week in numbers card, the last slide */
+.wcard { justify-self: stretch; display: grid; gap: 12px; margin: 0 14px; padding: 18px 16px; border-radius: 20px; background: #1a1d24; pointer-events: none; }
+.wcard a { pointer-events: auto; }
+.wcard small { font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #8fa8f5; }
+.wcard h2 { margin: 0; font-size: 24px; font-weight: 800; line-height: 1.1; letter-spacing: -0.01em; overflow-wrap: anywhere; }
+.wcardScore { margin: 0; font-size: 18px; font-weight: 600; color: rgba(255, 255, 255, 0.85); font-variant-numeric: tabular-nums; }
+.wcardP { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 12px; align-items: center; padding: 10px; border-radius: 14px; background: rgba(255, 255, 255, 0.06); }
+.wcardP span:first-child { width: 48px; height: 48px; border-radius: 50%; overflow: hidden; background: #22304f; }
+.wcardP img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+.wcardP b { display: block; font-size: 15px; font-weight: 800; }
+.wcardP em { font-style: normal; font-size: 13px; color: rgba(255, 255, 255, 0.75); }
+.wcardLines { display: grid; gap: 6px; margin: 0; }
+.wcardLines div { display: flex; justify-content: space-between; font-size: 15px; }
+.wcardLines dt { color: rgba(255, 255, 255, 0.75); }
+.wcardLines dd { margin: 0; font-weight: 800; font-variant-numeric: tabular-nums; }
+.wcardGo { justify-self: start; font-size: 15px; font-weight: 600; color: #8fa8f5; text-decoration: none; }
+
+/* What mattered: ranked */
+.ranked { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; gap: 10px; align-items: start; padding: 12px 0; border-top: 1px solid var(--hair); }
+.ranked:first-child { border-top: 0; }
+.rankN { font: italic 900 15px/1.35 var(--brand); color: var(--deep); text-align: center; }
+
+/* Names in the prose link to the manager */
+.name { color: var(--deep); font-weight: 600; text-decoration: none; }
+.out { justify-self: start; font-size: 13px; font-weight: 600; color: var(--deep); text-decoration: none; }
+.tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
+
+/* History: folded record with What, Who, When filters */
+.toggle { display: grid; place-items: center; width: 100%; height: 44px; margin: 0; border: 0; border-top: 1px solid var(--hair); background: none; color: var(--deep); font: 600 15px/1 var(--ui); cursor: pointer; }
+.toggle:first-child { border-top: 0; }
+.filters { display: grid; gap: 10px; padding: 12px 0 4px; border-top: 1px solid var(--hair); }
+.filterRow { display: grid; gap: 6px; }
+.filterRow > span { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); }
+.fchips { display: flex; gap: 6px; margin: 0 -14px; padding: 0 14px 2px; overflow-x: auto; scrollbar-width: none; }
+.fchips::-webkit-scrollbar { display: none; }
+.fchip { flex: none; display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 0; border-radius: 999px; background: var(--paper); box-shadow: inset 0 0 0 1px var(--hair); color: var(--ink-2); font: 600 13px/1 var(--ui); cursor: pointer; }
+.fchipOn { background: var(--deep); color: #fff; box-shadow: none; }
+@media (prefers-color-scheme: dark) { .fchipOn { color: #111318; } }
+.fcount { font-size: 11px; font-weight: 800; opacity: 0.75; font-variant-numeric: tabular-nums; }
+.dayHead { display: flex; justify-content: space-between; margin: 0; padding: 14px 0 2px; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); }
+.nothing { display: grid; gap: 8px; justify-items: start; padding: 16px 0; font-size: 15px; color: var(--ink-2); }
+.clear { padding: 0; border: 0; background: none; color: var(--deep); font: 600 15px/1 var(--ui); cursor: pointer; }

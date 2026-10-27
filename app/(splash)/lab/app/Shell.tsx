@@ -71,7 +71,7 @@ export function SectionHead({ icon, word, week, mine }: { icon: MsName; word: st
 
 const TABS: { key: string; label: string; icon: MsName; href: string }[] = [
   { key: 'home', label: 'Home', icon: 'home', href: '/lab/app' },
-  { key: 'scores', label: 'Scores', icon: 'football', href: '/lab/app/matchup' },
+  { key: 'scores', label: 'Scores', icon: 'football', href: '/lab/app/scores' },
   { key: 'rag', label: 'The Rag', icon: 'rag', href: '/lab/app/rag' },
   { key: 'league', label: 'League', icon: 'league', href: '/lab/app/league' },
   { key: 'swami', label: 'Swami', icon: 'swami', href: '/lab/app/swami' },

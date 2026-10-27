@@ -1,0 +1,14 @@
+.latest { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tile { width: auto; min-width: 0; }
+.award { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: start; padding: 12px 0; border-top: 1px solid var(--hair); }
+.award:first-child { border-top: 0; }
+.awardText { display: grid; gap: 4px; min-width: 0; }
+.awardText > b { font-size: 15px; font-weight: 800; }
+.awardText small { font-size: 13px; color: var(--ink-2); }
+.history { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
+.won { display: inline-flex; gap: 4px; align-items: center; height: 24px; padding: 0 8px; border-radius: 999px; background: var(--paper); box-shadow: inset 0 0 0 1px var(--hair); font-size: 13px; font-weight: 600; color: var(--ink-2); white-space: nowrap; }
+.won b { font-weight: 800; color: var(--ink); }
+.most { font-size: 11px !important; font-weight: 600; color: var(--ink-3) !important; }
+.shelf { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: start; padding: 12px 0; border-top: 1px solid var(--hair); }
+.shelf:first-child { border-top: 0; }
+.pieces { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }

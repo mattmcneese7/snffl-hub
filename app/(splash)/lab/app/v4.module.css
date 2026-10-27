@@ -285,3 +285,57 @@
 /* 3.0 widgets reused inside v4 (trade checker, waivers): give them the card grid */
 .legacy { display: grid; gap: 12px; }
 .legacy > * { width: auto !important; max-width: none !important; }
+
+/* Profile */
+.logRow { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid var(--hair); }
+.logRow:first-child { border-top: 0; }
+.logWk { font: italic 900 15px/1 var(--brand); color: var(--deep); text-align: center; }
+.newsRow { display: grid; gap: 3px; padding: 12px 0; border-top: 1px solid var(--hair); color: inherit; text-decoration: none; }
+.newsRow:first-child { border-top: 0; }
+.newsRow b { font-size: 15px; font-weight: 600; line-height: 1.25; }
+.newsRow span { font-size: 13px; color: var(--ink-2); }
+.newsRow small { font-size: 11px; color: var(--ink-3); }
+
+/* Bracket */
+.round { display: grid; gap: 8px; }
+.round > small { padding: 0 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); }
+.bGame { display: grid; gap: 6px; padding: 12px 14px; border-radius: 20px; background: var(--card); box-shadow: var(--shadow); }
+.bSide { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 10px; align-items: center; }
+.bSeed { font: italic 900 15px/1 var(--brand); color: var(--deep); text-align: center; }
+.bSide .who b { font-size: 15px; }
+.bOut .who b { color: var(--ink-3); font-weight: 400; }
+.bTbd .who b { color: var(--ink-3); font-weight: 400; font-style: italic; }
+.champ { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: center; padding: 14px 16px; border-radius: 20px; background: #2d4c9c; color: #fff; }
+.champ small { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(255,255,255,.85); }
+.champ b { display: block; font-size: 18px; font-weight: 800; }
+
+/* Rules */
+.rules { display: grid; margin: 0; padding: 0; list-style: none; }
+.rules li { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid var(--hair); font-size: 15px; }
+.rules li:first-child { border-top: 0; }
+.rules li small { display: block; font-size: 11px; color: var(--ink-3); }
+.rules li b { font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.rNeg { color: var(--loss); }
+.rZero { color: var(--ink-3); }
+.subH { margin: 6px 0 0; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); }
+.slots { display: flex; flex-wrap: wrap; gap: 5px; }
+.numbered { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; counter-reset: r; }
+.numbered li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 8px; font-size: 15px; line-height: 1.45; counter-increment: r; }
+.numbered li::before { content: counter(r); font: italic 900 15px/1.45 var(--brand); color: var(--deep); text-align: center; }
+.bLabel { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--deep); }
+.pwRow { display: grid; grid-template-columns: 20px 28px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid var(--hair); }
+.pwRow:first-child { border-top: 0; }
+.pwMove { font-size: 13px; font-weight: 600; color: var(--ink-3); white-space: nowrap; }
+
+/* Home: the chug */
+.chugCard { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 12px; align-items: center; margin-top: 8px; padding: 12px 14px; border-radius: 20px; background: var(--card); box-shadow: var(--shadow); }
+.chugDue { display: grid; justify-items: end; text-align: right; }
+.chugDue b { font-size: 13px; font-weight: 800; color: var(--loss); }
+.chugDue small { font-size: 11px; color: var(--ink-3); }
+.rowLink { color: inherit; text-decoration: none; }
+/* The page behind the app follows the theme too, so overscroll never flashes light. */
+:global(html):has(.root), :global(body):has(.root) { background: #f7f6f2; }
+@media (prefers-color-scheme: dark) { :global(html):has(.root), :global(body):has(.root) { background: #111318; } }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.heldName { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+.held { display: inline-flex; }

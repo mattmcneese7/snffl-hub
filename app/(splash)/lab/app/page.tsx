@@ -7,7 +7,23 @@ import { teams } from '@/lib/league';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { publishedWeeks, readIssue } from '@/lib/rag';
 import { artForArticles, featuredPlayers } from '@/lib/story-images';
+import { Fragment, type ReactNode } from 'react';
+import { firstNameOf } from '@/config/managers';
+import { latestChug } from '@/lib/chug-video';
+import { teamByRoster } from '@/lib/league';
+import { getTrophyBoard } from '@/lib/trophies';
 import { getV4Data, type GameView, type SideView } from './data';
+import { momentOf, orderOf, type ModuleKey } from './schedule';
+import ChugPop from './ChugPop';
+import Moments, { type MomentKind } from './Moments';
+import ChugCounts from './modules/ChugCounts';
+import FeedDigest from './modules/FeedDigest';
+import FilmTile from './modules/FilmTile';
+import Hardware from './modules/Hardware';
+import LatestTrade from './modules/LatestTrade';
+import NflScores from './modules/NflScores';
+import SquirtSays from './modules/SquirtSays';
+import TopScorers from './modules/TopScorers';
 import Shell, { HomeHead } from './Shell';
 import s from './v4.module.css';
 
@@ -45,13 +61,54 @@ function GameRow({ g, week }: { g: GameView; week: number }) {
 }
 
 /**
- * Home, the front page: the Rag leads, then every other matchup as one list.
- * Your own game lives in the score bar, so it is not repeated here.
+ * The chug: whoever finished last that week, and whether they have paid.
+ * Shown while the chug is owed.
  */
-export default async function V4Home() {
+function ChugCard({ rosterId, week }: { rosterId: number; week: number }) {
+  const t = teamByRoster(rosterId);
+  return (
+    <section aria-label={`Week ${week} chug`}>
+      <div className={s.title}>
+        <h2>The Chug</h2>
+        <Link href="/lab/app/chug">Chug Meter</Link>
+      </div>
+      <div className={s.chugCard}>
+        <span className={s.av} style={{ width: 40, height: 40, ['--mgr' as string]: t?.colors?.primary }}>
+          {t?.avatarUrl ? <img src={t.avatarUrl} alt="" /> : null}
+        </span>
+        <span className={s.who}>
+          <b>{t?.teamName ?? ''}</b>
+          <small>
+            {firstNameOf(rosterId) ?? t?.manager} &middot; Week {week} Shart
+          </small>
+        </span>
+        <span className={s.chugDue}>
+          <b>Owes a chug</b>
+          <small>Due Sunday 12:00 PM</small>
+        </span>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Home, the front page. The same modules every week, in an order set by the
+ * moment (see schedule.ts): the awards and the chug after a final, the Rag
+ * midweek, Squirt's reads on a game day morning, every matchup once games
+ * are on. Your own game lives in the score bar, so it is not repeated here.
+ */
+export default async function V4Home({ searchParams }: { searchParams: Promise<{ at?: string; moment?: string }> }) {
+  const sp = await searchParams;
   const jar = await cookies();
   const mine = parseTeam(jar.get(TEAM_COOKIE)?.value);
-  const data = await getV4Data(mine);
+  const [data, board] = await Promise.all([getV4Data(mine), getTrophyBoard().catch(() => null)]);
+  const moment = momentOf(data.state, data.games.some((g) => g.inPlay), sp.at);
+  const shart = board?.latest.find((a) => a.kind === 'shart');
+  const chug = latestChug(data.week);
+  const paid = Boolean(shart && chug && chug.week === shart.week);
+  const won = data.state === 'final' && data.mine?.a.mark === 'W';
+  const sharted = mine != null && shart?.rosterId === mine;
+  const forced = sp.moment === 'win' || sp.moment === 'flush' ? (sp.moment as MomentKind) : null;
 
   const weeks = publishedWeeks();
   const ragWeek = weeks.length ? weeks[weeks.length - 1] : null;
@@ -69,18 +126,17 @@ export default async function V4Home() {
   const leadArt = lead ? art[lead.slug] : undefined;
   const leadSrc = leadArt ? (leadArt.kind === 'photo' ? leadArt.src : leadArt.cutout) : null;
 
-  return (
-    <Shell data={data} active="home">
-      <HomeHead week={data.week} mine={data.myRoster} />
-      {issue && lead ? (
+  const live = moment === 'live';
+  const modules: Record<ModuleKey, ReactNode> = {
+    rag: issue && lead ? (
         <article className={s.rag}>
-          <Link href={`/rag/${issue.week}`} className={s.ragTop} style={{ textDecoration: 'none' }}>
+          <Link href={`/lab/app/rag/${issue.week}`} className={s.ragTop} style={{ textDecoration: 'none' }}>
             <b>The Rag</b>
             <span>
               Week {issue.week} &middot; {CT_DATE.format(new Date(issue.publishedAt))}
             </span>
           </Link>
-          <Link href={`/rag/${issue.week}/${lead.slug}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+          <Link href={`/lab/app/rag/${issue.week}/${lead.slug}`} style={{ color: 'inherit', textDecoration: 'none' }}>
             {leadSrc ? (
               <span className={s.ragArt} style={{ display: 'block' }}>
                 <img src={leadSrc} alt="" />
@@ -95,16 +151,23 @@ export default async function V4Home() {
           </Link>
           <div className={s.ragList}>
             {articles.slice(1, 3).map((a) => (
-              <Link key={a.slug} href={`/rag/${issue.week}/${a.slug}`} className={s.ragRow}>
+              <Link key={a.slug} href={`/lab/app/rag/${issue.week}/${a.slug}`} className={s.ragRow}>
                 <small>{a.category}</small>
                 <b>{a.headline}</b>
               </Link>
             ))}
           </div>
         </article>
-      ) : null}
-      <div className={s.title}>
-        <h2>All Matchups</h2>
+      ) : null,
+    hardware: board ? <Hardware board={board} /> : null,
+    // Owed until the film is in; once paid, the Film tile carries it.
+    chug: shart?.week != null && !paid ? <ChugCard rosterId={shart.rosterId} week={shart.week} /> : null,
+    film: <FilmTile week={data.week} />,
+    scorers: <TopScorers week={data.week} mine={mine} />,
+    matchups: (
+      <>
+        <div className={s.title}>
+        <h2>{live ? 'Live Matchups' : 'All Matchups'}</h2>
         
       </div>
       {data.others.length ? (
@@ -116,6 +179,26 @@ export default async function V4Home() {
       ) : (
         <p className={s.empty}>No matchups for week {data.week} yet.</p>
       )}
+      </>
+    ),
+    nfl: <NflScores week={data.week} />,
+    squirt: <SquirtSays week={data.week} mine={mine} />,
+    trade: <LatestTrade mine={mine} />,
+    feed: <FeedDigest mine={mine} />,
+    chugs: <ChugCounts mine={mine} />,
+  };
+
+  return (
+    <Shell data={data} active="home">
+      <HomeHead week={data.week} mine={data.myRoster} />
+      {orderOf(moment).map((k) => (
+        <Fragment key={k}>{modules[k]}</Fragment>
+      ))}
+      <Moments week={data.week} won={won} sharted={sharted} name={mine != null ? (firstNameOf(mine) ?? null) : null} force={forced} />
+      {chug ? <ChugPop week={chug.week} src={chug.src} who={(() => {
+        const a = board?.all.find((x) => x.kind === 'shart' && x.week === chug.week);
+        return a ? (teamByRoster(a.rosterId)?.teamName ?? null) : null;
+      })()} /> : null}
     </Shell>
   );
 }

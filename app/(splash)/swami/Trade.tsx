@@ -41,7 +41,7 @@ function sortRoster(reads: RosRead[]) {
 }
 
 /** One incoming player: the research row, opening onto his working. */
-function GetsRow({ read }: { read: RosRead }) {
+function GetsRow({ read, root = '' }: { read: RosRead; root?: string }) {
   return (
     <li>
       <details className={s.item}>
@@ -58,7 +58,7 @@ function GetsRow({ read }: { read: RosRead }) {
         </summary>
         <div className={s.detail}>
           <RosWorking read={read} />
-          <Link href={`/players/${read.player.id}`} className={s.go}>
+          <Link href={`${root}/players/${read.player.id}`} className={s.go}>
             Player page
           </Link>
         </div>
@@ -74,13 +74,13 @@ function verdictFor(side: TradeSide, result: TradeEval, which: 'a' | 'b') {
   return { value: 'Even', hot: false };
 }
 
-function SideCard({ side, result, which }: { side: TradeSide; result: TradeEval; which: 'a' | 'b' }) {
+function SideCard({ side, result, which, root = '' }: { side: TradeSide; result: TradeEval; which: 'a' | 'b'; root?: string }) {
   const v = verdictFor(side, result, which);
   const owed = side.rosterChange;
   return (
     <div className={m.side}>
       <div className={m.sideHead}>
-        <Link href={`/managers/${side.rosterId}`} className={m.sideName}>
+        <Link href={`${root}/managers/${side.rosterId}`} className={m.sideName}>
           {side.manager}
           <span className={m.sideTeam}>{side.teamName}</span>
         </Link>
@@ -97,7 +97,7 @@ function SideCard({ side, result, which }: { side: TradeSide; result: TradeEval;
       {side.gets.length ? (
         <ul className={m.sideList}>
           {side.gets.map((r) => (
-            <GetsRow key={r.player.id} read={r} />
+            <GetsRow key={r.player.id} read={r} root={root} />
           ))}
         </ul>
       ) : (
@@ -114,6 +114,8 @@ function SideCard({ side, result, which }: { side: TradeSide; result: TradeEval;
 }
 
 export default async function Trade({ query, mine, base = '/swami' }: { query: SwamiQuery; mine: number | null; base?: string }) {
+  // Inside the 4.0 lab, player and manager links stay in the lab.
+  const root = base.startsWith('/lab/app') ? '/lab/app' : '';
   const [board, deadline] = await Promise.all([
     rosBoard(),
     getLeague()
@@ -190,8 +192,8 @@ export default async function Trade({ query, mine, base = '/swami' }: { query: S
             </div>
 
             <div className={m.sides}>
-              <SideCard side={result.a} result={result} which="a" />
-              <SideCard side={result.b} result={result} which="b" />
+              <SideCard side={result.a} result={result} which="a" root={root} />
+              <SideCard side={result.b} result={result} which="b" root={root} />
             </div>
 
             <details className={m.weeksWrap}>

@@ -1,7 +1,10 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { boxLine } from './boxLine';
+import type { PlayerWeek } from './playerData';
 import s from './v4.module.css';
+import q from './players/p4.module.css';
 
 type Data = {
   id: string;
@@ -18,21 +21,13 @@ type Data = {
   rostered: number | null;
   started: number | null;
   log: { week: number; opp: string; pts: number | null; proj: number | null; line: Record<string, number> }[];
+  week: PlayerWeek | null;
 };
+const TONE = { soft: q.good, even: q.neutral, hard: q.bad } as const;
+const LABEL = { soft: 'Soft', even: 'Even', hard: 'Hard' } as const;
 
 const EASE = 'cubic-bezier(0.32, 0.72, 0, 1)';
 const logo = (team: string) => `https://a.espncdn.com/i/teamlogos/nfl/500/${team === 'WAS' ? 'wsh' : team.toLowerCase()}.png`;
-
-/** The box score line, as Sleeper prints it. */
-function boxLine(pos: string, l: Record<string, number>): string {
-  const out: string[] = [];
-  const n = (k: string) => l[k] ?? 0;
-  if (pos === 'QB' && n('pass_att')) out.push(`${n('pass_cmp')}/${n('pass_att')} CMP`, `${n('pass_yd')} YD`, ...(n('pass_td') ? [`${n('pass_td')} TD`] : []), ...(n('pass_int') ? [`${n('pass_int')} INT`] : []));
-  if (n('rush_att')) out.push(`${n('rush_att')} CAR`, `${n('rush_yd')} YD`, ...(n('rush_td') ? [`${n('rush_td')} TD`] : []));
-  if (n('rec_tgt') || n('rec')) out.push(`${n('rec')}/${n('rec_tgt')} REC`, `${n('rec_yd')} YD`, ...(n('rec_td') ? [`${n('rec_td')} TD`] : []));
-  if (pos === 'K') out.push(`${n('fgm')}/${n('fga')} FG`, `${n('xpm')}/${n('xpa')} XP`);
-  return out.join(', ');
-}
 
 /**
  * The player sheet. Any element with data-player opens it, so server pages
@@ -127,7 +122,34 @@ export default function PlayerSheet() {
                 <span>{boxLine(data.position, last.line)}</span>
               </div>
             ) : null}
-            {next ? (
+            {data.week?.game && data.week.game.state !== 'post' ? (
+              <div className={s.shBlock}>
+                <small>
+                  Week {data.week.week}
+                  {` \u00b7 ${data.week.game.home ? 'vs' : '@'} ${data.week.game.opp} \u00b7 ${data.week.game.state === 'pre' ? 'Proj' : data.week.game.status}`}
+                </small>
+                <span className={s.shBig}>
+                  <b>{data.week.outlook.adjusted.toFixed(2)}</b>
+                  <span>
+                    Range {data.week.outlook.floor.toFixed(1)} to {data.week.outlook.ceiling.toFixed(1)}
+                  </span>
+                </span>
+                {data.week.outlook.matchup ? (
+                  <span className={q.chips}>
+                    <span className={`${q.chip} ${TONE[data.week.outlook.matchup.label]}`}>
+                      Matchup <b>{LABEL[data.week.outlook.matchup.label]}</b>
+                    </span>
+                    {data.week.cells
+                      .filter((c) => ['Implied total', 'Spread', 'Total', 'Moneyline'].includes(c.label))
+                      .map((c) => (
+                        <span key={c.label} className={q.chip}>
+                          {c.label} <b>{c.value}</b>
+                        </span>
+                      ))}
+                  </span>
+                ) : null}
+              </div>
+            ) : next ? (
               <div className={s.shBlock}>
                 <small>Week {next.week} &middot; {next.opp}</small>
                 <span className={s.shBig}>
@@ -135,6 +157,13 @@ export default function PlayerSheet() {
                   <span>Proj</span>
                 </span>
               </div>
+            ) : null}
+            {data.week?.news[0] ? (
+              <a className={s.shBlock} href={data.week.news[0].url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                <small>Latest news</small>
+                <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--ink)', lineHeight: 1.25 }}>{data.week.news[0].headline}</span>
+                <span style={{ fontSize: 11, color: 'var(--ink-3)' }}>{data.week.news[0].source}</span>
+              </a>
             ) : null}
             <div className={s.shBlock}>
               <small>Season</small>
@@ -182,7 +211,7 @@ export default function PlayerSheet() {
                 <span>{data.bio.join(' · ')}</span>
               </div>
             ) : null}
-            <a className={s.shLink} href={`/players/${data.id}`}>
+            <a className={s.shLink} href={`/lab/app/players/${data.id}`}>
               Full profile
             </a>
           </>

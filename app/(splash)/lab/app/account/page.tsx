@@ -70,8 +70,8 @@ export default async function V4Account() {
       <section className={s.card}>
         <h3>More</h3>
         <div className={s.chips}>
-          <Link href="/my-team" className={s.chipA}>My Team page</Link>
-          <Link href="/rules" className={s.chipA}>League rules</Link>
+          <Link href="/lab/app/my-team" className={s.chipA}>My Team</Link>
+          <Link href="/lab/app/rules" className={s.chipA}>League rules</Link>
           <Link href="/join" className={s.chipA}>Invite someone</Link>
           <Link href="/" className={s.chipA}>Splash 3.0</Link>
         </div>

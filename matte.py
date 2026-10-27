@@ -4,7 +4,7 @@ Reads jobs.json, writes out/: transparent stills (PNG master, WebP at app
 sizes) and, per clip, a transparent WebM (VP9 alpha, Chrome and Android),
 a transparent MOV (HEVC alpha, Safari and iPhone) and a poster frame.
 """
-import glob, json, os, subprocess, sys, time, urllib.request
+import glob, json, os, subprocess, time
 import numpy as np
 from PIL import Image
 import imageio_ffmpeg
@@ -24,7 +24,8 @@ def ff(*args):
 
 
 def fetch(url, path):
-    urllib.request.urlretrieve(url, path)
+    # The OpenArt CDN refuses Python's default client, so download with curl.
+    subprocess.run(["curl", "-fsSL", "--retry", "3", "-o", path, url], check=True)
     return path
 
 

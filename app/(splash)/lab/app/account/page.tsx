@@ -5,6 +5,8 @@ import { getStandings, teams } from '@/lib/league';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { bookFrom } from '../../../lib/odds-books';
 import Alerts from './Alerts';
+import VersionTap from './VersionTap';
+import l from '../modules/layout.module.css';
 import Books from './Books';
 import TeamPick from './TeamPick';
 import { getV4Data } from '../data';
@@ -80,6 +82,10 @@ export default async function V4Account() {
           <Row href="/lab/app/join" title="Invite Someone" />
         </List>
       </Section>
+      {/* Seven quick taps open every version this app has been (the easter egg that lived at the foot of v3's More). */}
+      <p className={`${ui.sub} ${l.note}`}>
+        <VersionTap>Splash 4.0</VersionTap>
+      </p>
     </Shell>
   );
 }

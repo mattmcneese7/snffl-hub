@@ -8,6 +8,7 @@ import Tracker from './nav/Tracker';
 
 export { Drop, TabBar, TopBar, type Back };
 import ScoreBar from './ScoreBar';
+import ScorePop from './live/ScorePop';
 import PlayerSheet from './PlayerSheet';
 import { LiveStart } from './live/Live';
 import SquirtLive from './squirt/SquirtLive';
@@ -105,6 +106,7 @@ export default function Shell({ data, active, children, barDock }: { data: V4Dat
       <Wallpaper />
       <main className={f.page}>{children}</main>
       <div className={f.dock}>
+        {mine && data.state === 'live' ? <ScorePop week={data.week} sides={[mine.a, mine.b].map((x) => ({ team: x.team, starters: x.starters ?? [] }))} /> : null}
         {mine ? (
           <ScoreBar week={data.week} state={data.state} rows={[mine.a, mine.b]} href="/lab/app/matchup" dockTo={barDock} />
         ) : (

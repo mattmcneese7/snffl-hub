@@ -43,6 +43,8 @@ export type SideView = {
   lost: boolean;
   /** Labeled detail lines for the open bar. */
   lines: string[];
+  /** Starters by Sleeper id with K. Cousins names, for the bar's play pop-up. */
+  starters?: { id: string; name: string }[];
 };
 
 export type GameView = { id: number; a: SideView; b: SideView; foot: string };
@@ -101,6 +103,7 @@ function side(s: LiveSide, other: LiveSide, state: BarState): SideView {
     mark: final ? (s.points > other.points ? 'W' : s.points < other.points ? 'L' : 'T') : `${Math.round(p * 100)}%`,
     lost: final && s.points < other.points,
     lines: lines.filter(Boolean),
+    starters: s.lineup.map((x) => ({ id: x.id, name: shortName(x.name, x.position, x.team) })),
   };
 }
 

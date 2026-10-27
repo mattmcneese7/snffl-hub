@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { ESPN_CUTOUT, ESPN_TEAM_LOGO } from '@/lib/espn';
@@ -12,12 +13,14 @@ import { getV4Data, sleeperWinProb, type GameView } from '../data';
 import Shell, { SectionHead } from '../Shell';
 import { LivePoints, LiveStart } from '../live/Live';
 import { venueChips } from '../nfl/venue';
+import MatchupMoments from '../moments/MatchupMoments';
+import { SkCard } from '../Skeleton';
 import { getGameExtras } from '@/lib/gameday';
 import { kickoffText, quarter, record } from '../scores/format';
 import type { NflGame } from '@/lib/gameday';
 import m from './matchup.module.css';
 import { weekView } from '../scores/weekData';
-import { Avatar, Card, Chips, Crest, Drawer, Duel, DuelPlayer, DuelRow, Empty, Face, Hero, Label, List, LiveTag, Meter, Pair, Row, Section, Tag, Ticket, ui } from '../ui';
+import { Avatar, Card, Chips, Crest, Drawer, Duel, DuelPlayer, DuelRow, Empty, Face, Hero, Label, List, LiveTag, Meter, Pair, Row, Section, Tag, Ticket, ui, Seg } from '../ui';
 
 export const metadata: Metadata = { title: { absolute: 'Matchup, Splash 4.0' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -264,7 +267,7 @@ async function lastMeeting(week: number, a: number, b: number): Promise<string |
  * the range), the bench, Top Performers, the Swami's read, head to head,
  * the next kickoff, the NFL games in play, and the tape.
  */
-export default async function V4Matchup({ searchParams }: { searchParams: Promise<{ id?: string; week?: string }> }) {
+export default async function V4Matchup({ searchParams }: { searchParams: Promise<{ id?: string; week?: string; view?: string }> }) {
   const q = await searchParams;
   const jar = await cookies();
   const mineId = parseTeam(jar.get(TEAM_COOKIE)?.value);
@@ -336,6 +339,22 @@ export default async function V4Matchup({ searchParams }: { searchParams: Promis
           Open Sleeper
         </a>
       ) : null}
+      <Seg
+        label="Matchup"
+        items={[
+          { label: 'Starters', key: '' },
+          { label: 'Moments', key: 'moments' },
+        ].map((v) => {
+          const qs = new URLSearchParams({ ...(q.id ? { id: q.id } : {}), ...(q.week ? { week: q.week } : {}), ...(v.key ? { view: v.key } : {}) }).toString();
+          return { label: v.label, href: `/lab/app/matchup${qs ? `?${qs}` : ''}`, on: (q.view === 'moments') === Boolean(v.key) };
+        })}
+      />
+      {q.view === 'moments' ? (
+        <Suspense fallback={<Section title="Win Chance"><SkCard h={240} /></Section>}>
+          <MatchupMoments live={live} final={final} a={{ rosterId: mine.a.rosterId, team: mine.a.team }} b={{ rosterId: mine.b.rosterId, team: mine.b.team }} />
+        </Suspense>
+      ) : (
+        <>
       <Section title="Starters">
         <Duel
           left={
@@ -422,6 +441,8 @@ export default async function V4Matchup({ searchParams }: { searchParams: Promis
           </List>
         </Section>
       ) : null}
+        </>
+      )}
       <p className={ui.spec}>Sources: Sleeper, ESPN, DraftSharks{lineBook ? `, ${lineBook}` : ''}</p>
     </Shell>
   );

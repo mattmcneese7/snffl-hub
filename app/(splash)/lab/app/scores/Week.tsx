@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { cookies } from 'next/headers';
 import { lastFantasyWeek } from '@/lib/league';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
@@ -9,6 +10,7 @@ import { kickoffText, quarter } from './format';
 import { weekView, type WeekView } from './weekData';
 import WeekStrip from './WeekStrip';
 import { LivePoints, LiveStart } from '../live/Live';
+import BiggestSwings from '../moments/BiggestSwings';
 import { Crest, Empty, Hero, Label, LiveTag, Meter, Rail, Section, Tile, TileRow } from '../ui';
 
 /** Your game on brand blue: both teams, the scores and where it stands. One tap into the full matchup. */
@@ -84,6 +86,10 @@ export default async function ScoresWeek({ week }: { week?: number }) {
       <Section title="All Matchups">
         {wv.others.length ? <MatchupRows games={wv.others} week={wk} live={wv.state === 'live'} current={wk === data.week} /> : <Empty>No matchups posted for week {wk}.</Empty>}
       </Section>
+      {/* Play-by-play for every game takes a moment; the page paints without waiting for it. */}
+      <Suspense fallback={null}>
+        <BiggestSwings wv={wv} week={wk} />
+      </Suspense>
       {nfl.length ? (
         <Section title="NFL Scores" action={{ href: `/lab/app/nfl?week=${wk}`, label: 'All games' }}>
           <Rail label="NFL scores">

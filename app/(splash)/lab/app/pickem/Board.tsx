@@ -30,11 +30,8 @@ export default function Board({ week, mine, games, locked, decided, all, teams }
   const [note, setNote] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  useEffect(() => {
-    if (mine == null) return;
-    const t = readToken(mine);
-    if (!t) return;
-    setToken(t);
+  // This team's own picks, whichever phone made them.
+  const loadOwn = (t: string) =>
     fetch(`/api/lab/pickem?week=${week}`, { headers: { 'x-pickem-token': t } })
       .then((r) => r.json())
       .then((d: { rosterId: number | null; picks: { matchup_id: number; pick: number }[] }) => {
@@ -46,6 +43,14 @@ export default function Board({ week, mine, games, locked, decided, all, teams }
         setPicks(Object.fromEntries(d.picks.map((x) => [x.matchup_id, x.pick])));
       })
       .catch(() => undefined);
+
+  useEffect(() => {
+    if (mine == null) return;
+    const t = readToken(mine);
+    if (!t) return;
+    setToken(t);
+    void loadOwn(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mine, week]);
 
   // After the lock, your picks come from everyone's.
@@ -66,6 +71,7 @@ export default function Board({ week, mine, games, locked, decided, all, teams }
     setToken(d.token);
     setPin('');
     setNote(null);
+    void loadOwn(d.token);
   };
 
   const pick = async (matchupId: number, rosterId: number) => {

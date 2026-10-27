@@ -65,8 +65,8 @@ jobs:
           for d in out/*/; do
             [ -d "$d" ] || continue
             n=$(basename "$d")
-            "$FF" -hide_banner -loglevel error -y -framerate "$(jq .fps jobs.json)" -i "$d/%03d.png" -c:v hevc_videotoolbox -allow_sw 1 -alpha_quality 0.8 -tag:v hvc1 -pix_fmt bgra -b:v 900k -an "out/$n.mov"
-            echo "mov $n $(( $(stat -f%z "out/$n.mov") / 1024 )) KB"
+            "$FF" -hide_banner -loglevel error -y -framerate "$(jq .fps jobs.json)" -i "$d/%03d.png" -c:v hevc_videotoolbox -allow_sw 1 -alpha_quality 0.8 -tag:v hvc1 -pix_fmt bgra -b:v 900k -an -movflags +faststart "out/$n-hevc.mp4"
+            echo "hevc $n $(( $(stat -f%z "out/$n-hevc.mp4") / 1024 )) KB"
           done
           rm -rf out/*/
           cat out/*.report.txt > out/report.txt 2>/dev/null || true

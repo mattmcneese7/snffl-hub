@@ -2,13 +2,59 @@
   "fps": 15,
   "size": 480,
   "model": "birefnet-general",
-  "stills": [
-    {"name": "blowout", "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/KbwmP4NEz7hMD73rOTrt/gpt-image-2-edit-1_1793120832996_6967befd.png"},
-    {"name": "squeaker", "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/KbwmP4NEz7hMD73rOTrt/gpt-image-2-edit-1_1793120832025_1f3b2ee0.png"},
-    {"name": "heartbreaker", "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/KbwmP4NEz7hMD73rOTrt/gpt-image-2-edit-1_1793120837335_c97b0b61.png"},
-    {"name": "lucky", "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/KbwmP4NEz7hMD73rOTrt/gpt-image-2-edit-1_1793120836099_2942ed6f.png"},
-    {"name": "bench", "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/KbwmP4NEz7hMD73rOTrt/gpt-image-2-edit-1_1793120855910_75fd662f.png"},
-    {"name": "plunger", "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/KbwmP4NEz7hMD73rOTrt/gpt-image-2-edit-1_1793120848159_de551b4d.png"}
-  ],
-  "clips": []
+  "stills": [],
+  "clips": [
+    {
+      "name": "idle-calm",
+      "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-video/KbwmP4NEz7hMD73rOTrt/1e3c8a7443894ec8bb0da93e3199d65f-metadata_user_7e2285a801411384_1793121266022_86127c14.mp4"
+    },
+    {
+      "name": "idle-sweat",
+      "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-video/KbwmP4NEz7hMD73rOTrt/491d98eaf31d489892738b38cf896700-metadata_user_0672d3de205e8e55_1793121273133_3121afc3.mp4"
+    },
+    {
+      "name": "idle-sleep",
+      "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-video/KbwmP4NEz7hMD73rOTrt/faa99ea5fbb944b6b17f578f48853e5c-metadata_user_375b5b4b5d46f79c_1793121309263_23062157.mp4"
+    },
+    {
+      "name": "award-heartbreaker",
+      "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-video/KbwmP4NEz7hMD73rOTrt/868856801fce4d898d7d91c911134582-metadata_user_ea6935702e5338c9_1793121301069_3cd2275b.mp4"
+    },
+    {
+      "name": "award-lucky",
+      "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-video/KbwmP4NEz7hMD73rOTrt/7537f9d257e045248e35266e6e594ab3-metadata_user_85d2a02dea8a9795_1793121327240_de817bad.mp4"
+    },
+    {
+      "name": "award-bench",
+      "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-video/KbwmP4NEz7hMD73rOTrt/b0775f032ca84a1689a56f5bd636fa13-metadata_user_9b0208cb05de5114_1793121309201_e4fd2bc4.mp4"
+    },
+    {
+      "name": "award-squeaker",
+      "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-video/KbwmP4NEz7hMD73rOTrt/c6d53b0f67ad49f3bdfae14718e4a5e5-metadata_user_74a2cf99760ac233_1793121425959_b568a0f7.mp4"
+    },
+    {
+      "name": "award-plunger",
+      "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-video/KbwmP4NEz7hMD73rOTrt/871a61f8f67d4deea709ff08920e2155-metadata_user_44d0b210596ee2b5_1793121424963_05d96ef1.mp4"
+    },
+    {
+      "name": "move-sweat-smug",
+      "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-video/KbwmP4NEz7hMD73rOTrt/413c50af998640319ff009260513cb03-metadata_user_145b15f3c4b78641_1793121466070_10f94776.mp4"
+    },
+    {
+      "name": "event-win",
+      "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-video/KbwmP4NEz7hMD73rOTrt/e7d90244ff3f4e07aac2b7b5e6c00d60-metadata_user_b81e2374b8a58c8a_1793121354198_7f077a9a.mp4"
+    },
+    {
+      "name": "event-chug",
+      "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-video/KbwmP4NEz7hMD73rOTrt/73b0a6abac944c28a45aceb8c9994863-metadata_user_36bfd75011d2adfe_1793121367914_14b1acd9.mp4"
+    },
+    {
+      "name": "event-crown",
+      "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-video/KbwmP4NEz7hMD73rOTrt/6b95c4884f5846f892388867338627bb-metadata_user_4dd82b981177855d_1793121367544_5566f3d7.mp4"
+    },
+    {
+      "name": "event-trophy",
+      "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-video/KbwmP4NEz7hMD73rOTrt/b9f54dac031e4a818903c167cdc3fefd-metadata_user_f3b8c49f9b198ff1_1793121471026_990b0a7b.mp4"
+    }
+  ]
 }

@@ -36,7 +36,7 @@ export function Frame({
       <Pattern mode="wallpaper" />
       <main className={s.page} aria-busy={bar ? true : undefined}>
         {back ? (
-          <TopBar title={word ? word.replace(/\b([a-z])/g, (c) => c.toUpperCase()) : ''} back={back} right={<span className={s.acct} aria-hidden />} />
+          <TopBar word={word ?? ''} back={back} right={<span className={s.acct} aria-hidden />} />
         ) : (
           <div className={s.head}>
             {icon && word ? (

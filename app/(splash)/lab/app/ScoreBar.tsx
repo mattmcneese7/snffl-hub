@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { BarState, SideView } from './data';
 import { LivePoints } from './live/Live';
 import s from './v4.module.css';
@@ -14,9 +14,29 @@ const EASE = 'cubic-bezier(0.32, 0.72, 0, 1)';
  * grow into a quick read (avatars, what is left, the top scorer) and a way into
  * the full matchup. The open state is a morph, not a swap: every keyed piece is
  * measured before and after and travels from where it was (FLIP).
+ *
+ * Docked (`dockTo`, the id of your game's hero on the page): while that hero
+ * is on screen the bar is only its label and state, since the hero shows the
+ * scores; scroll the hero away and the rows grow back. One object, never the
+ * same score twice.
  */
-export default function ScoreBar({ week, state, rows, href }: { week: number; state: BarState; rows: [SideView, SideView]; href: string }) {
+export default function ScoreBar({ week, state, rows, href, dockTo }: { week: number; state: BarState; rows: [SideView, SideView]; href: string; dockTo?: string }) {
   const [open, setOpen] = useState(false);
+  const [stub, setStub] = useState(Boolean(dockTo));
+  useEffect(() => {
+    if (!dockTo) return;
+    const hero = document.getElementById(dockTo);
+    if (!hero) { setStub(false); return; }
+    const io = new IntersectionObserver(([e]) => {
+      bar.current?.getAnimations({ subtree: true }).forEach((a) => a.cancel());
+      before.current = measure();
+      setStub(e.isIntersecting);
+      if (e.isIntersecting) setOpen(false);
+    }, { threshold: 0.25 });
+    io.observe(hero);
+    return () => io.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dockTo]);
   const bar = useRef<HTMLDivElement>(null);
   const before = useRef<{ h: number; rects: Map<string, DOMRect> } | null>(null);
 
@@ -29,6 +49,10 @@ export default function ScoreBar({ week, state, rows, href }: { week: number; st
   };
 
   const toggle = () => {
+    if (stub && dockTo) {
+      document.getElementById(dockTo)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
     bar.current?.getAnimations({ subtree: true }).forEach((a) => a.cancel());
     before.current = measure();
     setOpen((o) => !o);
@@ -57,7 +81,7 @@ export default function ScoreBar({ week, state, rows, href }: { week: number; st
       e.animate([{ transform: `translate(${dx}px, ${r.top - n.top}px) scale(${r.height / n.height})` }, { transform: 'none' }], { duration: 440, easing: EASE });
     });
     if (open) el.querySelectorAll<HTMLElement>('[data-fade]').forEach((e) => e.animate([{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], { duration: 300, delay: 140, easing: EASE, fill: 'backwards' }));
-  }, [open]);
+  }, [open, stub]);
 
   const chip = state === 'live' ? 'Live' : state === 'final' ? 'Final' : 'Preview';
   return (
@@ -66,7 +90,7 @@ export default function ScoreBar({ week, state, rows, href }: { week: number; st
       className={`${s.bar} ${open ? s.barOpen : ''}`}
       role="button"
       tabIndex={0}
-      aria-expanded={open}
+      aria-expanded={stub ? undefined : open}
       aria-label={`Week ${week} matchup, ${chip}`}
       onClick={(e) => {
         if ((e.target as HTMLElement).closest('a')) return;
@@ -86,7 +110,7 @@ export default function ScoreBar({ week, state, rows, href }: { week: number; st
           {chip}
         </span>
       </span>
-      {rows.map((r, i) => (
+      {stub ? null : rows.map((r, i) => (
         <span key={r.rosterId} className={`${s.barRow} ${r.lost ? s.lost : ''}`}>
           <span className={s.barAv} data-k={`a${i}`} style={{ ['--mgr' as string]: r.color }}>
             {r.avatar ? <img src={r.avatar} alt="" /> : null}
@@ -107,9 +131,9 @@ export default function ScoreBar({ week, state, rows, href }: { week: number; st
           </small>
         </span>
       ))}
-      <Link href={href} className={s.barGo} data-fade>
+      {stub ? null : <Link href={href} className={s.barGo} data-fade>
         Full matchup
-      </Link>
+      </Link>}
     </div>
   );
 }

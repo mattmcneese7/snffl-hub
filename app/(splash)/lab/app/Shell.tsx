@@ -48,7 +48,25 @@ export function HomeHead({ week, mine }: { week: number; mine: number | null }) 
  * instead: back to where you were, the page's title, your avatar.
  */
 export function SectionHead({ icon, word, week, mine, back, title }: { icon: MsName; word: string; week: number; mine: number | null; back?: Back; title?: string }) {
-  if (back) return <TopBar title={title ?? titleCase(word)} back={back} right={<Account mine={mine} />} />;
+  // Sub pages keep the branded large title under the top bar; it collapses
+  // into the bar as the page scrolls.
+  if (back) {
+    const brand = (title ?? word).toLowerCase();
+    return (
+      <>
+        <TopBar word={brand} icon={icon} back={back} right={<Account mine={mine} />} />
+        <div className={s.head}>
+          <h1 id="pageTitle" className={s.secHead}>
+            <Ms name={icon} />
+            {brand}
+          </h1>
+          <span className={s.headR}>
+            <span className={s.wk}>Week {week}</span>
+          </span>
+        </div>
+      </>
+    );
+  }
   return (
     <div className={s.head}>
       <h1 className={s.secHead}>
@@ -63,14 +81,13 @@ export function SectionHead({ icon, word, week, mine, back, title }: { icon: MsN
   );
 }
 
-const titleCase = (w: string) => w.replace(/\b(nfl)\b/gi, 'NFL').replace(/\b([a-z])/g, (c) => c.toUpperCase());
 
 /**
  * Splash 4.0's frame: paper and wallpaper, the page, and the dock with the
  * score bar over the tab bar. The bar shows whichever matchup the clock says:
  * last week's final, next week's preview, or this week live.
  */
-export default function Shell({ data, active, children }: { data: V4Data; active: string; children: ReactNode }) {
+export default function Shell({ data, active, children, barDock }: { data: V4Data; active: string; children: ReactNode; barDock?: string }) {
   const mine = data.mine;
   return (
     <div className={s.root}>
@@ -80,7 +97,7 @@ export default function Shell({ data, active, children }: { data: V4Data; active
       <main className={s.page}>{children}</main>
       <div className={s.dock}>
         {mine ? (
-          <ScoreBar week={data.week} state={data.state} rows={[mine.a, mine.b]} href="/lab/app/matchup" />
+          <ScoreBar week={data.week} state={data.state} rows={[mine.a, mine.b]} href="/lab/app/matchup" dockTo={barDock} />
         ) : (
           <Link href="/lab/app/account" className={s.bar} style={{ textDecoration: 'none' }}>
             <span className={s.barHead}>

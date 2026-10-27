@@ -203,3 +203,15 @@
 .grpHead b { font-size: 15px; }
 .face32 { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; object-position: top; background: var(--powder-soft); }
 .logo32 { width: 32px; height: 32px; object-fit: contain; }
+
+/* Scores: the hero is one tap into the matchup; the NFL games run as a ticker. */
+.heroLink { color: inherit; text-decoration: none; }
+.tks { gap: 8px; margin-top: 8px; }
+.tk { display: grid; gap: 4px; width: 112px; padding: 10px 12px; border-radius: 20px; background: var(--card); box-shadow: var(--shadow); color: inherit; text-decoration: none; }
+.tkHead { display: flex; min-height: 20px; align-items: center; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; }
+.tkRow { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; gap: 6px; align-items: center; font-size: 13px; }
+.tkRow img { width: 20px; height: 20px; object-fit: contain; }
+.tkRow b { font-weight: 800; }
+.tkScore { font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.tkLost { color: var(--ink-3); }
+.tkLost b, .tkLost .tkScore { font-weight: 400; }

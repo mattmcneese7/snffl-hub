@@ -22,6 +22,7 @@ import ChugRow from './modules/ChugRow';
 import StoryPill from './modules/StoryPill';
 import { latestWeekStory } from '@/lib/week-story';
 import Shell, { HomeHead } from './Shell';
+import MatchupRows from './modules/MatchupRows';
 import s from './v4.module.css';
 
 export const metadata: Metadata = { title: { absolute: 'Home, Splash 4.0' }, robots: { index: false, follow: false } };
@@ -29,33 +30,6 @@ export const dynamic = 'force-dynamic';
 
 const CT_DATE = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', month: 'short', day: 'numeric' });
 
-function Row({ side, week, live }: { side: SideView; week: number; live: boolean }) {
-  return (
-    <span className={`${s.row} ${side.lost ? s.lost : ''}`}>
-      <span className={s.av} style={{ width: 26, height: 26, ['--mgr' as string]: side.color }}>
-        {side.avatar ? <img src={side.avatar} alt="" /> : null}
-      </span>
-      <span className={s.who}>
-        <b>{side.team}</b>
-        <small>{side.manager}</small>
-      </span>
-      <span className={s.score}>{live ? <LivePoints week={week} rosterId={side.rosterId} fallback={side.score} /> : side.score.toFixed(2)}</span>
-      <small className={s.mark}>
-        {side.mark === 'W' || side.mark === 'L' ? <b className={side.mark === 'W' ? s.win : s.loss}>{side.mark}</b> : side.mark}
-      </small>
-    </span>
-  );
-}
-
-function GameRow({ g, week, live }: { g: GameView; week: number; live: boolean }) {
-  return (
-    <Link href={`/lab/app/matchup?id=${g.id}`} className={s.game}>
-      <Row side={g.a} week={week} live={live} />
-      <Row side={g.b} week={week} live={live} />
-      <small className={s.foot}>{g.foot}</small>
-    </Link>
-  );
-}
 
 /**
  * Home, the front page: only what Matt approved, each module in its moment
@@ -162,11 +136,7 @@ export default async function V4Home({ searchParams }: { searchParams: Promise<{
           <Link href="/lab/app/feed">Feed</Link>
         </div>
         {data.others.length ? (
-          <div className={s.list}>
-            {data.others.map((g) => (
-              <GameRow key={g.id} g={g} week={data.week} live={data.state === 'live'} />
-            ))}
-          </div>
+          <MatchupRows games={data.others} week={data.week} live={data.state === 'live'} />
         ) : (
           <p className={s.empty}>No matchups for week {data.week} yet.</p>
         )}

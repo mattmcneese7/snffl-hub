@@ -383,7 +383,10 @@
 
 /* Top bar: below a tab's top page. Back to where you were, the title, your avatar. */
 .topBar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 15; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 8px; min-height: 44px; margin: -14px calc(-1 * var(--gutter)) 0; padding: 0 var(--gutter); background: var(--paper); box-shadow: 0 -60px 0 var(--paper), 0 1px 0 var(--hair); }
-.topTitle { margin: 0; font-size: 15px; font-weight: 800; line-height: 1.2; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 52vw; }
+.topTitle { display: inline-flex; align-items: center; gap: 6px; font: 900 18px/1 var(--brand); letter-spacing: -0.03em; white-space: nowrap; overflow: hidden; max-width: 52vw; opacity: 0; transform: translateY(4px); transition: opacity 160ms ease-out, transform 160ms ease-out; }
+.topTitle svg { flex: none; color: var(--deep); }
+.topTitle[data-shown="true"] { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .topTitle { transform: none; transition: opacity 150ms linear; } }
 .topRight { display: flex; justify-content: flex-end; }
 .backBtn { justify-self: start; display: inline-flex; align-items: center; gap: 0; min-height: 44px; max-width: 100%; margin-left: -6px; padding: 0 8px 0 0; border: 0; background: none; color: var(--deep); font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }
 .backBtn span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

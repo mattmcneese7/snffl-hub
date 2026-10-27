@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 import { CUT_WIDTH, LACE_SPINE, LACE_STITCHES, SEAM_FOOT, SEAM_TOP } from '../../marks';
 import BackButton from './nav/BackButton';
+import TopTitle from './nav/TopTitle';
+import type { MsName } from './icons';
 import s from './v4.module.css';
 
 /**
@@ -34,14 +36,15 @@ export type Back = { href: string; label: string };
 
 /**
  * The top bar on every screen below a tab's top page: back to where you
- * were (named), the page's title, and whatever sits on the right (your
- * avatar). Pinned under the status bar.
+ * were (named), the page's branded wordmark once its large title has
+ * scrolled away, and whatever sits on the right (your avatar). Pinned under
+ * the status bar.
  */
-export function TopBar({ title, back, right }: { title: string; back: Back; right?: ReactNode }) {
+export function TopBar({ word, icon, back, right }: { word: string; icon?: MsName; back: Back; right?: ReactNode }) {
   return (
     <header className={s.topBar}>
       <BackButton fallbackHref={back.href} fallbackLabel={back.label} />
-      <h1 className={s.topTitle}>{title}</h1>
+      <TopTitle icon={icon} word={word} />
       <span className={s.topRight}>{right}</span>
     </header>
   );

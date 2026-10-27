@@ -5,7 +5,7 @@ import type { NflGame } from '@/lib/gameday';
 import { getV4Data, type GameView } from '../data';
 import Shell, { SectionHead } from '../Shell';
 import MatchupRows from '../modules/MatchupRows';
-import { kickoffText, quarter } from './parts';
+import { kickoffText, quarter } from './format';
 import { weekView, type WeekView } from './weekData';
 import WeekStrip from './WeekStrip';
 import { LivePoints, LiveStart } from '../live/Live';

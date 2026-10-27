@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Ms } from '../icons';
 import { NAV_EVENT, previousEntry } from './store';
-import s from '../v4.module.css';
+import s from '../ui/blocks/Frame.module.css';
 
 /**
  * Back to where you actually were: the previous screen this session, named.

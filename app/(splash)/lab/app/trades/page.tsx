@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { getTrades, type Trade } from '@/lib/trades';
 import { getV4Data } from '../data';
 import Shell, { SectionHead } from '../Shell';
 import { TradeRows } from '../modules/TradeCard';
-import s from '../v4.module.css';
+import { Empty, List, Section, ui } from '../ui';
+import l from '../modules/layout.module.css';
 
 export const metadata: Metadata = { title: { absolute: 'Trades, Splash 4.0' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -24,25 +24,19 @@ export default async function V4Trades() {
   return (
     <Shell data={data} active="league">
       <SectionHead icon="swap" word="trades" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
-      <div className={s.title}>
-        <h2>Every Trade</h2>
-        {trades.length ? (
-          <span className={s.wk}>
-            {trades.length} {trades.length === 1 ? 'trade' : 'trades'}
-            {mine != null && yours ? ` · ${yours} yours` : ''}
-          </span>
-        ) : null}
-      </div>
       {trades.length ? (
-        <div className={s.list}>
-          {trades.map((t) => (
-            <TradeRows key={t.id} trade={t} mine={mine} />
-          ))}
-        </div>
+        <Section title="Every Trade">
+          <p className={`${ui.sub} ${l.note}`}>
+            {trades.length} {trades.length === 1 ? 'trade' : 'trades'} this season{mine != null && yours ? `, ${yours} yours` : ''}
+          </p>
+          <List>
+            {trades.map((t) => (
+              <TradeRows key={t.id} trade={t} mine={mine} />
+            ))}
+          </List>
+        </Section>
       ) : (
-        <p className={s.empty}>
-          No trades yet this season. <Link href="/lab/app/swami">Check a trade in Swami</Link>
-        </p>
+        <Empty action={{ href: '/lab/app/swami', label: 'Check a trade in Swami' }}>No trades yet this season.</Empty>
       )}
     </Shell>
   );

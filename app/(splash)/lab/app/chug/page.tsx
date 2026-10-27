@@ -12,10 +12,8 @@ import ShartCitation from '../modules/ShartCitation';
 import ChugNowCard from '../modules/ChugNow';
 import { trophyBoard } from '../cached';
 import { managerOf, teamOf } from '../modules/shared';
-import m from '../modules/modules.module.css';
-import s from '../v4.module.css';
-import c from './chug.module.css';
-import { Ms } from '../icons';
+import { Avatar, Drawer, List, Rank, Row, Section, ui } from '../ui';
+import l from '../modules/layout.module.css';
 
 export const metadata: Metadata = { title: { absolute: 'Chug Meter, Splash 4.0' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -41,122 +39,87 @@ export default async function V4Chug() {
   const film = latestChug(week);
   const archive = chugFilms(week).filter((f) => f.week !== film?.week);
   const lowOf = (wk: number) => extremes.lows.find((l) => l.week === wk) ?? null;
-  const filmLow = film ? lowOf(film.week) : null;
   const wall = [...extremes.lows].sort((a, b) => b.week - a.week);
 
   return (
     <Shell data={data} active="league">
       <SectionHead icon="beer" word="chug" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
 
-      <ChugNowCard board={board} week={week} title="This Week" link={false} />
-      <div className={s.title}>
-        <h2>Chug Meter</h2>
-        <span className={s.wk}>
-          {total} {total === 1 ? 'beer' : 'beers'}
-        </span>
-      </div>
-      <div className={s.list}>
-        {rows.map((r) => (
-          <div key={r.team.rosterId} className={`${c.row} ${r.team.rosterId === mine ? m.mine : ''}`}>
-            <span className={s.av} style={{ width: 28, height: 28, ['--mgr' as string]: r.team.colors?.primary }}>
-              {r.team.avatarUrl ? <img src={r.team.avatarUrl} alt="" /> : null}
-            </span>
-            <span className={s.who}>
-              <b>{r.team.teamName.trim()}</b>
-              <small>
-                {managerOf(r.team.rosterId)}
-                {r.weeks.length ? ` · ${r.weeks.map((w) => `W${w}`).join(', ')}` : ''}
-              </small>
-              {r.count ? (
-                <span className={m.steins} aria-hidden>
-                  {Array.from({ length: r.count }, (_, i) => (
-                    <Ms key={i} name="beer" />
-                  ))}
-                </span>
-              ) : null}
-            </span>
-            <span className={`${m.big} ${r.count ? '' : c.zero}`}>{r.count}</span>
-          </div>
-        ))}
-      </div>
+      <ChugNowCard board={board} week={week} title="This Week" link={false} film={false} />
+
+      <Section title="Chug Meter">
+        <List>
+          {rows.map((r) => (
+            <Row
+              key={r.team.rosterId}
+              lead={<Avatar src={r.team.avatarUrl} color={r.team.colors?.primary} />}
+              title={r.team.teamName.trim()}
+              strong={r.team.rosterId === mine}
+              sub={`${managerOf(r.team.rosterId)}${r.weeks.length ? ` · ${r.weeks.map((w) => `W${w}`).join(', ')}` : ''}`}
+              value={r.count}
+              valueSub={r.count === 1 ? 'beer' : 'beers'}
+              muted={!r.count}
+            />
+          ))}
+        </List>
+        <p className={`${ui.sub} ${l.note}`}>
+          {total} {total === 1 ? 'beer' : 'beers'} this season.
+        </p>
+      </Section>
 
       {film ? (
-        <>
-          <div className={s.title}>
-            <h2>The Latest Chug</h2>
-            <span className={s.wk}>Week {film.week}</span>
-          </div>
-          <figure className={c.film}>
-            <video src={`${film.src}#t=0.5`} controls playsInline preload="metadata" aria-label={`The week ${film.week} chug`} />
-            {filmLow ? (
-              <figcaption>
-                <b>{teamOf(filmLow.rosterId)}</b> &middot; {managerOf(filmLow.rosterId)} &middot; {filmLow.points.toFixed(2)} pts
-              </figcaption>
-            ) : null}
+        <Section title="The Latest Chug">
+          <figure className={`${ui.card} ${l.stack}`}>
+            <span className={`${ui.media} ${l.tall}`}>
+              <video src={`${film.src}#t=0.5`} controls playsInline preload="metadata" aria-label={`The week ${film.week} chug`} />
+            </span>
+            <figcaption className={`${ui.sub} ${l.note}`}>Week {film.week}</figcaption>
           </figure>
-        </>
+        </Section>
       ) : null}
 
-      <ShartCitation />
+      <ShartCitation onChug />
 
       {wall.length ? (
-        <>
-          <div className={s.title}>
-            <h2>Wall of Sharts</h2>
-            <span className={s.wk}>Every week</span>
-          </div>
-          <div className={s.list}>
-            {wall.map((l) => (
-              <div key={l.week} className={`${c.wall} ${l.rosterId === mine ? m.mine : ''}`}>
-                <span className={c.wk}>W{l.week}</span>
-                <span className={s.who}>
-                  <b>{teamOf(l.rosterId)}</b>
-                  <small>{managerOf(l.rosterId)}</small>
-                </span>
-                <span className={`${m.big} ${c.low}`}>{l.points.toFixed(2)}</span>
-              </div>
+        <Section title="Wall of Sharts">
+          <List>
+            {wall.map((w) => (
+              <Row key={w.week} label={`Week ${w.week}`} title={teamOf(w.rosterId)} strong={w.rosterId === mine} sub={managerOf(w.rosterId)} value={w.points.toFixed(2)} />
             ))}
-          </div>
-        </>
+          </List>
+        </Section>
       ) : null}
 
       {archive.length ? (
-        <details className={c.archive}>
-          <summary>
-            <span>The Archive</span>
-            <span className={s.wk}>
-              {archive.length} {archive.length === 1 ? 'film' : 'films'}
-            </span>
-          </summary>
-          <div className={c.archiveGrid}>
+        <Drawer title="The Archive" value={`${archive.length} ${archive.length === 1 ? 'film' : 'films'}`}>
+          <div className={l.grid2}>
             {archive.map((f) => {
               const low = lowOf(f.week);
               return (
-                <figure key={f.week} className={c.archiveItem}>
-                  <video src={`${f.src}#t=0.5`} controls playsInline preload="metadata" aria-label={`The week ${f.week} chug`} />
-                  <figcaption>
-                    <b>Week {f.week}</b>
-                    {low ? <span>{teamOf(low.rosterId)}</span> : null}
+                <figure key={f.week} className={l.stack}>
+                  <span className={`${ui.media} ${l.tall}`}>
+                    <video src={`${f.src}#t=0.5`} controls playsInline preload="metadata" aria-label={`The week ${f.week} chug`} />
+                  </span>
+                  <figcaption className={ui.body}>
+                    <span className={ui.title}>Week {f.week}</span>
+                    {low ? <span className={ui.sub}>{teamOf(low.rosterId)}</span> : null}
                   </figcaption>
                 </figure>
               );
             })}
           </div>
-        </details>
+        </Drawer>
       ) : null}
 
-      <div className={s.title}>
-        <h2>{CHUG_RULES.title.replace(/\b\w/g, (x) => x.toUpperCase())}</h2>
-      </div>
-      <section className={s.card}>
-        {CHUG_RULES.intro ? <p className={s.note}>{CHUG_RULES.intro}</p> : null}
-        <ol className={s.numbered}>
-          {CHUG_RULES.rules.map((rule) => (
-            <li key={rule}>{rule}</li>
+      <Section title={CHUG_RULES.title.replace(/\b\w/g, (x) => x.toUpperCase())}>
+        {CHUG_RULES.intro ? <p className={`${ui.bodyText} ${l.note}`}>{CHUG_RULES.intro}</p> : null}
+        <List>
+          {CHUG_RULES.rules.map((rule, i) => (
+            <Row key={rule} lead={<Rank n={i + 1} />} title={rule} />
           ))}
-        </ol>
-        <p className={c.submit}>{CHUG_SUBMISSION}</p>
-      </section>
+        </List>
+        <p className={`${ui.sub} ${l.note}`}>{CHUG_SUBMISSION}</p>
+      </Section>
     </Shell>
   );
 }

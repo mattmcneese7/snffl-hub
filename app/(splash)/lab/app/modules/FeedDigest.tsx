@@ -6,9 +6,8 @@ import { isPhone } from '../../../lib/device';
 import ClipRail from './ClipRail';
 import FeedTabs from './FeedTabs';
 import { leagueRailClips } from './leagueClips';
-import { FEED_MARK, feedMarkClass, timeAgo } from './shared';
-import s from '../v4.module.css';
-import m from './modules.module.css';
+import { FEED_MARK, feedMarkTone, timeAgo } from './shared';
+import { Empty, Section, Tag, ui } from '../ui';
 
 /**
  * The Feed on Home: the newest league clip playing in place, then the
@@ -25,11 +24,7 @@ export default async function FeedDigest({ week, games, mine = null, items }: { 
   const now = Date.now();
   const mineId = mine != null ? String(mine) : null;
   return (
-    <section aria-label="The Feed">
-      <div className={s.title}>
-        <h2>The Feed</h2>
-        <Link href="/lab/app/feed">Everything</Link>
-      </div>
+    <Section title="The Feed" action={{ href: '/lab/app/feed', label: 'Everything' }}>
       <FeedTabs id="home">
         {clips.length ? (
           <>
@@ -41,34 +36,29 @@ export default async function FeedDigest({ week, games, mine = null, items }: { 
             </div>
           </>
         ) : (
-          <p className={s.empty} data-show="clips">
-            No league clips yet this week.
-          </p>
+          <div data-show="clips">
+            <Empty>No league clips yet this week.</Empty>
+          </div>
         )}
         {list.length ? (
-          <div className={s.list} data-show="all league">
+          <div className={`${ui.list} ${ui.tapList}`} data-show="all league">
             {list.map((item, i) => (
-              <Link
-                key={`${item.kind}-${item.id}`}
-                href="/lab/app/feed"
-                data-show={i < 3 ? 'all league' : 'league'}
-                className={`${m.post} ${mineId && item.managerIds.includes(mineId) ? m.mine : ''}`}
-              >
-                <i className={feedMarkClass(item.kind)}>{FEED_MARK[item.kind]}</i>
-                <span className={m.postText}>
-                  <b>{item.title}</b>
-                  {item.body ? <span>{item.body}</span> : null}
-                  <small>{timeAgo(item.at, now)}</small>
+              <Link key={`${item.kind}-${item.id}`} href="/lab/app/feed" data-show={i < 3 ? 'all league' : 'league'} className={ui.row}>
+                <Tag tone={feedMarkTone(item.kind)}>{FEED_MARK[item.kind]}</Tag>
+                <span className={ui.body}>
+                  <span className={`${ui.title} ${mineId && item.managerIds.includes(mineId) ? ui.strong : ''}`}>{item.title}</span>
+                  {item.body ? <span className={ui.sub}>{item.body}</span> : null}
+                  <span className={ui.valueSub}>{timeAgo(item.at, now)}</span>
                 </span>
               </Link>
             ))}
           </div>
         ) : (
-          <p className={s.empty} data-show="all league">
-            Touchdowns, lead changes and callouts post here as they happen.
-          </p>
+          <div data-show="all league">
+            <Empty>Touchdowns, lead changes and callouts post here as they happen.</Empty>
+          </div>
         )}
       </FeedTabs>
-    </section>
+    </Section>
   );
 }

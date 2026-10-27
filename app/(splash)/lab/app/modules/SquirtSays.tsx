@@ -1,12 +1,11 @@
-import Link from 'next/link';
 import { scoredWeek } from '@/lib/league';
 import { leagueVerdicts, oracleFor, type Verdict } from '@/lib/squirt-says';
 import Squirt from '../squirt/Squirt';
 import { moodFor } from '../squirt/bus';
 import { getV4Data } from '../data';
 import { teamOf } from './shared';
-import s from '../v4.module.css';
-import m from './modules.module.css';
+import { Label, List, Row, Section, ui } from '../ui';
+import l from './layout.module.css';
 
 /**
  * Squirt Says: his read on each lineup this week, the one call that matters
@@ -29,30 +28,21 @@ export default async function SquirtSays({ week, mine = null }: { week?: number;
   const mood = data?.mine ? moodFor(data.state, data.mine.a.score, data.mine.b.score) : 'calm';
   const [lead, ...rest] = ordered;
   return (
-    <section aria-label="Squirt says">
-      <div className={s.title}>
-        <h2>Squirt Says</h2>
-        <Link href="/lab/app/matchup">Your matchup</Link>
+    <Section title="Squirt Says" action={{ href: '/lab/app/matchup', label: 'Your matchup' }}>
+      <div className={`${ui.card} ${l.lead}`}>
+        <Squirt mood={mood} size={128} listen label={`Squirt, ${mood}`} />
+        <p className={`${ui.body} ${l.note}`}>
+          <Label tone="brand">{lead.rosterId === mine ? `You · ${teamOf(lead.rosterId)}` : teamOf(lead.rosterId)}</Label>
+          <span className={ui.bodyText}>{lead.saying}</span>
+        </p>
       </div>
-      <div className={s.card} style={{ marginTop: 8 }}>
-        <div className={m.squirtLead}>
-          <Squirt mood={mood} size={128} listen label={`Squirt, ${mood}`} />
-          <p className={m.squirtLine}>
-            <small>{lead.rosterId === mine ? `You · ${teamOf(lead.rosterId)}` : teamOf(lead.rosterId)}</small>
-            {lead.saying}
-          </p>
-        </div>
-        {rest.length ? (
-          <ul className={m.says}>
-            {rest.map((v) => (
-              <li key={`${v.rosterId}-${v.kind}`}>
-                <small>{teamOf(v.rosterId)}</small>
-                {v.saying}
-              </li>
-            ))}
-          </ul>
-        ) : null}
-      </div>
-    </section>
+      {rest.length ? (
+        <List>
+          {rest.map((v) => (
+            <Row key={`${v.rosterId}-${v.kind}`} label={teamOf(v.rosterId)} title={v.saying} />
+          ))}
+        </List>
+      ) : null}
+    </Section>
   );
 }

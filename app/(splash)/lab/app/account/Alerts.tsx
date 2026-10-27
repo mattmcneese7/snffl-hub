@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { ALERTS, defaultPrefs, type AlertKey, type AlertPrefs } from '@/lib/alert-prefs';
 import { readMyTeam } from '@/lib/my-team';
+import { Row, ui } from '../ui';
 import a from './account.module.css';
 
 /**
@@ -62,10 +63,15 @@ function Switch({
       aria-checked={on}
       aria-label={label}
       disabled={disabled}
-      className={`${a.switch} ${on ? a.switchOn : ''}`}
+      className={`${ui.seg} ${a.toggle}`}
       onClick={onClick}
     >
-      <span className={a.knob} aria-hidden />
+      <span className={`${ui.segBtn} ${on ? '' : ui.segOn}`} aria-hidden>
+        Off
+      </span>
+      <span className={`${ui.segBtn} ${on ? ui.segOn : ''}`} aria-hidden>
+        On
+      </span>
     </button>
   );
 }
@@ -189,44 +195,36 @@ export default function Alerts({ hasTeam }: { hasTeam: boolean }) {
     state === 'on' && !hasTeam ? `${NOTE.on} Pick your team above so the ones about you find you.` : NOTE[state];
 
   return (
-    <div className={a.alerts}>
-      <div className={a.setRow}>
-        <span className={a.setText}>
-          <b>This Device</b>
-          <span>{note}</span>
-          {state === 'install' ? (
-            <a href="#install" className={a.inline}>
+    <div className={ui.list}>
+      <Row
+        title="This Device"
+        sub={note}
+        trail={
+          canToggle ? (
+            <Switch
+              on={state === 'on'}
+              label="Alerts on this device"
+              disabled={state === 'working'}
+              onClick={() => void (state === 'on' ? disable() : enable())}
+            />
+          ) : state === 'install' ? (
+            <a href="#install" className={`${ui.pill} ${ui.pillSecondary}`}>
               How to install
             </a>
-          ) : null}
-        </span>
-        {canToggle ? (
-          <Switch
-            on={state === 'on'}
-            label="Alerts on this device"
-            disabled={state === 'working'}
-            onClick={() => void (state === 'on' ? disable() : enable())}
-          />
-        ) : null}
-      </div>
-
-      {state === 'on' && prefs ? (
-        <div className={a.types}>
-          <p className={a.sub}>What You Hear About</p>
-          {ALERTS.map((alert) => (
-            <div key={alert.key} className={a.setRow}>
-              <span className={a.setText}>
-                <b>{alert.label}</b>
-                <span>
-                  {alert.note}
-                  {alert.needsTeam && !hasTeam ? ' Needs a team.' : ''}
-                </span>
-              </span>
-              <Switch on={prefs[alert.key]} label={alert.label} onClick={() => void toggle(alert.key)} />
-            </div>
-          ))}
-        </div>
-      ) : null}
+          ) : undefined
+        }
+      />
+      {state === 'on' && prefs
+        ? ALERTS.map((alert) => (
+            <Row
+              key={alert.key}
+              label={alert.key === ALERTS[0].key ? 'What You Hear About' : undefined}
+              title={alert.label}
+              sub={`${alert.note}${alert.needsTeam && !hasTeam ? ' Needs a team.' : ''}`}
+              trail={<Switch on={prefs[alert.key]} label={alert.label} onClick={() => void toggle(alert.key)} />}
+            />
+          ))
+        : null}
     </div>
   );
 }

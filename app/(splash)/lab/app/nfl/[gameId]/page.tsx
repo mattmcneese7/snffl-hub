@@ -11,9 +11,9 @@ import { getV4Data } from '../../data';
 import Shell, { SectionHead } from '../../Shell';
 import Clips from '../../scores/Clips';
 import { railOf } from '../../scores/clipData';
-import { kickoffText, managerOf, quarter } from '../../scores/parts';
+import { kickoffText, managerOf, quarter } from '../../scores/format';
 import { shortName, weekView } from '../../scores/weekData';
-import { Avatar, Card, Crest, Empty, Face, List, LiveTag, Meter, Pair, Row, Section, Stats, Tag, Versus, ui } from '../../ui';
+import { Avatar, Card, Chips, Crest, Empty, Face, List, LiveTag, Meter, Pair, Row, Section, Stats, Tag, Versus, ui } from '../../ui';
 
 export const metadata: Metadata = { title: { absolute: 'NFL game, Splash 4.0' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -148,11 +148,11 @@ export default async function V4NflGame({ params, searchParams }: { params: Prom
           </>
         ) : null}
         {venueChips.length ? (
-          <span style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+          <Chips label="Venue">
             {venueChips.filter((c) => c !== game.broadcast && !/attendance/.test(c)).map((c) => (
               <Tag key={c}>{c}</Tag>
             ))}
-          </span>
+          </Chips>
         ) : null}
       </Card>
 
@@ -219,7 +219,7 @@ export default async function V4NflGame({ params, searchParams }: { params: Prom
             const t = teamByRoster(rosterId);
             const started = list.filter((e) => e.slot).length;
             return (
-              <List key={rosterId}>
+              <List key={rosterId} tap>
                 <Row
                   href={`/lab/app/managers/${rosterId}`}
                   lead={<Avatar src={t?.avatarUrl} color={t?.colors?.primary} size={28} />}

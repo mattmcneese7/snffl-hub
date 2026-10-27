@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { Ms, type MsName } from '../icons';
 import { NAV_EVENT, readNav } from './store';
 import { TAB_ROOTS, tabOf, type TabKey } from './tabs';
-import s from '../v4.module.css';
+import s from '../ui/blocks/Frame.module.css';
 
 const TABS: { key: TabKey; label: string; icon: MsName }[] = [
   { key: 'home', label: 'Home', icon: 'home' },

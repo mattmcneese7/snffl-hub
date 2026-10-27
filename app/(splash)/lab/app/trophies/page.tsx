@@ -6,12 +6,10 @@ import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { getTrophyBoard, type Award } from '@/lib/trophies';
 import { getV4Data } from '../data';
 import Shell, { SectionHead } from '../Shell';
-import { AwardArt, AwardChip } from '../modules/AwardIcon';
+import { AwardArt } from '../modules/AwardIcon';
 import AwardTile from '../modules/AwardTile';
 import { managerOf, teamOf } from '../modules/shared';
-import m from '../modules/modules.module.css';
-import s from '../v4.module.css';
-import t from './trophies.module.css';
+import { Avatar, Drawer, List, Row, Section } from '../ui';
 
 export const metadata: Metadata = { title: { absolute: 'Trophy Case, Splash 4.0' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -42,80 +40,63 @@ export default async function V4Trophies() {
       <SectionHead icon="trophy" word="trophies" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
 
       {board.latest.length ? (
-        <>
-          <div className={s.title}>
-            <h2>Week {board.latestWeek} Hardware</h2>
-          </div>
-          <div className={s.list}>
+        <Section title={`Week ${board.latestWeek} Hardware`}>
+          <List tap>
             {board.latest.map((a) => (
-              <AwardTile key={a.kind} kind={a.kind} rosterId={a.rosterId} detail={a.detail} mine={a.rosterId === mine} row />
+              <AwardTile key={a.kind} kind={a.kind} rosterId={a.rosterId} detail={a.detail} mine={a.rosterId === mine} />
             ))}
-          </div>
-        </>
+          </List>
+        </Section>
       ) : null}
 
-      <div className={s.title}>
-        <h2>Every Award</h2>
-      </div>
-      <div className={s.list}>
-        {ORDER.map((k) => {
-          const list = byKind.get(k) ?? [];
-          const tally = new Map<number, number>();
-          for (const a of list) tally.set(a.rosterId, (tally.get(a.rosterId) ?? 0) + 1);
-          const most = [...tally.entries()].sort((a, b) => b[1] - a[1])[0];
-          return (
-            <div key={k} className={t.award}>
-              <AwardArt kind={k} size={48} />
-              <span className={t.awardText}>
-                <b>{TROPHY_NAMES[k].name}</b>
-                <small>{TROPHY_NAMES[k].blurb}</small>
-                {list.length ? (
-                  <span className={t.history}>
-                    {list.map((a) => (
-                      <span key={`${a.week}-${a.rosterId}`} className={t.won}>
-                        <b>{a.week ? `W${a.week}` : 'Season'}</b> {teamOf(a.rosterId)}
-                      </span>
-                    ))}
-                  </span>
-                ) : (
-                  <small>Not handed out yet</small>
-                )}
-                {most && most[1] > 1 ? (
-                  <small className={t.most}>
-                    Most &middot; {teamOf(most[0])}, {most[1]}
-                  </small>
-                ) : null}
-              </span>
-            </div>
-          );
-        })}
-      </div>
+      <Section title="Every Award">
+        <List>
+          {ORDER.map((k) => {
+            const list = byKind.get(k) ?? [];
+            const tally = new Map<number, number>();
+            for (const a of list) tally.set(a.rosterId, (tally.get(a.rosterId) ?? 0) + 1);
+            const most = [...tally.entries()].sort((a, b) => b[1] - a[1])[0];
+            return (
+              <Row
+                key={k}
+                lead={<AwardArt kind={k} size={56} />}
+                title={TROPHY_NAMES[k].name}
+                sub={TROPHY_NAMES[k].blurb}
+                value={list.length ? `${list.length}x` : undefined}
+                valueSub={!list.length ? 'Not yet' : most && most[1] > 1 ? `Most: ${managerOf(most[0])}` : undefined}
+              />
+            );
+          })}
+        </List>
+        {board.all.length ? (
+          <Drawer title="Award History" value={board.all.length}>
+            <List>
+              {ORDER.flatMap((k) =>
+                (byKind.get(k) ?? []).map((a) => (
+                  <Row key={`${k}-${a.week}-${a.rosterId}`} label={TROPHY_NAMES[k].name} title={teamOf(a.rosterId)} sub={managerOf(a.rosterId)} valueSub={a.week ? `Week ${a.week}` : 'Season'} />
+                )),
+              )}
+            </List>
+          </Drawer>
+        ) : null}
+      </Section>
 
-      <div className={s.title}>
-        <h2>Every Shelf</h2>
-      </div>
-      <div className={s.list}>
-        {shelves.map(({ team, total, counts }) => (
-          <div key={team.rosterId} className={`${t.shelf} ${team.rosterId === mine ? m.mine : ''}`}>
-            <span className={s.av} style={{ width: 28, height: 28, ['--mgr' as string]: team.colors?.primary }}>
-              {team.avatarUrl ? <img src={team.avatarUrl} alt="" /> : null}
-            </span>
-            <span className={s.who}>
-              <b>{team.teamName.trim()}</b>
-              <small>
-                {managerOf(team.rosterId)} &middot; {total ? `${total} ${total === 1 ? 'award' : 'awards'}` : 'No awards yet'}
-              </small>
-              {counts.length ? (
-                <span className={t.pieces}>
-                  {counts.map((c) => (
-                    <AwardChip key={c.kind} kind={c.kind} label={`${SHORT[c.kind] ?? TROPHY_NAMES[c.kind].name.replace(/^The /, '')}${c.n > 1 ? ` x${c.n}` : ''}`} />
-                  ))}
-                </span>
-              ) : null}
-            </span>
-          </div>
-        ))}
-      </div>
+      <Section title="Every Shelf">
+        <List tap>
+          {shelves.map(({ team, total, counts }) => (
+            <Row
+              key={team.rosterId}
+              href={`/lab/app/managers/${team.rosterId}`}
+              lead={<Avatar src={team.avatarUrl} color={team.colors?.primary} />}
+              title={team.teamName.trim()}
+              strong={team.rosterId === mine}
+              sub={[managerOf(team.rosterId), ...counts.map((c) => `${SHORT[c.kind] ?? TROPHY_NAMES[c.kind].name.replace(/^The /, '')}${c.n > 1 ? ` x${c.n}` : ''}`)].join(' · ')}
+              value={total}
+              valueSub={total === 1 ? 'award' : 'awards'}
+            />
+          ))}
+        </List>
+      </Section>
     </Shell>
   );
 }

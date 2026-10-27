@@ -1,22 +1,25 @@
 # Splash 4.0 design contract
 
 The rules every v4 screen is built and reviewed against. Source of truth is
-Matt's Step 2 design system (https://claude.ai/artifact/LA1XJg2kmt5GnC4RJo2SxM)
-and the decisions recorded with it. Nothing ships to the lab preview without
-passing the checklist at the bottom. Where this file and older v3 rules
-disagree, this file wins.
+Matt's Step 1 UX audit (the twelve rules in STEP1.md, binding) and his Step 2
+design system (https://claude.ai/artifact/LA1XJg2kmt5GnC4RJo2SxM) with the
+decisions recorded with it. Nothing ships to the lab preview without passing
+the checklist at the bottom and the Step 1 checker. Where this file and STEP1.md
+disagree, STEP1.md wins; where this file and older v3 rules disagree, this file
+wins.
 
 ## Type
 - One family: the system font (SF Pro on iPhone, Roboto on Android). Switzer
   only for the lowercase splash lockup and the section header wordmarks.
   Rock Salt is Squirt's hand and nothing else.
-- Seven sizes, four weights, nothing else:
+- Six sizes, three UI weights (400, 600, 800), nothing else. 900 exists only in
+  Switzer, for the lockup and branded titles (Step 1 rule 6):
 
 | Role | Size | Weight | Use |
 |---|---|---|---|
 | Hero score | 38 | 800 | The one focal number on a hero |
-| Display | 24 | 900 | Rag headline, page lead |
-| Section title | 18 | 900 (Switzer header) or 800 | Title Case section names, list scores |
+| Display | 24 | 800 (900 only in Switzer) | Rag headline, page lead |
+| Section title | 18 | 800 (900 only in Switzer) | Title Case section names, list scores |
 | Primary | 15 | 600 or 800 | Names, team names, row titles |
 | Body | 15 | 400 | Sentences |
 | Secondary | 13 | 400 or 600 | Manager subheads, meta, detail |
@@ -42,10 +45,13 @@ disagree, this file wins.
 - Edges: 16 from the screen; 14 inside a card. Every card, list and floating
   bar lines up on the same 14 px inner edge.
 - Rows 52 px minimum; tap targets 44 px minimum.
-- Corners: 10 chips, 20 cards and bars, full for pills and faces.
+- Corners, three shapes only (Step 1 rule 7): 20 for containers (cards, bars,
+  sheets, the hero), 10 for everything inside a container or small (chips,
+  buttons, pills, tiles, tags), round for faces. No capsules.
 - One shadow (two layers), only on things you tap.
 - Three surfaces: paper (page and wallpaper), card (white, tappable), hero
-  (brand blue, one per screen).
+  (brand blue, one per screen). White only for things you tap; static content
+  sits flat on the page, grouped by spacing and hairlines.
 - Lists, not boxes: a set of like items is one card with divided rows, not a
   grid of separate tiles. A rail of tiles is allowed only when each tile is
   sized to its content with equal padding and no dead space.
@@ -88,6 +94,9 @@ disagree, this file wins.
 - Something on screen under 1 s.
 
 ## Review checklist (every screen, light and dark, 360 and 390 and 430)
+0. The Step 1 checker passes: corners, one shadow, white only on tappable,
+   type sizes, weights, taps 44. Then every rule in STEP1.md by eye: one focal
+   point, each fact once, one accent, summary first, Home 2 to 3 screens.
 1. Every text size and weight is in the type table; no more than three levels
    per module.
 2. Every card edge and inner edge lands on the 14 px line; padding equal on

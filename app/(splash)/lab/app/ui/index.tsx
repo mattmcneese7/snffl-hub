@@ -41,10 +41,14 @@ export function Section({ title, action, label, children }: { title: string; act
   );
 }
 
-/** One surface, 14 inside. Tappable when it has an href. */
-export function Card({ href, children, className }: Href & { children: ReactNode; className?: string }) {
+/**
+ * A card only for a tappable unit: with an href (or `surface` for a unit
+ * that is tapped inside, like the awards deck) it is one surface with the
+ * shadow; without, its content sits flat on the page.
+ */
+export function Card({ href, children, className, surface }: Href & { children: ReactNode; className?: string; surface?: boolean }) {
   return (
-    <Box href={href} className={cx(u.card, href && u.tap, className)}>
+    <Box href={href} className={cx(u.card, (href || surface) && u.surface, href && u.tap, className)}>
       {children}
     </Box>
   );
@@ -184,6 +188,117 @@ export function Hero({ href, label, state, sides, foot, id }: Href & { label: st
     <div id={id} className={u.hero}>
       {body}
     </div>
+  );
+}
+
+/**
+ * Duel: two lineups slot by slot. The head names both teams; each slot is a
+ * row that opens to what sits under it (the game, the line, the range).
+ */
+export function Duel({ left, right, children }: { left: ReactNode; right: ReactNode; children: ReactNode }) {
+  return (
+    <div className={u.duel}>
+      <div className={u.duelHead}>
+        <span className={u.duelWho}>{left}</span>
+        <span className={u.label}>vs</span>
+        <span className={cx(u.duelWho, u.duelR)}>{right}</span>
+      </div>
+      {children}
+    </div>
+  );
+}
+
+/** One slot head to head; with `open` it is a disclosure. */
+export function DuelRow({ slot, left, right, open }: { slot: string; left?: ReactNode; right?: ReactNode; open?: ReactNode }) {
+  const row = (
+    <span className={u.duelSlot}>
+      {left ?? <span />}
+      <span className={u.duelMid}>
+        <span className={u.slotTag}>{slot}</span>
+        {open ? (
+          <svg className={u.caret} viewBox="0 0 24 24" aria-hidden>
+            <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        ) : null}
+      </span>
+      {right ?? <span />}
+    </span>
+  );
+  if (!open) return <div className={u.xp}>{row}</div>;
+  return (
+    <details className={u.xp}>
+      <summary>{row}</summary>
+      <div className={u.xpBody}>{open}</div>
+    </details>
+  );
+}
+
+/**
+ * A player in a duel, summary first: face and points, his name, and one line
+ * (the box score once he plays, the kickoff before). Opens the player sheet.
+ */
+export function DuelPlayer({ id, team, defense, points, proj, name, line, right }: { id: string; team?: string | null; defense?: boolean; points: ReactNode; proj?: string; name: string; line?: string; right?: boolean }) {
+  return (
+    <button type="button" data-player={id} className={cx(u.duelPlayer, right && u.duelR)} aria-label={`${name}, open player`}>
+      <span className={u.duelTop}>
+        <Face id={id} team={team} size={32} defense={defense} />
+        <span className={u.trail}>
+          <span className={u.value}>{points}</span>
+          {proj ? <span className={u.valueSub}>Proj {proj}</span> : null}
+        </span>
+      </span>
+      <span className={u.title}>{name}</span>
+      {line ? <span className={u.sub}>{line}</span> : null}
+    </button>
+  );
+}
+
+/** Darken a club color until full white clears 6.2:1, so the 85% white secondary text still clears 4.5:1. */
+function ticketInk(hex: string): string {
+  const lum = (c: number[]) => {
+    const f = (v: number) => ((v /= 255) <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
+    return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]);
+  };
+  let c = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) || 0);
+  for (let k = 0; k < 16 && 1.05 / (lum(c) + 0.05) < 6.2; k++) c = c.map((v) => Math.round(v * 0.88));
+  return `rgb(${c.join(',')})`;
+}
+
+/**
+ * Ticket: a top performer in his club's color, the cutout on the left, the
+ * points on the right, the box score on the strip. Opens the player sheet.
+ */
+export function Ticket({ id, color, logo, cutout, name, sub, game, points, proj, strip }: { id: string; color?: string | null; logo?: string | null; cutout: string; name: string; sub: string; game?: string; points: string; proj?: string; strip: string }) {
+  return (
+    <button type="button" data-player={id} className={u.ticket} style={{ ['--tk' as string]: ticketInk(color ?? '#2d4c9c') }} aria-label={`${name}, open player`}>
+      {logo ? <img className={u.ticketLogo} src={logo} alt="" /> : null}
+      <span className={u.ticketCut}>
+        <img src={cutout} alt="" loading="lazy" />
+      </span>
+      <span className={u.ticketMid}>
+        <span className={u.title}>{name}</span>
+        <span className={u.sub}>{sub}</span>
+        {game ? <span className={u.label}>{game}</span> : null}
+      </span>
+      <span className={u.ticketPts}>
+        <b>{points}</b>
+        {proj ? <span className={u.valueSub}>Proj {proj}</span> : null}
+      </span>
+      <span className={cx(u.label, u.ticketStrip)}>{strip}</span>
+    </button>
+  );
+}
+
+/** Drawer: a list that opens from one 52 tall row, its count on the right. */
+export function Drawer({ title, value, children }: { title: string; value?: ReactNode; children: ReactNode }) {
+  return (
+    <details className={u.drawer}>
+      <summary>
+        <span>{title}</span>
+        {value != null ? <span>{value}</span> : null}
+      </summary>
+      {children}
+    </details>
   );
 }
 

@@ -1,11 +1,10 @@
-import Link from 'next/link';
 import { getWeekGames, scoredWeek, teamByRoster } from '@/lib/league';
 import { readIssue } from '@/lib/rag';
 import type { LineupSlot } from '@/lib/types';
 import AwardIcon from './AwardIcon';
 import { managerOf, shortName } from './shared';
-import s from '../v4.module.css';
-import c from './citation.module.css';
+import { Avatar, List, Pill, Rank, Row, Section, ui } from '../ui';
+import l from './layout.module.css';
 
 /** Could this bench player have filled that starting slot? */
 function fits(slot: string, position: string) {
@@ -33,9 +32,10 @@ const nm = (p: LineupSlot) => shortName(p.name, p.position, p.team);
 /**
  * Shart of the Week, as a citation: the latest week with a published Shart
  * story, its lowest score, who beat them, and the charges worked out from
- * that lineup. The sentence is always one chug.
+ * that lineup. The sentence is always one chug. On the Chug Meter, which
+ * already names who owes, it keeps to the charges and the sentence.
  */
-export default async function ShartCitation() {
+export default async function ShartCitation({ onChug = false }: { onChug?: boolean }) {
   const current = await scoredWeek();
   let week = 0;
   let slug: string | null = null;
@@ -63,50 +63,27 @@ export default async function ShartCitation() {
     charges.push(`Outscored by ${nm(theirBest)} alone, ${pts(theirBest.points)} to this roster's best, ${pts(hisBest.points)}.`);
 
   return (
-    <section aria-label={`Week ${week} Shart of the Week`}>
-      <div className={s.title}>
-        <h2>Shart of the Week</h2>
-        {slug ? <Link href={`/lab/app/rag/${week}/${slug}`}>The story</Link> : null}
-      </div>
-      <article className={c.ticket}>
-        <div className={c.top}>
-          <span>Citation</span>
-          <span>Week {week}</span>
-        </div>
-        <div className={c.issued}>
-          <span className={s.av} style={{ width: 40, height: 40, ['--mgr' as string]: team?.colors?.primary }}>
-            {team?.avatarUrl ? <img src={team.avatarUrl} alt="" /> : null}
-          </span>
-          <span className={s.who}>
-            <b>{side.team}</b>
-            <small>{managerOf(side.rosterId) || side.manager} &middot; Lowest score of the week</small>
-          </span>
-          <span className={c.score}>{pts(side.points)}</span>
-        </div>
-        <p className={c.lost}>
-          Lost to {other.team}, {pts(other.points)} to {pts(side.points)}.
-        </p>
-        {charges.length ? (
-          <>
-            <span className={c.label}>Charges</span>
-            <ol className={s.numbered}>
-              {charges.map((x) => (
-                <li key={x}>{x}</li>
-              ))}
-            </ol>
-          </>
-        ) : null}
-        <div className={c.sentence}>
-          <AwardIcon kind="shart" size={32} />
-          <span>
-            <span className={c.label}>Sentence</span>
-            <b>One chug</b>
-          </span>
-          <Link href="/lab/app/chug" className={s.chipA}>
-            Chug Meter
-          </Link>
-        </div>
-      </article>
-    </section>
+    <Section title="Shart of the Week" label={`Week ${week} Shart of the Week`} action={slug ? { href: `/lab/app/rag/${week}/${slug}`, label: 'The story' } : undefined}>
+      {!onChug ? (
+        <>
+          <List>
+            <Row lead={<Avatar src={team?.avatarUrl} color={team?.colors?.primary} size={44} />} label={`Week ${week}`} title={side.team} strong sub={`${managerOf(side.rosterId) || side.manager} · Lowest score of the week`} value={pts(side.points)} />
+          </List>
+          <p className={`${ui.sub} ${l.note}`}>
+            Lost to {other.team}, {pts(other.points)} to {pts(side.points)}.
+          </p>
+        </>
+      ) : null}
+      {charges.length ? (
+        <List>
+          {charges.map((x, i) => (
+            <Row key={x} lead={<Rank n={i + 1} />} label={i === 0 ? 'Charges' : undefined} title={x} />
+          ))}
+        </List>
+      ) : null}
+      <List>
+        <Row lead={<AwardIcon kind="shart" size={14} />} label="Sentence" title="One chug" strong trail={!onChug ? <Pill href="/lab/app/chug" kind="secondary">Chug Meter</Pill> : undefined} />
+      </List>
+    </Section>
   );
 }

@@ -1,9 +1,12 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import s from '../v4.module.css';
-import p from './p4.module.css';
 import { injAbbr } from '../injury';
+import { Card, Empty, Face, List, Rail, Row as KitRow, Section, ui as u } from '../ui';
+import { SearchField, SelectField } from '../ui/blocks/Field';
+import { FilterSheet } from '../ui/blocks/FilterSheet';
+import { Pos } from '../ui/blocks/Pos';
+import l from './layout.module.css';
 
 export type Row = {
   id: string;
@@ -23,17 +26,24 @@ export type Row = {
   snapPct: number;
 };
 type SortKey = 'points' | 'projected' | 'posRank' | 'yards' | 'touchdowns' | 'snapPct';
+type Show = 'rostered' | 'all' | 'free';
 
 const PAGE = 50;
 const POSITIONS = ['All', 'QB', 'RB', 'WR', 'TE', 'K', 'DEF'];
 const SORTS: { key: SortKey; label: (week: number) => string; unit: string }[] = [
   { key: 'points', label: () => 'Points', unit: 'PTS' },
-  { key: 'projected', label: (w) => `Week ${w} proj`, unit: 'PROJ' },
-  { key: 'posRank', label: () => 'Position rank', unit: 'RANK' },
+  { key: 'projected', label: (w) => `Week ${w} Proj`, unit: 'PROJ' },
+  { key: 'posRank', label: () => 'Position Rank', unit: 'RANK' },
   { key: 'yards', label: () => 'Yards', unit: 'YD' },
   { key: 'touchdowns', label: () => 'Touchdowns', unit: 'TD' },
-  { key: 'snapPct', label: () => 'Snap share', unit: 'SNAPS' },
+  { key: 'snapPct', label: () => 'Snap Share', unit: 'SNAPS' },
 ];
+const SHOW: { key: Show; label: string }[] = [
+  { key: 'rostered', label: 'Rostered' },
+  { key: 'all', label: 'Everyone' },
+  { key: 'free', label: 'Free Agents' },
+];
+const cx = (...c: (string | false | null | undefined)[]) => c.filter(Boolean).join(' ');
 
 function figure(r: Row, k: SortKey): string {
   switch (k) {
@@ -52,10 +62,20 @@ function figure(r: Row, k: SortKey): string {
   }
 }
 
+/** A filter chip as a button, the kit chip's look. */
+function ChipButton({ on, onClick, children }: { on: boolean; onClick: () => void; children: string }) {
+  return (
+    <button type="button" className={cx(u.chip, on && u.chipOn)} aria-pressed={on} onClick={onClick}>
+      {children}
+    </button>
+  );
+}
+
 /**
- * The players browser: search, six sorts, position chips, NFL team and
- * league team, and the free agent switch, fifty rows at a time. A row opens
- * the player sheet; the sheet leads to the full profile.
+ * The players browser: a search and one row of position chips on screen;
+ * the sort, the NFL team, the league team and who to show sit in the sheet.
+ * Fifty rows at a time; a row opens the player sheet, which leads to the
+ * full profile.
  */
 export default function Browser({
   rows,
@@ -77,7 +97,7 @@ export default function Browser({
   const [nfl, setNfl] = useState('all');
   const [owner, setOwner] = useState('all');
   const [sort, setSort] = useState<SortKey>('points');
-  const [free, setFree] = useState(false);
+  const [show, setShow] = useState<Show>('rostered');
   const [limit, setLimit] = useState(PAGE);
   const reset = (apply: () => void) => {
     apply();
@@ -87,11 +107,11 @@ export default function Browser({
   const filtered = useMemo(() => {
     const needle = q.trim().toLowerCase();
     const out = rows.filter((r) => {
-      if (!free && r.owner == null) return false;
+      if (show === 'rostered' && r.owner == null) return false;
+      if (show === 'free' && r.owner != null) return false;
       if (pos !== 'All' && r.position !== pos) return false;
       if (nfl !== 'all' && r.team !== nfl) return false;
-      if (owner === 'free' && r.owner != null) return false;
-      if (owner !== 'all' && owner !== 'free' && String(r.owner) !== owner) return false;
+      if (owner !== 'all' && String(r.owner) !== owner) return false;
       if (needle && !r.name.toLowerCase().includes(needle)) return false;
       return true;
     });
@@ -105,119 +125,104 @@ export default function Browser({
       return sort === 'posRank' ? av - bv : bv - av;
     });
     return out;
-  }, [rows, q, pos, nfl, owner, sort, free]);
+  }, [rows, q, pos, nfl, owner, sort, show]);
   const shown = filtered.slice(0, limit);
-  const unit = SORTS.find((x) => x.key === sort)!.unit;
+  const current = SORTS.find((x) => x.key === sort)!;
+  const sheetOn = sort !== 'points' || nfl !== 'all' || owner !== 'all' || show !== 'rostered';
 
   return (
-    <>
-      <section className={s.card}>
-        <label>
-          <span className={p.srOnly}>Search players</span>
-          <input className={p.search} type="search" value={q} placeholder="Search by name" autoComplete="off" onChange={(e) => reset(() => setQ(e.target.value))} />
-        </label>
-        <div className={p.field}>
-          <span className={p.label}>Position</span>
-          <div className={p.scroller} role="group" aria-label="Position">
-            {POSITIONS.map((v) => (
-              <button key={v} type="button" className={`${s.filter} ${pos === v ? s.filterOn : ''}`} aria-pressed={pos === v} onClick={() => reset(() => setPos(v))}>
-                {v}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className={p.field}>
-          <span className={p.label}>Sort by</span>
-          <div className={p.scroller} role="group" aria-label="Sort by">
-            {SORTS.map((x) => (
-              <button key={x.key} type="button" className={`${s.filter} ${sort === x.key ? s.filterOn : ''}`} aria-pressed={sort === x.key} onClick={() => reset(() => setSort(x.key))}>
-                {x.label(week)}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className={p.selects}>
-          <label className={p.field}>
-            <span className={p.label}>NFL team</span>
-            <select className={p.select} value={nfl} onChange={(e) => reset(() => setNfl(e.target.value))}>
-              <option value="all">All teams</option>
-              {nflTeams.map((t) => (
-                <option key={t.abbr} value={t.abbr}>
-                  {t.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className={p.field}>
-            <span className={p.label}>League team</span>
-            <select
-              className={p.select}
-              value={owner}
-              onChange={(e) =>
-                reset(() => {
-                  setOwner(e.target.value);
-                  // Asking for free agents while hiding them would show nobody.
-                  if (e.target.value === 'free') setFree(true);
-                })
-              }
-            >
-              <option value="all">Everyone</option>
-              <option value="free">Free agents</option>
-              {owners.map((o) => (
-                <option key={o.rosterId} value={String(o.rosterId)}>
-                  {o.team}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-        <label className={p.toggle}>
-          <span>Include free agents</span>
-          <input type="checkbox" checked={free} onChange={(e) => reset(() => setFree(e.target.checked))} />
-        </label>
-        {!complete ? <p className={p.via}>Sleeper did not answer, so ownership shows starters only until the next refresh.</p> : null}
-      </section>
-
-      <div className={s.title}>
-        <h2>{SORTS.find((x) => x.key === sort)!.label(week)}</h2>
-        <span className={p.count}>
-          {shown.length} of {filtered.length}
-        </span>
+    <Section title={current.label(week)}>
+      <SearchField label="Search players" value={q} placeholder="Search players" onChange={(e) => reset(() => setQ(e.target.value))} />
+      <div className={l.taps}>
+        <Rail label="Filters">
+          {POSITIONS.map((v) => (
+            <ChipButton key={v} on={pos === v} onClick={() => reset(() => setPos(v))}>
+              {v}
+            </ChipButton>
+          ))}
+          <FilterSheet id="players-more" label="More" title="Sort and Filter" on={sheetOn}>
+            <Card>
+              <span className={u.label}>Sort by</span>
+              <div className={u.chips} role="group" aria-label="Sort by">
+                {SORTS.map((x) => (
+                  <ChipButton key={x.key} on={sort === x.key} onClick={() => reset(() => setSort(x.key))}>
+                    {x.label(week)}
+                  </ChipButton>
+                ))}
+              </div>
+              <span className={u.label}>Show</span>
+              <div className={u.seg} role="group" aria-label="Show">
+                {SHOW.map((x) => (
+                  <button key={x.key} type="button" className={cx(u.segBtn, show === x.key && u.segOn)} aria-pressed={show === x.key} onClick={() => reset(() => setShow(x.key))}>
+                    {x.label}
+                  </button>
+                ))}
+              </div>
+              <SelectField label="NFL team" value={nfl} onChange={(e) => reset(() => setNfl(e.target.value))}>
+                <option value="all">All teams</option>
+                {nflTeams.map((t) => (
+                  <option key={t.abbr} value={t.abbr}>
+                    {t.name}
+                  </option>
+                ))}
+              </SelectField>
+              <SelectField
+                label="League team"
+                value={owner}
+                onChange={(e) =>
+                  reset(() => {
+                    setOwner(e.target.value);
+                    // A league team's players are all rostered.
+                    if (e.target.value !== 'all') setShow('all');
+                  })
+                }
+              >
+                <option value="all">Every team</option>
+                {owners.map((o) => (
+                  <option key={o.rosterId} value={String(o.rosterId)}>
+                    {o.team}
+                  </option>
+                ))}
+              </SelectField>
+              {!complete ? <p className={`${u.sub} ${l.note}`}>Sleeper did not answer, so ownership shows starters only until the next refresh.</p> : null}
+            </Card>
+          </FilterSheet>
+        </Rail>
       </div>
       {shown.length ? (
-        <div className={s.list}>
+        <List tap>
           {shown.map((r) => {
             const f = figure(r, sort);
+            const who = mine != null && r.owner === mine ? 'Your team' : (r.ownerTeam ?? 'Free agent');
             return (
-              <button key={r.id} type="button" data-player={r.id} className={`${p.row} ${mine != null && r.owner === mine ? p.rowMine : ''}`} aria-label={`${r.name}, open player`}>
-                <span className={`${p.face} ${r.position === 'DEF' ? p.faceDef : ''}`}>
-                  <img src={r.headshot} alt="" loading="lazy" />
-                </span>
-                <span className={p.rowName}>
-                  <b>{r.short}</b>
-                  <small>
-                    <i className={`${s.pos} ${s[`p${r.position}`] ?? ''}`}>{r.position}</i>
-                    {r.injury ? <i className={s.inj}>{injAbbr(r.injury)}</i> : null}
-                    {r.position === 'DEF' ? null : <span>{r.team || 'FA'}</span>}
-                    <span>{r.ownerTeam ?? 'Free agent'}</span>
-                  </small>
-                </span>
-                <span className={p.rowPts}>
-                  <b>{f || '–'}</b>
-                  <small>{unit}</small>
-                </span>
-              </button>
+              <KitRow
+                key={r.id}
+                data={{ player: r.id }}
+                lead={<Face id={r.id} team={r.team || null} defense={r.position === 'DEF'} />}
+                title={r.short}
+                sub={
+                  <>
+                    <Pos position={r.position} />
+                    {r.injury ? ` ${injAbbr(r.injury)} ·` : ''} {who}
+                  </>
+                }
+                value={f || '–'}
+                valueSub={current.unit}
+              />
             );
           })}
-        </div>
+        </List>
       ) : (
-        <p className={s.empty}>Nobody matches. Loosen a filter.</p>
+        <Empty>Nobody matches. Loosen a filter.</Empty>
       )}
       {shown.length < filtered.length ? (
-        <button type="button" className={p.more} onClick={() => setLimit(limit + PAGE)}>
+        <button type="button" className={cx(u.pill, u.pillSecondary, l.more)} onClick={() => setLimit(limit + PAGE)}>
           Show {Math.min(PAGE, filtered.length - shown.length)} more
         </button>
       ) : null}
-    </>
+      <p className={`${u.sub} ${l.inset}`}>
+        {shown.length} of {filtered.length} players
+      </p>
+    </Section>
   );
 }

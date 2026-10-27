@@ -93,6 +93,32 @@ theme at 360, 390 or 430 px.
 | NFL game | Custom season grid | Kit `Versus` |
 | NFL game | Line card with stacked pairs and BookTable (deleted) | One Odds `List` of kit `Row`s, every book as a row |
 | NFL game | Custom skin-in-the-game groups | One `List` per team: `Avatar` team row, then `Face` player rows |
+| The Rag | Capsule week chips, static white issue card, custom story list | Kit `Chip`s in a `Rail`, `RagCard`, one tappable `List` of `Row`s with `thumb` art |
+| Rag story | Reading card (static white card) and its own back link | Flat reading column from ui roles (`label`, `display`, `bodyText`, `Media`); back is the top bar's |
+| League | Capsule page chips, custom standings table with header row and heavy cut line | Kit `Chip`s in a `Rail`; one tappable `List` of `Row`s (`Rank` and `Avatar` lead, record and playoff odds on the right), a "Playoff line" label at the cut |
+| League | Gold award discs in standings | Award symbol on a neutral kit `Tag` (one gold per screen) |
+| Bracket | Custom bracket sides and gold champion banner | Kit `Pair` per game in a flat `List` per round; champion as one `Row` with a gold `Label` |
+| Rules | Static white rule cards, custom numbered lists and point tables | Flat `Section`s; numbered `Row`s with `Rank`; scoring as `Row`s with the value on the right; lineup as `Pos` tags |
+| Trophy Case | Custom award rows, capsule history chips, gold award chips on every shelf | `AwardTile` as a kit `Row`; Every Award as flat `Row`s with the full history in one `Drawer`; shelves as tappable `Row`s with the pieces in the sub line |
+| Chug Meter | Static white film card, red week numbers and scores, steins beside the count, custom archive card | Flat `Section`s and `Row`s; count once on the right; chug film once (This Week no longer repeats it); archive in a kit `Drawer` |
+| Shart citation | Static white ticket with red labels and a 38/900 score | Flat `Row`s: who and the score, numbered charges, the sentence with a `Pill` to the Chug Meter |
+| Trades | Static white list, capsule player chips | Flat `List`, one row per trade; players as kit `chip` buttons with a `Face` that open the sheet; picks and FAAB as `Tag`s |
+| Insights | Static white lists, custom luck table, quiet mark chips | Tappable player `Row`s (`Face` lead); groups under `Label`s; luck as `Row`s; source lines as notes |
+| Feed | Old segment toggle, gradient story rings, static white lists, colored mark chips, blue "Show all" bar | Kit `seg` buttons; `Avatar` with a first-name `Label` (brand when it has clips); kit `row` and `Tag` marks; `pill` for History and YouTube; filter chips as kit `chip` buttons in a `Rail` |
+| Feed and the week in 90 seconds | Two story players with capsule buttons, round close buttons and 900 weight | One `StoryStage` block for both: 10 corners on controls, 20 on panels, weights 400/600/800 |
+| Clips | Shadowed stills and a round white play button | Kit `media` and a `pillWhite` play button |
+| Swami | Two expanding panels (trade, waivers) above a 50 row wall under two rows of filter chips | Kit `Seg` (Players, Waivers, Trade); each view one row of `Chip`s in a `Rail`, the rest in a `FilterSheet`; Players adds a `SearchField` and 25 rows with Show more |
+| Swami | Labeled figure pills (Tag label plus value) and the weekly cells grid | Kit `Stats` (via `StatGrid`) and kit `Tag` |
+| Swami | Pickups and traded players as custom details rows | `ExpandRow` block in a kit `List` |
+| Swami | Trade sides as two boxed columns | One kit `Versus`; week by week as a `Versus` in a `Drawer` |
+| Swami, player, My Team | Copy move and Open Sleeper as custom buttons | Kit `pill` (primary and secondary) |
+| Players | Search box, two chip rows, two selects and a capsule toggle in a static card | `SearchField`, one chip row, the rest (sort, show, NFL team, league team) in a `FilterSheet` |
+| Player | Team color hero card with cutout, owner strip, chips | `ProfileHead` block (cutout, 24/800 name, tags) and a kit `Row` to the owner |
+| Player | Custom cells, tiles, dl pairs and a usage table | Kit `Stats` (via `StatGrid`) and kit `Row`s |
+| Player, Manager | PointsBars with 2 px bars and capsule legend | `WeekBars` block: square bars, scrub across the chart (the whole chart is the tap target) |
+| Player | Clip tiles with a round dark play button and capsule sound button | Kit `media` with a `Tag` play label and a kit `chip` sound button |
+| Managers | Rows with seed, ring and award pills | Kit `Row`: `Rank` and `Avatar` lead, awards in the sub line |
+| Manager | Hero card, award tiles on gold, custom game card | `ProfileHead`, Trophy Case as kit `Row`s, the game as a kit `Pair`; bench, IR and taxi in `Drawer`s |
 
 ## Copy (kit rebuild)
 
@@ -108,3 +134,38 @@ theme at 360, 390 or 430 px.
 | Who Has Skin in This | League Players |
 | This Game, on Tape | Highlights |
 | "‹ NFL Week N" back label | "‹ NFL Scores" |
+| Rag story "Week N issue" link | Removed; the top bar goes back to the week |
+| If the Season Ended Today (bracket section) | Note: "If the season ended today. Top 7 make it; playoffs start week 15." |
+| W-L / Playoffs (standings header) | Record on the right, "NN% playoffs" under it |
+| Shart Bowl note "Losers bracket. The loser chugs" | Kept, under the section title The Shart Bowl |
+| Every Trade count "N trades · N yours" | "N trades this season, N yours" |
+| Steals / Busts / Rising / Falling | Kept as group labels |
+| Usage chips "SNAPS 40% TO 62%" | "Snaps 40% to 62% · Targets 10% to 18%" in the row |
+| Luck table headers Team / Record / All-play / Luck | Row: "Jack · 4-2, all-play 5-1", luck on the right with "Wins" |
+| Stories (Feed) with "Week N" beside it | "Week N Stories" |
+| NFL Clips "League players · via YouTube" beside the title | Same words as the note under the clips |
+| Chug Meter "Chug Meter" link on the Chug Meter's own citation | Removed there; elsewhere a `Pill` |
+| Chug Meter (Home module) link "Chug Meter" | "All teams" |
+| Award "Not handed out yet" | "Not yet" |
+| Swami: Trade Checker / Waiver Pickups panels, research list | Views: Players, Waivers, Trade |
+| Ownership chips Everyone / Rostered / Free agents | Same words, in the sheet; "Free Agents" |
+| Pickups For · The Whole League | Sheet "Pickups For", chip "League" |
+| Best Adds · Lineup Points Added | Best Adds (value labeled "Lineup gain") |
+| Best Available · Added to the Average Lineup | Best Available (value labeled "Avg gain") |
+| Measured Against · A Typical Week | "{Team} Lineup", "Per game" |
+| First Team Sends / Second Team Sends | "{Team} Sends" |
+| Choose both teams to start. / Now pick at least one player from either roster. | Pick two teams. / Pick a player from either roster. |
+| How It's Worked Out | How It Works |
+| Rest of season / Raw in / Raw out tags | Versus rows: Verdict, Lineup, Per week, Lineup now, After, Raw in, Raw out |
+| Players: Include free agents (toggle) | Show: Rostered, Everyone, Free Agents |
+| Players: NFL team / League team selects, Sort by chips | Same, in the "More" sheet titled Sort and Filter |
+| Player: owner strip "Rostered" pill | Section "On Sleeper" |
+| Sleeper Props | Props |
+| Coming up | Schedule |
+| Game (link beside Week N) | Removed; the game row is the link |
+| Season tiles' sub lines (Avg, % of it) | Stats: Points, Per game, Best, Games, Pts started, Starts, Rostered, Started, Snaps |
+| Shaded: playoffs (legend) | Playoffs |
+| Manager: Full matchup (link) | Removed; the game row is the link |
+| Moves · Latest 10 | Recent Activity |
+| ADD / DROP / START / BENCH marks | Add / Drop / Start / Bench tags |
+| Bench · N / Injured reserve · N / Taxi · N | Drawers Bench, Injured Reserve, Taxi with the count |

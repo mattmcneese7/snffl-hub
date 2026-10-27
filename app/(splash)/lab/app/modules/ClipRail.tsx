@@ -3,8 +3,7 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { autoplayVars, FATAL_ERRORS, loadYouTube, STATE, YT_HOST, type YTPlayer } from '../../../lib/yt-player';
 import { MS } from '../icons';
-import s from '../v4.module.css';
-import m from './modules.module.css';
+import { Empty, Tag, ui } from '../ui';
 import c from './clips.module.css';
 
 // Sound on and off: Material Symbols Rounded, filled, weight 600 (Apache 2.0).
@@ -159,10 +158,10 @@ export default function ClipPlayerRail({ clips, phone, stack = false }: { clips:
     [shown, railId, stack]
   );
 
-  if (!shown.length) return <p className={c.none}>None of these clips play here yet.</p>;
+  if (!shown.length) return <Empty>None of these clips play here yet.</Empty>;
 
   return (
-    <div ref={railRef} className={stack ? c.stack : s.rail}>
+    <div ref={railRef} className={stack ? c.stack : ui.rail}>
       {shown.map((clip) => (
         <Tile key={clip.videoId} clip={clip} slot={`${railId}:${clip.videoId}`} tall={phone && clip.vertical} stack={stack} onFail={onFail} onEnded={onEnded} />
       ))}
@@ -266,12 +265,12 @@ function Tile({
 
   return (
     <div ref={tileRef} data-clip={clip.videoId} className={`${c.clip} ${stack ? c.inStack : tall ? c.tall : c.wide}`}>
-      <span className={`${c.still} ${tall ? c.stillTall : ''}`} data-playing={playing ? '' : undefined}>
+      <span className={`${ui.media} ${c.still} ${tall ? c.stillTall : ''}`} data-playing={playing ? '' : undefined}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={still} alt="" loading="lazy" onError={() => setStill(clip.still)} />
         <span ref={hostRef} className={c.frame} aria-hidden={!isActive} />
         <button type="button" className={c.tap} onClick={onTap} aria-label={label}>
-          <span className={c.play} aria-hidden>
+          <span className={`${ui.pill} ${ui.pillWhite} ${c.play}`} aria-hidden>
             {!isActive ? (
               <Glyph d={MS.play} />
             ) : muted ? (
@@ -283,20 +282,18 @@ function Tile({
         </button>
       </span>
       <span className={c.meta}>
-        <span className={c.title}>{clip.title}</span>
-        <span className={c.source}>{clip.channel}</span>
+        <span className={`${ui.title} ${c.title}`}>{clip.title}</span>
+        <span className={ui.sub}>{clip.channel}</span>
       </span>
       {clip.owners.length || clip.tags?.length ? (
         <span className={c.owners}>
           {clip.owners.map((o, i) => (
-            <span key={i} className={`${s.tag} ${o.started ? s.tagGood : s.tagBad}`}>
+            <Tag key={i} tone={o.started ? 'good' : 'bad'}>
               {o.name}, {o.started ? 'Started' : 'Benched'}
-            </span>
+            </Tag>
           ))}
           {clip.tags?.map((t) => (
-            <span key={t} className={s.tag}>
-              {t}
-            </span>
+            <Tag key={t}>{t}</Tag>
           ))}
         </span>
       ) : null}

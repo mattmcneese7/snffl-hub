@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { BOOKS, setBook } from '../../../lib/book-pref';
 import { BOOK_LOGOS } from '../../../kit/bookLogos';
 import { Ms } from '../icons';
+import { ui } from '../ui';
 import a from './account.module.css';
 
 /** Prediction markets price a game as a chance, not a sportsbook line. */
@@ -23,21 +24,22 @@ export default function Books({ current }: { current: string }) {
     { label: 'Prediction Market', books: BOOKS.filter((b) => MARKETS.has(b.key)) },
   ].filter((g) => g.books.length);
   return (
-    <div className={a.bookGroups}>
+    <div className={a.groups}>
       {groups.map((g) => (
-        <div key={g.label} role="radiogroup" aria-label={g.label} className={a.bookGroup}>
-          <p className={a.sub}>{g.label}</p>
-          <div className={a.books}>
+        <div key={g.label} role="radiogroup" aria-label={g.label} className={a.group}>
+          <div className={ui.card}>
+            <span className={ui.label}>{g.label}</span>
+          </div>
+          <div className={`${ui.list} ${ui.tapList}`}>
             {g.books.map((book) => {
               const on = book.key === value;
-              const logo = BOOK_LOGOS[book.key];
               return (
                 <button
                   key={book.key}
                   type="button"
                   role="radio"
                   aria-checked={on}
-                  className={`${a.book} ${on ? a.bookOn : ''}`}
+                  className={`${ui.row} ${a.reset}`}
                   onClick={() => {
                     if (on) return;
                     setValue(book.key);
@@ -45,9 +47,11 @@ export default function Books({ current }: { current: string }) {
                     router.refresh();
                   }}
                 >
-                  {logo ? <img src={logo} alt="" className={a.bookLogo} /> : <span className={a.bookLogo} aria-hidden />}
-                  <span className={a.bookName}>{book.name}</span>
-                  {on ? <Ms name="check" size={18} className={a.bookCheck} /> : null}
+                  {BOOK_LOGOS[book.key] ? <img src={BOOK_LOGOS[book.key]} alt="" className={`${ui.thumb} ${a.logo}`} /> : <span className={`${ui.thumb} ${a.logo}`} aria-hidden />}
+                  <span className={`${ui.title} ${on ? ui.strong : ''}`}>{book.name}</span>
+                  <span className={`${a.check} ${ui.labelBrand}`} aria-hidden>
+                    {on ? <Ms name="check" size={20} /> : null}
+                  </span>
                 </button>
               );
             })}

@@ -2,9 +2,12 @@ import Link from 'next/link';
 import type { CSSProperties, ReactNode } from 'react';
 import Pattern from '../../home/Pattern';
 import { Ms, type MsName } from './icons';
+import { ui } from './ui';
 import { Drop, SWITZER, TabBar, TopBar, type Back } from './Chrome';
 import s from './v4.module.css';
-import k from './skeleton.module.css';
+import f from './ui/blocks/Frame.module.css';
+import b from './ui/blocks/ScoreBar.module.css';
+import k from './ui/blocks/Skeleton.module.css';
 
 
 /**
@@ -30,36 +33,36 @@ export function Frame({
   children: ReactNode;
 }) {
   return (
-    <div className={s.root}>
+    <div className={`${s.root} ${f.app}`}>
       {/* eslint-disable-next-line @next/next/no-page-custom-font */}
       <link rel="stylesheet" href={SWITZER} precedence="default" />
       <Pattern mode="wallpaper" />
-      <main className={s.page} aria-busy={bar ? true : undefined}>
+      <main className={f.page} aria-busy={bar ? true : undefined}>
         {back ? (
-          <TopBar word={word ?? ''} back={back} right={<span className={s.acct} aria-hidden />} />
+          <TopBar word={word ?? ''} back={back} right={<span className={f.acct} aria-hidden><span className={`${f.acctFace} ${k.round} ${k.bone}`} /></span>} />
         ) : (
-          <div className={s.head}>
+          <div className={f.head}>
             {icon && word ? (
-              <h1 className={s.secHead}>
+              <h1 className={f.secHead}>
                 {typeof icon === 'string' ? <Ms name={icon as MsName} /> : icon}
                 {word}
               </h1>
             ) : (
-              <Link href="/lab/app" className={s.lockup} aria-label="splash, home">
-                <Drop className={s.lockupMark} />
+              <Link href="/lab/app" className={f.lockup} aria-label="splash, home">
+                <Drop className={f.lockupMark} />
                 splash
               </Link>
             )}
-            <span className={s.headR}>
+            <span className={f.headR}>
               <i className={k.bone} style={{ width: 52, height: 14 }} />
-              <span className={s.acct} aria-hidden />
+              <span className={f.acct} aria-hidden><span className={`${f.acctFace} ${k.round} ${k.bone}`} /></span>
             </span>
           </div>
         )}
         {children}
       </main>
-      <div className={s.dock}>
-        {bar ? <div className={`${s.bar} ${k.bar}`} aria-hidden /> : null}
+      <div className={f.dock}>
+        {bar ? <div className={`${b.bar} ${k.card} ${k.blue} ${k.bar}`} aria-hidden /> : null}
         <TabBar active={active} />
       </div>
     </div>
@@ -69,7 +72,7 @@ export function Frame({
 /** A section title: the bar of its words, and a link's width if it has one. */
 export function SkTitle({ w = 120, link = false }: { w?: number; link?: boolean }) {
   return (
-    <div className={s.title} aria-hidden>
+    <div className={k.title} aria-hidden>
       <i className={k.bone} style={{ width: w, height: 18 }} />
       {link ? <i className={k.bone} style={{ width: 64, height: 13 }} /> : null}
     </div>
@@ -84,10 +87,10 @@ export function SkCard({ h, blue = false, style }: { h: number; blue?: boolean; 
 /** A list card of rows: avatar or headshot, two lines, and a number on the right. */
 export function SkList({ rows, h = 56, round = true }: { rows: number; h?: number; round?: boolean }) {
   return (
-    <div className={s.list} aria-hidden>
+    <div className={k.list} aria-hidden>
       {Array.from({ length: rows }, (_, i) => (
         <div key={i} className={k.row} style={{ height: h }}>
-          <i className={k.bone} style={{ width: 28, height: 28, borderRadius: round ? '50%' : 8 }} />
+          <i className={`${k.bone} ${round ? k.round : ''}`} style={{ width: 28, height: 28 }} />
           <span className={k.lines}>
             <i className={k.bone} style={{ width: `${62 - (i % 3) * 9}%`, height: 14 }} />
             <i className={k.bone} style={{ width: `${38 - (i % 2) * 8}%`, height: 11 }} />
@@ -102,7 +105,7 @@ export function SkList({ rows, h = 56, round = true }: { rows: number; h?: numbe
 /** A row of chips, the way the League links and the week picker sit. */
 export function SkChips({ n, w = 72, rows = 1 }: { n: number; w?: number; rows?: number }) {
   return (
-    <div className={k.chips} aria-hidden style={{ maxHeight: rows * 38 - 6 }}>
+    <div className={k.chips} aria-hidden style={{ maxHeight: rows * 52 - 8 }}>
       {Array.from({ length: n }, (_, i) => (
         <i key={i} className={`${k.bone} ${k.chip}`} style={{ width: w + ((i * 13) % 24) }} />
       ))}
@@ -115,7 +118,7 @@ export function SkRail({ n = 3, w = 150, h = 170, round = false }: { n?: number;
   return (
     <div className={k.rail} aria-hidden>
       {Array.from({ length: n }, (_, i) => (
-        <i key={i} className={`${k.bone} ${k.tile}`} style={{ width: w, height: h, borderRadius: round ? '50%' : 20 }} />
+        <i key={i} className={`${k.bone} ${round ? k.round : k.tile}`} style={{ width: w, height: h }} />
       ))}
     </div>
   );
@@ -124,7 +127,7 @@ export function SkRail({ n = 3, w = 150, h = 170, round = false }: { n?: number;
 /** Screen reader line for the loading state. */
 export function SkStatus({ what }: { what: string }) {
   return (
-    <p className={k.sr} role="status">
+    <p className={ui.sr} role="status">
       Loading {what}
     </p>
   );

@@ -1,0 +1,61 @@
+/* The app frame: the page column, the top of each screen (lockup, section
+   title, week, your avatar), the top bar below a tab's top page, and the dock
+   with the tab bar. Kit values only: corners 20 and 10, round faces, one
+   shadow (var(--shadow)), sizes 24/18/15/13/11, weights 400/600/800 and
+   Switzer 900 for the lockup and branded titles, taps 44. */
+
+.app { position: relative; min-height: 100dvh; color: var(--ink); font: 400 15px/1.4 var(--ui); -webkit-font-smoothing: antialiased; }
+.app :global(.N) { font-variant-numeric: tabular-nums; font-weight: 800; letter-spacing: 0; }
+
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 430px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: calc(12px + env(safe-area-inset-top, 0px)) max(var(--gutter), env(safe-area-inset-right, 0px)) 200px max(var(--gutter), env(safe-area-inset-left, 0px));
+}
+.page > * { flex: none; }
+
+/* Top of screen: the lockup on Home, the section's icon and name elsewhere. */
+.head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 0 0 4px; margin-bottom: -12px; }
+.lockup { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; font: 900 24px/1 var(--brand); letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+.lockupMark { width: 20px; height: 20px; color: var(--blue); --lace: var(--paper); }
+.secHead { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin: 0; font: 900 24px/1 var(--brand); letter-spacing: -0.03em; }
+.secHead svg { width: 22px; height: 22px; color: var(--deep); }
+@media (prefers-color-scheme: dark) {
+  .lockupMark { color: var(--on-blue); --lace: var(--blue); }
+  .secHead svg { color: var(--ink); }
+}
+.headR { display: inline-flex; align-items: center; gap: 4px; }
+.wk { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+
+/* Your avatar: a 44 tap around a 34 face. */
+.acct { display: grid; place-items: center; width: 44px; height: 44px; margin-right: -6px; color: var(--deep); text-decoration: none; -webkit-tap-highlight-color: transparent; }
+.acctFace { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; overflow: hidden; background: var(--mgr, var(--chip-bg)); }
+.acctFace img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.acctFace svg { width: 18px; height: 18px; }
+
+/* Top bar, below a tab's top page: back to where you were, the title, your
+   avatar. Flat on the paper, one hairline under it. */
+.topBar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 15; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 8px; min-height: 44px; margin: -12px calc(-1 * var(--gutter)) -12px; padding: 0 var(--gutter); background: var(--paper); border-bottom: 1px solid var(--hair); }
+.topBar::before { content: ''; position: absolute; left: 0; right: 0; bottom: 100%; height: 60px; background: var(--paper); }
+.topTitle { display: inline-flex; align-items: center; gap: 4px; font: 900 18px/1 var(--brand); letter-spacing: -0.03em; white-space: nowrap; overflow: hidden; max-width: 52vw; opacity: 0; transform: translateY(4px); transition: opacity 160ms ease-out, transform 160ms ease-out; }
+.topTitle svg { flex: none; color: var(--deep); }
+.topTitle[data-shown="true"] { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .topTitle { transform: none; transition: opacity 150ms linear; } }
+.topRight { display: flex; justify-content: flex-end; }
+.backBtn { justify-self: start; display: inline-flex; align-items: center; min-height: 44px; max-width: 100%; margin-left: -6px; padding: 0 8px 0 0; border: 0; background: none; color: var(--deep); font: 600 15px var(--ui); cursor: pointer; }
+.backBtn span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.backBtn svg { flex: none; }
+
+/* The dock: the score bar over the tab bar. */
+.dock { position: fixed; z-index: 20; left: 50%; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); width: min(430px, 100%); transform: translateX(-50%); display: grid; gap: 8px; padding: 0 max(var(--gutter), env(safe-area-inset-right, 0px)) 0 max(var(--gutter), env(safe-area-inset-left, 0px)); box-sizing: border-box; }
+
+/* Tab bar: a 20 container; the selected tab is a 10 inside it. */
+.tabs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); height: 60px; padding: 4px; border-radius: 20px; background: color-mix(in srgb, var(--card) 90%, transparent); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); box-shadow: var(--shadow); }
+.tab { display: grid; justify-items: center; align-content: center; gap: 4px; min-height: 44px; border-radius: 10px; color: var(--ink-3); text-decoration: none; font-size: 11px; font-weight: 600; -webkit-tap-highlight-color: transparent; }
+.tab svg { width: 22px; height: 22px; }
+.tabOn { color: var(--deep); background: var(--powder-soft); }

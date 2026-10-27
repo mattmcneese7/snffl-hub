@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState, type ReactNode } from 'react';
-import s from '../v4.module.css';
+import { ui } from '../ui';
+import f from '../feed/feed.module.css';
 
 export type FeedTab = 'all' | 'clips' | 'league';
 const TABS: [FeedTab, string][] = [
@@ -35,10 +36,10 @@ export default function FeedTabs({ id, children }: { id: string; children: React
     }
   };
   return (
-    <div className={s.feedTabs} data-tab={tab}>
-      <div className={s.seg} role="tablist" aria-label="Feed type">
+    <div className={f.tabs} data-tab={tab}>
+      <div className={ui.seg} role="tablist" aria-label="Feed type">
         {TABS.map(([k, label]) => (
-          <button key={k} type="button" role="tab" aria-selected={tab === k} className={`${s.segBtn} ${tab === k ? s.segOn : ''}`} onClick={() => pick(k)}>
+          <button key={k} type="button" role="tab" aria-selected={tab === k} className={`${ui.segBtn} ${tab === k ? ui.segOn : ''}`} onClick={() => pick(k)}>
             {label}
           </button>
         ))}

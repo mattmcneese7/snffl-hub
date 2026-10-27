@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 import Squirt from './squirt/Squirt';
 import { tellSquirt } from './squirt/bus';
-import p from './pop.module.css';
+import { ui } from './ui';
+import p from './ui/blocks/Pop.module.css';
 
 /**
  * Moments: what the week earns you, each played once per device.
@@ -95,9 +96,9 @@ export default function Moments({ week, won, sharted, name, force }: { week: num
       {kind === 'win' ? <div ref={confetti} className={p.confetti} aria-hidden /> : null}
       <div className={p.toast} role="status">
         <Squirt mood={kind === 'win' ? 'smug' : 'gloom'} size={112} listen label={kind === 'win' ? 'Squirt celebrates your win' : 'Squirt, the Shart of the week'} />
-        <span className={p.title}>
-          <b>{kind === 'win' ? (name ? `${name}, you took it` : 'You took it') : 'Flushed'}</b>
-          <span>{kind === 'win' ? `Week ${week} goes in the win column.` : `${name ? `${name}, you're` : "You're"} the Shart of week ${week}.`}</span>
+        <span className={p.text}>
+          <b className={`${ui.title} ${ui.strong}`}>{kind === 'win' ? (name ? `${name}, you took it` : 'You took it') : 'Flushed'}</b>
+          <span className={ui.sub}>{kind === 'win' ? `Week ${week} goes in the win column.` : `${name ? `${name}, you're` : "You're"} the Shart of week ${week}.`}</span>
         </span>
       </div>
     </>

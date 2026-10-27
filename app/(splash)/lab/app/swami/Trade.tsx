@@ -7,10 +7,11 @@ import { getLeague } from '@/lib/sleeper';
 import { evaluateTrade, EVEN_PER_WEEK, type TradeEval, type TradeSide } from '@/lib/trade-eval';
 import { idList, qv, swamiHref, type SwamiQuery } from '../../../swami/moves-query';
 import { rosBoard } from '../cached';
-import { Ms } from '../icons';
+import { Card, Chip, Chips, Drawer, Empty, List, Pill, Rail, Section, Tag, Versus, ui as u } from '../ui';
+import { ExpandRow } from '../ui/blocks/ExpandRow';
+import { FilterSheet } from '../ui/blocks/FilterSheet';
 import CopyMove from './CopyMove';
-import { curl, Face, fmt, metaLine, Panel, Pos, RosMethod, RosWorking, short, signed, Tag } from './parts';
-import s from '../v4.module.css';
+import { BASE, curl, fmt, PlayerFace, PlayerSub, RosMethod, RosWorking, short, signed, tabbed } from './parts';
 import w from './swami.module.css';
 
 /**
@@ -21,84 +22,37 @@ import w from './swami.module.css';
  * group chat. The first team defaults to yours.
  */
 
-const BASE = '/lab/app/swami';
 const ORDER = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF'];
 const toggle = (list: string[], id: string) => (list.includes(id) ? list.filter((x) => x !== id) : [...list, id]);
 const managerOf = (rosterId: number) => firstNameOf(rosterId) ?? teams.find((t) => t.rosterId === rosterId)?.manager ?? `Team ${rosterId}`;
-const teamNameOf = (rosterId: number) => teams.find((t) => t.rosterId === rosterId)?.teamName ?? `Team ${rosterId}`;
+const teamNameOf = (rosterId: number) => teams.find((t) => t.rosterId === rosterId)?.teamName.trim() ?? `Team ${rosterId}`;
 
 const sortRoster = (reads: RosRead[]) =>
   [...reads].sort((x, y) => ORDER.indexOf(x.player.position) - ORDER.indexOf(y.player.position) || (y.total ?? -1) - (x.total ?? -1));
 
-function verdictFor(side: TradeSide, result: TradeEval, which: 'a' | 'b'): { text: string; tone?: 'good' | 'bad' } {
-  if (result.call === which) return { text: 'Wins', tone: 'good' };
-  if (side.perWeek >= EVEN_PER_WEEK) return { text: 'Gains', tone: 'good' };
-  if (side.perWeek <= -EVEN_PER_WEEK) return { text: 'Loses', tone: 'bad' };
-  return { text: 'Even' };
+function verdictFor(side: TradeSide, result: TradeEval, which: 'a' | 'b') {
+  if (result.call === which) return <Tag tone="good">Wins</Tag>;
+  if (side.perWeek >= EVEN_PER_WEEK) return <Tag tone="good">Gains</Tag>;
+  if (side.perWeek <= -EVEN_PER_WEEK) return <Tag tone="bad">Loses</Tag>;
+  return <Tag>Even</Tag>;
 }
 
-function Incoming({ read }: { read: RosRead }) {
+/** One player on a roster to pick from: tap to add him to the trade, again to take him out. */
+function PickRow({ read, on, href }: { read: RosRead; on: boolean; href: string }) {
   return (
-    <details className={w.item}>
-      <summary className={w.row}>
-        <Face read={read} />
-        <span className={w.who}>
-          <b>{read.player.name}</b>
-          <small>
-            <Pos pos={read.player.position} /> {metaLine(read)}
-          </small>
+    <Link href={href} scroll={false} className={u.row} aria-label={`${on ? 'Remove' : 'Add'} ${read.player.name}`}>
+      <PlayerFace read={read} />
+      <span className={u.body}>
+        {on ? <span className={`${u.label} ${u.labelBrand}`}>In trade</span> : null}
+        <span className={`${u.title} ${on ? u.strong : ''}`}>{short(read.player.name, read.player.position)}</span>
+        <span className={u.sub}>
+          <PlayerSub read={read} />
         </span>
-        <span className={w.num}>
-          <b>{read.total != null ? fmt(read.total) : 'No read'}</b>
-          <small>Rest of season</small>
-        </span>
-      </summary>
-      <div className={w.detail}>
-        <RosWorking read={read} />
-        <Link href={`/lab/app/players/${read.player.id}`} className={w.go}>
-          Player page
-        </Link>
-      </div>
-    </details>
-  );
-}
-
-function Side({ side, result, which }: { side: TradeSide; result: TradeEval; which: 'a' | 'b' }) {
-  const v = verdictFor(side, result, which);
-  const owed = side.rosterChange;
-  return (
-    <section className={w.side} aria-label={`${side.teamName} side`}>
-      <div className={w.sideHead}>
-        <Link href={`/lab/app/managers/${side.rosterId}`} className={w.sideName}>
-          <b>{side.teamName}</b>
-          <small>{side.manager}</small>
-        </Link>
-        <span className={`${w.delta} ${v.tone === 'good' ? w.up : v.tone === 'bad' ? w.down : ''}`}>{signed(side.delta)}</span>
-      </div>
-      <div className={w.tags}>
-        <Tag label="Verdict" value={v.text} tone={v.tone} />
-        <Tag label="Best lineup" value={`${fmt(side.before)} to ${fmt(side.after)}`} />
-        <Tag label="Per week" value={signed(side.perWeek)} />
-        <Tag label="Raw in" value={fmt(side.rawGets)} />
-        <Tag label="Raw out" value={fmt(side.rawSends)} />
-      </div>
-      <p className={w.sub}>{side.teamName} Gets</p>
-      {side.gets.length ? (
-        <div className={w.rows}>
-          {side.gets.map((r) => (
-            <Incoming key={r.player.id} read={r} />
-          ))}
-        </div>
-      ) : (
-        <p className={w.empty}>Nothing yet. Pick from the other roster.</p>
-      )}
-      {owed > 0 ? (
-        <p className={w.note}>
-          Takes on {owed} more {owed === 1 ? 'player' : 'players'} than it sends, so {owed === 1 ? 'a drop is' : 'drops are'} owed. The lineup math assumes{' '}
-          {owed === 1 ? 'it comes' : 'they come'} off the bench.
-        </p>
-      ) : null}
-    </section>
+      </span>
+      <span className={u.trail}>
+        <span className={u.value}>{read.total != null ? fmt(read.total) : 'No read'}</span>
+      </span>
+    </Link>
   );
 }
 
@@ -127,10 +81,9 @@ export default async function Trade({ query, mine }: { query: SwamiQuery; mine: 
     const nb = next.b !== undefined ? next.b : b;
     const npa = next.pa ?? pa;
     const npb = next.pb ?? pb;
-    return swamiHref(
-      query,
-      { a: na ? String(na) : null, b: nb ? String(nb) : null, pa: npa.length ? npa.join(',') : null, pb: npb.length ? npb.join(',') : null },
-      BASE,
+    return tabbed(
+      swamiHref(query, { a: na ? String(na) : null, b: nb ? String(nb) : null, pa: npa.length ? npa.join(',') : null, pb: npb.length ? npb.join(',') : null }, BASE),
+      'trade',
     );
   };
 
@@ -141,140 +94,120 @@ export default async function Trade({ query, mine }: { query: SwamiQuery; mine: 
   const ordered = [...teams].sort((x, y) => Number(y.rosterId === mine) - Number(x.rosterId === mine));
   const window = windowLabel(ctx);
   const names = (ids: string[]) => ids.map((id) => short(readOf(id).player.name, readOf(id).player.position)).join(', ');
-  const move =
-    a && b && (pa.length || pb.length)
-      ? `Trade: ${teamNameOf(a)} sends ${pa.length ? names(pa) : 'nothing'}. ${teamNameOf(b)} sends ${pb.length ? names(pb) : 'nothing'}.`
-      : null;
+  const move = ready ? `Trade: ${teamNameOf(a)} sends ${pa.length ? names(pa) : 'nothing'}. ${teamNameOf(b)} sends ${pb.length ? names(pb) : 'nothing'}.` : null;
+  const gets = result ? [...result.a.gets, ...result.b.gets] : [];
+
+  const picker = (which: 'a' | 'b') => {
+    const id = which === 'a' ? a : b;
+    const other = which === 'a' ? b : a;
+    return (
+      <FilterSheet id={`trade-${which}`} label={id ? managerOf(id) : which === 'a' ? 'First team' : 'Second team'} title={which === 'a' ? 'First Team' : 'Second Team'} on={Boolean(id)}>
+        <Card>
+          <Chips label={which === 'a' ? 'First team' : 'Second team'}>
+            {ordered
+              .filter((t) => t.rosterId !== other)
+              .map((t) => (
+                <Chip key={t.rosterId} href={href({ [which]: t.rosterId, [`p${which}`]: [] })} on={t.rosterId === id}>
+                  {managerOf(t.rosterId)}
+                </Chip>
+              ))}
+          </Chips>
+        </Card>
+      </FilterSheet>
+    );
+  };
 
   return (
-    <Panel icon="swap" title="Trade Checker" aside={window.charAt(0).toUpperCase() + window.slice(1)} open={Boolean(b)}>
+    <>
+      <Rail label="Trade teams">
+        {picker('a')}
+        {picker('b')}
+      </Rail>
+
       {result ? (
         <>
-          <div className={w.verdict}>
-            <p>{curl(result.verdict)}</p>
-            {result.rawNote ? <p>{curl(result.rawNote)}</p> : null}
+          <Card>
+            <p className={u.bodyText}>{curl(result.verdict)}</p>
+            {result.rawNote ? <p className={u.bodyText}>{curl(result.rawNote)}</p> : null}
             {result.unread.length ? (
-              <p>
+              <p className={`${u.sub} ${w.note}`}>
                 No read on {result.unread.map((r) => r.player.name).join(' or ')} ({result.unread.map((r) => r.noRead).join('; ')}), so{' '}
                 {result.unread.length === 1 ? 'he counts' : 'they count'} as zero here.
               </p>
             ) : null}
-          </div>
-          <div className={w.sides}>
-            <Side side={result.a} result={result} which="a" />
-            <Side side={result.b} result={result} which="b" />
-          </div>
-          <details className={w.more}>
-            <summary>
-              Week by Week
-              <Ms name="expand" size={20} className={w.chev} />
-            </summary>
-            <div className={w.weeks} role="table" aria-label="Best lineup before and after, by week">
-              <div className={`${w.weeksRow} ${w.weeksHead}`} role="row">
-                <span role="columnheader">Wk</span>
-                <span role="columnheader">{result.a.teamName}</span>
-                <span role="columnheader">{result.b.teamName}</span>
-              </div>
-              {result.a.byWeek.map((wa, i) => {
-                const wb = result.b.byWeek[i];
-                return (
-                  <div key={wa.week} className={w.weeksRow} role="row">
-                    <span role="cell" className={w.weekNum}>
-                      {wa.week}
-                    </span>
-                    {[wa, wb].map((x, j) => (
-                      <span key={j} role="cell" className={w.weekCell}>
-                        <b>{signed(x.after - x.before)}</b>
-                        <small>
-                          {fmt(x.before)} to {fmt(x.after)}
-                        </small>
-                      </span>
-                    ))}
-                  </div>
-                );
-              })}
+            <Versus
+              left={<span className={`${u.title} ${u.strong}`}>{result.a.teamName}</span>}
+              right={<span className={`${u.title} ${u.strong}`}>{result.b.teamName}</span>}
+              rows={[
+                { label: 'Verdict', a: verdictFor(result.a, result, 'a'), b: verdictFor(result.b, result, 'b') },
+                { label: 'Lineup', a: signed(result.a.delta), b: signed(result.b.delta) },
+                { label: 'Per week', a: signed(result.a.perWeek), b: signed(result.b.perWeek) },
+                { label: 'Lineup now', a: fmt(result.a.before), b: fmt(result.b.before) },
+                { label: 'After', a: fmt(result.a.after), b: fmt(result.b.after) },
+                { label: 'Raw in', a: fmt(result.a.rawGets), b: fmt(result.b.rawGets) },
+                { label: 'Raw out', a: fmt(result.a.rawSends), b: fmt(result.b.rawSends) },
+              ]}
+            />
+            {[result.a, result.b]
+              .filter((x) => x.rosterChange > 0)
+              .map((x) => (
+                <p key={x.rosterId} className={`${u.sub} ${w.note}`}>
+                  {x.teamName} takes on {x.rosterChange} more {x.rosterChange === 1 ? 'player' : 'players'} than it sends, so {x.rosterChange === 1 ? 'a drop is' : 'drops are'} owed. The
+                  lineup math assumes {x.rosterChange === 1 ? 'it comes' : 'they come'} off the bench.
+                </p>
+              ))}
+            {move ? <CopyMove text={move} label="Copy trade" /> : null}
+          </Card>
+          <Drawer title="Week by Week" value={`${result.a.byWeek.length} weeks`}>
+            <div className={w.drawerBody}>
+              <Versus
+                left={<span className={u.label}>{result.a.teamName}</span>}
+                right={<span className={u.label}>{result.b.teamName}</span>}
+                rows={result.a.byWeek.map((wa, i) => ({ label: `Week ${wa.week}`, a: signed(wa.after - wa.before), b: signed(result.b.byWeek[i].after - result.b.byWeek[i].before) }))}
+              />
             </div>
-          </details>
+          </Drawer>
+          <Drawer title="Player Values" value={`${gets.length} ${gets.length === 1 ? 'player' : 'players'}`}>
+            {gets.map((r) => (
+              <ExpandRow key={r.player.id} lead={<PlayerFace read={r} />} title={short(r.player.name, r.player.position)} sub={<PlayerSub read={r} />} value={r.total != null ? fmt(r.total) : 'No read'}>
+                <RosWorking read={r} />
+                <Pill href={`/lab/app/players/${r.player.id}`} kind="secondary">
+                  Player page
+                </Pill>
+              </ExpandRow>
+            ))}
+          </Drawer>
         </>
       ) : (
-        <p className={w.note}>{!a || !b ? 'Choose both teams to start.' : 'Now pick at least one player from either roster.'}</p>
+        <Empty>{!a || !b ? 'Pick two teams.' : 'Pick a player from either roster.'}</Empty>
       )}
 
       {(['a', 'b'] as const).map((which) => {
         const id = which === 'a' ? a : b;
-        const other = which === 'a' ? b : a;
+        if (!id) return null;
         const roster = which === 'a' ? rosterA : rosterB;
         const picked = which === 'a' ? pa : pb;
         return (
-          <div key={which} className={w.group}>
-            <p className={w.sub}>
-              {which === 'a' ? 'First Team Sends' : 'Second Team Sends'}
-              {id ? <b> &middot; {teamNameOf(id)}</b> : null}
-            </p>
-            <nav className={s.filterRow} aria-label={which === 'a' ? 'First team' : 'Second team'}>
-              {ordered
-                .filter((t) => t.rosterId !== other)
-                .map((t) => {
-                  const on = t.rosterId === id;
-                  return (
-                    <Link
-                      key={t.rosterId}
-                      href={href({ [which]: t.rosterId, [`p${which}`]: [] })}
-                      scroll={false}
-                      className={`${s.filter} ${on ? s.filterOn : ''}`}
-                      aria-current={on ? 'true' : undefined}
-                    >
-                      {managerOf(t.rosterId)}
-                    </Link>
-                  );
-                })}
-            </nav>
-            {id ? (
-              roster.length ? (
-                <div className={w.rows}>
-                  {sortRoster(roster.map(readOf)).map((r) => {
-                    const on = picked.includes(r.player.id);
-                    return (
-                      <Link
-                        key={r.player.id}
-                        href={href({ [`p${which}`]: toggle(picked, r.player.id) })}
-                        scroll={false}
-                        className={`${w.row} ${w.pick} ${on ? w.pickOn : ''}`}
-                        aria-pressed={on}
-                        aria-label={`${on ? 'Remove' : 'Add'} ${r.player.name}`}
-                      >
-                        <Face read={r} />
-                        <span className={w.who}>
-                          <b>{r.player.name}</b>
-                          <small>
-                            <Pos pos={r.player.position} /> {metaLine(r)}
-                          </small>
-                        </span>
-                        <span className={w.num}>
-                          <b>{r.total != null ? fmt(r.total) : 'No read'}</b>
-                        </span>
-                        <span className={`${w.mark} ${on ? w.markOn : ''}`} aria-hidden>
-                          <Ms name={on ? 'check' : 'add'} size={16} />
-                        </span>
-                      </Link>
-                    );
-                  })}
-                </div>
-              ) : (
-                <p className={w.empty}>That roster didn&rsquo;t load from Sleeper. Try again in a minute.</p>
-              )
-            ) : null}
-          </div>
+          <Section key={which} title={`${teamNameOf(id)} Sends`}>
+            {roster.length ? (
+              <List tap>
+                {sortRoster(roster.map(readOf)).map((r) => (
+                  <PickRow key={r.player.id} read={r} on={picked.includes(r.player.id)} href={href({ [`p${which}`]: toggle(picked, r.player.id) })} />
+                ))}
+              </List>
+            ) : (
+              <Empty>That roster didn&rsquo;t load from Sleeper. Try again in a minute.</Empty>
+            )}
+          </Section>
         );
       })}
 
-      {move ? <CopyMove text={move} label="Copy trade" /> : null}
-      <p className={w.note}>
-        Numbers are rest of season points, {window}. Called even under {EVEN_PER_WEEK} point a week either way, since a single weekly projection misses by
-        about five points on average. Draft picks and FAAB aren&rsquo;t valued.
+      <p className={`${u.sub} ${w.inset}`}>
+        Rest of season points, {window}. Called even under {EVEN_PER_WEEK} point a week either way, since a single weekly projection misses by about five points
+        on average. Draft picks and FAAB aren&rsquo;t valued.
         {deadline && deadline <= 18 ? ` Trade deadline: week ${deadline}.` : ''}
       </p>
       <RosMethod ctx={ctx} />
-    </Panel>
+    </>
   );
 }

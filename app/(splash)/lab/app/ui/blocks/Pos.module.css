@@ -1,0 +1,9 @@
+/* A player's position, on its own pastel: the kit tag's 10 corner and 11/800
+   label, colors from the position tokens on .root. */
+.pos { display: inline-grid; place-items: center; min-width: 30px; height: 18px; padding: 0 4px; border-radius: 10px; font-size: 11px; font-weight: 800; font-style: normal; letter-spacing: 0.02em; color: var(--pos-fg); background: var(--pos-bg); }
+.QB { color: var(--qb-fg); background: var(--qb-bg); }
+.RB { color: var(--rb-fg); background: var(--rb-bg); }
+.WR { color: var(--wr-fg); background: var(--wr-bg); }
+.TE { color: var(--te-fg); background: var(--te-bg); }
+.K { color: var(--k-fg); background: var(--k-bg); }
+.DEF { color: var(--def-fg); background: var(--def-bg); }

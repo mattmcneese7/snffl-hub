@@ -6,27 +6,21 @@ import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { DEFENSE, KICKING, OFFENSE, perPoint, POINTS_ALLOWED, rowsOf, signed, YARDS_ALLOWED, type Row } from '../../../rules/scoring';
 import { getV4Data } from '../data';
 import Shell, { SectionHead } from '../Shell';
-import s from '../v4.module.css';
+import { Label, List, Rank, Row as UiRow, Section, ui } from '../ui';
+import { Pos } from '../ui/blocks/Pos';
+import l from '../modules/layout.module.css';
 
 export const metadata: Metadata = { title: { absolute: 'Rules, Splash 4.0' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 function Rows({ rows }: { rows: Row[] }) {
   return (
-    <ul className={s.rules}>
+    <List>
       {rows.map((row) => {
         const every = row.key.endsWith('_yd') ? perPoint(row.value) : null;
-        return (
-          <li key={row.key}>
-            <span>
-              {row.label}
-              {every ? <small>1 point per {every} yards</small> : null}
-            </span>
-            <b className={row.value < 0 ? s.rNeg : row.value === 0 ? s.rZero : undefined}>{signed(row.value)}</b>
-          </li>
-        );
+        return <UiRow key={row.key} title={row.label} sub={every ? `1 point per ${every} yards` : undefined} value={signed(row.value)} muted={row.value === 0} />;
       })}
-    </ul>
+    </List>
   );
 }
 
@@ -56,85 +50,57 @@ export default async function V4Rules() {
     <Shell data={data} active="league">
       <SectionHead icon="league" word="rules" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
       {CUSTOM_RULES.map((sec) => (
-        <section key={sec.title} className={s.card}>
-          <h3>{sec.title}</h3>
-          {sec.intro ? <p className={s.note}>{sec.intro}</p> : null}
-          <ol className={s.numbered}>
-            {sec.rules.map((r) => (
-              <li key={r}>
-                <span>{r}</span>
-              </li>
+        <Section key={sec.title} title={sec.title}>
+          {sec.intro ? <p className={`${ui.bodyText} ${l.note}`}>{sec.intro}</p> : null}
+          <List>
+            {sec.rules.map((r, i) => (
+              <UiRow key={r} lead={<Rank n={i + 1} />} title={r} />
             ))}
-          </ol>
-          <p className={s.note}>{CHUG_SUBMISSION}</p>
-        </section>
+          </List>
+          <p className={`${ui.sub} ${l.note}`}>{CHUG_SUBMISSION}</p>
+        </Section>
       ))}
-      <div className={s.title}>
-        <h2>League Setup</h2>
-      </div>
-      <section className={s.card}>
-        <ul className={s.rules}>
+      <Section title="League Setup">
+        <List>
           {setup.map(([k, v]) => (
-            <li key={k}>
-              <span>{k}</span>
-              <b>{v}</b>
-            </li>
+            <UiRow key={k} title={k} value={v} />
           ))}
-        </ul>
-        <p className={s.subH}>Starting lineup</p>
-        <div className={s.slots}>
-          {starters.map((p, i) => (
-            <i key={i} className={`${s.pos} ${s[`p${p}`] ?? ''}`}>
-              {p === 'SUPER_FLEX' ? 'SF' : p}
-            </i>
-          ))}
-        </div>
-      </section>
-      {offense.length ? (
-        <>
-          <div className={s.title}>
-            <h2>Offense</h2>
+        </List>
+        <div className={`${ui.card} ${l.stack}`}>
+          <Label>Starting lineup</Label>
+          <div className={ui.chips}>
+            {starters.map((p, i) => (
+              <Pos key={i} position={p === 'SUPER_FLEX' ? 'SF' : p} />
+            ))}
           </div>
-          <section className={s.card}>
-            <Rows rows={offense} />
-          </section>
-        </>
+        </div>
+      </Section>
+      {offense.length ? (
+        <Section title="Offense">
+          <Rows rows={offense} />
+        </Section>
       ) : null}
       {kicking.length ? (
-        <>
-          <div className={s.title}>
-            <h2>Kicking</h2>
-          </div>
-          <section className={s.card}>
-            <Rows rows={kicking} />
-          </section>
-        </>
+        <Section title="Kicking">
+          <Rows rows={kicking} />
+        </Section>
       ) : null}
-      {defense.length || points.length ? (
-        <>
-          <div className={s.title}>
-            <h2>Defense</h2>
-          </div>
-          <section className={s.card}>
-            {defense.length ? <Rows rows={defense} /> : null}
-            {points.length ? (
-              <>
-                <p className={s.subH}>Points allowed</p>
-                <Rows rows={points} />
-              </>
-            ) : null}
-            {yards.some((y) => y.value !== 0) ? (
-              <>
-                <p className={s.subH}>Yards allowed</p>
-                <Rows rows={yards} />
-              </>
-            ) : null}
-          </section>
-        </>
+      {defense.length ? (
+        <Section title="Defense">
+          <Rows rows={defense} />
+        </Section>
       ) : null}
-      <p className={s.note} style={{ padding: '0 14px' }}>
-        Setup and scoring come from Sleeper&rsquo;s league settings.
-      </p>
+      {points.length ? (
+        <Section title="Points Allowed">
+          <Rows rows={points} />
+        </Section>
+      ) : null}
+      {yards.some((y) => y.value !== 0) ? (
+        <Section title="Yards Allowed">
+          <Rows rows={yards} />
+        </Section>
+      ) : null}
+      <p className={`${ui.sub} ${l.note}`}>Setup and scoring come from Sleeper&rsquo;s league settings.</p>
     </Shell>
   );
 }

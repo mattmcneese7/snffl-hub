@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { autoplayVars, FATAL_ERRORS, loadYouTube, STATE, YT_HOST, type YTPlayer } from '../../../lib/yt-player';
-import s from '../v4.module.css';
-import p from './p4.module.css';
 import { Ms } from '../icons';
+import { Rail, Tag, ui as u } from '../ui';
+import c from './clips.module.css';
 
 export type Clip = { videoId: string; title: string; still: string; stillTall: string; vertical: boolean; channel: string };
 
@@ -18,13 +18,13 @@ export default function Clips({ clips }: { clips: Clip[] }) {
   const [active, setActive] = useState<string | null>(null);
   const [gone, setGone] = useState<string[]>([]);
   const shown = clips.filter((c) => !gone.includes(c.videoId));
-  if (!shown.length) return <p className={p.via}>None of these clips play here yet.</p>;
+  if (!shown.length) return <p className={`${u.sub} ${c.note}`}>None of these clips play here yet.</p>;
   return (
-    <div className={s.rail}>
+    <Rail label="Highlights">
       {shown.map((c) => (
         <Tile key={c.videoId} clip={c} on={active === c.videoId} onPick={() => setActive(c.videoId)} onFail={() => setGone((g) => [...g, c.videoId])} />
       ))}
-    </div>
+    </Rail>
   );
 }
 
@@ -93,27 +93,30 @@ function Tile({ clip, on, onPick, onFail }: { clip: Clip; on: boolean; onPick: (
   };
 
   return (
-    <div className={`${p.clip} ${clip.vertical ? p.clipTall : ''}`}>
-      <div className={p.clipFrame}>
+    <div className={`${c.clip} ${clip.vertical ? c.tall : ''}`}>
+      <div className={`${u.media} ${c.frame}`}>
         {!playing ? (
-          <button type="button" onClick={onPick} aria-label={`Play ${clip.title}`} style={{ all: 'unset', position: 'absolute', inset: 0, cursor: 'pointer' }}>
+          <button type="button" className={c.play} onClick={onPick} aria-label={`Play ${clip.title}`}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={still} alt="" loading="lazy" onError={() => setStill(clip.still)} />
-            <span className={p.clipPlay}>
-              <Ms name="play" size={26} />
+            <span className={u.mediaTag}>
+              <Tag>
+                <Ms name="play" size={14} />
+                Play
+              </Tag>
             </span>
           </button>
         ) : null}
-        <span ref={host} className={p.clipHost} style={playing ? undefined : { opacity: 0 }} />
-        {on && playing ? (
-          <button type="button" className={p.clipSound} onClick={sound} aria-label={muted ? 'Turn sound on' : 'Turn sound off'}>
-            <Ms name={muted ? 'volumeOff' : 'volumeUp'} size={16} />
-            {muted ? 'Sound off' : 'Sound on'}
-          </button>
-        ) : null}
+        <span ref={host} className={`${c.host} ${playing ? '' : c.hidden}`} />
       </div>
-      <b>{clip.title}</b>
-      <small>{clip.channel}</small>
+      {on && playing ? (
+        <button type="button" className={`${u.chip} ${c.sound}`} onClick={sound} aria-label={muted ? 'Turn sound on' : 'Turn sound off'}>
+          <Ms name={muted ? 'volumeOff' : 'volumeUp'} size={16} />
+          {muted ? 'Sound off' : 'Sound on'}
+        </button>
+      ) : null}
+      <span className={`${u.title} ${c.title}`}>{clip.title}</span>
+      <span className={u.sub}>{clip.channel}</span>
     </div>
   );
 }

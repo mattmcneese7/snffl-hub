@@ -5,7 +5,7 @@ import { lastFantasyWeek } from '@/lib/league';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { getV4Data } from '../data';
 import { LiveStart } from '../live/Live';
-import { kickoffText, startersIn } from '../scores/parts';
+import { kickoffText, startersIn } from '../scores/format';
 import NflRow from './NflRow';
 import { weekView } from '../scores/weekData';
 import WeekStrip from '../scores/WeekStrip';

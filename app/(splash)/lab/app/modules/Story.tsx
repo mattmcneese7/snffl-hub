@@ -6,7 +6,7 @@ import { firstNameOf } from '@/config/managers';
 import type { StorySlide } from '@/lib/week-story';
 import { Ms } from '../icons';
 import AwardIcon from './AwardIcon';
-import st from './story.module.css';
+import { storyStage as st } from '../ui/blocks/StoryStage';
 
 /**
  * The week in 90 seconds: five slides over real football, advancing on their
@@ -171,7 +171,7 @@ function Slide({ slide }: { slide: StorySlide }) {
         <>
           <span className={st.who}>
             {slide.avatar ? <img className={st.avatar} src={slide.avatar} alt="" /> : null}
-            <AwardIcon kind={slide.kind} size={36} />
+            <AwardIcon kind={slide.kind} size={14} tone={slide.kind === 'motw' ? 'gold' : 'bad'} />
           </span>
           <small className={st.kicker}>{slide.kind === 'motw' ? 'Manager of the Week' : 'Shart of the Week'}</small>
           <b className={st.name}>{slide.team}</b>

@@ -1,0 +1,4 @@
+/* Flat on the page at the 14 inset; the name is the 24/800 display role. */
+.head { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: center; padding: 0 14px; }
+.text { display: grid; gap: 4px; min-width: 0; }
+.name { margin: 0; font-size: 24px; font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; text-wrap: balance; }

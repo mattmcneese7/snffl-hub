@@ -1,7 +1,6 @@
 import type { GameView, SideView } from '../data';
 import { LivePoints } from '../live/Live';
-import { Avatar, List, Pair, type PairSide } from '../ui';
-import s from '../v4.module.css';
+import { Avatar, List, Pair, ui, type PairSide } from '../ui';
 
 function side(x: SideView, week: number, live: boolean): PairSide {
   return {
@@ -9,7 +8,7 @@ function side(x: SideView, week: number, live: boolean): PairSide {
     title: x.team,
     sub: x.manager,
     value: live ? <LivePoints week={week} rosterId={x.rosterId} fallback={x.score} /> : x.score.toFixed(2),
-    mark: x.mark === 'W' || x.mark === 'L' ? <b className={x.mark === 'W' ? s.win : s.loss}>{x.mark}</b> : x.mark,
+    mark: x.mark === 'W' || x.mark === 'L' ? <b className={ui.strong}>{x.mark}</b> : x.mark,
     lost: x.lost,
   };
 }

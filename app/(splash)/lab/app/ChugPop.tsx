@@ -4,7 +4,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Ms } from './icons';
 import { useOverlayHistory } from './nav/overlay';
-import p from './pop.module.css';
+import { ui } from './ui';
+import p from './ui/blocks/Pop.module.css';
 
 const seenKey = (week: number) => `splash4.chug.seen.w${week}`;
 
@@ -59,12 +60,13 @@ export default function ChugPop({ week, src, who }: { week: number; src: string;
       setMuted(false);
       setOpen(true);
     };
-    document.addEventListener('click', onAsk);
-    if (seen || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return () => document.removeEventListener('click', onAsk);
+    // Capture, so a link marked data-chug opens the pop instead of navigating.
+    document.addEventListener('click', onAsk, true);
+    if (seen || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return () => document.removeEventListener('click', onAsk, true);
     const t = window.setTimeout(() => setOpen(true), 800);
     return () => {
       window.clearTimeout(t);
-      document.removeEventListener('click', onAsk);
+      document.removeEventListener('click', onAsk, true);
     };
   }, [week]);
 
@@ -107,9 +109,9 @@ export default function ChugPop({ week, src, who }: { week: number; src: string;
           <span className={p.badge}>
             <Ms name="stein" size={20} />
           </span>
-          <span className={p.title}>
-            <b>Week {week} Chug</b>
-            {who ? <span>{who} pays up</span> : null}
+          <span className={p.text}>
+            <b className={`${ui.title} ${ui.strong}`}>Week {week} Chug</b>
+            {who ? <span className={ui.sub}>{who} pays up</span> : null}
           </span>
           <button type="button" className={p.close} onClick={dismiss} aria-label="Close">
             <Ms name="close" size={20} />
@@ -127,7 +129,7 @@ export default function ChugPop({ week, src, who }: { week: number; src: string;
             onLoadedMetadata={(e) => setSize(fit(e.currentTarget.videoWidth, e.currentTarget.videoHeight))}
             style={size ? { width: size.w, height: size.h } : undefined}
           />
-          <button type="button" className={p.sound} onClick={() => setMuted((m) => !m)}>
+          <button type="button" className={`${ui.pill} ${ui.pillSecondary} ${p.sound}`} onClick={() => setMuted((m) => !m)}>
             <Ms name={muted ? 'volumeOff' : 'volumeUp'} size={18} />
             {muted ? 'Sound off' : 'Sound on'}
           </button>

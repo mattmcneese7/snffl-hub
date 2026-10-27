@@ -3,7 +3,7 @@ import { formatStatLine } from '@/lib/sleeper-live';
 import type { UsageRow } from '../../../lib/deep/nflverse';
 import type { SleeperProp } from '../../../lib/sleeper-props';
 import { playerWeek, type WeekLines } from '../../../swami/week-lines';
-import s from '../v4.module.css';
+import { Tag, ui } from '../ui';
 import r from './read.module.css';
 
 const pct = (n: number | undefined) => (n == null ? null : `${Math.round(n * 100)}%`);
@@ -54,44 +54,44 @@ export default function PlayerRead({
   return (
     <div className={r.read}>
       {done || proj ? (
-        <p className={r.line}>
-          <small>{done ? 'This week' : 'Projected'}</small>
-          <span>{done || proj}</span>
+        <p className={r.block}>
+          <span className={ui.label}>{done ? 'This week' : 'Projected'}</span>
+          <span className={`${ui.sub} ${ui.strong}`}>{done || proj}</span>
         </p>
       ) : null}
 
       {outlook.ceiling > 0 ? (
         <div className={r.range} aria-label={`Range this week: ${outlook.floor.toFixed(1)} to ${outlook.ceiling.toFixed(1)}`}>
-          <small>Range</small>
-          <span className={r.ends}>{outlook.floor.toFixed(1)}</span>
-          <span className={r.track} aria-hidden>
-            <span className={r.span} style={{ left: at(outlook.floor), width: `calc(${at(outlook.ceiling)} - ${at(outlook.floor)})` }} />
-            <span className={r.dot} style={{ left: at(outlook.adjusted) }} />
+          <span className={ui.label}>Range</span>
+          <span className={ui.sub}>{outlook.floor.toFixed(1)}</span>
+          <span className={ui.range} aria-hidden>
+            <span className={ui.rangeBand} style={{ left: at(outlook.floor), width: `calc(${at(outlook.ceiling)} - ${at(outlook.floor)})` }} />
+            <span className={`${ui.rangeDot} ${ui.rangeHit}`} style={{ left: at(outlook.adjusted) }} />
           </span>
-          <span className={r.ends}>{outlook.ceiling.toFixed(1)}</span>
+          <span className={ui.sub}>{outlook.ceiling.toFixed(1)}</span>
         </div>
       ) : null}
 
       {m || outlook.boomBust || role ? (
-        <div className={r.chips}>
+        <div className={r.tags}>
           {m ? (
-            <span className={`${s.tag} ${m.label === 'soft' ? s.tagGood : m.label === 'hard' ? s.tagBad : ''}`}>
+            <Tag tone={m.label === 'soft' ? 'good' : m.label === 'hard' ? 'bad' : 'neutral'}>
               {MATCHUP[m.label]} {m.home ? 'vs' : '@'} {m.opponent}
-            </span>
+            </Tag>
           ) : null}
-          {m ? <span className={s.tag}>Defense rank {m.rank}</span> : null}
-          {outlook.boomBust ? <span className={s.tag}>Boom {Math.round(outlook.boomBust.boom * 100)}%</span> : null}
-          {outlook.boomBust ? <span className={s.tag}>Bust {Math.round(outlook.boomBust.bust * 100)}%</span> : null}
-          {role ? <span className={s.tag}>{role}</span> : null}
+          {m ? <Tag>Defense rank {m.rank}</Tag> : null}
+          {outlook.boomBust ? <Tag>Boom {Math.round(outlook.boomBust.boom * 100)}%</Tag> : null}
+          {outlook.boomBust ? <Tag>Bust {Math.round(outlook.boomBust.bust * 100)}%</Tag> : null}
+          {role ? <Tag>{role}</Tag> : null}
         </div>
       ) : null}
 
       {facts.length ? (
         <dl className={r.facts}>
           {facts.map((f) => (
-            <div key={f.label}>
-              <dt>{f.label}</dt>
-              <dd>{f.value}</dd>
+            <div key={f.label} className={r.block}>
+              <dt className={ui.label}>{f.label}</dt>
+              <dd className={`${ui.sub} ${ui.strong}`}>{f.value}</dd>
             </div>
           ))}
         </dl>
@@ -99,11 +99,11 @@ export default function PlayerRead({
 
       {props.length ? (
         <div className={r.block}>
-          <small>Sleeper Props</small>
+          <span className={ui.label}>Sleeper Props</span>
           {props.map((p) => (
-            <span key={p.wager} className={r.prop}>
+            <span key={p.wager} className={`${r.prop} ${ui.sub}`}>
               <span>
-                {p.label} <b>{p.line}</b>
+                {p.label} <b className={ui.strong}>{p.line}</b>
               </span>
               <span>{[p.over != null ? `Over ${p.over}x` : null, p.under != null ? `Under ${p.under}x` : null].filter(Boolean).join(' · ')}</span>
             </span>
@@ -113,13 +113,15 @@ export default function PlayerRead({
 
       {usageRows.length ? (
         <div className={r.block}>
-          <small>Share of Team &middot; Weeks {usage.map((u) => u.week).join(', ')}</small>
-          <div className={r.usage} style={{ gridTemplateColumns: `minmax(0, 1fr) repeat(${usage.length}, 52px)` }}>
+          <span className={ui.label}>Share of Team &middot; Weeks {usage.map((u) => u.week).join(', ')}</span>
+          <div className={`${r.usage} ${ui.sub}`} style={{ ['--n' as string]: String(usage.length) }}>
             {usageRows.map((c) => (
               <div key={c.label} className={r.usageRow}>
                 <span>{c.label}</span>
                 {c.values.map((v, i) => (
-                  <b key={i}>{v ?? '–'}</b>
+                  <b key={i} className={`N ${r.num}`}>
+                    {v ?? '–'}
+                  </b>
                 ))}
               </div>
             ))}
@@ -127,7 +129,7 @@ export default function PlayerRead({
         </div>
       ) : null}
 
-      <button type="button" data-player={id} className={r.open} aria-label={`${name}, open player`}>
+      <button type="button" data-player={id} className={`${ui.pill} ${ui.pillSecondary} ${r.start}`} aria-label={`${name}, open player`}>
         Player details
       </button>
     </div>

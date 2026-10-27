@@ -10,8 +10,8 @@ import { managerOf, teamOf } from './shared';
 
 /**
  * Home's chug: one row that says who owes, for which week, by when. Owed, it
- * shows Squirt with the stein; paid, a Watch pill that opens the chug pop,
- * and the row leaves Home once this phone has watched it. Each moment shows
+ * shows Squirt with the stein; paid, the whole row opens the chug pop (its
+ * Watch pill says so), and the row leaves Home once this phone has watched it. Each moment shows
  * it only while it matters.
  */
 export default function ChugRow({ board, week, moment }: { board: TrophyBoard | null; week: number; moment: Moment }) {
@@ -26,17 +26,17 @@ export default function ChugRow({ board, week, moment }: { board: TrophyBoard | 
   const tone = now.state === 'owed' ? 'warn' : 'bad';
   const row = (
     <Section title="The Chug" action={{ href: '/lab/app/chug', label: 'Chug Meter' }} label={`Week ${now.week} chug`}>
-      <List>
+      <List tap>
         <Row
+          href="/lab/app/chug"
+          data={now.state === 'paid' ? { chug: '' } : undefined}
           lead={now.state === 'paid' ? <Avatar src={t?.avatarUrl} color={t?.colors?.primary} size={44} /> : <Squirt award="chug" size={72} label={`Squirt with the beer ${managerOf(now.rosterId)} owes`} />}
           title={teamOf(now.rosterId)}
           strong
           sub={`${managerOf(now.rosterId)} · Week ${now.week} Shart`}
           trail={
             now.state === 'paid' ? (
-              <button type="button" data-chug className={`${ui.pill} ${ui.pillPrimary}`}>
-                Watch
-              </button>
+              <span className={`${ui.pill} ${ui.pillPrimary}`}>Watch</span>
             ) : (
               <>
                 <Tag tone={tone}>{CHUG_LABEL[now.state]}</Tag>

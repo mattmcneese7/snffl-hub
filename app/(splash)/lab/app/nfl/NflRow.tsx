@@ -1,5 +1,5 @@
 import type { NflGame, NflSide } from '@/lib/gameday';
-import { quarter } from '../scores/parts';
+import { quarter } from '../scores/format';
 import { Crest, LiveTag, Pair, type PairSide } from '../ui';
 
 const TIME = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/Chicago' });

@@ -4,7 +4,7 @@ import { trophyBoard } from '../cached';
 import { latestWeekStory, type StorySlide } from '@/lib/week-story';
 import FilmPlayer from './FilmPlayer';
 import { managerOf } from './shared';
-import s from '../v4.module.css';
+import { Section } from '../ui';
 
 /** A slow read never holds the page: past `ms` it comes back as `fallback`. */
 function within<T>(p: Promise<T>, ms: number, fallback: T): Promise<T> {
@@ -27,13 +27,8 @@ export default async function FilmTile({ week, withChug = true }: { week?: numbe
   const shartAward = chug ? board?.all.find((a) => a.kind === 'shart' && a.week === chug.week) : undefined;
   const shart = shartAward ? { team: teamByRoster(shartAward.rosterId)?.teamName.trim() ?? '', manager: managerOf(shartAward.rosterId) } : null;
   return (
-    <section aria-label="Film">
-      <div className={s.title}>
-        <h2>Film</h2>
-      </div>
-      <div style={{ marginTop: 8 }}>
-        <FilmPlayer slides={slides} storyWeek={storyWeek} cover={cover} chug={chug} shart={shart} />
-      </div>
-    </section>
+    <Section title="Film">
+      <FilmPlayer slides={slides} storyWeek={storyWeek} cover={cover} chug={chug} shart={shart} />
+    </Section>
   );
 }

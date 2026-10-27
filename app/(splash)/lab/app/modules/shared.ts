@@ -1,7 +1,7 @@
 import { firstNameOf } from '@/config/managers';
 import { teamByRoster } from '@/lib/league';
 import type { FeedItemKind } from '@/lib/feed-view';
-import m from './modules.module.css';
+import type { Tone } from '../ui';
 
 /** "K. Cousins" for lists; a defense keeps its team. */
 export function shortName(name: string, position?: string, team?: string | null): string {
@@ -16,13 +16,12 @@ export const managerOf = (rosterId: number) => firstNameOf(rosterId) ?? teamByRo
 /** The team's name, trimmed. */
 export const teamOf = (rosterId: number) => teamByRoster(rosterId)?.teamName.trim() ?? `Roster ${rosterId}`;
 
-/** The marks the Feed's moments carry, as letters on a pastel. */
+/** The marks the Feed's moments carry, as letters on a tag, never color alone. */
 export const FEED_MARK: Record<FeedItemKind, string> = { touchdown: 'TD', lead: 'LEAD', cmon: 'CMON', shart: 'SHART', clip: 'CLIP' };
-export const feedMarkClass = (kind: FeedItemKind) => `${m.mk} ${kind === 'shart' || kind === 'cmon' ? m.mkBad : ''}`;
+export const feedMarkTone = (kind: FeedItemKind): Tone => (kind === 'shart' || kind === 'cmon' ? 'bad' : 'neutral');
 
 export const MOVE_MARK = { start: 'START', bench: 'BENCH', add: 'ADD', drop: 'DROP' } as const;
-export const moveMarkClass = (kind: keyof typeof MOVE_MARK) =>
-  `${m.mk} ${kind === 'add' ? m.mkGood : kind === 'drop' ? m.mkBad : kind === 'bench' ? m.mkQuiet : ''}`;
+export const moveMarkTone = (kind: keyof typeof MOVE_MARK): Tone => (kind === 'add' ? 'good' : kind === 'drop' ? 'bad' : 'neutral');
 
 /** How long ago, against one "now" the server hands down so every row agrees. */
 export function timeAgo(iso: string, now: number): string {

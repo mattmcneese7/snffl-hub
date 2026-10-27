@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Ms } from '../icons';
+import u from '../ui/ui.module.css';
 import w from './swami.module.css';
 
 const LEAGUE = 'https://sleeper.com/leagues/1394336593518546944';
@@ -37,13 +38,13 @@ export default function CopyMove({ text, label = 'Copy move' }: { text: string; 
 
   return (
     <div className={w.copy}>
-      <p className={w.copyText}>{text}</p>
+      <p className={u.bodyText}>{text}</p>
       <div className={w.copyRow}>
-        <button type="button" className={w.copyBtn} onClick={() => void copy()}>
+        <button type="button" className={`${u.pill} ${u.pillPrimary}`} onClick={() => void copy()}>
           <Ms name={done === 'copied' ? 'check' : 'copy'} size={18} />
           {done === 'copied' ? 'Copied' : done === 'failed' ? 'Copy failed' : label}
         </button>
-        <a className={w.openBtn} href={LEAGUE} target="_blank" rel="noreferrer">
+        <a className={`${u.pill} ${u.pillSecondary}`} href={LEAGUE} target="_blank" rel="noreferrer">
           <Ms name="open" size={18} />
           Open Sleeper
         </a>

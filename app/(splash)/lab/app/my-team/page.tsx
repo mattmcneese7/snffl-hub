@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { weekProjections } from '../cached';
 import { cookies } from 'next/headers';
-import Link from 'next/link';
 import { getWeekGames, league, playerOf, STARTER_SLOTS, teamByRoster } from '@/lib/league';
 import { movementFor, timing, type MovementEvent } from '@/lib/movement';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
@@ -17,13 +16,12 @@ import { readSleeperProps, type SleeperProp } from '../../../lib/sleeper-props';
 import { weekLines } from '../../../swami/week-lines';
 import { getV4Data } from '../data';
 import Shell, { SectionHead } from '../Shell';
-import { managerOf, MOVE_MARK, moveMarkClass, shortName } from '../modules/shared';
-import m from '../modules/modules.module.css';
-import s from '../v4.module.css';
+import { managerOf, MOVE_MARK, moveMarkTone, shortName } from '../modules/shared';
+import { Empty, Face, Hero, Section, Tag, ui } from '../ui';
+import { ExpandRow } from '../ui/blocks/ExpandRow';
+import { Pos } from '../ui/blocks/Pos';
 import t from './mine.module.css';
-import r from './read.module.css';
 import PlayerRead from './Read';
-import { Ms } from '../icons';
 
 export const metadata: Metadata = { title: { absolute: 'My Team, Splash 4.0' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -57,9 +55,7 @@ export default async function V4MyTeam() {
     return (
       <Shell data={data} active="">
         <SectionHead icon="person" word="my team" week={data.week} mine={null} back={{ href: '/lab/app/account', label: 'Account' }} />
-        <p className={s.empty}>
-          Pick your team to see your lineup, what is wrong with it and your moves. <Link href="/lab/app/account">Account</Link>
-        </p>
+        <Empty action={{ href: '/lab/app/account', label: 'Pick Your Team' }}>Pick your team to see your lineup, what is wrong with it and your moves.</Empty>
       </Shell>
     );
   }
@@ -118,59 +114,53 @@ export default async function V4MyTeam() {
         ? 'No projection'
         : 'No game';
 
-  const row = (x: ReturnType<typeof read>, sub?: string, right?: { b: string; small: string }) => {
-    const actual = scoredThisWeek(x.player.team ? ctx.byTeam.get(x.player.team)?.game.state : null, ctx.actual[x.id]?.points);
+  /** A player's summary: slot, face, name with position and game, points on the right. */
+  const meta = (x: ReturnType<typeof read>) => {
     const opp = x.outlook.matchup;
-    const meta = !x.player.team ? 'Free agent' : opp ? `${opp.home ? 'vs' : '@'} ${opp.opponent}` : 'No game';
+    const game = !x.player.team ? 'Free agent' : opp ? `${opp.home ? 'vs' : '@'} ${opp.opponent}` : 'No game';
     return (
-      <button key={`${x.slot}-${x.id}`} type="button" data-player={x.id} className={`${s.prow} ${t.row}`} aria-label={`${x.player.name}, open player`}>
-        <span className={t.slot}>{x.slot === 'SUPER_FLEX' ? 'SF' : x.slot}</span>
-        <span className={m.shot}>
-          <img src={x.player.headshot} alt="" loading="lazy" />
+      <span className={t.meta}>
+        <Pos position={x.player.position} />
+        {x.player.injuryStatus ? <Tag tone="bad">{injAbbr(x.player.injuryStatus)}</Tag> : null}
+        <span>
+          {x.player.team ?? ''} &middot; {game}
         </span>
-        <span className={s.prowName}>
-          <b>{shortName(x.player.name, x.player.position, x.player.team)}</b>
-          <small>
-            <i className={`${s.pos} ${s[`p${x.player.position}`] ?? ''}`}>{x.player.position}</i>
-            {x.player.injuryStatus ? <i className={s.inj}>{injAbbr(x.player.injuryStatus)}</i> : null}
-            {x.player.team ?? ''} &middot; {meta}
-          </small>
-          {sub ? <span className={t.sub}>{sub}</span> : null}
-        </span>
-        <span className={s.prowPts}>
-          <b>{right ? right.b : actual != null ? pts(actual) : '–'}</b>
-          <small>{right ? right.small : `Proj ${pts(x.outlook.adjusted)}`}</small>
-        </span>
-      </button>
+      </span>
     );
   };
+  const scored = (x: ReturnType<typeof read>) => scoredThisWeek(x.player.team ? ctx.byTeam.get(x.player.team)?.game.state : null, ctx.actual[x.id]?.points);
+  const slotOf = (x: ReturnType<typeof read>) => (x.slot === 'SUPER_FLEX' ? 'SF' : x.slot);
+
+  /** A row that opens the player sheet. */
+  const row = (x: ReturnType<typeof read>, why: string | null, right: { b: string; small: string }) => (
+    <button key={`${x.slot}-${x.id}`} type="button" data-player={x.id} className={`${ui.row} ${t.reset}`} aria-label={`${x.player.name}, open player`}>
+      <Face id={x.id} team={x.player.team} size={40} defense={x.player.position === 'DEF'} />
+      <span className={ui.body}>
+        <span className={ui.label}>{slotOf(x)}</span>
+        <span className={ui.title}>{shortName(x.player.name, x.player.position, x.player.team)}</span>
+        <span className={ui.sub}>{meta(x)}</span>
+        {why ? <span className={ui.sub}>{why}</span> : null}
+      </span>
+      <span className={ui.trail}>
+        <span className={ui.value}>{right.b}</span>
+        <span className={ui.valueSub}>{right.small}</span>
+      </span>
+    </button>
+  );
 
   /** A roster row that opens to his read: the summary is the row, the read sits under it. */
   const openRow = (x: ReturnType<typeof read>) => {
-    const actual = scoredThisWeek(x.player.team ? ctx.byTeam.get(x.player.team)?.game.state : null, ctx.actual[x.id]?.points);
-    const opp = x.outlook.matchup;
-    const meta = !x.player.team ? 'Free agent' : opp ? `${opp.home ? 'vs' : '@'} ${opp.opponent}` : 'No game';
+    const actual = scored(x);
     return (
-      <details key={`${x.slot}-${x.id}`} className={r.item}>
-        <summary className={r.sum}>
-          <span className={t.slot}>{x.slot === 'SUPER_FLEX' ? 'SF' : x.slot}</span>
-          <span className={m.shot}>
-            <img src={x.player.headshot} alt="" loading="lazy" />
-          </span>
-          <span className={s.prowName}>
-            <b>{shortName(x.player.name, x.player.position, x.player.team)}</b>
-            <small>
-              <i className={`${s.pos} ${s[`p${x.player.position}`] ?? ''}`}>{x.player.position}</i>
-              {x.player.injuryStatus ? <i className={s.inj}>{injAbbr(x.player.injuryStatus)}</i> : null}
-              {x.player.team ?? ''} &middot; {meta}
-            </small>
-          </span>
-          <span className={s.prowPts}>
-            <b>{actual != null ? pts(actual) : '\u2013'}</b>
-            <small>Proj {pts(x.outlook.adjusted)}</small>
-          </span>
-          <Ms name="next" size={20} className={r.caret} />
-        </summary>
+      <ExpandRow
+        key={`${x.slot}-${x.id}`}
+        lead={<Face id={x.id} team={x.player.team} size={40} defense={x.player.position === 'DEF'} />}
+        label={slotOf(x)}
+        title={shortName(x.player.name, x.player.position, x.player.team)}
+        sub={meta(x)}
+        value={actual != null ? pts(actual) : '\u2013'}
+        valueSub={`Proj ${pts(x.outlook.adjusted)}`}
+      >
         <PlayerRead
           id={x.id}
           name={x.player.name}
@@ -182,7 +172,7 @@ export default async function V4MyTeam() {
           props={props[x.id] ?? []}
           usage={recentUsage(x.id)}
         />
-      </details>
+      </ExpandRow>
     );
   };
 
@@ -190,101 +180,86 @@ export default async function V4MyTeam() {
     <Shell data={data} active="">
       <SectionHead icon="person" word="my team" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/account', label: 'Account' }} />
 
-      <section className={t.hero} aria-label="Projected">
-        <div className={t.heroTop}>
-          <span>Week {week} Projected</span>
-          <Link href="/lab/app/account">Change team</Link>
-        </div>
-        <div className={t.heroRow}>
-          <span className={s.who}>
-            <b>{team?.teamName.trim()}</b>
-            <small>{managerOf(rosterId)}</small>
-          </span>
-          <span className={t.total}>{pts(total)}</span>
-        </div>
-        {opp && game ? (
-          <Link href={`/lab/app/matchup`} className={t.vs}>
-            vs <b>{oppTeam?.teamName.trim() ?? opp.team}</b> &middot; {managerOf(opp.rosterId)}
-          </Link>
-        ) : (
-          <span className={t.vs}>No matchup this week</span>
-        )}
-        <span className={t.status}>{status}</span>
-      </section>
+      <Hero
+        href={opp && game ? '/lab/app/matchup' : undefined}
+        label={`Week ${week} Projected`}
+        state={<span className={ui.label}>{status}</span>}
+        sides={[{ avatar: team?.avatarUrl, color: team?.colors?.primary, team: team?.teamName.trim() ?? '', manager: managerOf(rosterId), score: pts(total) }]}
+        foot={opp && game ? `vs ${oppTeam?.teamName.trim() ?? opp.team} · ${managerOf(opp.rosterId)}` : 'No matchup this week'}
+      />
 
       {problems.length ? (
-        <>
-          <div className={s.title}>
-            <h2>Fix This</h2>
-            <a href={sleeperLink('lineup')} target="_blank" rel="noopener noreferrer">
+        <Section title="Fix This">
+          <div className={ui.list}>{problems.map((p) => row(p, why(p), { b: pts(p.outlook.adjusted), small: 'Proj' }))}</div>
+          <div className={ui.card}>
+            <a href={sleeperLink('lineup')} target="_blank" rel="noopener noreferrer" className={`${ui.pill} ${ui.pillSecondary} ${t.start}`}>
               Open Sleeper
             </a>
           </div>
-          <div className={s.list}>{problems.map((p) => row(p, why(p), { b: pts(p.outlook.adjusted), small: 'Proj' }))}</div>
-        </>
+        </Section>
       ) : null}
 
       {upgrades.length ? (
-        <>
-          <div className={s.title}>
-            <h2>Worth a Swap</h2>
-            <span className={s.wk}>3+ projected points</span>
-          </div>
-          <div className={s.list}>
+        <Section title="Worth a Swap" label="Worth a swap, 3 or more projected points">
+          <div className={ui.list}>
             {upgrades.slice(0, 4).map((u) =>
-              row(u.bench, `Replaces ${shortName(u.starter.player.name, u.starter.player.position, u.starter.player.team)} at ${u.starter.slot}`, {
+              row(u.bench, null, {
                 b: `+${u.gain.toFixed(1)}`,
                 small: `Proj ${pts(u.bench.outlook.adjusted)}`,
               }),
             )}
-            <div style={{ padding: '4px 0 12px' }}>
-              <CopyMove
-                label="Copy swaps"
-                text={upgrades
-                  .slice(0, 4)
-                  .map((u) => `Start ${shortName(u.bench.player.name, u.bench.player.position, u.bench.player.team)} over ${shortName(u.starter.player.name, u.starter.player.position, u.starter.player.team)} at ${u.starter.slot}`)
-                  .join('. ')}
-              />
-            </div>
           </div>
-        </>
+          <div className={ui.card}>
+            <CopyMove
+              label="Copy swaps"
+              text={upgrades
+                .slice(0, 4)
+                .map((u) => `Start ${shortName(u.bench.player.name, u.bench.player.position, u.bench.player.team)} over ${shortName(u.starter.player.name, u.starter.player.position, u.starter.player.team)} at ${u.starter.slot}`)
+                .join('. ')}
+            />
+          </div>
+        </Section>
       ) : null}
 
-      <div className={s.title}>
-        <h2>Roster</h2>
-        <Link href="/lab/app/swami">Swami</Link>
-      </div>
       {starters.length ? (
-        <div className={s.list}>
-          <h3 className={t.subH}>Starters</h3>
-          {starters.map((x) => openRow(x))}
-          {bench.length ? <h3 className={t.subH}>Bench &middot; {bench.length}</h3> : null}
-          {bench.map((x) => openRow(x))}
-          {reserve.length ? <h3 className={t.subH}>Injured Reserve &middot; {reserve.length}</h3> : null}
-          {reserve.map((x) => openRow(x))}
-        </div>
+        <>
+          <Section title="Starters">
+            <div className={ui.list}>{starters.map((x) => openRow(x))}</div>
+          </Section>
+          {bench.length ? (
+            <Section title={`Bench · ${bench.length}`}>
+              <div className={ui.list}>{bench.map((x) => openRow(x))}</div>
+            </Section>
+          ) : null}
+          {reserve.length ? (
+            <Section title={`Injured Reserve · ${reserve.length}`}>
+              <div className={ui.list}>{reserve.map((x) => openRow(x))}</div>
+            </Section>
+          ) : null}
+        </>
       ) : (
-        <p className={s.empty}>Sleeper did not return this lineup.</p>
+        <Section title="Roster">
+          <Empty>Sleeper did not return this lineup.</Empty>
+        </Section>
       )}
 
-      <div className={s.title}>
-        <h2>Your Moves</h2>
-      </div>
-      {moves.length ? (
-        <ul className={s.list} style={{ margin: 0, listStyle: 'none' }}>
-          {moves.slice(0, 8).map((e) => (
-            <li key={e.id} className={m.post}>
-              <i className={moveMarkClass(e.kind)}>{MOVE_MARK[e.kind]}</i>
-              <button type="button" data-player={e.playerId} className={`${m.postText} ${m.pBtn}`}>
-                <b>{moveLine(e)}</b>
-                <small>{timing(e.at)}</small>
+      <Section title="Your Moves">
+        {moves.length ? (
+          <div className={ui.list}>
+            {moves.slice(0, 8).map((e) => (
+              <button key={e.id} type="button" data-player={e.playerId} className={`${ui.row} ${t.reset}`}>
+                <Tag tone={moveMarkTone(e.kind)}>{MOVE_MARK[e.kind]}</Tag>
+                <span className={ui.body}>
+                  <span className={ui.title}>{moveLine(e)}</span>
+                  <span className={ui.sub}>{timing(e.at)}</span>
+                </span>
               </button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className={s.empty}>No moves yet this season.</p>
-      )}
+            ))}
+          </div>
+        ) : (
+          <Empty>No moves yet this season.</Empty>
+        )}
+      </Section>
     </Shell>
   );
 }

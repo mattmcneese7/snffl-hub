@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import Link from 'next/link';
 import { firstNameOf } from '@/config/managers';
 import { league, teams } from '@/lib/league';
 import { parseTeam } from '@/lib/my-team';
@@ -9,68 +8,48 @@ import type { UsageEntry } from '@/lib/spine';
 import { candidatePool, waiversForTeam, waiversLeagueWide } from '@/lib/waivers';
 import { qv, swamiHref, type SwamiQuery } from '../../../swami/moves-query';
 import { rosBoard } from '../cached';
+import { Card, Chip, Chips, Drawer, Empty, List, Pill, Rail, Row, Section, Stats, Tag, ui as u } from '../ui';
+import { ExpandRow } from '../ui/blocks/ExpandRow';
+import { FilterSheet } from '../ui/blocks/FilterSheet';
+import StatGrid from '../players/StatGrid';
 import CopyMove from './CopyMove';
-import { curl, Face, fmt, metaLine, Panel, Pos, RosMethod, RosWorking, short, Tag } from './parts';
-import s from '../v4.module.css';
+import { BASE, curl, fmt, PlayerFace, PlayerSub, RosMethod, RosWorking, short, tabbed } from './parts';
 import w from './swami.module.css';
 
 /**
- * Waiver pickups. With a team (the URL's, else yours) it ranks every
- * unrostered player by what he adds to that team's best lineup, names the
- * starter he pushes out, and copies the claim.
- * With the league picked it is the league's board: who would start for the
- * most teams. Team and position live in the URL (team, wpos).
+ * Waivers. With a team (the URL's, else yours) it ranks every unrostered
+ * player by what he adds to that team's best lineup, names the starter he
+ * pushes out, and copies the claim. With the league picked it is the
+ * league's board: who would start for the most teams. Team and position
+ * live in the URL (team, wpos).
  */
 
-const BASE = '/lab/app/swami';
 const POSITIONS = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF'];
 const pct = (n: number) => `${Math.round(n * 100)}%`;
 const managerOf = (rosterId: number) => firstNameOf(rosterId) ?? teams.find((t) => t.rosterId === rosterId)?.manager ?? `Team ${rosterId}`;
 
 type FullRoster = SleeperRoster & { reserve?: string[] | null; taxi?: string[] | null };
 
-function Usage({ usage, trend, position }: { usage: UsageEntry | null; trend: string | null; position: string }) {
-  if (position === 'K' || position === 'DEF' || !usage) return null;
-  const moved = usage.recent && trend && trend !== 'steady';
-  return (
-    <>
-      <Tag label="Snaps" value={pct(usage.snapShare)} />
-      {moved && usage.recent ? (
-        <Tag
-          label={`Last ${usage.recent.weeks} ${usage.recent.weeks === 1 ? 'game' : 'games'}`}
-          value={`${pct(usage.recent.snapShare)}, ${trend}`}
-          tone={trend === 'rising' ? 'good' : undefined}
-        />
-      ) : null}
-    </>
-  );
+/** Snap share, and the recent games when they moved. */
+function usageItems(usage: UsageEntry | null, trend: string | null, position: string) {
+  if (position === 'K' || position === 'DEF' || !usage) return [];
+  const items = [{ value: pct(usage.snapShare), label: 'Snaps' }];
+  if (usage.recent && trend && trend !== 'steady') items.push({ value: pct(usage.recent.snapShare), label: `Last ${usage.recent.weeks}, ${trend}` });
+  return items;
 }
 
-function Pick({ read, value, label, children, move }: { read: RosRead; value: string; label: string; children: ReactNode; move?: string }) {
+/** One pickup: a row with what he adds; open it for the numbers, the claim and the working. */
+function Pick({ read, value, label, stats, note, move }: { read: RosRead; value: string; label: string; stats: { value: ReactNode; label: string }[]; note?: string; move: string }) {
   return (
-    <details className={w.item}>
-      <summary className={w.row}>
-        <Face read={read} />
-        <span className={w.who}>
-          <b>{read.player.name}</b>
-          <small>
-            <Pos pos={read.player.position} /> {metaLine(read, true)}
-          </small>
-        </span>
-        <span className={w.num}>
-          <b>{value}</b>
-          <small>{label}</small>
-        </span>
-      </summary>
-      <div className={w.detail}>
-        <div className={w.tags}>{children}</div>
-        {move ? <CopyMove text={move} label="Copy claim" /> : null}
-        <RosWorking read={read} />
-        <Link href={`/lab/app/players/${read.player.id}`} className={w.go}>
-          Player page
-        </Link>
-      </div>
-    </details>
+    <ExpandRow lead={<PlayerFace read={read} />} title={short(read.player.name, read.player.position)} sub={<PlayerSub read={read} />} value={value} valueSub={label}>
+      <StatGrid items={stats} />
+      {note ? <p className={`${u.sub} ${w.note}`}>{note}</p> : null}
+      <CopyMove text={move} label="Copy claim" />
+      <RosWorking read={read} />
+      <Pill href={`/lab/app/players/${read.player.id}`} kind="secondary">
+        Player page
+      </Pill>
+    </ExpandRow>
   );
 }
 
@@ -107,139 +86,139 @@ export default async function Waivers({ query, mine }: { query: SwamiQuery; mine
   const spent = Number(roster?.settings?.waiver_budget_used ?? 0);
   const left = budget ? Math.max(0, budget - spent) : null;
 
-  const teamHref = (t: number | 'league') => swamiHref(query, { team: String(t) }, BASE);
-  const posHref = (p: string | null) => swamiHref(query, { team: team ? String(team) : 'league', wpos: p }, BASE);
+  const teamHref = (t: number | 'league') => tabbed(swamiHref(query, { team: String(t) }, BASE), 'waivers');
+  const posHref = (p: string | null) => tabbed(swamiHref(query, { team: team ? String(team) : 'league', wpos: p }, BASE), 'waivers');
   const ordered = [...teams].sort((x, y) => Number(y.rosterId === mine) - Number(x.rosterId === mine));
   const window = windowLabel(ctx);
 
   return (
-    <Panel icon="money" title="Waiver Pickups" aside={window.charAt(0).toUpperCase() + window.slice(1)}>
-      <div className={w.group}>
-        <p className={w.sub}>
-          Pickups For <b>&middot; {teamView ? teamView.teamName : 'The Whole League'}</b>
-        </p>
-        <nav className={s.filterRow} aria-label="Team">
-          <Link href={teamHref('league')} scroll={false} className={`${s.filter} ${!team ? s.filterOn : ''}`} aria-current={!team ? 'true' : undefined}>
-            League
-          </Link>
-          {ordered.map((t) => {
-            const on = t.rosterId === team;
-            return (
-              <Link key={t.rosterId} href={teamHref(t.rosterId)} scroll={false} className={`${s.filter} ${on ? s.filterOn : ''}`} aria-current={on ? 'true' : undefined}>
-                {managerOf(t.rosterId)}
-              </Link>
-            );
-          })}
-        </nav>
-        <nav className={s.filterRow} aria-label="Position">
-          {[null, ...POSITIONS].map((p) => {
-            const on = pos === p;
-            return (
-              <Link key={p ?? 'all'} href={posHref(p)} scroll={false} className={`${s.filter} ${on ? s.filterOn : ''}`} aria-current={on ? 'true' : undefined}>
-                {p ?? 'All'}
-              </Link>
-            );
-          })}
-        </nav>
+    <>
+      <div className={w.taps}>
+        <Rail label="Waiver filters">
+          <FilterSheet id="waiver-team" label={team ? managerOf(team) : 'League'} title="Pickups For">
+            <Card>
+              <Chips label="Team">
+                <Chip href={teamHref('league')} on={!team}>
+                  League
+                </Chip>
+                {ordered.map((t) => (
+                  <Chip key={t.rosterId} href={teamHref(t.rosterId)} on={t.rosterId === team}>
+                    {managerOf(t.rosterId)}
+                  </Chip>
+                ))}
+              </Chips>
+            </Card>
+          </FilterSheet>
+          {[null, ...POSITIONS].map((p) => (
+            <Chip key={p ?? 'all'} href={posHref(p)} on={pos === p}>
+              {p ?? 'All'}
+            </Chip>
+          ))}
+        </Rail>
       </div>
 
       {teamView ? (
         <>
-          {teamView.line ? (
-            <div className={w.verdict}>
-              <p>{curl(teamView.line)}</p>
-            </div>
-          ) : (
-            <p className={w.note}>
-              Nothing unrostered{pos ? ` at ${pos}` : ''} improves {teamView.teamName}&rsquo;s best lineup in any week from {ctx.from} to {ctx.through}.
-            </p>
-          )}
-          {left != null ? (
-            <div className={w.tags}>
-              <Tag label="FAAB left" value={`$${left} of $${budget}`} />
-              <Tag label="Roster" value={full ? 'Full, a drop is owed' : 'Open spot'} />
-            </div>
-          ) : null}
+          <Card>
+            {teamView.line ? (
+              <p className={u.bodyText}>{curl(teamView.line)}</p>
+            ) : (
+              <p className={u.bodyText}>
+                Nothing unrostered{pos ? ` at ${pos}` : ''} improves {teamView.teamName}&rsquo;s best lineup in any week from {ctx.from} to {ctx.through}.
+              </p>
+            )}
+            {left != null ? (
+              <Stats
+                items={[
+                  { value: `$${left}`, label: `FAAB left of $${budget}` },
+                  { value: full ? 'Full' : 'Open spot', label: full ? 'Roster, a drop is owed' : 'Roster' },
+                ]}
+              />
+            ) : null}
+          </Card>
           {teamView.picks.length ? (
-            <div className={w.group}>
-              <p className={w.sub}>Best Adds &middot; Lineup Points Added</p>
-              <div className={w.rows}>
+            <Section title="Best Adds">
+              <List tap>
                 {teamView.picks.map((p) => (
                   <Pick
                     key={p.read.player.id}
                     read={p.read}
                     value={`+${fmt(p.rosGain)}`}
                     label="Lineup gain"
+                    stats={[
+                      { value: p.perGame > 0 ? `+${fmt(p.perGame)}` : 'Spot starts', label: 'Per game' },
+                      ...(p.thisWeek != null ? [{ value: p.thisWeek > 0 ? `+${fmt(p.thisWeek)}` : 'No help', label: 'This week' }] : []),
+                      ...usageItems(p.usage, p.trend, p.read.player.position),
+                    ]}
+                    note={p.replaces ? `Starts over ${short(p.replaces.read.player.name, p.replaces.read.player.position)} at ${p.replaces.slot}.` : undefined}
                     move={`Claim ${short(p.read.player.name, p.read.player.position)}.${
                       p.replaces ? ` Starts over ${short(p.replaces.read.player.name, p.replaces.read.player.position)} at ${p.replaces.slot}.` : ''
                     }${full ? ' Roster is full, so a drop is owed.' : ''}`}
-                  >
-                    <Tag label="Lineup gain" value={`+${fmt(p.rosGain)}`} tone="good" />
-                    <Tag label="Per game" value={p.perGame > 0 ? `+${fmt(p.perGame)}` : 'Spot starts'} />
-                    {p.replaces ? <Tag label="Replaces" value={`${short(p.replaces.read.player.name, p.replaces.read.player.position)}, ${p.replaces.slot}`} /> : null}
-                    {p.thisWeek != null ? <Tag label="This week" value={p.thisWeek > 0 ? `+${fmt(p.thisWeek)}` : 'No help'} /> : null}
-                    <Usage usage={p.usage} trend={p.trend} position={p.read.player.position} />
-                  </Pick>
+                  />
                 ))}
-              </div>
-            </div>
+              </List>
+            </Section>
           ) : null}
-          <div className={w.group}>
-            <p className={w.sub}>Measured Against &middot; A Typical Week</p>
-            <div className={w.slots}>
-              {teamView.lineup.map((slot, i) => (
-                <div key={`${slot.slot}-${i}`} className={`${w.slot} ${slot.id && weakSlots.has(slot.id) ? w.slotWeak : ''}`}>
-                  <span className={w.slotName}>{slot.slot === 'SUPER_FLEX' ? 'SF' : slot.slot}</span>
-                  {slot.read ? (
-                    <button type="button" data-player={slot.read.player.id} className={w.slotWho}>
-                      {short(slot.read.player.name, slot.read.player.position)}
-                    </button>
-                  ) : (
-                    <span className={w.slotWho}>Empty</span>
-                  )}
-                  <span className={w.slotPts}>{fmt(slot.points)}</span>
-                </div>
-              ))}
-            </div>
-            <p className={w.note}>Best lineup at per game rates. Marked slots are the ones the top pickups replace. The gains above count byes and matchups week by week.</p>
-          </div>
+          <Drawer title={`${teamView.teamName} Lineup`} value="Per game">
+            {teamView.lineup.map((slot, i) => (
+              <Row
+                key={`${slot.slot}-${i}`}
+                lead={
+                  <span className={w.slot}>
+                    <Tag>{slot.slot === 'SUPER_FLEX' ? 'SF' : slot.slot}</Tag>
+                  </span>
+                }
+                title={slot.read ? short(slot.read.player.name, slot.read.player.position) : 'Empty'}
+                muted={!slot.read}
+                sub={slot.id && weakSlots.has(slot.id) ? 'A top pickup starts over him' : undefined}
+                value={fmt(slot.points)}
+                data={slot.read ? { player: slot.read.player.id } : undefined}
+              />
+            ))}
+            <p className={`${u.sub} ${w.drawerBody}`}>Best lineup at per game rates. The gains above count byes and matchups week by week.</p>
+          </Drawer>
         </>
       ) : null}
 
       {leagueView ? (
         <>
           {leagueView.line ? (
-            <div className={w.verdict}>
-              <p>{curl(leagueView.line)}</p>
-            </div>
+            <Card>
+              <p className={u.bodyText}>{curl(leagueView.line)}</p>
+            </Card>
           ) : null}
-          <div className={w.group}>
-            <p className={w.sub}>Best Available &middot; Added to the Average Lineup</p>
+          <Section title="Best Available">
             {leagueView.picks.length ? (
-              <div className={w.rows}>
+              <List tap>
                 {leagueView.picks.map((p) => (
-                  <Pick key={p.read.player.id} read={p.read} value={`+${fmt(p.meanGain)}`} label="Average gain" move={`Claim ${short(p.read.player.name, p.read.player.position)}.`}>
-                    <Tag label="Average gain" value={`+${fmt(p.meanGain)}`} tone="good" />
-                    <Tag label="Starts for" value={`${p.startsFor} of ${rosters.length}`} />
-                    {p.best ? <Tag label="Most to" value={`${p.best.manager}, +${fmt(p.best.gain)}`} /> : null}
-                    <Usage usage={p.usage} trend={p.trend} position={p.read.player.position} />
-                  </Pick>
+                  <Pick
+                    key={p.read.player.id}
+                    read={p.read}
+                    value={`+${fmt(p.meanGain)}`}
+                    label="Avg gain"
+                    stats={[
+                      { value: `${p.startsFor} of ${rosters.length}`, label: 'Starts for' },
+                      ...(p.best ? [{ value: `+${fmt(p.best.gain)}`, label: `Most to ${p.best.manager}` }] : []),
+                      ...usageItems(p.usage, p.trend, p.read.player.position),
+                    ]}
+                    move={`Claim ${short(p.read.player.name, p.read.player.position)}.`}
+                  />
                 ))}
-              </div>
+              </List>
             ) : (
-              <p className={w.empty}>Nobody on the wire improves any lineup{pos ? ` at ${pos}` : ''}.</p>
+              <Empty>Nobody on waivers improves any lineup{pos ? ` at ${pos}` : ''}.</Empty>
             )}
-            <p className={w.note}>
-              The number is what he adds over {window}, averaged across all {rosters.length} teams, zeros included. Pick a team for its own list.
-            </p>
-          </div>
+          </Section>
+          <p className={`${u.sub} ${w.inset}`}>
+            Avg gain is what he adds over {window}, averaged across all {rosters.length} teams, zeros included. Pick a team for its own list.
+          </p>
         </>
       ) : null}
 
       <RosMethod
         ctx={ctx}
-        extra={<p>Usage is shown, not multiplied in: the model already reads recent snap and target share, so scaling it again would count the same evidence twice.</p>}
+        extra={<p className={u.bodyText}>Usage is shown, not multiplied in: the model already reads recent snap and target share, so scaling it again would count the same evidence twice.</p>}
       />
-    </Panel>
+    </>
   );
 }

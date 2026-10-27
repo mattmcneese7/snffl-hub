@@ -1,69 +1,55 @@
-import Link from 'next/link';
 import type { Issue } from '@/lib/rag';
 import type { StoryArt } from '@/lib/story-images';
-import s from '../v4.module.css';
+import { Chip, List, Rail, RagCard, Row, Section, ui } from '../ui';
 
 const CT_DATE = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', month: 'short', day: 'numeric' });
 export const artSrc = (a?: StoryArt) => (a ? (a.kind === 'photo' ? a.src : a.cutout) : null);
 
-/** A Rag issue: the masthead, the lead with its photo, then every other story with its own. */
+/** A Rag issue: the week picker, the issue's lead on the Rag card, then every other story as a row. */
 export default function IssueView({ issue, art, weeks }: { issue: Issue; art: Record<string, StoryArt>; weeks: number[] }) {
   const stories = issue.articles.filter((a) => !a.retracted);
   const [lead, ...rest] = stories;
-  const leadSrc = artSrc(art[lead?.slug ?? '']);
+  const href = (slug: string) => `/lab/app/rag/${issue.week}/${slug}`;
   return (
     <>
-      <nav className={s.chips} aria-label="Issues">
+      <Rail label="Issues">
         {weeks
           .slice()
           .reverse()
           .map((w) => (
-            <Link key={w} href={`/lab/app/rag/${w}`} className={`${s.chipA} ${w === issue.week ? s.chipOn : ''}`} aria-current={w === issue.week ? 'page' : undefined}>
+            <Chip key={w} href={`/lab/app/rag/${w}`} on={w === issue.week}>
               Week {w}
-            </Link>
+            </Chip>
           ))}
-      </nav>
-      <article className={s.rag}>
-        <div className={s.ragTop}>
-          <b>The Rag</b>
-          <span>
-            Week {issue.week} &middot; {CT_DATE.format(new Date(issue.publishedAt))}
-          </span>
-        </div>
-        {lead ? (
-          <Link href={`/lab/app/rag/${issue.week}/${lead.slug}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-            {leadSrc ? (
-              <span className={s.ragArt} style={{ display: 'block' }}>
-                <img src={leadSrc} alt="" />
-                <span className={s.ragTag}>{lead.category}</span>
-              </span>
-            ) : null}
-            <span className={s.ragBody}>
-              <h3>{lead.headline}</h3>
-              <p>{lead.deck}</p>
-              <span className={s.ragBy}>{lead.readTime} min read</span>
-            </span>
-          </Link>
-        ) : null}
-      </article>
-      <div className={s.title}>
-        <h2>All Stories</h2>
-      </div>
-      <div className={s.list}>
-        {rest.map((a) => {
-          const src = artSrc(art[a.slug]);
-          return (
-            <Link key={a.slug} href={`/lab/app/rag/${issue.week}/${a.slug}`} className={s.story}>
-              {src ? <img src={src} alt="" /> : <span />}
-              <span className={s.storyText}>
-                <small>{a.category}</small>
-                <b>{a.headline}</b>
-                <span>{a.readTime} min read</span>
-              </span>
-            </Link>
-          );
-        })}
-      </div>
+      </Rail>
+      {lead ? (
+        <RagCard
+          issueHref={`/lab/app/rag/${issue.week}`}
+          meta={`Week ${issue.week} · ${CT_DATE.format(new Date(issue.publishedAt))}`}
+          lead={{ href: href(lead.slug), category: lead.category, headline: lead.headline }}
+          art={artSrc(art[lead.slug])}
+          deck={lead.deck}
+          readTime={lead.readTime}
+          more={[]}
+        />
+      ) : null}
+      {rest.length ? (
+        <Section title="All Stories">
+          <StoryList week={issue.week} stories={rest} art={art} />
+        </Section>
+      ) : null}
     </>
+  );
+}
+
+/** Stories as rows in one tappable list: the art, the category, the headline, the read time. */
+export function StoryList({ week, stories, art }: { week: number; stories: Issue['articles']; art: Record<string, StoryArt> }) {
+  return (
+    <List tap>
+      {stories.map((a) => {
+        const src = artSrc(art[a.slug]);
+        return <Row key={a.slug} href={`/lab/app/rag/${week}/${a.slug}`} lead={src ? <img className={ui.thumb} src={src} alt="" loading="lazy" /> : undefined} label={a.category} title={a.headline} sub={`${a.readTime} min read`} />;
+      })}
+    </List>
   );
 }

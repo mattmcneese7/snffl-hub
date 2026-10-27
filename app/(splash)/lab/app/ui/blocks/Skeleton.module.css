@@ -1,0 +1,25 @@
+/* Loading placeholders: flat bones on the paper in the kit's corners (10 for
+   lines and chips, 20 for cards and tiles, round for faces). No surfaces and
+   no shadow while loading; one slow sweep, the same phase everywhere. */
+.bone { display: inline-block; flex: none; border-radius: 10px; }
+.card { display: block; border-radius: 20px; }
+.round { border-radius: 50%; }
+.tile { flex: none; border-radius: 20px; }
+.row { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 12px; align-items: center; border-top: 1px solid var(--hair); }
+.row:first-child { border-top: 0; }
+.list { display: grid; padding: 0 14px; }
+.title { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 0 14px; }
+.lines { display: grid; gap: 8px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; overflow: hidden; }
+.chip { height: 44px; }
+.rail { display: flex; gap: 12px; overflow: hidden; }
+.bar { height: 72px; cursor: default; }
+.bone, .card { --sk: color-mix(in srgb, var(--ink) 7%, transparent); --sk-hi: color-mix(in srgb, var(--ink) 3%, transparent); background: linear-gradient(100deg, var(--sk) 40%, var(--sk-hi) 50%, var(--sk) 60%) 0 0 / 300% 100% fixed; animation: sweep 1.6s linear infinite; }
+.blue { --sk: var(--blue); --sk-hi: color-mix(in srgb, var(--blue) 88%, var(--on-blue)); }
+@keyframes sweep { from { background-position: 100% 0; } to { background-position: 0 0; } }
+@media (prefers-reduced-motion: reduce) { .bone, .card { animation: none; } }
+
+/* Error and not-found: a title, a line, and the ways out. */
+.notice { display: grid; gap: 12px; padding: 0 14px; }
+.notice h2 { margin: 0; font: 900 24px/1.1 var(--brand); letter-spacing: -0.03em; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }

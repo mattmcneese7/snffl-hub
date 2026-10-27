@@ -1,5 +1,9 @@
-/* The week in 90 seconds, full screen over the app. The stage is always
-   dark (it is footage), so its type is white in both themes. */
+/* StoryStage: a story full screen over the app, the week in 90 seconds and
+   the Feed's manager stories. The stage is footage, so it is dark in both
+   themes and its type is white on a scrim: the one place in the kit with
+   fixed colors, the media level. Corners, sizes and weights are the kit's:
+   20 for containers, 10 for controls, round only for faces; 38/24/18/15/13/11;
+   400, 600, 800. */
 .wrap { position: fixed; inset: 0; z-index: 130; display: grid; grid-template-rows: auto auto 1fr auto; background: #0b0d12; color: #fff; font-family: var(--ui, system-ui, sans-serif); }
 .stage { position: absolute; inset: 0; overflow: hidden; }
 .media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -7,7 +11,7 @@
 .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8, 10, 14, 0.7) 0%, rgba(8, 10, 14, 0.15) 30%, rgba(8, 10, 14, 0.35) 55%, rgba(8, 10, 14, 0.9) 100%); }
 
 .progress { position: relative; z-index: 2; display: flex; gap: 4px; padding: calc(env(safe-area-inset-top) + 12px) 14px 0; }
-.progress i { flex: 1; height: 3px; border-radius: 2px; background: rgba(255, 255, 255, 0.3); overflow: hidden; position: relative; }
+.progress i { flex: 1; height: 3px; border-radius: 10px; background: rgba(255, 255, 255, 0.3); overflow: hidden; position: relative; }
 .progress i::after { content: ''; position: absolute; inset: 0; background: #fff; transform-origin: left; transform: scaleX(0); }
 .progress .done::after { transform: scaleX(1); }
 .progress .now::after { animation: fill 4500ms linear forwards; }
@@ -16,7 +20,7 @@
 .top span { display: grid; }
 .top b { font-size: 15px; font-weight: 800; }
 .top small { font-size: 11px; color: rgba(255, 255, 255, 0.75); }
-.close { display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 50%; background: rgba(255, 255, 255, 0.16); color: #fff; cursor: pointer; }
+.close { display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 10px; background: rgba(255, 255, 255, 0.16); color: #fff; cursor: pointer; }
 
 .tap { position: absolute; top: 90px; bottom: 90px; z-index: 1; width: 50%; border: 0; background: none; cursor: pointer; }
 .back { left: 0; }
@@ -24,7 +28,7 @@
 
 .card { position: relative; z-index: 2; align-self: end; display: grid; gap: 8px; justify-items: start; padding: 0 20px 16px; pointer-events: none; animation: rise 420ms cubic-bezier(0.32, 0.72, 0, 1) both; }
 .kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255, 255, 255, 0.82); }
-.huge { font-size: 38px; font-weight: 900; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.huge { font-size: 38px; font-weight: 800; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
 .name { font-size: 24px; font-weight: 800; line-height: 1.15; text-wrap: balance; }
 .sub { font-size: 13px; color: rgba(255, 255, 255, 0.8); }
 .line { margin: 0; max-width: 34ch; font-size: 15px; line-height: 1.45; color: rgba(255, 255, 255, 0.92); }
@@ -33,7 +37,7 @@
 .avatar { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.9); margin-right: -12px; }
 .bad { color: #ff9b8f; }
 .good { color: #7ee2b0; }
-.star { display: flex; align-items: center; gap: 12px; margin-top: 8px; padding: 8px 12px 8px 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.14); }
+.star { display: flex; align-items: center; gap: 12px; margin-top: 8px; padding: 8px 12px 8px 8px; border-radius: 20px; background: rgba(255, 255, 255, 0.14); }
 .star img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; object-position: top; background: rgba(255, 255, 255, 0.2); }
 .star span { display: grid; }
 .star b { font-size: 15px; font-weight: 800; }
@@ -49,10 +53,30 @@
 .seat { font-size: 13px; color: rgba(255, 255, 255, 0.85); font-variant-numeric: tabular-nums; }
 
 .foot { position: relative; z-index: 2; display: flex; gap: 8px; padding: 0 14px calc(env(safe-area-inset-bottom) + 14px); }
-.action { flex: 1; display: grid; place-items: center; height: 44px; border: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.16); color: #fff; font-family: inherit; font-size: 15px; font-weight: 600; text-decoration: none; cursor: pointer; }
+.action { flex: 1; display: grid; place-items: center; height: 44px; border: 0; border-radius: 10px; background: rgba(255, 255, 255, 0.16); color: #fff; font-family: inherit; font-size: 15px; font-weight: 600; text-decoration: none; cursor: pointer; }
+
+/* The Feed's manager stories: a still, the clip's title and tags, a link out; the week card to close */
+.body { position: relative; z-index: 1; display: grid; align-content: center; min-height: 0; overflow-y: auto; }
+.sheet { position: relative; z-index: 2; display: grid; gap: 12px; justify-items: start; width: 100%; max-width: 430px; margin: 0 auto; padding: 8px 14px 24px; box-sizing: border-box; pointer-events: none; }
+.sheet a { pointer-events: auto; }
+.still { display: block; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 20px; background: rgba(255, 255, 255, 0.08); }
+.still img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 10px; background: rgba(255, 255, 255, 0.16); font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+.tagBad { background: #f08a7e; color: #141518; }
+.go { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 16px 0 12px; border-radius: 10px; background: #ffffff; color: #141518; font-size: 15px; font-weight: 600; text-decoration: none; }
+.panel { display: grid; gap: 12px; width: 100%; box-sizing: border-box; padding: 14px; border-radius: 20px; background: rgba(255, 255, 255, 0.08); }
+.lines { display: grid; gap: 8px; margin: 0; }
+.lines div { display: flex; justify-content: space-between; font-size: 15px; }
+.lines dt { color: rgba(255, 255, 255, 0.8); }
+.lines dd { margin: 0; font-weight: 800; font-variant-numeric: tabular-nums; }
+.face { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: top; background: rgba(255, 255, 255, 0.2); flex: none; }
+.row { display: flex; align-items: center; gap: 12px; }
+.rowText { display: grid; gap: 2px; min-width: 0; }
 
 @keyframes fill { to { transform: scaleX(1); } }
 @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
 @keyframes fade { from { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .card, .fadeIn { animation: none; }
 .progress .now::after { animation: none; transform: scaleX(0.5); } }
+.body .tap { top: 0; bottom: 0; }

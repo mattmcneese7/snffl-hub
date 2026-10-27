@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
-import m from '../modules/modules.module.css';
-import s from '../v4.module.css';
+import { Avatar, Label, ui } from '../ui';
+import { storyStage as st } from '../ui/blocks/StoryStage';
 import f from './feed.module.css';
 import { MS } from '../icons';
 
@@ -38,22 +38,21 @@ export default function Stories({ managers, week }: { managers: StoryManager[]; 
   const shut = useCallback(() => setOpen(null), []);
   return (
     <>
-      <div className={s.rail}>
+      <div className={ui.rail} role="group" aria-label="Stories">
         {managers.map((mg) => {
           const lit = mg.clips > 0;
           return (
-            <div key={mg.rosterId} className={f.bubble}>
-              <button
-                type="button"
-                className={`${f.ring} ${lit ? f.ringLit : ''}`}
-                disabled={!mg.slides.length}
-                onClick={() => setOpen(mg)}
-                aria-label={lit ? `${mg.teamName}, week ${week} story, ${mg.clips} ${mg.clips === 1 ? 'clip' : 'clips'}` : `${mg.teamName}, week in numbers`}
-              >
-                <span className={f.ringAv}>{mg.avatarUrl ? <img src={mg.avatarUrl} alt="" loading="lazy" /> : <b>{mg.firstName.slice(0, 2).toUpperCase()}</b>}</span>
-              </button>
-              <span className={f.bubbleName}>{mg.firstName}</span>
-            </div>
+            <button
+              key={mg.rosterId}
+              type="button"
+              className={f.bubble}
+              disabled={!mg.slides.length}
+              onClick={() => setOpen(mg)}
+              aria-label={lit ? `${mg.teamName}, week ${week} story, ${mg.clips} ${mg.clips === 1 ? 'clip' : 'clips'}` : `${mg.teamName}, week in numbers`}
+            >
+              <Avatar src={mg.avatarUrl} size={44} />
+              <Label tone={lit ? 'brand' : undefined}>{mg.firstName}</Label>
+            </button>
           );
         })}
       </div>
@@ -70,7 +69,7 @@ function Viewer({ manager, onClose }: { manager: StoryManager; onClose: () => vo
   const slide = slides[at];
 
   // Into the 4.0 root, which carries the type and tokens; the body would lose them.
-  useEffect(() => setHost(document.querySelector<HTMLElement>(`.${s.root}`) ?? document.body), []);
+  useEffect(() => setHost(document.querySelector('main')?.parentElement ?? document.body), []);
 
   useEffect(() => {
     if (!host) return;
@@ -112,67 +111,67 @@ function Viewer({ manager, onClose }: { manager: StoryManager; onClose: () => vo
   if (!host || !slide) return null;
 
   return createPortal(
-    <div className={f.viewer} role="dialog" aria-modal="true" aria-label={`${manager.teamName} story`}>
-      <div className={f.progress} aria-hidden>
+    <div className={st.wrap} role="dialog" aria-modal="true" aria-label={`${manager.teamName} story`}>
+      <div className={st.progress} aria-hidden>
         {slides.map((x, i) => (
-          <i key={x.id} className={i < at ? f.done : i === at ? f.now : ''} />
+          <i key={x.id} className={i <= at ? st.done : ''} />
         ))}
       </div>
-      <header className={f.vHead}>
-        <span className={f.vAv}>{manager.avatarUrl ? <img src={manager.avatarUrl} alt="" /> : null}</span>
-        <span className={f.vWho}>
-          <b>{manager.teamName}</b>
+      <header className={st.top}>
+        <div className={st.row}>
+          {manager.avatarUrl ? <img className={st.face} src={manager.avatarUrl} alt="" /> : null}
           <span>
-            {manager.firstName} &middot; {at + 1} of {slides.length}
+            <b>{manager.teamName}</b>
+            <small>
+              {manager.firstName} &middot; {at + 1} of {slides.length}
+            </small>
           </span>
-        </span>
-        <button ref={closeBtn} type="button" className={f.vClose} onClick={close} aria-label="Close story">
+        </div>
+        <button ref={closeBtn} type="button" className={st.close} onClick={close} aria-label="Close story">
           <Glyph d={MS.close} />
         </button>
       </header>
-      <div className={f.vBody}>
-        <button type="button" className={`${f.tap} ${f.tapBack}`} onClick={prev} aria-label="Previous" />
-        <button type="button" className={`${f.tap} ${f.tapNext}`} onClick={next} aria-label={at === slides.length - 1 ? 'Close story' : 'Next'} />
+      <div className={st.body}>
+        <button type="button" className={`${st.tap} ${st.back}`} onClick={prev} aria-label="Previous" />
+        <button type="button" className={`${st.tap} ${st.next}`} onClick={next} aria-label={at === slides.length - 1 ? 'Close story' : 'Next'} />
         {slide.kind === 'clip' ? (
-          <article className={f.vSlide} key={slide.id}>
-            <span className={f.vStill}>
+          <article className={st.sheet} key={slide.id}>
+            <span className={st.still}>
               <img src={slide.still} alt="" />
             </span>
-            <h2 className={f.vTitle}>{slide.title}</h2>
+            <h2 className={st.name}>{slide.title}</h2>
             {slide.tags.length ? (
-              <span className={f.vTags}>
+              <span className={st.tags}>
                 {slide.tags.map((t) => (
-                  <span key={t} className={`${f.vTag} ${t === 'Benched' ? f.vTagBad : ''}`}>
+                  <span key={t} className={`${st.tag} ${t === 'Benched' ? st.tagBad : ''}`}>
                     {t}
                   </span>
                 ))}
               </span>
             ) : null}
-            <a className={f.yt} href={slide.url} target="_blank" rel="noopener noreferrer">
+            <a className={st.go} href={slide.url} target="_blank" rel="noopener noreferrer">
               <Glyph d={MS.play} />
               Watch on YouTube
             </a>
           </article>
         ) : (
-          <article className={`${f.vSlide}`} key={slide.id}>
-            <div className={f.wcard}>
-              <small>Week {slide.week} in Numbers</small>
-              <h2>{slide.headline}</h2>
-              <p className={f.wcardScore}>{slide.score}</p>
+          <article className={st.sheet} key={slide.id}>
+            <div className={st.panel}>
+              <small className={st.kicker}>Week {slide.week} in Numbers</small>
+              <h2 className={st.name}>{slide.headline}</h2>
+              <p className={st.line}>{slide.score}</p>
               {slide.player ? (
-                <span className={f.wcardP}>
-                  <span>
-                    <img src={slide.player.headshot} alt="" loading="lazy" />
-                  </span>
-                  <span>
+                <span className={st.row}>
+                  <img className={st.face} src={slide.player.headshot} alt="" loading="lazy" />
+                  <span className={st.rowText}>
                     <b>{slide.player.name}</b>
-                    <em>
+                    <small className={st.sub}>
                       Top start &middot; {slide.player.slot} &middot; {slide.player.points} pts
-                    </em>
+                    </small>
                   </span>
                 </span>
               ) : null}
-              <dl className={f.wcardLines}>
+              <dl className={st.lines}>
                 {slide.lines.map((l) => (
                   <div key={l.label}>
                     <dt>{l.label}</dt>
@@ -180,7 +179,7 @@ function Viewer({ manager, onClose }: { manager: StoryManager; onClose: () => vo
                   </div>
                 ))}
               </dl>
-              <Link href={slide.href} className={f.wcardGo}>
+              <Link href={slide.href} className={st.go}>
                 Full matchup
               </Link>
             </div>

@@ -3,7 +3,7 @@ import { CUT_WIDTH, LACE_SPINE, LACE_STITCHES, SEAM_FOOT, SEAM_TOP } from '../..
 import BackButton from './nav/BackButton';
 import TopTitle from './nav/TopTitle';
 import type { MsName } from './icons';
-import s from './v4.module.css';
+import s from './ui/blocks/Frame.module.css';
 
 /**
  * The frame's own parts, safe on the server and in the browser alike: the

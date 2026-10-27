@@ -11,9 +11,8 @@ import { firstNameOf } from '@/config/managers';
 import { latestChug } from '@/lib/chug-video';
 import { teamByRoster } from '@/lib/league';
 import { trophyBoard } from './cached';
-import { getV4Data, type GameView, type SideView } from './data';
+import { getV4Data } from './data';
 import { momentOf, orderOf, type ModuleKey } from './schedule';
-import { LivePoints } from './live/Live';
 import ChugPop from './ChugPop';
 import Moments, { type MomentKind } from './Moments';
 import Hardware from './modules/Hardware';
@@ -87,7 +86,7 @@ export default async function V4Home({ searchParams }: { searchParams: Promise<{
     rag: ragProps ? <RagCard {...ragProps} /> : null,
     ragCompact: ragProps ? <RagCard {...ragProps} compact /> : null,
     matchups: (
-      <Section title={live ? 'Live Matchups' : 'All Matchups'} action={{ href: '/lab/app/feed', label: 'Feed' }}>
+      <Section title={live ? 'Live Matchups' : 'All Matchups'} action={{ href: '/lab/app/feed', label: 'The Feed' }}>
         {data.others.length ? <MatchupRows games={data.others} week={data.week} live={data.state === 'live'} /> : <Empty>No matchups for week {data.week} yet.</Empty>}
       </Section>
     ),

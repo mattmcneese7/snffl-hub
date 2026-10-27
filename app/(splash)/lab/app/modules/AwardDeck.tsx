@@ -3,14 +3,16 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import Squirt from '../squirt/Squirt';
+import { Ms } from '../icons';
 import { Card, ui } from '../ui';
+import d from './AwardDeck.module.css';
 
 export type DeckAward = { kind: string; name: string; rosterId: number; team: string; manager: string; detail: string | null; mine: boolean };
 
 /**
- * The week's hardware in one card: Squirt stays put on the left and takes
- * each award's pose as its slide comes to rest beside him. Swipe the slides; tap one to
- * open the winner's page.
+ * The week's hardware, flat on the page: Squirt stays put on the left and
+ * takes each award's pose as its slide comes to rest beside him. Swipe the
+ * slides or step with the arrows; tap one to open the winner's page.
  */
 export default function AwardDeck({ awards }: { awards: DeckAward[] }) {
   const [at, setAt] = useState(0);
@@ -49,11 +51,14 @@ export default function AwardDeck({ awards }: { awards: DeckAward[] }) {
             </Link>
           ))}
         </div>
-        <div className={ui.dots}>
-          {awards.map((x, i) => (
-            <button key={x.kind} type="button" aria-label={`Show ${x.name}`} aria-current={i === at ? 'true' : undefined} className={i === at ? ui.dotOn : undefined} onClick={() => go(i)} />
-          ))}
-          <span className={ui.label}>
+        <div className={d.nav}>
+          <button type="button" className={ui.chip} aria-label="Previous award" onClick={() => go((at - 1 + awards.length) % awards.length)}>
+            <Ms name="chevronLeft" size={20} />
+          </button>
+          <button type="button" className={`${ui.chip} ${d.next}`} aria-label="Next award" onClick={() => go((at + 1) % awards.length)}>
+            <Ms name="chevronLeft" size={20} />
+          </button>
+          <span className={ui.label} aria-live="polite">
             {at + 1} of {awards.length}
           </span>
         </div>

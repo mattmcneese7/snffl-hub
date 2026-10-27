@@ -7,7 +7,8 @@ import { getPostseason, type BracketGame, type BracketRound, type BracketSide, t
 import { getV4Data } from '../../data';
 import { Ms } from '../../icons';
 import Shell, { SectionHead } from '../../Shell';
-import s from '../../v4.module.css';
+import { Empty, Label, List, Pair, Rank, Row, Section, ui, type PairSide } from '../../ui';
+import l from '../../modules/layout.module.css';
 
 export const metadata: Metadata = { title: { absolute: 'Bracket, Splash 4.0' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -23,19 +24,16 @@ function byesOf(rounds: BracketRound[]) {
   return r2.games.flatMap((g) => [g.home.rosterId, g.away.rosterId]).filter((id): id is number => id != null && !played.has(id));
 }
 
-function Side({ side, game, mine, slot }: { side: BracketSide; game: BracketGame; mine: number | null; slot: (x: BracketSide) => string }) {
+/** One side of a bracket game: the seed, the team and manager, W for the winner; out once beaten. */
+function sideOf(side: BracketSide, game: BracketGame, mine: number | null, slot: (x: BracketSide) => string): PairSide {
   const t = side.rosterId != null ? teamByRoster(side.rosterId) : undefined;
-  const out = game.status === 'final' && !side.won && side.rosterId != null;
-  return (
-    <div className={`${s.bSide} ${out ? s.bOut : ''} ${side.rosterId == null ? s.bTbd : ''} ${side.rosterId === mine && mine != null ? s.prowMine : ''}`}>
-      <span className={s.bSeed}>{side.seed ?? ''}</span>
-      <span className={s.who}>
-        <b>{side.rosterId != null ? (t?.teamName ?? side.team) : slot(side)}</b>
-        {side.rosterId != null ? <small>{firstNameOf(side.rosterId) ?? side.manager}</small> : null}
-      </span>
-      {side.won ? <b className={s.win}>W</b> : <span />}
-    </div>
-  );
+  return {
+    lead: side.seed != null ? <Rank n={side.seed} /> : undefined,
+    title: side.rosterId != null ? (t?.teamName ?? side.team) : slot(side),
+    sub: side.rosterId != null ? `${firstNameOf(side.rosterId) ?? side.manager}${side.rosterId === mine && mine != null ? ' · You' : ''}` : undefined,
+    mark: side.won ? 'W' : '',
+    lost: (game.status === 'final' && !side.won && side.rosterId != null) || side.rosterId == null,
+  };
 }
 
 const ORD = ['', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th', '12th', '13th', '14th'];
@@ -60,23 +58,16 @@ function Round({ round, all, mine, byes, shart = false }: { round: BracketRound;
     return `${m[1]} of ${a && b ? `${a} v ${b}` : a || b ? `${a || b}\u2019s game` : `game ${m[2]}`}`;
   };
   return (
-    <div className={s.round}>
-      <small>{round.name}</small>
-      <div className={s.bList}>
+    <Section title={round.name}>
+      <List>
         {round.games.map((g) => (
-          <div key={g.matchId} className={s.bGame}>
-            {labelOf(g, shart) ? <small className={s.bLabel}>{labelOf(g, shart)}</small> : null}
-            <Side side={g.home} game={g} mine={mine} slot={slot} />
-            <Side side={g.away} game={g} mine={mine} slot={slot} />
-          </div>
+          <Pair key={g.matchId} status={labelOf(g, shart) ?? undefined} sides={[sideOf(g.home, g, mine, slot), sideOf(g.away, g, mine, slot)]} />
         ))}
-      </div>
+      </List>
       {round.round === 1 && byes.length ? (
-        <p className={s.note} style={{ padding: '0 14px' }}>
-          Byes: {byes.map((id) => teamByRoster(id)?.teamName ?? '').filter(Boolean).join(', ')}
-        </p>
+        <p className={`${ui.sub} ${l.note}`}>Byes: {byes.map((id) => teamByRoster(id)?.teamName ?? '').filter(Boolean).join(', ')}</p>
       ) : null}
-    </div>
+    </Section>
   );
 }
 
@@ -96,40 +87,23 @@ export default async function V4Bracket() {
     <Shell data={data} active="league">
       <SectionHead icon="trophy" word="bracket" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
       {champ ? (
-        <section className={s.champ}>
-          <Ms name="trophy" size={36} />
-          <span>
-            <small>Champion</small>
-            <b>{champ.teamName}</b>
-            {firstNameOf(champ.rosterId) ?? champ.manager}
-          </span>
-        </section>
+        <List>
+          <Row lead={<Ms name="trophy" size={28} />} label={<Label tone="gold">Champion</Label>} title={champ.teamName} strong sub={firstNameOf(champ.rosterId) ?? champ.manager} />
+        </List>
       ) : null}
-      <div className={s.title}>
-        <h2>{started ? 'Playoffs' : 'If the Season Ended Today'}</h2>
-      </div>
-      {!started ? (
-        <p className={s.note} style={{ padding: '0 14px', marginTop: -4 }}>
-          Top {league.playoffTeams} make it. Playoffs start week {league.playoffWeekStart}.
-        </p>
-      ) : null}
+      {!started ? <p className={`${ui.sub} ${l.note}`}>If the season ended today. Top {league.playoffTeams} make it; playoffs start week {league.playoffWeekStart}.</p> : null}
       {post.rounds.length ? (
         post.rounds.map((r) => <Round key={r.round} round={r} all={post.rounds} mine={mine} byes={r.round === 1 ? post.byeRosterIds : []} />)
       ) : (
-        <p className={s.empty}>Sleeper has not seeded a bracket yet.</p>
+        <Empty>Sleeper has not seeded a bracket yet.</Empty>
       )}
       {post.shartBowl.length ? (
-        <>
-          <div className={s.title}>
-            <h2>The Shart Bowl</h2>
-          </div>
-          <p className={s.note} style={{ padding: '0 14px', marginTop: -4 }}>
-            Losers bracket. The loser chugs{shart ? `: ${shart.teamName}, ${firstNameOf(shart.rosterId) ?? shart.manager}` : ''}.
-          </p>
+        <Section title="The Shart Bowl">
+          <p className={`${ui.sub} ${l.note}`}>Losers bracket. The loser chugs{shart ? `: ${shart.teamName}, ${firstNameOf(shart.rosterId) ?? shart.manager}` : ''}.</p>
           {post.shartBowl.map((r) => (
             <Round key={r.round} round={r} all={post.shartBowl} mine={mine} byes={r.round === 1 ? byesOf(post.shartBowl) : []} shart />
           ))}
-        </>
+        </Section>
       ) : null}
     </Shell>
   );

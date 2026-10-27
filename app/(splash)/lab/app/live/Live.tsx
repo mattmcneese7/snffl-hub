@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { useRouter } from 'next/navigation';
 import { SLEEPER_LEAGUE_ID } from '@/lib/sleeper-links';
-import l from './live.module.css';
+import l from '../ui/blocks/Tick.module.css';
 
 /**
  * Live scores for 4.0, straight from Sleeper in the browser.

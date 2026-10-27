@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { dsRos } from '@/lib/draftsharks';
-import { ESPN_CUTOUT, ESPN_TEAM_LOGO } from '@/lib/espn';
+import { ESPN_CUTOUT } from '@/lib/espn';
 import { league, playerOf, teamByRoster } from '@/lib/league';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { filed } from '@/lib/news';
@@ -18,10 +17,13 @@ import { boxLine } from '../../boxLine';
 import { getV4Data } from '../../data';
 import { getPlayerData, getPlayerWeek } from '../../playerData';
 import Shell, { SectionHead } from '../../Shell';
+import { Art, Avatar, Card, Crest, Empty, Face, List, Row, Section, Tag, ui as u, type Tone } from '../../ui';
+import { ProfileHead } from '../../ui/blocks/ProfileHead';
+import { WeekBars } from '../../ui/blocks/WeekBars';
+import { Pos } from '../../ui/blocks/Pos';
 import Clips from '../Clips';
-import PointsBars from '../PointsBars';
-import s from '../../v4.module.css';
-import p from '../p4.module.css';
+import StatGrid from '../StatGrid';
+import l from '../layout.module.css';
 
 export const dynamic = 'force-dynamic';
 type Params = { params: Promise<{ playerId: string }> };
@@ -38,7 +40,7 @@ const ordinal = (n: number) => `${n}${n % 100 >= 11 && n % 100 <= 13 ? 'th' : ['
 const kickoff = (iso: string) => new Intl.DateTimeFormat('en-US', { weekday: 'short', hour: 'numeric', minute: '2-digit', timeZone: 'America/Chicago' }).format(new Date(iso));
 const epa = (n: number | undefined) => {
   const v = n ?? 0;
-  return v > 0 ? `+${v.toFixed(1)}` : v < 0 ? `−${Math.abs(v).toFixed(1)}` : '0.0';
+  return v > 0 ? `+${v.toFixed(1)}` : v < 0 ? `-${Math.abs(v).toFixed(1)}` : '0.0';
 };
 const USAGE: Record<string, { label: string; value: (r: UsageRow) => string }[]> = {
   QB: [
@@ -63,14 +65,13 @@ const USAGE: Record<string, { label: string; value: (r: UsageRow) => string }[]>
   ],
 };
 const LABEL = { soft: 'Soft', even: 'Even', hard: 'Hard' } as const;
-const TONE = { soft: s.tagGood, even: '', hard: s.tagBad } as const;
+const TONE: Record<'soft' | 'even' | 'hard', Tone> = { soft: 'good', even: 'neutral', hard: 'bad' };
 
 /**
- * A player's profile: the sheet, given the whole page and everything v3's
- * player page carried. Who he is and who has him here, his week (the game,
+ * A player's profile: who he is and who has him here, his week (the game,
  * every number on it, Sleeper's props), the outlook and the working under
- * it, the news, his plays, the season in four numbers, every week he has
- * scored, the full stat sheet, his usage and the rest of his season.
+ * it, the news, his plays, the season, every week he has scored, the full
+ * stat sheet, his usage and the rest of his season.
  */
 export default async function V4Player({ params }: Params) {
   const { playerId } = await params;
@@ -97,7 +98,7 @@ export default async function V4Player({ params }: Params) {
   const clips = [...clipsNow, ...clipsBefore.filter((c) => !clipsNow.some((x) => x.videoId === c.videoId))].slice(0, 8);
   const best = season.weeks.length ? season.weeks.reduce((a, b) => (b.points > a.points ? b : a)) : null;
   const started = new Map(season.weeks.map((x) => [x.week, x]));
-  const thisWeek = d.log.find((l) => l.week === week);
+  const thisWeek = d.log.find((x) => x.week === week);
   const g = wk.game;
   const final = g?.state === 'post';
   const us = g?.us ?? 0;
@@ -115,410 +116,271 @@ export default async function V4Player({ params }: Params) {
       ]
     : [];
   const injury = d.injury ?? pl.injuryStatus ?? null;
+  const practice = pl.practice && pl.practice !== 'None' ? pl.practice : null;
+  const lead = unit ? <Crest src={pl.team ? `https://a.espncdn.com/i/teamlogos/nfl/500/${pl.team === 'WAS' ? 'wsh' : pl.team.toLowerCase()}.png` : null} size={40} /> : pl.espnId ? <Art src={ESPN_CUTOUT(pl.espnId)} size={72} /> : <Face id={pl.id} team={pl.team} size={48} />;
+  const usageLine = [
+    o.role,
+    o.usage ? `Snaps ${pct(o.usage.snaps)}` : null,
+    o.usage?.share ? `${o.usage.shareLabel} ${pct(o.usage.share)}` : null,
+    o.usage?.redZone ? `Red zone looks ${o.usage.redZone} a game` : null,
+    o.trend && o.trend !== 'steady' ? `Usage ${o.trend}` : null,
+  ].filter(Boolean);
 
   return (
     <Shell data={data} active="league">
-      <div className={p.wrap}>
-        <SectionHead icon="person" word="player" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/players', label: 'Players' }} />
+      <SectionHead icon="person" word="player" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/players', label: 'Players' }} />
 
-        <article className={p.hero}>
-          <div className={p.heroHead} style={{ ['--tc' as string]: g?.color ?? 'var(--deep)' }}>
-            {pl.team ? <img className={p.heroLogo} src={ESPN_TEAM_LOGO(pl.team)} alt="" /> : null}
-            {unit ? null : <img className={p.heroCut} src={pl.espnId ? ESPN_CUTOUT(pl.espnId) : pl.headshot} alt="" />}
-            <div className={p.heroWho} style={unit ? { paddingLeft: 14 } : undefined}>
-              <h1>{pl.name}</h1>
-              <span className={p.heroMeta}>
-                <i className={`${s.pos} ${s[`p${pl.position}`] ?? ''}`}>{pl.position}</i>
-                {unit ? null : <span>{pl.team ? nflTeamName(pl.team) : 'Free agent'}</span>}
-                {d.number != null ? <span>#{d.number}</span> : null}
-              </span>
-              {injury || (pl.practice && pl.practice !== 'None') ? (
-                <span className={p.chips}>
-                  {injury ? <span className={`${s.tag} ${s.tagBad}`}>{injury}</span> : null}
-                  {pl.practice && pl.practice !== 'None' ? <span className={`${s.tag} ${s.tagBad}`}>{pl.practice} in practice</span> : null}
-                </span>
-              ) : null}
-            </div>
-          </div>
-          {owner ? (
-            <Link href={`/lab/app/managers/${owner.rosterId}`} className={p.owner}>
-              <span className={s.av} style={{ width: 32, height: 32, ['--mgr' as string]: owner.colors?.primary }}>
-                {owner.avatarUrl ? <img src={owner.avatarUrl} alt="" /> : null}
-              </span>
-              <span className={p.ownerText}>
-                <b>{owner.teamName.trim()}</b>
-                <small>
-                  {owner.rosterId === mine ? 'Your team' : (d.owner?.manager ?? owner.manager)}
-                  {d.owner ? ` · ${d.owner.starts} starts · ${d.owner.points.toFixed(2)} pts for them` : ''}
-                </small>
-              </span>
-              <span className={`${s.tag} ${p.blue}`}>Rostered</span>
-            </Link>
-          ) : (
-            <div className={p.owner}>
-              <span className={s.av} style={{ width: 32, height: 32 }} />
-              <span className={p.ownerText}>
-                <b>Nobody</b>
-                <small>On waivers in this league</small>
-              </span>
-              <span className={`${s.tag} ${s.tagGood}`}>Free agent</span>
-            </div>
-          )}
-          {owner?.rosterId === mine ? null : (
-            <div className={p.handoff}>
-              <CopyMove
-                label={owner ? 'Copy trade ask' : 'Copy claim'}
-                text={owner ? `Trade ask: ${pl.name} from ${owner.teamName}` : `Claim ${pl.name}${unit ? ' (defense)' : ''}`}
-              />
-            </div>
-          )}
-          {d.bio.length ? <div className={p.heroBio}>{d.bio.join(' · ')}</div> : null}
-        </article>
-
-        <div className={s.title}>
-          <h2>Week {wk.week}</h2>
-          {g ? <a href={`/lab/app/nfl/${g.id}`}>Game</a> : null}
-        </div>
-        <section className={s.card}>
-          {g ? (
-            <a href={`/lab/app/nfl/${g.id}`} className={p.gameRow}>
-              <img src={g.oppLogo} alt="" />
-              <span>
-                <b>
-                  {g.home ? 'vs' : '@'} {g.oppName}
-                </b>
-                <small>
-                  {gameLine}
-                  {final && thisWeek?.pts != null ? ` · ${thisWeek.pts.toFixed(2)} pts` : ''}
-                </small>
-              </span>
-              <span>{final ? 'Final' : g.state === 'in' ? 'Live' : 'Next'}</span>
-            </a>
-          ) : (
-            <p className={s.note}>Bye week.</p>
-          )}
-          {wk.line ? (
-            <div className={p.line}>
-              <span className={p.label}>Line</span>
-              <span>{wk.line}</span>
-            </div>
-          ) : null}
-          {wk.projectedLine ? (
-            <div className={p.line}>
-              <span className={p.label}>Projected line</span>
-              <span>{wk.projectedLine}</span>
-            </div>
-          ) : null}
-          {wk.cells.length ? (
-            <div className={p.cells}>
-              {wk.cells.map((c) => (
-                <span key={c.label} className={p.cell}>
-                  <span className={p.label}>{c.label}</span>
-                  <b>{c.value}</b>
-                </span>
-              ))}
-            </div>
-          ) : null}
-        </section>
-
-        {wk.props.length ? (
+      <ProfileHead
+        lead={lead}
+        name={pl.name}
+        meta={
           <>
-            <div className={s.title}>
-              <h2>Sleeper Props</h2>
-            </div>
-            <div className={s.list}>
-              {wk.props.map((pr) => (
-                <div key={pr.wager} className={p.prop}>
-                  <span>{pr.label}</span>
-                  <b>{pr.line}</b>
-                  <small>{[pr.over != null ? `Over ${pr.over.toFixed(2)}x` : null, pr.under != null ? `Under ${pr.under.toFixed(2)}x` : null].filter(Boolean).join(' · ')}</small>
-                </div>
-              ))}
-            </div>
+            <Pos position={pl.position} />
+            {[unit ? '' : pl.team ? nflTeamName(pl.team) : 'Free agent', d.number != null ? `#${d.number}` : ''].filter(Boolean).map((x) => ` ${x}`).join(' ·')}
           </>
-        ) : null}
+        }
+        tags={
+          injury || practice ? (
+            <>
+              {injury ? <Tag tone="bad">{injury}</Tag> : null}
+              {practice ? <Tag tone="bad">{practice} in practice</Tag> : null}
+            </>
+          ) : undefined
+        }
+      />
+      {d.bio.length ? <p className={`${u.sub} ${l.inset}`}>{d.bio.join(' · ')}</p> : null}
 
-        <div className={s.title}>
-          <h2>Outlook</h2>
-        </div>
-        <section className={s.card}>
-          <div className={p.split}>
-            <span className={p.cell}>
-              <span className={p.label}>Projected</span>
-              <span className={p.big}>{o.adjusted.toFixed(2)}</span>
-              <span className={p.sub}>
-                Range {o.floor.toFixed(1)} to {o.ceiling.toFixed(1)}
-              </span>
-            </span>
-            <span className={p.cell}>
-              <span className={p.label}>Matchup</span>
-              {o.matchup ? (
-                <>
-                  <span className={`${p.pill} ${TONE[o.matchup.label]}`} style={o.matchup.label === 'even' ? { background: 'var(--paper)', boxShadow: 'inset 0 0 0 1px var(--hair)' } : undefined}>
-                    {LABEL[o.matchup.label]}
-                  </span>
-                  <span className={p.sub}>
-                    {o.matchup.home ? 'vs' : '@'} {o.matchup.opponent}, {ordinal(o.matchup.rank)} most points allowed to {PLURAL[pl.position] ?? pl.position}
-                  </span>
-                </>
-              ) : (
-                <span className={p.sub}>No opponent this week</span>
-              )}
-            </span>
-          </div>
-          {o.read ? <p className={p.para}>{o.read}</p> : null}
-          {o.boomBust ? (
-            <div className={p.chips}>
-              <span className={`${s.tag} ${s.tagGood}`}>
-                <b>{pct(o.boomBust.boom)}</b> Boom, {o.boomBust.boomLine}+
-              </span>
-              <span className={`${s.tag} ${s.tagBad}`}>
-                <b>{pct(o.boomBust.bust)}</b> Bust, {o.boomBust.bustLine} or less
-              </span>
-            </div>
-          ) : null}
-          {o.source === 'deterministic' && o.matchup && Math.abs(o.adjusted - o.base) >= 0.05 ? (
-            <p className={s.note}>
-              {o.base.toFixed(2)} before the matchup. {nflTeamName(o.matchup.opponent)} allows {o.matchup.conceded.toFixed(1)} a game to {PLURAL[pl.position] ?? 'the position'}.
-            </p>
-          ) : null}
-          {o.role || o.usage ? (
-            <div className={p.chips}>
-              {o.role ? <span className={`${s.tag} ${p.blue}`}>{o.role}</span> : null}
-              {o.usage ? (
-                <>
-                  <span className={s.tag}>
-                    Snaps <b>{pct(o.usage.snaps)}</b>
-                  </span>
-                  {o.usage.share ? (
-                    <span className={s.tag}>
-                      {o.usage.shareLabel} <b>{pct(o.usage.share)}</b>
-                    </span>
-                  ) : null}
-                  {o.usage.redZone ? (
-                    <span className={s.tag}>
-                      Red zone looks <b>{o.usage.redZone}</b> a game
-                    </span>
-                  ) : null}
-                </>
-              ) : null}
-              {o.trend && o.trend !== 'steady' ? <span className={s.tag}>Usage {o.trend}</span> : null}
-            </div>
-          ) : null}
+      <Section title="On Sleeper">
+        {owner ? (
+          <List tap>
+            <Row
+              href={`/lab/app/managers/${owner.rosterId}`}
+              lead={<Avatar src={owner.avatarUrl} color={owner.colors?.primary} size={34} />}
+              title={owner.teamName.trim()}
+              sub={`${owner.rosterId === mine ? 'Your team' : (d.owner?.manager ?? owner.manager)}${d.owner ? ` · ${d.owner.starts} starts` : ''}`}
+              value={d.owner ? d.owner.points.toFixed(2) : undefined}
+              valueSub={d.owner ? 'Pts for them' : undefined}
+            />
+          </List>
+        ) : (
+          <List>
+            <Row lead={<Avatar size={34} />} title="Free agent" sub="On waivers in this league" />
+          </List>
+        )}
+        {owner?.rosterId === mine ? null : (
+          <Card>
+            <CopyMove
+              label={owner ? 'Copy trade ask' : 'Copy claim'}
+              text={owner ? `Trade ask: ${pl.name} from ${owner.teamName.trim()}` : `Claim ${pl.name}${unit ? ' (defense)' : ''}`}
+            />
+          </Card>
+        )}
+      </Section>
+
+      <Section title={`Week ${wk.week}`}>
+        {g ? (
+          <List tap>
+            <Row
+              href={`/lab/app/nfl/${g.id}`}
+              lead={<Crest src={g.oppLogo} size={32} />}
+              title={`${g.home ? 'vs' : 'at'} ${g.oppName}`}
+              sub={`${gameLine}${final && thisWeek?.pts != null ? ` · ${thisWeek.pts.toFixed(2)} pts` : ''}`}
+              value={final ? 'Final' : g.state === 'in' ? 'Live' : undefined}
+            />
+          </List>
+        ) : (
+          <Empty>Bye week.</Empty>
+        )}
+        {wk.line || wk.projectedLine || wk.cells.length ? (
+          <Card>
+            {wk.line ? <Row label="Stat line" title={wk.line} /> : null}
+            {wk.projectedLine ? <Row label="Projected line" title={wk.projectedLine} /> : null}
+            <StatGrid items={wk.cells} />
+          </Card>
+        ) : null}
+      </Section>
+
+      {wk.props.length ? (
+        <Section title="Props">
+          <List>
+            {wk.props.map((pr) => (
+              <Row
+                key={pr.wager}
+                title={pr.label}
+                sub={[pr.over != null ? `Over ${pr.over.toFixed(2)}x` : null, pr.under != null ? `Under ${pr.under.toFixed(2)}x` : null].filter(Boolean).join(' · ')}
+                value={pr.line}
+              />
+            ))}
+          </List>
+        </Section>
+      ) : null}
+
+      <Section title="Outlook">
+        <Card>
+          <StatGrid
+            items={[
+              { value: o.adjusted.toFixed(2), label: 'Projected' },
+              { value: `${o.floor.toFixed(1)} to ${o.ceiling.toFixed(1)}`, label: 'Range' },
+              { value: o.matchup ? <Tag tone={TONE[o.matchup.label]}>{LABEL[o.matchup.label]}</Tag> : 'None', label: 'Matchup' },
+              ...(o.boomBust
+                ? [
+                    { value: pct(o.boomBust.boom), label: `Boom, ${o.boomBust.boomLine}+` },
+                    { value: pct(o.boomBust.bust), label: `Bust, ${o.boomBust.bustLine} or less` },
+                  ]
+                : []),
+            ]}
+          />
+          <p className={`${u.sub} ${l.note}`}>
+            {o.matchup
+              ? `${o.matchup.home ? 'vs' : 'at'} ${o.matchup.opponent}, ${ordinal(o.matchup.rank)} most points allowed to ${PLURAL[pl.position] ?? pl.position}.`
+              : 'No opponent this week.'}
+            {o.source === 'deterministic' && o.matchup && Math.abs(o.adjusted - o.base) >= 0.05
+              ? ` ${o.base.toFixed(2)} before the matchup; ${nflTeamName(o.matchup.opponent)} allows ${o.matchup.conceded.toFixed(1)} a game to ${PLURAL[pl.position] ?? 'the position'}.`
+              : ''}
+          </p>
+          {o.read ? <p className={u.bodyText}>{o.read}</p> : null}
+          {usageLine.length ? <p className={`${u.sub} ${l.note}`}>{usageLine.join(' · ')}</p> : null}
           {o.ahead.length ? (
-            <div className={p.line}>
-              <span className={p.label}>Coming up</span>
-              <div className={p.chips}>
+            <div className={l.stack}>
+              <span className={u.label}>Schedule</span>
+              <span className={u.chips}>
                 {o.ahead.map((f) => (
-                  <span key={f.week} className={`${s.tag} ${TONE[f.label]}`}>
+                  <Tag key={f.week} tone={TONE[f.label]}>
                     W{f.week} {f.home ? 'vs' : '@'} {f.opponent}
-                  </span>
+                  </Tag>
                 ))}
-              </div>
+              </span>
             </div>
           ) : null}
           {o.source === 'model' ? (
-            <p className={p.via}>SQUIRT model, {o.median?.toFixed(1)} median. A projection, not a promise.</p>
+            <p className={`${u.label} ${l.note}`}>SQUIRT model, {o.median?.toFixed(1)} median. A projection, not a promise.</p>
           ) : o.confidence === 'thin' ? (
-            <p className={p.via}>Defense ratings are {Math.round(o.weight * 100)}% applied this early in the season.</p>
+            <p className={`${u.label} ${l.note}`}>Defense ratings are {Math.round(o.weight * 100)}% applied this early in the season.</p>
           ) : null}
-        </section>
+        </Card>
+      </Section>
 
-        <div className={s.title}>
-          <h2>News</h2>
-          {wk.news.length ? <span className={p.count}>via ESPN</span> : null}
-        </div>
+      <Section title="News">
         {wk.news.length ? (
-          <div className={s.list}>
+          <List tap>
             {wk.news.slice(0, 5).map((n) => (
-              <a key={n.url || n.headline} href={n.url} className={p.news} target="_blank" rel="noopener noreferrer">
-                <b>{n.headline}</b>
-                {n.summary ? <span>{n.summary}</span> : null}
-                <small>{[n.byline, n.source, filed(n.published)].filter(Boolean).join(' · ')}</small>
+              <a key={n.url || n.headline} href={n.url} className={`${u.row} ${u.rowNoLead}`} target="_blank" rel="noopener noreferrer">
+                <span className={u.body}>
+                  <span className={u.title}>{n.headline}</span>
+                  {n.summary ? <span className={u.sub}>{n.summary}</span> : null}
+                  <span className={u.label}>{[n.byline, n.source, filed(n.published)].filter(Boolean).join(' · ')}</span>
+                </span>
               </a>
             ))}
-          </div>
+          </List>
         ) : (
-          <p className={s.empty}>No recent news.</p>
+          <Empty>No recent news.</Empty>
         )}
+      </Section>
 
-        {clips.length ? (
-          <>
-            <div className={s.title}>
-              <h2>Highlights</h2>
-              <span className={p.count}>via YouTube</span>
-            </div>
-            <section className={s.card}>
-              <Clips clips={clips.map((c) => ({ videoId: c.videoId, title: c.title, still: c.still, stillTall: c.stillTall ?? c.still, vertical: Boolean(c.vertical), channel: c.channel }))} />
-            </section>
-          </>
-        ) : null}
+      {clips.length ? (
+        <Section title="Highlights">
+          <Clips clips={clips.map((c) => ({ videoId: c.videoId, title: c.title, still: c.still, stillTall: c.stillTall ?? c.still, vertical: Boolean(c.vertical), channel: c.channel }))} />
+        </Section>
+      ) : null}
 
-        <div className={s.title}>
-          <h2>Season</h2>
-        </div>
-        <section className={s.card}>
-          <div className={p.tiles}>
-            <span className={p.tile}>
-              <b>{season.totalPoints.toFixed(1)}</b>
-              <small>Points</small>
-              <small>Avg {season.weeks.length ? (season.totalPoints / season.weeks.length).toFixed(2) : '0.00'}</small>
-            </span>
-            <span className={p.tile}>
-              <b>{season.startedPoints.toFixed(1)}</b>
-              <small>Started</small>
-              <small>{season.totalPoints > 0 ? `${Math.round((season.startedPoints / season.totalPoints) * 100)}% of it` : 'None'}</small>
-            </span>
-            <span className={p.tile}>
-              <b>{best ? best.points.toFixed(1) : '–'}</b>
-              <small>Best</small>
-              <small>{best ? `Week ${best.week}` : 'None yet'}</small>
-            </span>
-            <span className={p.tile}>
-              <b>{season.weeks.length}</b>
-              <small>Games</small>
-              <small>{season.weeks.filter((x) => x.started).length} started</small>
-            </span>
-          </div>
-          {d.rostered != null || d.season.snapPct != null ? (
-            <div className={p.chips}>
-              {d.rostered != null ? (
-                <span className={s.tag}>
-                  Rostered on Sleeper <b>{Math.round(d.rostered)}%</b>
-                </span>
-              ) : null}
-              {d.started != null ? (
-                <span className={s.tag}>
-                  Started on Sleeper <b>{Math.round(d.started)}%</b>
-                </span>
-              ) : null}
-              {d.season.snapPct != null ? (
-                <span className={s.tag}>
-                  Snaps <b>{d.season.snapPct}%</b>
-                </span>
-              ) : null}
-            </div>
-          ) : null}
-        </section>
+      <Section title="Season">
+        <Card>
+          <StatGrid
+            per={4}
+            items={[
+              { value: season.totalPoints.toFixed(1), label: 'Points' },
+              { value: season.weeks.length ? (season.totalPoints / season.weeks.length).toFixed(2) : '0.00', label: 'Per game' },
+              { value: best ? best.points.toFixed(1) : '–', label: best ? `Best, W${best.week}` : 'Best' },
+              { value: season.weeks.length, label: 'Games' },
+              { value: season.startedPoints.toFixed(1), label: 'Pts started' },
+              { value: season.weeks.filter((x) => x.started).length, label: 'Starts' },
+              ...(d.rostered != null ? [{ value: `${Math.round(d.rostered)}%`, label: 'Rostered, Sleeper' }] : []),
+              ...(d.started != null ? [{ value: `${Math.round(d.started)}%`, label: 'Started, Sleeper' }] : []),
+              ...(d.season.snapPct != null ? [{ value: `${d.season.snapPct}%`, label: 'Snaps' }] : []),
+            ]}
+          />
+        </Card>
+      </Section>
 
-        <div className={s.title}>
-          <h2>Points by Week</h2>
-        </div>
-        <section className={s.card}>
-          <PointsBars
+      <Section title="Points by Week">
+        <Card>
+          <WeekBars
             points={season.weeks.map((x) => ({ week: x.week, points: x.points, good: x.started }))}
             playoffWeekStart={league.playoffWeekStart}
             weeks={Math.max(week, ...season.weeks.map((x) => x.week))}
             solid="Started here"
             hollow="Benched or free agent"
           />
-        </section>
+        </Card>
+      </Section>
 
-        <div className={s.title}>
-          <h2>Game Log</h2>
-        </div>
-        <div className={s.list}>
-          {d.log.map((l) => {
-            const here = l.opp === 'BYE' ? undefined : started.get(l.week);
-            const pts = l.opp === 'BYE' ? null : (here?.points ?? l.pts);
+      <Section title="Game Log">
+        <List>
+          {d.log.map((x) => {
+            const here = x.opp === 'BYE' ? undefined : started.get(x.week);
+            const pts = x.opp === 'BYE' ? null : (here?.points ?? x.pts);
             return (
-              <div key={l.week} className={p.row} style={{ cursor: 'default', gridTemplateColumns: '22px minmax(0, 1fr) auto' }}>
-                <span className={p.wk}>{l.week}</span>
-                <span className={p.rowName}>
-                  <b>{l.opp === 'BYE' ? 'Bye' : l.opp}</b>
-                  <small>{pts != null ? boxLine(pl.position, l.line) || 'No stats' : l.opp === 'BYE' ? 'No game' : 'Yet to play'}</small>
-                  {here ? <em>{here.started ? 'Started' : 'Benched'}</em> : null}
-                </span>
-                <span className={p.rowPts}>
-                  <b>{pts != null ? pts.toFixed(2) : '–'}</b>
-                  <small>{l.proj != null ? `Proj ${l.proj.toFixed(2)}` : ''}</small>
-                </span>
-              </div>
+              <Row
+                key={x.week}
+                label={`Week ${x.week}${here ? (here.started ? ' · Started' : ' · Benched') : ''}`}
+                title={x.opp === 'BYE' ? 'Bye' : x.opp}
+                muted={x.opp === 'BYE'}
+                sub={pts != null ? boxLine(pl.position, x.line) || 'No stats' : x.opp === 'BYE' ? undefined : 'Yet to play'}
+                value={pts != null ? pts.toFixed(2) : '–'}
+                valueSub={x.proj != null ? `Proj ${x.proj.toFixed(2)}` : undefined}
+              />
             );
           })}
-        </div>
+        </List>
+      </Section>
 
-        <div className={s.title}>
-          <h2>Season Stats</h2>
-        </div>
+      <Section title="Season Stats">
         {blocks.length ? (
-          <section className={s.card}>
-            <div className={p.blocks}>
-              {blocks.map((b) => (
-                <div key={b.title}>
-                  <span className={p.label}>{b.title}</span>
-                  <dl className={p.pairs}>
-                    {b.lines.map((x) => (
-                      <div key={x.label} className={p.pair}>
-                        <dt>{x.label}</dt>
-                        <dd>{x.value}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                </div>
-              ))}
-            </div>
-          </section>
+          <Card>
+            {blocks.map((b) => (
+              <div key={b.title} className={l.stack}>
+                <span className={u.label}>{b.title}</span>
+                <StatGrid items={b.lines.map((x) => ({ value: x.value, label: x.label }))} />
+              </div>
+            ))}
+          </Card>
         ) : (
-          <p className={s.empty}>No season stats yet.</p>
+          <Empty>No season stats yet.</Empty>
         )}
+      </Section>
 
-        {USAGE[pl.position] ? (
-          <>
-            <div className={s.title}>
-              <h2>Usage</h2>
-              {usage.length ? <span className={p.count}>via nflverse</span> : null}
-            </div>
-            {usage.length ? (
-              <section className={s.card}>
-                <table className={p.table}>
-                  <thead>
-                    <tr>
-                      <th>Week</th>
-                      <th>Snaps</th>
-                      {USAGE[pl.position].map((c) => (
-                        <th key={c.label}>{c.label}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {usage.map((r) => (
-                      <tr key={r.week}>
-                        <td>Week {r.week}</td>
-                        <td>{r.snapsIn ? pct(r.sp) : 'Pending'}</td>
-                        {USAGE[pl.position].map((c) => (
-                          <td key={c.label}>{c.value(r)}</td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </section>
-            ) : (
-              <p className={s.empty}>No usage logged yet.</p>
-            )}
-          </>
-        ) : null}
+      {USAGE[pl.position] ? (
+        <Section title="Usage">
+          {usage.length ? (
+            <List>
+              {usage.map((r) => (
+                <Row
+                  key={r.week}
+                  title={`Week ${r.week}`}
+                  sub={USAGE[pl.position].map((c) => `${c.label} ${c.value(r)}`).join(' · ')}
+                  value={r.snapsIn ? pct(r.sp) : 'Pending'}
+                  valueSub="Snaps"
+                />
+              ))}
+            </List>
+          ) : (
+            <Empty>No usage logged yet.</Empty>
+          )}
+          {usage.length ? <p className={`${u.label} ${l.inset}`}>Source: nflverse</p> : null}
+        </Section>
+      ) : null}
 
-        <div className={s.title}>
-          <h2>Rest of Season</h2>
-          {ros ? <span className={p.count}>DraftSharks</span> : null}
-        </div>
+      <Section title="Rest of Season">
         {ros ? (
-          <section className={s.card}>
-            <div className={p.cells}>
-              {rosCells.map((c) => (
-                <span key={c.label} className={p.cell}>
-                  <span className={p.label}>{c.label}</span>
-                  <b>{c.value}</b>
-                </span>
-              ))}
-            </div>
-          </section>
+          <Card>
+            <StatGrid items={rosCells} />
+            <p className={`${u.label} ${l.note}`}>Source: DraftSharks</p>
+          </Card>
         ) : (
-          <p className={s.empty}>Not ranked by DraftSharks.</p>
+          <Empty>Not ranked by DraftSharks.</Empty>
         )}
-      </div>
+      </Section>
     </Shell>
   );
 }

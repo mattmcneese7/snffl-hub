@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
-import Link from 'next/link';
 import { firstNameOf } from '@/config/managers';
 import { getFeedPosts } from '@/lib/feed';
 import { biggest, buildFeed, facetsOf, forManager, type FeedItem } from '@/lib/feed-view';
@@ -17,9 +16,9 @@ import { getV4Data } from '../data';
 import Shell, { SectionHead } from '../Shell';
 import ClipRail, { type RailClip } from '../modules/ClipRail';
 import FeedTabs from '../modules/FeedTabs';
-import { FEED_MARK as FEED_LETTERS, feedMarkClass as feedMark, MOVE_MARK, moveMarkClass, shortName, teamOf } from '../modules/shared';
-import m from '../modules/modules.module.css';
-import s from '../v4.module.css';
+import { FEED_MARK as FEED_LETTERS, feedMarkTone, MOVE_MARK, moveMarkTone, shortName, teamOf } from '../modules/shared';
+import { Empty, List, Rank, Row, Section, Tag, ui } from '../ui';
+import l from '../modules/layout.module.css';
 import Record from './Record';
 import Stories, { type Slide, type StoryManager } from './Stories';
 import { LinkedText, MomentRow } from './Rows';
@@ -277,7 +276,9 @@ export default async function V4Feed() {
     .sort((a, b) => (phone ? Number(b.vertical) - Number(a.vertical) : Number(a.vertical) - Number(b.vertical)));
   // What mattered ranks the league's own moments; clips already have the
   // Replays rail, so they are not listed twice.
-  const top = biggest(items.filter((i) => i.kind !== 'clip'), 6);
+  // Your Week already lists your moments, so each shows once.
+  const yoursShown = new Set(mine == null ? [] : yours.slice(0, 5));
+  const top = biggest(items.filter((i) => i.kind !== 'clip' && !yoursShown.has(i)), 6);
 
   // A lineup call carries each player's points this week, from Sleeper,
   // beside his name, so the call can be judged. Only for players on a
@@ -293,102 +294,84 @@ export default async function V4Feed() {
 
       <FeedTabs id="page">
         <div className={f.pane} data-show="all clips">
-        <div className={s.title}>
-          <h2>Stories</h2>
-          <span className={s.wk}>Week {storyWeek}</span>
+          <Section title={`Week ${storyWeek} Stories`}>
+            <Stories managers={stories} week={storyWeek} />
+          </Section>
         </div>
-        <Stories managers={stories} week={storyWeek} />
-        </div>
-        <div className={f.pane} data-show="all league">
         {movement.length ? (
-          <>
-            <div className={s.title}>
-              <h2>Movement</h2>
-            </div>
-            <ul className={s.list} style={{ margin: 0, listStyle: 'none' }}>
-              {movement.slice(0, 8).map((e) => (
-                <li key={e.id} className={`${m.post} ${e.rosterId === mine ? m.mine : ''}`}>
-                  <i className={moveMarkClass(e.kind)}>{MOVE_MARK[e.kind]}</i>
-                  <button type="button" data-player={e.playerId} className={`${m.postText} ${m.pBtn}`} aria-label={`${playerOf(e.playerId).name}, open player`}>
-                    <b>{sayingOf(e, ptsOf)}</b>
-                    <small>{timing(e.at)}</small>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </>
+          <div className={f.pane} data-show="all league">
+            <Section title="Movement">
+              <List tap>
+                {movement.slice(0, 8).map((e) => (
+                  <Row key={e.id} data={{ player: e.playerId }} lead={<Tag tone={moveMarkTone(e.kind)}>{MOVE_MARK[e.kind]}</Tag>} title={sayingOf(e, ptsOf)} strong={e.rosterId === mine} sub={timing(e.at)} />
+                ))}
+              </List>
+            </Section>
+          </div>
         ) : null}
-        </div>
         <div className={f.pane} data-show="all league">
-        <div className={s.title}>
-          <h2>Your Week</h2>
-          {mine == null ? <Link href="/lab/app/account">Pick your team</Link> : yours.length > 5 ? <span className={s.wk}>{yours.length} moments</span> : null}
-        </div>
-        {mine == null ? (
-          <p className={s.empty}>Pick your team to see your touchdowns, lead changes and callouts here.</p>
-        ) : yours.length ? (
-          <ol className={s.list} style={{ margin: 0, listStyle: 'none' }}>
-            {yours.slice(0, 5).map((item) => (
-              <MomentRow key={`mine-${item.kind}-${item.id}`} item={item} names={names} now={now} />
-            ))}
-          </ol>
-        ) : (
-          <p className={s.empty}>Nothing for {teamOf(mine)} yet this week.</p>
-        )}
+          <Section title="Your Week" action={mine == null ? { href: '/lab/app/account', label: 'Pick your team' } : undefined}>
+            {mine == null ? (
+              <Empty>Pick your team to see your touchdowns, lead changes and callouts here.</Empty>
+            ) : yours.length ? (
+              <ol className={`${ui.list} ${f.ol}`}>
+                {yours.slice(0, 5).map((item) => (
+                  <MomentRow key={`mine-${item.kind}-${item.id}`} item={item} names={names} now={now} />
+                ))}
+              </ol>
+            ) : (
+              <Empty>Nothing for {teamOf(mine)} yet this week.</Empty>
+            )}
+          </Section>
         </div>
         <div className={f.pane} data-show="all">
-        <div className={s.title}>
-          <h2>NFL Clips</h2>
-          <span className={s.wk}>League players &middot; via YouTube</span>
-        </div>
-        {replayRail.length ? <ClipRail clips={replayRail.slice(0, 2)} phone={phone} stack /> : <p className={s.empty}>No league clips yet this week.</p>}
+          <Section title="NFL Clips">
+            {replayRail.length ? <ClipRail clips={replayRail.slice(0, 2)} phone={phone} stack /> : <Empty>No league clips yet this week.</Empty>}
+          </Section>
         </div>
         <div className={f.pane} data-show="clips">
-        <div className={s.title}>
-          <h2>NFL Clips</h2>
-          <span className={s.wk}>League players &middot; via YouTube</span>
-        </div>
-        {replayRail.length ? <ClipRail clips={replayRail} phone={phone} stack /> : <p className={s.empty}>No league clips yet this week.</p>}
+          <Section title="NFL Clips">
+            {replayRail.length ? <ClipRail clips={replayRail} phone={phone} stack /> : <Empty>No league clips yet this week.</Empty>}
+            <p className={`${ui.sub} ${l.note}`}>League players &middot; via YouTube</p>
+          </Section>
         </div>
         <div className={f.pane} data-show="all league">
-        <div className={s.title}>
-          <h2>What Mattered</h2>
-        </div>
-        {top.length ? (
-          <ol className={s.list} style={{ margin: 0, listStyle: 'none' }}>
-            {top.map((item, i) => (
-              <li key={`top-${item.kind}-${item.id}`} className={`${f.ranked} ${mineId && item.managerIds.includes(mineId) ? m.mine : ''}`}>
-                <span className={f.rankN}>{i + 1}</span>
-                <span className={m.postText}>
-                  <b>
-                    <LinkedText text={item.title} names={names} />
-                  </b>
-                  {item.body ? (
-                    <span>
-                      <LinkedText text={item.body} names={names} />
+          <Section title="What Mattered">
+            {top.length ? (
+              <ol className={`${ui.list} ${f.ol}`}>
+                {top.map((item, i) => (
+                  <li key={`top-${item.kind}-${item.id}`} className={ui.row}>
+                    <Rank n={i + 1} />
+                    <span className={ui.body}>
+                      <p className={`${ui.title} ${mineId && item.managerIds.includes(mineId) ? ui.strong : ''} ${f.text}`}>
+                        <LinkedText text={item.title} names={names} />
+                      </p>
+                      {item.body ? (
+                        <p className={`${ui.sub} ${f.text}`}>
+                          <LinkedText text={item.body} names={names} />
+                        </p>
+                      ) : null}
                     </span>
-                  ) : null}
-                </span>
-                <i className={feedMark(item.kind)}>{FEED_LETTERS[item.kind]}</i>
-              </li>
-            ))}
-          </ol>
-        ) : (
-          <p className={s.empty}>No touchdowns, lead changes or callouts yet this week.</p>
-        )}
+                    <Tag tone={feedMarkTone(item.kind)}>{FEED_LETTERS[item.kind]}</Tag>
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <Empty>No touchdowns, lead changes or callouts yet this week.</Empty>
+            )}
+          </Section>
         </div>
         <div className={f.pane} data-show="all league">
-        <div className={s.title}>
-          <h2>History</h2>
-          <span className={s.wk}>Plays via ESPN &middot; Clips via YouTube</span>
-        </div>
-        {items.length ? (
-          <div className={s.list}>
-            <Record items={items} facets={facets} names={names} now={now} mine={mineId} />
-          </div>
-        ) : (
-          <p className={s.empty}>Nothing on the record yet.</p>
-        )}
+          <Section title="History">
+            {items.length ? (
+              <>
+                <Record items={items} facets={facets} names={names} now={now} mine={mineId} />
+                <p className={`${ui.sub} ${l.note}`}>Plays via ESPN &middot; Clips via YouTube</p>
+              </>
+            ) : (
+              <Empty>Nothing on the record yet.</Empty>
+            )}
+          </Section>
         </div>
       </FeedTabs>
     </Shell>

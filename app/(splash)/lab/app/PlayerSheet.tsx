@@ -4,8 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 import { boxLine } from './boxLine';
 import { useOverlayHistory } from './nav/overlay';
 import type { PlayerWeek } from './playerData';
-import s from './v4.module.css';
-import q from './players/p4.module.css';
+import { Ms } from './icons';
+import { Stats, Tag, ui } from './ui';
+import { Pos } from './ui/blocks/Pos';
+import s from './ui/blocks/Sheet.module.css';
 
 type Data = {
   id: string;
@@ -24,7 +26,7 @@ type Data = {
   log: { week: number; opp: string; pts: number | null; proj: number | null; line: Record<string, number> }[];
   week: PlayerWeek | null;
 };
-const TONE = { soft: q.good, even: q.neutral, hard: q.bad } as const;
+const TONE = { soft: 'good', even: 'neutral', hard: 'bad' } as const;
 const LABEL = { soft: 'Soft', even: 'Even', hard: 'Hard' } as const;
 
 const EASE = 'cubic-bezier(0.32, 0.72, 0, 1)';
@@ -83,7 +85,6 @@ export default function PlayerSheet() {
   if (!id) return null;
   const last = data?.log.filter((l) => l.pts != null).at(-1);
   const next = data?.log.find((l) => l.pts == null && l.opp !== 'BYE');
-  const tc = 'var(--deep)';
   return (
     <>
       <div className={s.scrim} onClick={dismiss} aria-hidden />
@@ -112,108 +113,100 @@ export default function PlayerSheet() {
         }}
       >
         <div className={s.grab} />
-        <div className={s.shHead} style={{ ['--tc' as string]: tc }}>
-          {data?.team ? <img className={s.shLogo} src={logo(data.team)} alt="" /> : null}
-          {data ? <img className={s.shCut} src={data.espnId ? `https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/${data.espnId}.png&w=350&h=254` : data.headshot} alt="" /> : null}
-          <div className={s.shWho}>
-            <b>{data?.name ?? 'Loading'}</b>
+        <div className={s.head}>
+          {data?.team ? <img className={s.logo} src={logo(data.team)} alt="" /> : null}
+          {data ? <img className={s.cut} src={data.espnId ? `https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/${data.espnId}.png&w=350&h=254` : data.headshot} alt="" /> : null}
+          <div className={s.who}>
+            <b className={ui.value}>{data?.name ?? 'Loading'}</b>
             {data ? (
-              <span>
-                <i className={`${s.pos} ${s[`p${data.position}`] ?? ''}`}>{data.position}</i> {data.team ?? 'Free agent'}
+              <span className={ui.sub}>
+                <Pos position={data.position} /> {data.team ?? 'Free agent'}
                 {data.number != null ? ` #${data.number}` : ''}
                 {data.injury ? ` · ${data.injury}` : ''}
               </span>
             ) : null}
           </div>
-          <button type="button" className={s.shClose} onClick={dismiss} aria-label="Close">
-            &times;
+          <button type="button" className={s.close} onClick={dismiss} aria-label="Close">
+            <Ms name="close" size={20} />
           </button>
         </div>
         {data ? (
           <>
-            <div className={s.shBlock}>
-              <small>In this league</small>
+            <div className={s.block}>
+              <small className={ui.label}>In this league</small>
               {data.owner ? (
-                <span>
-                  <b style={{ color: 'var(--ink)' }}>{data.owner.team}</b> &middot; {data.owner.manager} &middot; {data.owner.starts} starts &middot; {data.owner.points.toFixed(2)} pts for them
+                <span className={ui.sub}>
+                  <b className={ui.title}>{data.owner.team}</b> &middot; {data.owner.manager} &middot; {data.owner.starts} starts &middot; {data.owner.points.toFixed(2)} pts for them
                 </span>
               ) : (
-                <span>Free agent</span>
+                <span className={ui.sub}>Free agent</span>
               )}
             </div>
             {last ? (
-              <div className={s.shBlock}>
-                <small>Week {last.week} &middot; {last.opp}</small>
-                <span className={s.shBig}>
-                  <b>{last.pts!.toFixed(2)}</b>
-                  <span>Proj {(last.proj ?? 0).toFixed(2)}</span>
+              <div className={s.block}>
+                <small className={ui.label}>Week {last.week} &middot; {last.opp}</small>
+                <span className={s.big}>
+                  <b className={ui.value}>{last.pts!.toFixed(2)}</b>
+                  <span className={ui.sub}>Proj {(last.proj ?? 0).toFixed(2)}</span>
                 </span>
-                <span>{boxLine(data.position, last.line)}</span>
+                <span className={ui.sub}>{boxLine(data.position, last.line)}</span>
               </div>
             ) : null}
             {data.week?.game && data.week.game.state !== 'post' ? (
-              <div className={s.shBlock}>
-                <small>
+              <div className={s.block}>
+                <small className={ui.label}>
                   Week {data.week.week}
                   {` \u00b7 ${data.week.game.home ? 'vs' : '@'} ${data.week.game.opp} \u00b7 ${data.week.game.state === 'pre' ? 'Proj' : data.week.game.status}`}
                 </small>
-                <span className={s.shBig}>
-                  <b>{data.week.outlook.adjusted.toFixed(2)}</b>
-                  <span>
+                <span className={s.big}>
+                  <b className={ui.value}>{data.week.outlook.adjusted.toFixed(2)}</b>
+                  <span className={ui.sub}>
                     Range {data.week.outlook.floor.toFixed(1)} to {data.week.outlook.ceiling.toFixed(1)}
                   </span>
                 </span>
                 {data.week.outlook.matchup ? (
-                  <span className={q.chips}>
-                    <span className={`${q.chip} ${TONE[data.week.outlook.matchup.label]}`}>
-                      Matchup <b>{LABEL[data.week.outlook.matchup.label]}</b>
-                    </span>
+                  <span className={s.chips}>
+                    <Tag tone={TONE[data.week.outlook.matchup.label]}>Matchup {LABEL[data.week.outlook.matchup.label]}</Tag>
                     {data.week.cells
                       .filter((c) => ['Implied total', 'Spread', 'Total', 'Moneyline'].includes(c.label))
                       .map((c) => (
-                        <span key={c.label} className={q.chip}>
-                          {c.label} <b>{c.value}</b>
-                        </span>
+                        <Tag key={c.label}>
+                          {c.label} {c.value}
+                        </Tag>
                       ))}
                   </span>
                 ) : null}
               </div>
             ) : next ? (
-              <div className={s.shBlock}>
-                <small>Week {next.week} &middot; {next.opp}</small>
-                <span className={s.shBig}>
-                  <b>{(next.proj ?? 0).toFixed(2)}</b>
-                  <span>Proj</span>
+              <div className={s.block}>
+                <small className={ui.label}>Week {next.week} &middot; {next.opp}</small>
+                <span className={s.big}>
+                  <b className={ui.value}>{(next.proj ?? 0).toFixed(2)}</b>
+                  <span className={ui.sub}>Proj</span>
                 </span>
               </div>
             ) : null}
             {data.week?.news[0] ? (
-              <a className={s.shBlock} href={data.week.news[0].url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                <small>Latest news</small>
-                <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--ink)', lineHeight: 1.25 }}>{data.week.news[0].headline}</span>
-                <span style={{ fontSize: 11, color: 'var(--ink-3)' }}>{data.week.news[0].source}</span>
+              <a className={s.block} href={data.week.news[0].url} target="_blank" rel="noopener noreferrer">
+                <small className={ui.label}>Latest news</small>
+                <span className={ui.title}>{data.week.news[0].headline}</span>
+                <span className={ui.valueSub}>{data.week.news[0].source}</span>
               </a>
             ) : null}
-            <div className={s.shBlock}>
-              <small>Season</small>
-              <div className={s.shGrid}>
-                <span>
-                  <b>{data.season.ppg.toFixed(2)}</b>PPG
-                </span>
-                <span>
-                  <b>{data.season.snapPct != null ? `${data.season.snapPct}%` : '–'}</b>Snaps
-                </span>
-                <span>
-                  <b>{data.rostered != null ? `${Math.round(data.rostered)}%` : '–'}</b>Rostered
-                </span>
-                <span>
-                  <b>{data.started != null ? `${Math.round(data.started)}%` : '–'}</b>Started
-                </span>
-              </div>
+            <div className={s.block}>
+              <small className={ui.label}>Season</small>
+              <Stats
+                items={[
+                  { value: data.season.ppg.toFixed(2), label: 'PPG' },
+                  { value: data.season.snapPct != null ? `${data.season.snapPct}%` : '–', label: 'Snaps' },
+                  { value: data.rostered != null ? `${Math.round(data.rostered)}%` : '–', label: 'Rostered' },
+                  { value: data.started != null ? `${Math.round(data.started)}%` : '–', label: 'Started' },
+                ]}
+              />
             </div>
-            <div className={s.shBlock}>
-              <small>Game log</small>
-              <table className={s.shLog}>
+            <div className={s.block}>
+              <small className={ui.label}>Game log</small>
+              <table className={s.log}>
                 <thead>
                   <tr>
                     <th>Wk</th>
@@ -227,7 +220,7 @@ export default function PlayerSheet() {
                     <tr key={l.week}>
                       <td>{l.week}</td>
                       <td>{l.opp}</td>
-                      <td style={{ fontWeight: 800 }}>{l.pts != null ? l.pts.toFixed(2) : l.opp === 'BYE' ? '' : '–'}</td>
+                      <td>{l.pts != null ? l.pts.toFixed(2) : l.opp === 'BYE' ? '' : '–'}</td>
                       <td>{l.proj != null ? l.proj.toFixed(2) : ''}</td>
                     </tr>
                   ))}
@@ -235,18 +228,20 @@ export default function PlayerSheet() {
               </table>
             </div>
             {data.bio.length ? (
-              <div className={s.shBlock}>
-                <small>Bio</small>
-                <span>{data.bio.join(' · ')}</span>
+              <div className={s.block}>
+                <small className={ui.label}>Bio</small>
+                <span className={ui.sub}>{data.bio.join(' · ')}</span>
               </div>
             ) : null}
-            <a className={s.shLink} href={`/lab/app/players/${data.id}`}>
-              Full profile
-            </a>
+            <div className={s.foot}>
+              <a className={`${ui.pill} ${ui.pillSecondary}`} href={`/lab/app/players/${data.id}`}>
+                Full profile
+              </a>
+            </div>
           </>
         ) : (
-          <div className={s.shBlock}>
-            <span>Loading</span>
+          <div className={s.block}>
+            <span className={ui.sub}>Loading</span>
           </div>
         )}
       </div>

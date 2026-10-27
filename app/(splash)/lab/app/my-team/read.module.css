@@ -1,31 +1,13 @@
-/* My Team: the opened roster row. Tokens come from .root in v4.module.css. */
-.item { border-top: 1px solid var(--hair); }
-.item:first-child, .item:first-of-type { border-top: 0; }
-.item > summary { list-style: none; cursor: pointer; }
-.item > summary::-webkit-details-marker { display: none; }
-.sum { display: grid; grid-template-columns: 30px auto minmax(0, 1fr) auto 14px; gap: 12px; align-items: center; padding: 12px 0; }
-.caret { width: 14px; height: 14px; color: var(--ink-3); transition: transform 200ms cubic-bezier(0.32, 0.72, 0, 1); }
-.item[open] .caret { transform: rotate(90deg); }
-@media (prefers-reduced-motion: reduce) { .caret { transition: none; } }
-.read { display: grid; gap: 12px; padding: 4px 0 14px 40px; }
-.line { display: grid; gap: 4px; margin: 0; }
-.line small, .range small, .block > small { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); }
-.line span { font-size: 13px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+/* Layout only: the opened roster row's blocks stacked, the range on one
+   line, the facts two across, the usage table's columns. */
+.read { display: grid; gap: 12px; padding-left: 52px; }
+.block { display: grid; gap: 4px; margin: 0; }
 .range { display: grid; grid-template-columns: auto auto minmax(0, 1fr) auto; gap: 8px; align-items: center; }
-.ends { font-size: 13px; font-weight: 600; color: var(--ink-2); font-variant-numeric: tabular-nums; }
-.track { position: relative; height: 8px; border-radius: 999px; background: var(--hair); }
-.span { position: absolute; top: 0; bottom: 0; border-radius: 999px; background: var(--powder); }
-.dot { position: absolute; top: 50%; width: 12px; height: 12px; margin: -8px 0 0 -8px; border-radius: 50%; background: var(--deep); box-shadow: 0 0 0 2px var(--card); }
-.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.tags { display: flex; flex-wrap: wrap; gap: 4px; }
 .facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 12px; margin: 0; }
-.facts div { display: grid; gap: 4px; min-width: 0; }
-.facts dt { font-size: 11px; color: var(--ink-3); }
-.facts dd { margin: 0; font-size: 13px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
-.block { display: grid; gap: 8px; }
-.prop { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--ink-2); }
-.prop b { color: var(--ink); font-weight: 800; }
-.usage { display: grid; gap: 4px 0; }
+.facts dd { margin: 0; }
+.prop { display: flex; justify-content: space-between; gap: 12px; }
+.usage { display: grid; grid-template-columns: minmax(0, 1fr) repeat(var(--n, 3), 52px); gap: 4px 0; }
 .usageRow { display: contents; }
-.usageRow span { font-size: 13px; color: var(--ink-2); }
-.usageRow b { font-size: 13px; font-weight: 800; text-align: right; font-variant-numeric: tabular-nums; }
-.open { justify-self: start; height: 36px; padding: 0 14px; border: 0; border-radius: 999px; background: var(--paper); box-shadow: inset 0 0 0 1px var(--hair); font: inherit; font-size: 13px; font-weight: 600; color: var(--deep); cursor: pointer; }
+.num { text-align: right; }
+.start { justify-self: start; }

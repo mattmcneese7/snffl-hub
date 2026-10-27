@@ -114,7 +114,7 @@ export default async function Kit() {
           <div className={ui.spaceRow}>
             {[4, 8, 12, 16, 24, 32, 48].map((n) => (
               <span key={n} style={{ display: 'grid', gap: 4, justifyItems: 'center' }}>
-                <i style={{ display: 'block', width: 16, height: n, background: 'var(--powder)', borderRadius: 2 }} />
+                <i style={{ display: 'block', width: 16, height: n, background: 'var(--powder)' }} />
                 <Label>{n}</Label>
               </span>
             ))}

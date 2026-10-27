@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { BarState, SideView } from './data';
 import { LivePoints } from './live/Live';
-import s from './v4.module.css';
+import { LiveTag } from './ui';
+import s from './ui/blocks/ScoreBar.module.css';
 
 const EASE = 'cubic-bezier(0.32, 0.72, 0, 1)';
 
@@ -104,11 +105,9 @@ export default function ScoreBar({ week, state, rows, href, dockTo }: { week: nu
       }}
     >
       <span className={s.barHead} data-k="head">
-        <b>Week {week} Matchup</b>
-        <span className={state === 'live' ? s.liveChip : undefined}>
-          {state === 'live' ? <i className={s.liveDot} aria-hidden /> : null}
-          {chip}
-        </span>
+        {/* Docked, the hero above says which game; the stub only carries the state. */}
+        {stub ? <span /> : <b>Week {week} Matchup</b>}
+        {state === 'live' ? <LiveTag /> : <span>{chip}</span>}
       </span>
       {stub ? null : rows.map((r, i) => (
         <span key={r.rosterId} className={`${s.barRow} ${r.lost ? s.lost : ''}`}>
@@ -127,7 +126,7 @@ export default function ScoreBar({ week, state, rows, href, dockTo }: { week: nu
             {state === 'live' ? <LivePoints week={week} rosterId={r.rosterId} fallback={r.score} /> : r.score.toFixed(2)}
           </span>
           <small className={s.barMark} data-k={`m${i}`} data-align="end">
-            {r.mark === 'W' || r.mark === 'L' ? <b className={r.mark === 'W' ? s.win : s.loss}>{r.mark}</b> : r.mark}
+            {r.mark === 'W' || r.mark === 'L' ? <b>{r.mark}</b> : r.mark}
           </small>
         </span>
       ))}

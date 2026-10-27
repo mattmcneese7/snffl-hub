@@ -6,7 +6,7 @@ import { issueArt } from './art';
 import { getV4Data } from '../data';
 import Shell, { SectionHead } from '../Shell';
 import IssueView from './Issue';
-import s from '../v4.module.css';
+import { Empty } from '../ui';
 
 export const metadata: Metadata = { title: { absolute: 'The Rag, Splash 4.0' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -22,7 +22,7 @@ export default async function V4Rag() {
   return (
     <Shell data={data} active="rag">
       <SectionHead icon="rag" word="the rag" week={data.week} mine={data.myRoster} />
-      {issue ? <IssueView issue={issue} art={art} weeks={weeks} /> : <p className={s.empty}>No issue published yet.</p>}
+      {issue ? <IssueView issue={issue} art={art} weeks={weeks} /> : <Empty>No issue published yet.</Empty>}
     </Shell>
   );
 }

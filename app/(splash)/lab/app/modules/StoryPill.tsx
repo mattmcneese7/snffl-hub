@@ -14,7 +14,7 @@ export default function StoryPill({ slides, week }: { slides: StorySlide[]; week
   if (!slides.length) return null;
   return (
     <>
-      <button type="button" className={`${ui.pill} ${ui.pillSecondary}`} style={{ justifySelf: 'start' }} onClick={() => setOpen(true)}>
+      <button type="button" className={`${ui.pill} ${ui.pillSecondary}`} style={{ alignSelf: 'flex-start' }} onClick={() => setOpen(true)}>
         <Ms name="play" size={20} />
         Week {week} in 90 Seconds
       </button>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Ms, type MsName } from '../icons';
-import s from '../v4.module.css';
+import s from '../ui/blocks/Frame.module.css';
 
 /**
  * The top bar's title: the page's branded wordmark, small, faded in only

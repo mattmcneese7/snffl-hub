@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { TROPHY_NAMES as TROPHIES, type TrophyKey } from '@/lib/trophy-names';
@@ -13,11 +12,13 @@ import { getOddsFor } from '@/lib/playoff-odds';
 import { getRosters } from '@/lib/sleeper';
 import { getTrophyBoard } from '@/lib/trophies';
 import { getV4Data, type SideView } from '../../data';
-import { Ms } from '../../icons';
 import Shell, { SectionHead } from '../../Shell';
-import PointsBars from '../../players/PointsBars';
-import s from '../../v4.module.css';
-import p from '../../players/p4.module.css';
+import { Avatar, Card, Drawer, Empty, Face, List, Pair, Row, Section, Tag, type PairSide, type Tone } from '../../ui';
+import { ProfileHead } from '../../ui/blocks/ProfileHead';
+import { WeekBars } from '../../ui/blocks/WeekBars';
+import { Pos } from '../../ui/blocks/Pos';
+import StatGrid from '../../players/StatGrid';
+import l from '../../players/layout.module.css';
 import { injAbbr } from '../../injury';
 
 export const dynamic = 'force-dynamic';
@@ -34,11 +35,11 @@ const ordinal = (n: number) => `${n}${n % 100 >= 11 && n % 100 <= 13 ? 'th' : ['
 const kickoff = (iso: string) => new Intl.DateTimeFormat('en-US', { weekday: 'short', hour: 'numeric', minute: '2-digit', timeZone: 'America/Chicago' }).format(new Date(iso));
 // Best hardware first, the Shart and the Plunger last.
 const SHELF: TrophyKey[] = ['champion', 'motw', 'blowout', 'squeaker', 'lucky', 'heartbreaker', 'bench', 'shart', 'plunger'];
-const MOVE: Record<MovementEvent['kind'], { mark: string; tone: string }> = {
-  add: { mark: 'ADD', tone: s.tagGood },
-  drop: { mark: 'DROP', tone: s.tagBad },
-  start: { mark: 'START', tone: p.blue },
-  bench: { mark: 'BENCH', tone: p.neutral },
+const MOVE: Record<MovementEvent['kind'], { mark: string; tone: Tone }> = {
+  add: { mark: 'Add', tone: 'good' },
+  drop: { mark: 'Drop', tone: 'bad' },
+  start: { mark: 'Start', tone: 'neutral' },
+  bench: { mark: 'Bench', tone: 'neutral' },
 };
 const short = (id: string) => {
   const pl = playerOf(id);
@@ -72,21 +73,15 @@ function gameOf(lp: LivePlayer | undefined): string {
   return `${us > them ? 'W' : us < them ? 'L' : 'T'} ${us}-${them} ${where}`;
 }
 
-function SideRow({ side }: { side: SideView }) {
-  return (
-    <span className={`${s.row} ${side.lost ? s.lost : ''}`}>
-      <span className={s.av} style={{ width: 26, height: 26, ['--mgr' as string]: side.color }}>
-        {side.avatar ? <img src={side.avatar} alt="" /> : null}
-      </span>
-      <span className={s.who}>
-        <b>{side.team}</b>
-        <small>{side.manager}</small>
-      </span>
-      <span className={s.score}>{side.score.toFixed(2)}</span>
-      <small className={s.mark}>{side.mark === 'W' || side.mark === 'L' ? <b className={side.mark === 'W' ? s.win : s.loss}>{side.mark}</b> : side.mark}</small>
-    </span>
-  );
-}
+/** One side of this week's game, as the kit pair draws it. */
+const pairSide = (side: SideView): PairSide => ({
+  lead: <Avatar src={side.avatar} color={side.color} size={28} />,
+  title: side.team,
+  sub: side.manager,
+  value: side.score.toFixed(2),
+  mark: side.mark,
+  lost: side.lost,
+});
 
 /**
  * One manager: who he is and what the season says about him, this week's
@@ -132,16 +127,16 @@ export default async function V4Manager({ params }: Params) {
       .sort((a, b) => a - b)
       .map((x) => `W${x}`)
       .join(', ');
-  const lore: { text: string; tone: string }[] = [];
+  const lore: { text: string; tone: Tone }[] = [];
   const streak = standing?.streak ?? '';
   const run = Number(streak.slice(1));
-  if (run >= 2) lore.push({ text: streak.startsWith('W') ? `${run} game win streak` : `${run} game losing streak`, tone: streak.startsWith('W') ? s.tagGood : s.tagBad });
+  if (run >= 2) lore.push({ text: streak.startsWith('W') ? `${run} game win streak` : `${run} game losing streak`, tone: streak.startsWith('W') ? 'good' : 'bad' });
   const motw = all.filter((a) => a.kind === 'motw' && a.rosterId === rosterId);
-  if (motw.length) lore.push({ text: `Manager of the Week ${weeksOf(motw.map((a) => a.week))}`, tone: s.tagGold });
+  if (motw.length) lore.push({ text: `Manager of the Week ${weeksOf(motw.map((a) => a.week))}`, tone: 'gold' });
   const sharts = all.filter((a) => a.kind === 'shart' && a.rosterId === rosterId);
-  if (sharts.length) lore.push({ text: `Shart ${weeksOf(sharts.map((a) => a.week))}`, tone: s.tagBad });
+  if (sharts.length) lore.push({ text: `Shart ${weeksOf(sharts.map((a) => a.week))}`, tone: 'bad' });
   const chugged = chugs.find((c) => c.rosterId === rosterId)?.weeks ?? [];
-  if (chugged.length) lore.push({ text: `Chugged ${weeksOf(chugged)}`, tone: s.tagBad });
+  if (chugged.length) lore.push({ text: `Chugged ${weeksOf(chugged)}`, tone: 'bad' });
 
   const mineAwards = all.filter((a) => a.rosterId === rosterId);
   const shelf = SHELF.map((kind) => ({ kind, list: mineAwards.filter((a) => a.kind === kind) })).filter((x) => x.list.length);
@@ -160,216 +155,155 @@ export default async function V4Manager({ params }: Params) {
     const pl = playerOf(id);
     const lp = liveBy.get(id);
     const pre = !lp || lp.gameState === 'pre' || lp.gameState === 'bye';
+    const inj = lp?.injury ?? pl.injuryStatus ?? null;
+    const line = [inj ? injAbbr(inj) : '', gameOf(lp), !pre && lp?.statLine ? lp.statLine : ''].filter(Boolean).join(' \u00b7 ');
     return (
-      <button key={`${slot}-${id}`} type="button" data-player={id} className={`${p.row} ${p.withSlot}`} aria-label={`${pl.name}, open player`}>
-        <span className={p.slot}>{slot}</span>
-        <span className={`${p.face} ${pl.position === 'DEF' ? p.faceDef : ''}`}>
-          <img src={pl.headshot} alt="" loading="lazy" />
-        </span>
-        <span className={p.rowName}>
-          <b>{short(id)}</b>
-          <small>
-            <i className={`${s.pos} ${s[`p${pl.position}`] ?? ''}`}>{pl.position}</i>
-            {lp?.injury || pl.injuryStatus ? <i className={s.inj}>{injAbbr((lp?.injury ?? pl.injuryStatus) as string)}</i> : null}
-            {pl.position === 'DEF' ? null : <span>{pl.team ?? 'FA'}</span>}
-            {gameOf(lp) ? <span>{gameOf(lp)}</span> : null}
-          </small>
-          {!pre && lp?.statLine ? <em>{lp.statLine}</em> : null}
-        </span>
-        <span className={p.rowPts}>
-          <b>{lp && !pre ? lp.points.toFixed(2) : '–'}</b>
-          <small>{lp?.projected != null ? `Proj ${lp.projected.toFixed(2)}` : ''}</small>
-        </span>
-      </button>
+      <Row
+        key={`${slot}-${id}`}
+        data={{ player: id }}
+        lead={<Face id={id} team={pl.team} defense={pl.position === 'DEF'} />}
+        label={slot}
+        title={short(id)}
+        sub={
+          <>
+            <Pos position={pl.position} />
+            {line ? ` ${line}` : ''}
+          </>
+        }
+        value={lp && !pre ? lp.points.toFixed(2) : '\u2013'}
+        valueSub={lp?.projected != null ? `Proj ${lp.projected.toFixed(2)}` : undefined}
+      />
     );
   };
 
   return (
     <Shell data={data} active="league">
-      <div className={p.wrap}>
-        <SectionHead icon="person" word="manager" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/managers', label: 'Managers' }} />
+      <SectionHead icon="person" word="manager" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/managers', label: 'Managers' }} />
 
-        <section className={s.card}>
-          <div className={p.mHero}>
-            <span className={s.av} style={{ width: 60, height: 60, ['--mgr' as string]: team.colors?.primary }}>
-              {team.avatarUrl ? <img src={team.avatarUrl} alt="" /> : null}
-            </span>
-            <div style={{ minWidth: 0 }}>
-              <h1>{team.teamName.trim()}</h1>
-              <p>
-                {name} &middot; @{team.manager} on Sleeper
-              </p>
-            </div>
-          </div>
-          {rosterId === mine || lore.length ? (
-            <div className={p.chips}>
-              {rosterId === mine ? <span className={`${s.tag} ${p.blue}`}>Your team</span> : null}
-              {lore.map((l) => (
-                <span key={l.text} className={`${s.tag} ${l.tone}`}>
-                  {l.text}
-                </span>
+      <ProfileHead
+        lead={<Avatar src={team.avatarUrl} color={team.colors?.primary} size={44} />}
+        name={team.teamName.trim()}
+        meta={`${name} \u00b7 @${team.manager} on Sleeper`}
+        tags={
+          rosterId === mine || lore.length ? (
+            <>
+              {rosterId === mine ? <Tag>Your team</Tag> : null}
+              {lore.map((x) => (
+                <Tag key={x.text} tone={x.tone}>
+                  {x.text}
+                </Tag>
               ))}
-            </div>
-          ) : null}
-        </section>
+            </>
+          ) : undefined
+        }
+      />
 
-        <div className={s.title}>
-          <h2>Week {data.week} Matchup</h2>
-          {game ? <Link href={`/lab/app/matchup?id=${game.id}`}>Full matchup</Link> : null}
-        </div>
+      <Section title={`Week ${data.week} Matchup`}>
         {game ? (
-          <Link href={`/lab/app/matchup?id=${game.id}`} className={s.list} style={{ textDecoration: 'none', color: 'inherit' }}>
-            <span className={s.game}>
-              <SideRow side={game.a} />
-              <SideRow side={game.b} />
-              <small className={s.foot}>{game.foot}</small>
-            </span>
-          </Link>
+          <List tap>
+            <Pair href={`/lab/app/matchup?id=${game.id}`} label={`${game.a.team} vs ${game.b.team}`} sides={[pairSide(game.a), pairSide(game.b)]} foot={game.foot} />
+          </List>
         ) : (
-          <p className={s.empty}>No game on the board this week.</p>
+          <Empty>No game on the board this week.</Empty>
         )}
+      </Section>
 
-        <div className={s.title}>
-          <h2>Season</h2>
-          <Link href="/lab/app/league">Standings</Link>
-        </div>
-        <section className={s.card}>
-          <div className={p.tiles}>
-            <span className={p.tile}>
-              <b>{record(t)}</b>
-              <small>Record</small>
-            </span>
-            <span className={p.tile}>
-              <b>{standing ? ordinal(standing.seed) : '–'}</b>
-              <small>Seed</small>
-              <small>{standing ? (standing.inPlayoffs ? 'In playoffs' : 'Out') : ''}</small>
-            </span>
-            <span className={p.tile}>
-              <b>{t.pointsFor.toFixed(1)}</b>
-              <small>Points for</small>
-              <small>Against {t.pointsAgainst.toFixed(1)}</small>
-            </span>
-            <span className={p.tile}>
-              <b>{odds ? `${odds.makePlayoffs.toFixed(0)}%` : '–'}</b>
-              <small>Playoffs</small>
-              <small>{odds ? `Bye ${odds.bye.toFixed(0)}%` : ''}</small>
-            </span>
-          </div>
+      <Section title="Season" action={{ href: '/lab/app/league', label: 'Standings' }}>
+        <Card>
+          <StatGrid
+            items={[
+              { value: record(t), label: 'Record' },
+              { value: standing ? ordinal(standing.seed) : '\u2013', label: standing ? (standing.inPlayoffs ? 'Seed, in' : 'Seed, out') : 'Seed' },
+              { value: t.pointsFor.toFixed(1), label: 'Points for' },
+              { value: t.pointsAgainst.toFixed(1), label: 'Against' },
+              ...(odds
+                ? [
+                    { value: `${odds.makePlayoffs.toFixed(0)}%`, label: 'Playoffs' },
+                    { value: `${odds.bye.toFixed(0)}%`, label: 'Bye' },
+                  ]
+                : []),
+            ]}
+          />
           {odds ? (
-            <div className={p.chips}>
-              <span className={`${s.tag} ${odds.tag === 'Clinched' || odds.tag === 'Clinch Watch' ? s.tagGood : odds.tag === 'Bubble' ? '' : s.tagBad}`}>{odds.tag}</span>
-            </div>
+            <span className={l.lead}>
+              <Tag tone={odds.tag === 'Clinched' || odds.tag === 'Clinch Watch' ? 'good' : odds.tag === 'Bubble' ? 'neutral' : 'bad'}>{odds.tag}</Tag>
+            </span>
           ) : null}
-        </section>
+        </Card>
+      </Section>
 
-        <div className={s.title}>
-          <h2>Roster</h2>
-          <span className={p.count}>{starters.length + bench.length + reserve.length + taxi.length} players</span>
-        </div>
+      <Section title="Roster">
         {starters.length || bench.length || reserve.length ? (
           <>
-            <div className={s.list}>
-              {lineup.map(({ slot, id }, i) =>
-                id ? (
-                  playerRow(id, slot)
-                ) : (
-                  <span key={`empty-${i}`} className={`${p.row} ${p.withSlot}`} style={{ cursor: 'default' }}>
-                    <span className={p.slot}>{slot}</span>
-                    <span className={p.face} />
-                    <span className={p.rowName}>
-                      <b>Empty</b>
-                      <small>No one in this slot</small>
-                    </span>
-                    <span />
-                  </span>
-                ),
-              )}
-            </div>
+            <List tap>
+              {lineup.map(({ slot, id }, i) => (id ? playerRow(id, slot) : <Row key={`empty-${i}`} label={slot} title="Empty" muted sub="No one in this slot" />))}
+            </List>
             {bench.length ? (
-              <>
-                <span className={`${p.label} ${p.subHead}`}>Bench &middot; {bench.length}</span>
-                <div className={s.list}>{bench.map((id) => playerRow(id, 'BN'))}</div>
-              </>
+              <Drawer title="Bench" value={bench.length}>
+                {bench.map((id) => playerRow(id, 'BN'))}
+              </Drawer>
             ) : null}
             {reserve.length ? (
-              <>
-                <span className={`${p.label} ${p.subHead}`}>Injured reserve &middot; {reserve.length}</span>
-                <div className={s.list}>{reserve.map((id) => playerRow(id, 'IR'))}</div>
-              </>
+              <Drawer title="Injured Reserve" value={reserve.length}>
+                {reserve.map((id) => playerRow(id, 'IR'))}
+              </Drawer>
             ) : null}
             {taxi.length ? (
-              <>
-                <span className={`${p.label} ${p.subHead}`}>Taxi &middot; {taxi.length}</span>
-                <div className={s.list}>{taxi.map((id) => playerRow(id, 'TAXI'))}</div>
-              </>
+              <Drawer title="Taxi" value={taxi.length}>
+                {taxi.map((id) => playerRow(id, 'TAXI'))}
+              </Drawer>
             ) : null}
           </>
         ) : (
-          <p className={s.empty}>Roster unavailable from Sleeper.</p>
+          <Empty>Roster unavailable from Sleeper.</Empty>
         )}
+      </Section>
 
-        <div className={s.title}>
-          <h2>Trophy Case</h2>
-          <span className={p.count}>{mineAwards.length} won</span>
-        </div>
+      <Section title="Trophy Case">
         {shelf.length ? (
-          <section className={s.card}>
-            <div className={p.shelf}>
-              {shelf.map(({ kind, list }) => (
-                <div key={kind} className={`${p.award} ${kind === 'shart' || kind === 'plunger' ? p.awardBad : ''}`}>
-                  <span>
-                    <Ms name="trophy" size={18} />
-                  </span>
-                  <b>
-                    {TROPHIES[kind].name}
-                    {list.length > 1 ? ` ×${list.length}` : ''}
-                  </b>
-                  <small>{list.map((a) => (a.week ? `W${a.week}` : 'Season')).join(', ')}</small>
-                </div>
-              ))}
-            </div>
-          </section>
+          <List>
+            {shelf.map(({ kind, list }) => (
+              <Row key={kind} title={TROPHIES[kind].name} sub={list.map((a) => (a.week ? `W${a.week}` : 'Season')).join(', ')} value={`\u00d7${list.length}`} />
+            ))}
+          </List>
         ) : (
-          <p className={s.empty}>No hardware yet.</p>
+          <Empty>No hardware yet.</Empty>
         )}
+      </Section>
 
-        <div className={s.title}>
-          <h2>Points by Week</h2>
-          <span className={p.count}>{byWeek.length} played</span>
-        </div>
-        <section className={s.card}>
-          <PointsBars
+      <Section title="Points by Week">
+        <Card>
+          <WeekBars
             points={byWeek.map((x) => ({ week: x.week, points: x.points, good: x.won }))}
             playoffWeekStart={league.playoffWeekStart}
             weeks={Math.max(1, ...byWeek.map((x) => x.week))}
             solid="Won"
             hollow="Lost"
           />
-        </section>
+        </Card>
+      </Section>
 
-        <div className={s.title}>
-          <h2>Moves</h2>
-          <span className={p.count}>Latest 10</span>
-        </div>
+      <Section title="Recent Activity">
         {moves.length ? (
-          <div className={s.list}>
+          <List tap>
             {moves.slice(0, 10).map((e) => (
-              <button key={e.id} type="button" data-player={e.playerId} className={p.row} aria-label={`${playerOf(e.playerId).name}, open player`}>
-                <span className={`${p.mark} ${MOVE[e.kind].tone}`}>{MOVE[e.kind].mark}</span>
-                <span className={p.rowName}>
-                  <b>{sayMove(e)}</b>
-                  <small>
-                    Week {e.week} &middot; {timing(e.at)}
-                  </small>
-                </span>
-                <span />
-              </button>
+              <Row
+                key={e.id}
+                data={{ player: e.playerId }}
+                lead={
+                  <span className={l.mark}>
+                    <Tag tone={MOVE[e.kind].tone}>{MOVE[e.kind].mark}</Tag>
+                  </span>
+                }
+                title={sayMove(e)}
+                sub={`Week ${e.week} \u00b7 ${timing(e.at)}`}
+              />
             ))}
-          </div>
+          </List>
         ) : (
-          <p className={s.empty}>No moves logged for {name} yet.</p>
+          <Empty>No moves logged for {name} yet.</Empty>
         )}
-      </div>
+      </Section>
     </Shell>
   );
 }

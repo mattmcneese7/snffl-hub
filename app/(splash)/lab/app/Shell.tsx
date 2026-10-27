@@ -13,15 +13,24 @@ import { LiveStart } from './live/Live';
 import SquirtLive from './squirt/SquirtLive';
 import { teamByRoster } from '@/lib/league';
 import type { V4Data } from './data';
+import { Avatar } from './ui';
 import s from './v4.module.css';
+import f from './ui/blocks/Frame.module.css';
+import b from './ui/blocks/ScoreBar.module.css';
 
 
 /** Your avatar, top right on every screen: it opens your account. */
 export function Account({ mine }: { mine: number | null }) {
   const t = mine != null ? teamByRoster(mine) : undefined;
   return (
-    <Link href="/lab/app/account" className={s.acct} aria-label="Account and settings" style={t ? { ['--mgr' as string]: t.colors?.primary } : undefined}>
-      {t?.avatarUrl ? <img src={t.avatarUrl} alt="" /> : <Ms name="account" />}
+    <Link href="/lab/app/account" className={f.acct} aria-label="Account and settings">
+      {t ? (
+        <Avatar src={t.avatarUrl} color={t.colors?.primary} size={34} />
+      ) : (
+        <span className={f.acctFace}>
+          <Ms name="account" />
+        </span>
+      )}
     </Link>
   );
 }
@@ -29,13 +38,13 @@ export function Account({ mine }: { mine: number | null }) {
 /** Home's top line: the lowercase lockup, drop sized like a letter. */
 export function HomeHead({ week, mine }: { week: number; mine: number | null }) {
   return (
-    <div className={s.head}>
-      <Link href="/lab/app" className={s.lockup} aria-label="splash, home">
-        <Drop className={s.lockupMark} />
+    <div className={f.head}>
+      <Link href="/lab/app" className={f.lockup} aria-label="splash, home">
+        <Drop className={f.lockupMark} />
         splash
       </Link>
-      <span className={s.headR}>
-        <span className={s.wk}>Week {week}</span>
+      <span className={f.headR}>
+        <span className={f.wk}>Week {week}</span>
         <Account mine={mine} />
       </span>
     </div>
@@ -55,26 +64,26 @@ export function SectionHead({ icon, word, week, mine, back, title }: { icon: MsN
     return (
       <>
         <TopBar word={brand} icon={icon} back={back} right={<Account mine={mine} />} />
-        <div className={s.head}>
-          <h1 id="pageTitle" className={s.secHead}>
+        <div className={f.head}>
+          <h1 id="pageTitle" className={f.secHead}>
             <Ms name={icon} />
             {brand}
           </h1>
-          <span className={s.headR}>
-            <span className={s.wk}>Week {week}</span>
+          <span className={f.headR}>
+            <span className={f.wk}>Week {week}</span>
           </span>
         </div>
       </>
     );
   }
   return (
-    <div className={s.head}>
-      <h1 className={s.secHead}>
+    <div className={f.head}>
+      <h1 className={f.secHead}>
         <Ms name={icon} />
         {word}
       </h1>
-      <span className={s.headR}>
-        <span className={s.wk}>Week {week}</span>
+      <span className={f.headR}>
+        <span className={f.wk}>Week {week}</span>
         <Account mine={mine} />
       </span>
     </div>
@@ -90,17 +99,17 @@ export function SectionHead({ icon, word, week, mine, back, title }: { icon: MsN
 export default function Shell({ data, active, children, barDock }: { data: V4Data; active: string; children: ReactNode; barDock?: string }) {
   const mine = data.mine;
   return (
-    <div className={s.root}>
+    <div className={`${s.root} ${f.app}`}>
       {/* eslint-disable-next-line @next/next/no-page-custom-font */}
       <link rel="stylesheet" href={SWITZER} precedence="default" />
       <Pattern mode="wallpaper" />
-      <main className={s.page}>{children}</main>
-      <div className={s.dock}>
+      <main className={f.page}>{children}</main>
+      <div className={f.dock}>
         {mine ? (
           <ScoreBar week={data.week} state={data.state} rows={[mine.a, mine.b]} href="/lab/app/matchup" dockTo={barDock} />
         ) : (
-          <Link href="/lab/app/account" className={s.bar} style={{ textDecoration: 'none' }}>
-            <span className={s.barHead}>
+          <Link href="/lab/app/account" className={b.bar}>
+            <span className={b.barHead}>
               <b>Week {data.week} Matchup</b>
               <span>Pick your team</span>
             </span>

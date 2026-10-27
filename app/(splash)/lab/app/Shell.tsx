@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
-import Pattern from '../../home/Pattern';
+import { Wallpaper } from './ui/blocks/Wallpaper';
 import { Ms, type MsName } from './icons';
 import { Suspense } from 'react';
 import { Drop, SWITZER, TabBar, TopBar, type Back } from './Chrome';
@@ -102,7 +102,7 @@ export default function Shell({ data, active, children, barDock }: { data: V4Dat
     <div className={`${s.root} ${f.app}`}>
       {/* eslint-disable-next-line @next/next/no-page-custom-font */}
       <link rel="stylesheet" href={SWITZER} precedence="default" />
-      <Pattern mode="wallpaper" />
+      <Wallpaper />
       <main className={f.page}>{children}</main>
       <div className={f.dock}>
         {mine ? (

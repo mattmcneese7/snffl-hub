@@ -86,7 +86,7 @@ export default async function V4Home({ searchParams }: { searchParams: Promise<{
     rag: ragProps ? <RagCard {...ragProps} /> : null,
     ragCompact: ragProps ? <RagCard {...ragProps} compact /> : null,
     matchups: (
-      <Section title={live ? 'Live Matchups' : 'All Matchups'} action={{ href: '/lab/app/feed', label: 'The Feed' }}>
+      <Section title="All Matchups" action={{ href: '/lab/app/feed', label: 'The Feed' }}>
         {data.others.length ? <MatchupRows games={data.others} week={data.week} live={data.state === 'live'} /> : <Empty>No matchups for week {data.week} yet.</Empty>}
       </Section>
     ),

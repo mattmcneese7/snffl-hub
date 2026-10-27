@@ -5,7 +5,7 @@ import { boxLine } from './boxLine';
 import { useOverlayHistory } from './nav/overlay';
 import type { PlayerWeek } from './playerData';
 import { Ms } from './icons';
-import { Stats, Tag, ui } from './ui';
+import { Stats, Tag, ui, ticketInk } from './ui';
 import { Pos } from './ui/blocks/Pos';
 import s from './ui/blocks/Sheet.module.css';
 
@@ -14,6 +14,8 @@ type Data = {
   name: string;
   position: string;
   team: string | null;
+  /** His club's color from ESPN, for the head band. */
+  color?: string | null;
   headshot: string;
   espnId: string | null;
   number: number | null;
@@ -113,7 +115,8 @@ export default function PlayerSheet() {
         }}
       >
         <div className={s.grab} />
-        <div className={s.head}>
+        {/* His club's color band, darkened like the tickets so white type clears 4.5:1. */}
+        <div className={`${s.head} ${data?.color ? s.headClub : ''}`} style={data?.color ? { ['--tk' as string]: ticketInk(data.color) } : undefined}>
           {data?.team ? <img className={s.logo} src={logo(data.team)} alt="" /> : null}
           {data ? <img className={s.cut} src={data.espnId ? `https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/${data.espnId}.png&w=350&h=254` : data.headshot} alt="" /> : null}
           <div className={s.who}>

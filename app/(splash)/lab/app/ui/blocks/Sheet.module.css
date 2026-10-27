@@ -6,6 +6,9 @@
 .grab { position: sticky; top: 0; z-index: 2; display: grid; place-items: center; height: 16px; }
 .grab::before { content: ''; width: 36px; height: 4px; border-radius: 10px; background: var(--hair); }
 .head { position: relative; height: 128px; overflow: hidden; margin-top: -16px; background: linear-gradient(160deg, color-mix(in oklab, var(--deep) 16%, var(--card)), color-mix(in oklab, var(--deep) 34%, var(--card))); }
+.headClub { background: var(--tk); color: #fff; color-scheme: dark; }
+.headClub .who > span { color: rgba(255, 255, 255, 0.85); }
+.headClub .logo { filter: grayscale(1) brightness(3); }
 .logo { position: absolute; right: -32px; top: -32px; width: 180px; height: 180px; object-fit: contain; opacity: 0.15; }
 .cut { position: absolute; left: 4px; bottom: 0; height: 120px; width: 132px; object-fit: cover; object-position: top; }
 .who { position: absolute; left: 144px; right: 48px; bottom: 14px; display: grid; gap: 4px; }

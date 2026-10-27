@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { weekProjections } from '../../cached';
 import { cookies } from 'next/headers';
 import { LiveStart } from '../../live/Live';
+import { venueChips as venueChips_ } from '../venue';
 import { getGameExtras, getGameLines, getNflGames, impliedTeamTotal, leagueEntriesInGame, type NflGame, type NflSide, type SeasonLine } from '@/lib/gameday';
 import { league, teamByRoster } from '@/lib/league';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
@@ -98,13 +99,8 @@ export default async function V4NflGame({ params, searchParams }: { params: Prom
       },
     ],
   ];
-  const venueChips = [
-    extras.venue ? [extras.venue.name, extras.venue.city].filter(Boolean).join(', ') : game.venue,
-    extras.venue?.indoor ? 'Indoors' : extras.venue ? 'Outdoors' : null,
-    extras.venue?.grass === true ? 'Grass' : extras.venue?.grass === false ? 'Turf' : null,
-    extras.attendance ? `${extras.attendance.toLocaleString()} attendance` : null,
-    game.broadcast,
-  ].filter(Boolean) as string[];
+  // Stadium, roof, surface and the forecast before kickoff, then the broadcast and crowd.
+  const venueChips = [...venueChips_(game, extras), extras.attendance ? `${extras.attendance.toLocaleString()} attendance` : null, game.broadcast].filter(Boolean) as string[];
 
   const awayName = game.away.name;
   const homeName = game.home.name;
@@ -156,20 +152,6 @@ export default async function V4NflGame({ params, searchParams }: { params: Prom
         ) : null}
       </Card>
 
-      {game.state === 'pre' && extras.weather ? (
-        <Section title="Weather">
-          <Card>
-            <Stats
-              items={[
-                ...(extras.weather.temperature != null ? [{ value: `${extras.weather.temperature}°`, label: 'Temp' }] : []),
-                ...(extras.weather.windSpeed != null ? [{ value: `${extras.weather.windSpeed} mph`, label: `Wind ${extras.weather.windDirection ?? ''}`.trim() }] : []),
-                ...(extras.weather.precipitation != null ? [{ value: `${extras.weather.precipitation}%`, label: 'Precip' }] : []),
-              ]}
-            />
-            {extras.weather.summary ? <span className={ui.sub}>{extras.weather.summary}</span> : null}
-          </Card>
-        </Section>
-      ) : null}
 
       {season ? (
         <Section title="Season Stats">

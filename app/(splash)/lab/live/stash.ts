@@ -5,7 +5,7 @@ import type { LabGame } from '../kit/liveFeed';
 /**
  * The matchup just tapped on the board, held for the moment between the tap
  * and the gamecast arriving, so the loading state can draw the real score
- * bug (and the card can morph into it) instead of a grey shape. Only ever
+ * bug (and the card can morph into it) instead of a gray shape. Only ever
  * the numbers the board was already showing.
  */
 let held: LabGame | null = null;

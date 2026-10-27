@@ -1,0 +1,5 @@
+/* The wallpaper sits behind everything and never takes a tap. Faint deep
+   blue on paper; on dark, the light ink at the same faintness. */
+.paper { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; color: var(--deep); opacity: 0.09; }
+.paper svg { display: block; fill: currentColor; }
+@media (prefers-color-scheme: dark) { .paper { color: var(--ink); opacity: 0.06; } }

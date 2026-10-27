@@ -66,8 +66,8 @@ export default async function Kit() {
           <div className={ui.scale}>
             {[
               ['38 / 800', <span key="a" style={{ font: '800 38px/1 var(--ui)', fontVariantNumeric: 'tabular-nums' }}>101.30</span>],
-              ['24 / 900', <span key="b" className={ui.display}>Taylor Takes the Shart</span>],
-              ['18 / 900', <span key="c" style={{ font: '900 18px/1.1 var(--brand)' }}>All Matchups</span>],
+              ['24 / 800 italic, the Rag only', <span key="b" className={ui.display}>Taylor Takes the Shart</span>],
+              ['18 / 800', <span key="c" style={{ font: '800 18px/1.1 var(--ui)' }}>All Matchups</span>],
               ['15 / 600', <span key="d" className={ui.title}>Ha Ha Ha, Now Heres A Guy</span>],
               ['13 / 400', <span key="e" className={ui.sub}>Jackson &middot; 130.40 points</span>],
               ['11 / 600', <Label key="f">Week 7 Matchup</Label>],
@@ -171,12 +171,12 @@ export default async function Kit() {
         <Spec>Players in rows: the headshot with his club&rsquo;s badge, K. Cousins style names, box score lines as Sleeper prints them, points over projection. A row opens the player sheet.</Spec>
         <List>
           <Row lead={<Art src="/squirt/crown-480.webp" size={56} />} label={<span style={{ color: 'var(--gold)' }}>Manager of the Week</span>} title={t(2).teamName} sub={`${who(2)} · 130.40 points`} />
-          <Row lead={<Art src="/squirt/shart-480.webp" size={56} />} label={<span style={{ color: 'var(--gold)' }}>The Shart</span>} title={t(3).teamName} sub={`${who(3)} · 63.58 points`} />
+          <Row lead={<Art src="/squirt/shart-480.webp" size={56} />} label="The Shart" title={t(3).teamName} sub={`${who(3)} · 63.58 points`} />
         </List>
-        <Spec>Awards wear Squirt&rsquo;s pose as their art, gold label, winner and the number that won it.</Spec>
+        <Spec>Awards wear Squirt&rsquo;s pose as their art, then the award, the winner and the number that won it. Gold is for Manager of the Week and the champion only; every other award label is neutral.</Spec>
       </Section>
 
-      <Section title="Tiles" action={{ href: '/lab/app/nfl', label: 'Full slate' }}>
+      <Section title="Tiles" action={{ href: '/lab/app/nfl', label: 'All games' }}>
         <Rail label="NFL games">
           {[
             ['Final', 'NE', 24, 'CHI', 30],

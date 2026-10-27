@@ -81,7 +81,7 @@ export default async function ScoresWeek({ week }: { week?: number }) {
           {mine != null ? `No game for your team in week ${wk}.` : 'Pick your team and your game leads this page.'}
         </Empty>
       )}
-      <Section title="League Matchups">
+      <Section title="All Matchups">
         {wv.others.length ? <MatchupRows games={wv.others} week={wk} live={wv.state === 'live'} current={wk === data.week} /> : <Empty>No matchups posted for week {wk}.</Empty>}
       </Section>
       {nfl.length ? (

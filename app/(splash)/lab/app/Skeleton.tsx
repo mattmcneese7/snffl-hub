@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { CSSProperties, ReactNode } from 'react';
-import Pattern from '../../home/Pattern';
+import { Wallpaper } from './ui/blocks/Wallpaper';
 import { Ms, type MsName } from './icons';
 import { ui } from './ui';
 import { Drop, SWITZER, TabBar, TopBar, type Back } from './Chrome';
@@ -36,7 +36,7 @@ export function Frame({
     <div className={`${s.root} ${f.app}`}>
       {/* eslint-disable-next-line @next/next/no-page-custom-font */}
       <link rel="stylesheet" href={SWITZER} precedence="default" />
-      <Pattern mode="wallpaper" />
+      <Wallpaper />
       <main className={f.page} aria-busy={bar ? true : undefined}>
         {back ? (
           <TopBar word={word ?? ''} back={back} right={<span className={f.acct} aria-hidden><span className={`${f.acctFace} ${k.round} ${k.bone}`} /></span>} />

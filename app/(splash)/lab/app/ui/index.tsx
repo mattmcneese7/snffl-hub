@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { CSSProperties, ReactNode } from 'react';
 import u from './ui.module.css';
+import { Ms } from '../icons';
 
 /**
  * Splash 4.0's building blocks. Pages compose these and nothing else for
@@ -216,9 +217,9 @@ export function DuelRow({ slot, left, right, open }: { slot: string; left?: Reac
       <span className={u.duelMid}>
         <span className={u.slotTag}>{slot}</span>
         {open ? (
-          <svg className={u.caret} viewBox="0 0 24 24" aria-hidden>
-            <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          <span className={u.caret} aria-hidden>
+            <Ms name="chevronRight" size={16} />
+          </span>
         ) : null}
       </span>
       {right ?? <span />}
@@ -236,10 +237,11 @@ export function DuelRow({ slot, left, right, open }: { slot: string; left?: Reac
 /**
  * A player in a duel, summary first: face and points, his name, and one line
  * (the box score once he plays, the kickoff before). Opens the player sheet.
+ * `lost` grays the side that lost the slot; pages pass it in Final only.
  */
-export function DuelPlayer({ id, team, defense, points, proj, name, line, right }: { id: string; team?: string | null; defense?: boolean; points: ReactNode; proj?: string; name: string; line?: string; right?: boolean }) {
+export function DuelPlayer({ id, team, defense, points, proj, name, line, right, lost }: { id: string; team?: string | null; defense?: boolean; points: ReactNode; proj?: string; name: string; line?: string; right?: boolean; lost?: boolean }) {
   return (
-    <button type="button" data-player={id} className={cx(u.duelPlayer, right && u.duelR)} aria-label={`${name}, open player`}>
+    <button type="button" data-player={id} className={cx(u.duelPlayer, right && u.duelR, lost && u.duelLost)} aria-label={`${name}, open player`}>
       <span className={u.duelTop}>
         <Face id={id} team={team} size={32} defense={defense} />
         <span className={u.trail}>
@@ -254,7 +256,7 @@ export function DuelPlayer({ id, team, defense, points, proj, name, line, right 
 }
 
 /** Darken a club color until full white clears 6.2:1, so the 85% white secondary text still clears 4.5:1. */
-function ticketInk(hex: string): string {
+export function ticketInk(hex: string): string {
   const lum = (c: number[]) => {
     const f = (v: number) => ((v /= 255) <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
     return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]);

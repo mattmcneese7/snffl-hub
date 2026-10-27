@@ -15,7 +15,7 @@ function side(x: SideView, week: number, live: boolean): PairSide {
 
 /**
  * Matchups as one list of kit pairs: two team lines and a labeled foot, the
- * loser grey only once final. Home and Scores both use it, so they match.
+ * loser gray only once final. Home and Scores both use it, so they match.
  */
 export default function MatchupRows({ games, week, live, current = true }: { games: GameView[]; week: number; live: boolean; current?: boolean }) {
   return (

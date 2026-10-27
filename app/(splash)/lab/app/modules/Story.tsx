@@ -171,7 +171,7 @@ function Slide({ slide }: { slide: StorySlide }) {
         <>
           <span className={st.who}>
             {slide.avatar ? <img className={st.avatar} src={slide.avatar} alt="" /> : null}
-            <AwardIcon kind={slide.kind} size={14} tone={slide.kind === 'motw' ? 'gold' : 'bad'} />
+            <AwardIcon kind={slide.kind} size={14} tone={slide.kind === 'motw' ? 'gold' : 'neutral'} />
           </span>
           <small className={st.kicker}>{slide.kind === 'motw' ? 'Manager of the Week' : 'Shart of the Week'}</small>
           <b className={st.name}>{slide.team}</b>

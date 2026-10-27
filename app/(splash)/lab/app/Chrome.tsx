@@ -13,7 +13,7 @@ import s from './ui/blocks/Frame.module.css';
 export const SWITZER = 'https://api.fontshare.com/v2/css?f[]=switzer@900,901&display=swap';
 const DROP = 'M32 4 C 39.5 15.5 51 26.5 51 41 A 19 19 0 0 1 13 41 C 13 26.5 24.5 15.5 32 4 Z';
 
-/** The drop: solid blue with paper laces on light, white with blue laces on dark. */
+/** The drop, one color with the word it sits in (currentColor), laces cut out in paper. */
 export function Drop({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 64 64" className={className} aria-hidden>

@@ -70,7 +70,9 @@ const pickWeek = cache(async (): Promise<{ week: number; state: BarState }> => {
   return { week, state: started ? 'live' : 'preview' };
 });
 
-const shortName = (name: string) => {
+// K. Cousins for players; a defense goes by its team code (NYJ), never "N. York Jets".
+const shortName = (name: string, position?: string, team?: string | null) => {
+  if (position === 'DEF') return team ?? name;
   const [first, ...rest] = name.split(' ');
   if (!rest.length || first.includes('.')) return name;
   return `${first[0]}. ${rest.join(' ')}`;
@@ -87,8 +89,8 @@ function side(s: LiveSide, other: LiveSide, state: BarState): SideView {
     state === 'preview'
       ? [`Proj ${s.expected.toFixed(2)}`, kickoff ? `Kickoff ${kickoff.status}` : '']
       : final
-        ? [`${s.points > other.points ? 'Won' : 'Lost'} by ${Math.abs(s.points - other.points).toFixed(2)}`, top ? `Top scorer ${shortName(top.name)} ${top.points.toFixed(2)}` : '']
-        : [`Yet to play (${yet.length})${yet.length ? ` ${yet.map((x) => x.position).join(', ')}` : ''}`, top ? `Top scorer ${shortName(top.name)} ${top.points.toFixed(2)}` : ''];
+        ? [`${s.points > other.points ? 'Won' : 'Lost'} by ${Math.abs(s.points - other.points).toFixed(2)}`, top ? `Top scorer ${shortName(top.name, top.position, top.team)} ${top.points.toFixed(2)}` : '']
+        : [`Yet to play (${yet.length})${yet.length ? ` ${yet.map((x) => x.position).join(', ')}` : ''}`, top ? `Top scorer ${shortName(top.name, top.position, top.team)} ${top.points.toFixed(2)}` : ''];
   return {
     rosterId: s.rosterId,
     team: s.team,

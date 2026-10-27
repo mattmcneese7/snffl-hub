@@ -11,6 +11,8 @@ import { bookFrom, mainBook, withBook } from '../../../lib/odds-books';
 import { getV4Data, sleeperWinProb, type GameView } from '../data';
 import Shell, { SectionHead } from '../Shell';
 import { LivePoints, LiveStart } from '../live/Live';
+import { venueChips } from '../nfl/venue';
+import { getGameExtras } from '@/lib/gameday';
 import { kickoffText, quarter, record } from '../scores/format';
 import type { NflGame } from '@/lib/gameday';
 import m from './matchup.module.css';
@@ -43,7 +45,7 @@ function resultOf(p: LivePlayer): { text: string; wl: 'W' | 'L' | null } {
 const shortLine = (line: string) => line.split(', ')[0];
 
 /** A player in a duel cell. */
-function Player({ p, right, wk }: { p: LivePlayer; right?: boolean; wk?: number }) {
+function Player({ p, right, wk, lost }: { p: LivePlayer; right?: boolean; wk?: number; lost?: boolean }) {
   const r = resultOf(p);
   const pre = p.gameState === 'pre';
   return (
@@ -52,6 +54,7 @@ function Player({ p, right, wk }: { p: LivePlayer; right?: boolean; wk?: number 
       team={p.team}
       defense={p.position === 'DEF'}
       right={right}
+      lost={lost}
       points={pre ? '–' : wk ? <LivePoints week={wk} playerId={p.id} fallback={p.points} /> : p.points.toFixed(2)}
       proj={(p.projected ?? 0).toFixed(2)}
       name={shortName(p.name, p.position, p.team)}
@@ -60,8 +63,8 @@ function Player({ p, right, wk }: { p: LivePlayer; right?: boolean; wk?: number 
   );
 }
 
-/** Next Game: the NFL game your earliest remaining starter plays in. */
-function NextGame({ players, week }: { players: LivePlayer[]; week: number }) {
+/** Next Game: the NFL game your earliest remaining starter plays in, with its venue chips. */
+async function NextGame({ players, week }: { players: LivePlayer[]; week: number }) {
   const pre = players.filter((p) => p.gameState === 'pre' && p.nfl).sort((a, b) => (a.nfl!.game.kickoff < b.nfl!.game.kickoff ? -1 : 1));
   const first = pre[0];
   if (!first?.nfl) return null;
@@ -70,13 +73,16 @@ function NextGame({ players, week }: { players: LivePlayer[]; week: number }) {
   const lines = first.lines;
   const side = (t: typeof g.home) => ({ lead: <Crest src={t.logo} size={28} />, title: t.name, value: <span className={ui.sub}>{t.record ?? ''}</span> });
   const odds = [lines?.details, lines?.overUnder ? `O/U ${lines.overUnder}` : null].filter(Boolean).join(' \u00b7 ');
+  const chips = venueChips(g, await getGameExtras(g.id).catch(() => null));
   return (
     <Section title="Next Game">
       <Card href={`/lab/app/nfl/${g.id}?week=${week}`}>
         <Pair big sides={[side(g.away), side(g.home)]} status={<span>{[g.status, g.broadcast, odds].filter(Boolean).join(' \u00b7 ')}</span>} />
-        {g.venue ? (
+        {chips.length ? (
           <Chips label="Venue">
-            <Tag>{g.venue}</Tag>
+            {chips.map((c) => (
+              <Tag key={c}>{c}</Tag>
+            ))}
           </Chips>
         ) : null}
         <span className={ui.sub}>In this game: {inIt.map((p) => shortName(p.name, p.position, p.team)).join(', ')}</span>
@@ -172,13 +178,17 @@ function Info({ p, right }: { p?: LivePlayer; right?: boolean }) {
   );
 }
 
-/** One slot head to head; the row opens for both sides' games, lines and ranges. */
-function SlotRow({ me, them, label, wk }: { me?: LivePlayer; them?: LivePlayer; label: string; wk?: number }) {
+/**
+ * One slot head to head; the row opens for both sides' games, lines and
+ * ranges. In Final the slot's loser goes gray and the winner stays heavy.
+ */
+function SlotRow({ me, them, label, wk, final }: { me?: LivePlayer; them?: LivePlayer; label: string; wk?: number; final?: boolean }) {
+  const decided = final && me && them && me.points !== them.points;
   return (
     <DuelRow
       slot={label}
-      left={me ? <Player p={me} wk={wk} /> : undefined}
-      right={them ? <Player p={them} right wk={wk} /> : undefined}
+      left={me ? <Player p={me} wk={wk} lost={Boolean(decided && me.points < them!.points)} /> : undefined}
+      right={them ? <Player p={them} right wk={wk} lost={Boolean(decided && them.points < me!.points)} /> : undefined}
       open={
         <>
           <Info p={me} />
@@ -331,18 +341,24 @@ export default async function V4Matchup({ searchParams }: { searchParams: Promis
           left={
             <>
               <Avatar src={mine.a.avatar} color={mine.a.color} size={28} />
-              {mine.a.team}
+              <span className={ui.body}>
+                <span className={`${ui.title} ${ui.strong}`}>{mine.a.team}</span>
+                <span className={ui.sub}>{mine.a.manager}</span>
+              </span>
             </>
           }
           right={
             <>
               <Avatar src={mine.b.avatar} color={mine.b.color} size={28} />
-              {mine.b.team}
+              <span className={ui.body}>
+                <span className={`${ui.title} ${ui.strong}`}>{mine.b.team}</span>
+                <span className={ui.sub}>{mine.b.manager}</span>
+              </span>
             </>
           }
         >
           {meSide.lineup.map((me, i) => (
-            <SlotRow key={`${me.slot}-${i}`} me={me} them={themSide.lineup[i]} label={me.slot === 'SUPER_FLEX' ? 'SF' : me.slot} wk={wk} />
+            <SlotRow key={`${me.slot}-${i}`} me={me} them={themSide.lineup[i]} label={me.slot === 'SUPER_FLEX' ? 'SF' : me.slot} wk={wk} final={final} />
           ))}
         </Duel>
         {rows ? (

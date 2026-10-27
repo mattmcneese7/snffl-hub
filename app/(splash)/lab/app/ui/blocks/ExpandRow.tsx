@@ -1,3 +1,4 @@
+import { Ms } from '../../icons';
 import type { ReactNode } from 'react';
 import u from '../ui.module.css';
 import e from './ExpandRow.module.css';
@@ -20,9 +21,9 @@ export function ExpandRow({ lead, label, title, sub, value, valueSub, children }
           {value != null ? <span className={u.value}>{value}</span> : null}
           {valueSub ? <span className={u.valueSub}>{valueSub}</span> : null}
         </span>
-        <svg className={u.caret} viewBox="0 0 24 24" aria-hidden>
-          <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+        <span className={u.caret} aria-hidden>
+          <Ms name="chevronRight" size={16} />
+        </span>
       </summary>
       <div className={e.body}>{children}</div>
     </details>

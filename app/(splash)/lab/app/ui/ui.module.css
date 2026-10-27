@@ -211,7 +211,8 @@
 .duelHead + .xp { border-top: 0; }
 .xp > summary { list-style: none; cursor: pointer; }
 .xp > summary::-webkit-details-marker { display: none; }
-.caret { width: 16px; height: 16px; color: var(--ink-3); transition: transform 160ms ease-out; }
+.caret { display: grid; place-items: center; width: 16px; height: 16px; color: var(--ink-3); transition: transform 160ms ease-out; }
+.duelLost .value { color: var(--ink-3); font-weight: 400; }
 .xp[open] .caret { transform: rotate(90deg); }
 .xpBody { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; padding: 0 0 12px; }
 .info { display: grid; gap: 4px; align-content: start; min-width: 0; font-size: 13px; color: var(--ink-2); }

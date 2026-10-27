@@ -1,15 +1,17 @@
 import type { Metadata } from 'next';
+import { weekProjections } from '../cached';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { getWeekGames, league, playerOf, STARTER_SLOTS, teamByRoster } from '@/lib/league';
 import { movementFor, timing, type MovementEvent } from '@/lib/movement';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
-import { outlookFor } from '@/lib/outlook';
-import { getWeekProjections } from '@/lib/projections';
+import { outlookFor, roleOf } from '@/lib/outlook';
 import { getRosters } from '@/lib/sleeper';
 import { sleeperLink } from '@/lib/sleeper-links';
-import { scoredThisWeek } from '../../../kit/PlayerRow';
+import { scoredThisWeek } from './scored';
+import { recentUsage } from '../../../lib/deep/nflverse';
 import { bookFrom } from '../../../lib/odds-books';
+import { readSleeperProps, type SleeperProp } from '../../../lib/sleeper-props';
 import { weekLines } from '../../../swami/week-lines';
 import { getV4Data } from '../data';
 import Shell from '../Shell';
@@ -18,6 +20,9 @@ import { managerOf, MOVE_MARK, moveMarkClass, shortName } from '../modules/share
 import m from '../modules/modules.module.css';
 import s from '../v4.module.css';
 import t from './mine.module.css';
+import r from './read.module.css';
+import PlayerRead from './Read';
+import { Xs } from '../scores/icons';
 
 export const metadata: Metadata = { title: { absolute: 'My Team, Splash 4.0' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -51,7 +56,7 @@ export default async function V4MyTeam() {
   if (!rosterId) {
     return (
       <Shell data={data} active="">
-        <XHead icon="person" word="my team" week={data.week} mine={null} />
+        <XHead icon="person" word="my team" week={data.week} mine={null} back={{ href: '/lab/app/account', label: 'Account' }} />
         <p className={s.empty}>
           Pick your team to see your lineup, what is wrong with it and your moves. <Link href="/lab/app/account">Account</Link>
         </p>
@@ -61,12 +66,13 @@ export default async function V4MyTeam() {
 
   const week = league.state.week;
   const team = teamByRoster(rosterId);
-  const [rosters, projections, moves, games, ctx] = await Promise.all([
+  const [rosters, projections, moves, games, ctx, props] = await Promise.all([
     getRosters().catch(() => []),
-    getWeekProjections(league.state.season, week).catch(() => ({}) as Record<string, number>),
+    weekProjections(league.state.season, week).catch(() => ({}) as Record<string, number>),
     movementFor(rosterId, 12).catch(() => [] as MovementEvent[]),
     getWeekGames(week).catch(() => []),
     weekLines(league.state.season, week, undefined, bookFrom(jar)),
+    readSleeperProps().catch(() => ({}) as Record<string, SleeperProp[]>),
   ]);
 
   const roster = rosters.find((r) => r.roster_id === rosterId);
@@ -139,9 +145,50 @@ export default async function V4MyTeam() {
     );
   };
 
+  /** A roster row that opens to his read: the summary is the row, the read sits under it. */
+  const openRow = (x: ReturnType<typeof read>) => {
+    const actual = scoredThisWeek(x.player.team ? ctx.byTeam.get(x.player.team)?.game.state : null, ctx.actual[x.id]?.points);
+    const opp = x.outlook.matchup;
+    const meta = !x.player.team ? 'Free agent' : opp ? `${opp.home ? 'vs' : '@'} ${opp.opponent}` : 'No game';
+    return (
+      <details key={`${x.slot}-${x.id}`} className={r.item}>
+        <summary className={r.sum}>
+          <span className={t.slot}>{x.slot === 'SUPER_FLEX' ? 'SF' : x.slot}</span>
+          <span className={m.shot}>
+            <img src={x.player.headshot} alt="" loading="lazy" />
+          </span>
+          <span className={s.prowName}>
+            <b>{shortName(x.player.name, x.player.position, x.player.team)}</b>
+            <small>
+              <i className={`${s.pos} ${s[`p${x.player.position}`] ?? ''}`}>{x.player.position}</i>
+              {x.player.team ?? ''} &middot; {meta}
+              {x.player.injuryStatus ? <i className={`${m.mk} ${m.mkBad} ${t.inj}`}>{INJ[x.player.injuryStatus] ?? x.player.injuryStatus.toUpperCase()}</i> : null}
+            </small>
+          </span>
+          <span className={s.prowPts}>
+            <b>{actual != null ? pts(actual) : '\u2013'}</b>
+            <small>Proj {pts(x.outlook.adjusted)}</small>
+          </span>
+          <Xs name="next" className={r.caret} />
+        </summary>
+        <PlayerRead
+          id={x.id}
+          name={x.player.name}
+          position={x.player.position}
+          team={x.player.team ?? null}
+          outlook={x.outlook}
+          role={roleOf(x.id, x.player.position)}
+          ctx={ctx}
+          props={props[x.id] ?? []}
+          usage={recentUsage(x.id)}
+        />
+      </details>
+    );
+  };
+
   return (
     <Shell data={data} active="">
-      <XHead icon="person" word="my team" week={data.week} mine={data.myRoster} />
+      <XHead icon="person" word="my team" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/account', label: 'Account' }} />
 
       <section className={t.hero} aria-label="Projected">
         <div className={t.heroTop}>
@@ -204,11 +251,11 @@ export default async function V4MyTeam() {
       {starters.length ? (
         <div className={s.list}>
           <h3 className={t.subH}>Starters</h3>
-          {starters.map((x) => row(x))}
+          {starters.map((x) => openRow(x))}
           {bench.length ? <h3 className={t.subH}>Bench &middot; {bench.length}</h3> : null}
-          {bench.map((x) => row(x))}
+          {bench.map((x) => openRow(x))}
           {reserve.length ? <h3 className={t.subH}>Injured Reserve &middot; {reserve.length}</h3> : null}
-          {reserve.map((x) => row(x))}
+          {reserve.map((x) => openRow(x))}
         </div>
       ) : (
         <p className={s.empty}>Sleeper did not return this lineup.</p>

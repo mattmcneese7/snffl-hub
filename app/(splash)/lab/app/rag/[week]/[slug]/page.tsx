@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { BYLINE } from '@/config/style-guide';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { readIssue } from '@/lib/rag';
-import { issueArt } from '../../../../../rag/parts';
+import { issueArt } from '../../art';
 import { weekParam } from '../../../../../kit/weekParam';
 import { getV4Data } from '../../../data';
 import Shell, { SectionHead } from '../../../Shell';

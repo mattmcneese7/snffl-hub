@@ -54,7 +54,7 @@ export default async function V4Rules() {
   ];
   return (
     <Shell data={data} active="league">
-      <SectionHead icon="league" word="rules" week={data.week} mine={data.myRoster} />
+      <SectionHead icon="league" word="rules" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
       {CUSTOM_RULES.map((sec) => (
         <section key={sec.title} className={s.card}>
           <h3>{sec.title}</h3>

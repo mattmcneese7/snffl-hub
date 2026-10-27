@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { firstNameOf } from '@/config/managers';
 import { getWeekGames, lastFantasyWeek, scoredWeek, teamByRoster } from '@/lib/league';
 import { buildLiveMatchup, getMatchupContext, markInPlay, type LiveMatchup, type LiveSide } from '@/lib/matchup-live';
@@ -46,7 +47,7 @@ export type SideView = {
 export type GameView = { id: number; a: SideView; b: SideView; foot: string };
 
 /** Which matchup the app shows right now, by the clock and the NFL slate (Central time). */
-async function pickWeek(): Promise<{ week: number; state: BarState }> {
+const pickWeek = cache(async (): Promise<{ week: number; state: BarState }> => {
   const week = await scoredWeek();
   const ctx = await getMatchupContext(week).catch(() => null);
   const nfl = ctx?.nfl ?? [];
@@ -60,7 +61,7 @@ async function pickWeek(): Promise<{ week: number; state: BarState }> {
     return { week, state: 'final' };
   }
   return { week, state: started ? 'live' : 'preview' };
-}
+});
 
 const shortName = (name: string) => {
   const [first, ...rest] = name.split(' ');
@@ -119,7 +120,8 @@ export type V4Data = {
   live: Map<number, LiveMatchup>;
 };
 
-export async function getV4Data(myRoster: number | null): Promise<V4Data> {
+/** Once per request, however many parts of the page ask (Shell, the page, its modules). */
+export const getV4Data = cache(async (myRoster: number | null): Promise<V4Data> => {
   const { week, state } = await pickWeek();
   const [raw, ctx] = await Promise.all([getWeekGames(week).catch(() => [] as Game[]), getMatchupContext(week).catch(() => null)]);
   const games = ctx ? markInPlay(raw, ctx.nfl) : raw;
@@ -136,4 +138,4 @@ export async function getV4Data(myRoster: number | null): Promise<V4Data> {
     } else others.push(v);
   }
   return { week, myRoster, state, mine, others, games, live };
-}
+});

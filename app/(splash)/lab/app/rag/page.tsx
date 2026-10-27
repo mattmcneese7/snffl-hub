@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { publishedWeeks, readIssue } from '@/lib/rag';
-import { issueArt } from '../../../rag/parts';
+import { issueArt } from './art';
 import { getV4Data } from '../data';
 import Shell, { SectionHead } from '../Shell';
 import IssueView from './Issue';

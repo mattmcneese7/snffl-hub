@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
-import { TROPHIES, type TrophyKey } from '@/components/Trophy';
+import { TROPHY_NAMES as TROPHIES, type TrophyKey } from '@/lib/trophy-names';
 import { firstNameOf } from '@/config/managers';
 import { getChugCounts, getPointsByWeek } from '@/lib/awards';
 import { league, playerOf, getStandings, teamByRoster } from '@/lib/league';
@@ -186,7 +186,7 @@ export default async function V4Manager({ params }: Params) {
   return (
     <Shell data={data} active="league">
       <div className={p.wrap}>
-        <SectionHead icon="person" word="manager" week={data.week} mine={data.myRoster} />
+        <SectionHead icon="person" word="manager" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/managers', label: 'Managers' }} />
 
         <section className={s.card}>
           <div className={p.mHero}>

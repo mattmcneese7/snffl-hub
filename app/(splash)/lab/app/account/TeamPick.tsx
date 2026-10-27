@@ -1,0 +1,54 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { readMyTeam, setMyTeam } from '@/lib/my-team';
+import a from './account.module.css';
+
+/**
+ * Pick your team: one row per team, yours checked. The same write as every
+ * version of the app (the cookie, through setMyTeam), then a refresh, since
+ * every page behind it is a server component reading that cookie. On arrival
+ * it reads the device's choice, which also moves a team saved in the old
+ * storage key into the cookie, and refreshes once if the server missed it.
+ */
+export default function TeamPick({ teams, current }: { teams: { rosterId: number; teamName: string; manager: string; avatar: string | null; color: string | null }[]; current: number | null }) {
+  const router = useRouter();
+  const [value, setValue] = useState<number | null>(current);
+
+  useEffect(() => {
+    const saved = readMyTeam();
+    if (saved && saved !== current) {
+      setValue(saved);
+      router.refresh();
+    }
+    // Once, on arrival.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const pick = (next: number | null) => {
+    setValue(next);
+    setMyTeam(next);
+    router.refresh();
+  };
+
+  return (
+    <div className={a.teams} role="radiogroup" aria-label="Your team">
+      {teams.map((t) => {
+        const on = t.rosterId === value;
+        return (
+          <button key={t.rosterId} type="button" role="radio" aria-checked={on} className={`${a.team} ${on ? a.teamOn : ''}`} onClick={() => pick(on ? null : t.rosterId)}>
+            <span className={a.av} style={{ ['--mgr' as string]: t.color ?? 'var(--powder)' }}>
+              {t.avatar ? <img src={t.avatar} alt="" /> : null}
+            </span>
+            <span className={a.teamText}>
+              <b>{t.teamName}</b>
+              <small>{t.manager}</small>
+            </span>
+            <span className={a.radio} aria-hidden />
+          </button>
+        );
+      })}
+    </div>
+  );
+}

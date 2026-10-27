@@ -23,7 +23,7 @@ export default async function V4Trades() {
   const yours = mine != null ? trades.filter((t) => t.sides.some((x) => x.rosterId === mine)).length : 0;
   return (
     <Shell data={data} active="league">
-      <XHead icon="swap" word="trades" week={data.week} mine={data.myRoster} />
+      <XHead icon="swap" word="trades" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
       <div className={s.title}>
         <h2>Every Trade</h2>
         <span className={s.wk}>

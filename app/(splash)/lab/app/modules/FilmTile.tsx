@@ -1,6 +1,6 @@
 import { latestChug } from '@/lib/chug-video';
 import { scoredWeek, teamByRoster } from '@/lib/league';
-import { getTrophyBoard } from '@/lib/trophies';
+import { trophyBoard } from '../cached';
 import { latestWeekStory, type StorySlide } from '@/lib/week-story';
 import FilmPlayer from './FilmPlayer';
 import { managerOf } from './shared';
@@ -18,7 +18,7 @@ function within<T>(p: Promise<T>, ms: number, fallback: T): Promise<T> {
  */
 export default async function FilmTile({ week }: { week?: number }) {
   const wk = week ?? (await scoredWeek());
-  const [slides, board] = await Promise.all([within(latestWeekStory(wk), 8000, [] as StorySlide[]), within(getTrophyBoard(), 8000, null)]);
+  const [slides, board] = await Promise.all([within(latestWeekStory(wk), 8000, [] as StorySlide[]), within(trophyBoard(), 8000, null)]);
   const intro = slides.find((x) => x.kind === 'intro');
   const storyWeek = intro && intro.kind === 'intro' ? intro.week : null;
   const cover = intro && intro.kind === 'intro' ? intro.art.still : null;

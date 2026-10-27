@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { cookies } from 'next/headers';
-import LiveRefresh from '@/components/LiveRefresh';
 import { ESPN_CUTOUT, ESPN_TEAM_LOGO } from '@/lib/espn';
 import { getWeekGames, teamByRoster } from '@/lib/league';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
@@ -14,6 +13,7 @@ import { bookFrom, mainBook, withBook } from '../../../lib/odds-books';
 import { loreTable, type Lore } from '../../../scoreboard/parts/lore';
 import { getV4Data, sleeperWinProb, type GameView, type SideView } from '../data';
 import Shell, { SectionHead } from '../Shell';
+import { LivePoints, LiveStart } from '../live/Live';
 import Clips from '../scores/Clips';
 import { railOf } from '../scores/clipData';
 import { Xs } from '../scores/icons';
@@ -44,7 +44,7 @@ function resultOf(p: LivePlayer): { text: string; wl: 'W' | 'L' | null } {
   return { text: `${us}-${them} ${where}`, wl: us > them ? 'W' : 'L' };
 }
 
-function Player({ p, right }: { p: LivePlayer; right?: boolean }) {
+function Player({ p, right, wk }: { p: LivePlayer; right?: boolean; wk?: number }) {
   const r = resultOf(p);
   const pre = p.gameState === 'pre';
   return (
@@ -59,7 +59,7 @@ function Player({ p, right }: { p: LivePlayer; right?: boolean }) {
           ) : null}
         </span>
         <span className={s.pts}>
-          <b>{pre ? '–' : p.points.toFixed(2)}</b>
+          <b>{pre ? '–' : wk ? <LivePoints week={wk} playerId={p.id} fallback={p.points} /> : p.points.toFixed(2)}</b>
           <small>Proj {(p.projected ?? 0).toFixed(2)}</small>
         </span>
       </span>
@@ -151,7 +151,7 @@ function NextGame({ players, week }: { players: LivePlayer[]; week: number }) {
   );
 }
 
-function HeroRow({ side, lost }: { side: SideView; lost: boolean }) {
+function HeroRow({ side, lost, wk }: { side: SideView; lost: boolean; wk?: number }) {
   return (
     <div className={`${s.heroRow} ${lost ? s.heroLost : ''}`}>
       <span className={s.av} style={{ width: 34, height: 34, ['--mgr' as string]: side.color }}>
@@ -161,7 +161,7 @@ function HeroRow({ side, lost }: { side: SideView; lost: boolean }) {
         <b>{side.team}</b>
         <small>{side.manager}</small>
       </span>
-      <span className={s.heroScore}>{side.score.toFixed(2)}</span>
+      <span className={s.heroScore}>{wk ? <LivePoints week={wk} rosterId={side.rosterId} fallback={side.score} /> : side.score.toFixed(2)}</span>
     </div>
   );
 }
@@ -231,17 +231,17 @@ function Info({ p, right }: { p?: LivePlayer; right?: boolean }) {
 }
 
 /** One slot head to head; the row opens for both sides' games, lines and ranges. */
-function SlotRow({ me, them, label }: { me?: LivePlayer; them?: LivePlayer; label: string }) {
+function SlotRow({ me, them, label, wk }: { me?: LivePlayer; them?: LivePlayer; label: string; wk?: number }) {
   return (
     <details className={x.xp}>
       <summary>
         <div className={s.slot}>
-          {me ? <Player p={me} /> : <span />}
+          {me ? <Player p={me} wk={wk} /> : <span />}
           <span className={x.slotCol}>
             <span className={s.slotChip} style={{ marginTop: 0 }}>{label}</span>
             <Xs name="next" className={x.caret} />
           </span>
-          {them ? <Player p={them} right /> : <span />}
+          {them ? <Player p={them} right wk={wk} /> : <span />}
         </div>
       </summary>
       <div className={x.xpBody}>
@@ -387,6 +387,8 @@ export default async function V4Matchup({ searchParams }: { searchParams: Promis
   const final = state === 'final' || live.game.status === 'final';
   const yet = themSide.lineup.filter((y) => y.gameState === 'pre');
   const chip = state === 'live' && !final ? 'Live' : final ? 'Final' : 'Preview';
+  // Scores tick in place only while this week is being played.
+  const wk = chip === 'Live' ? week : undefined;
   const isMine = mine.a.rosterId === mineId;
 
   const ids = [...meSide.lineup, ...meSide.bench, ...themSide.lineup, ...themSide.bench].map((y) => y.id);
@@ -403,8 +405,8 @@ export default async function V4Matchup({ searchParams }: { searchParams: Promis
 
   return (
     <Shell data={data} active="scores">
-      <LiveRefresh live={ctx.nfl.some((g) => g.state === 'in')} week={week} />
-      <SectionHead icon="football" word="scores" week={data.week} mine={data.myRoster} />
+      <LiveStart live={ctx.nfl.some((g) => g.state === 'in')} week={week} />
+      <SectionHead icon="football" word="scores" week={data.week} mine={data.myRoster} back={{ href: `/lab/app/scores/${week}`, label: `Week ${week} Scores` }} />
       <section className={s.hero} aria-label={`Week ${week} matchup`}>
         <div className={s.heroTop}>
           <span>{isMine ? `Week ${week} Matchup` : `Week ${week}`}</span>
@@ -413,8 +415,8 @@ export default async function V4Matchup({ searchParams }: { searchParams: Promis
             {chip}
           </span>
         </div>
-        <HeroRow side={mine.a} lost={mine.a.lost} />
-        <HeroRow side={mine.b} lost={mine.b.lost} />
+        <HeroRow side={mine.a} lost={mine.a.lost} wk={wk} />
+        <HeroRow side={mine.b} lost={mine.b.lost} wk={wk} />
         {final ? (
           <div className={s.heroWin}>{mine.a.lines[0]}</div>
         ) : (
@@ -460,7 +462,7 @@ export default async function V4Matchup({ searchParams }: { searchParams: Promis
           </span>
         </div>
         {meSide.lineup.map((me, i) => (
-          <SlotRow key={`${me.slot}-${i}`} me={me} them={themSide.lineup[i]} label={me.slot === 'SUPER_FLEX' ? 'SF' : me.slot} />
+          <SlotRow key={`${me.slot}-${i}`} me={me} them={themSide.lineup[i]} label={me.slot === 'SUPER_FLEX' ? 'SF' : me.slot} wk={wk} />
         ))}
       </div>
       {rows ? (
@@ -478,7 +480,7 @@ export default async function V4Matchup({ searchParams }: { searchParams: Promis
             )}
           </summary>
           {Array.from({ length: rows }, (_, i) => (
-            <SlotRow key={`bn-${i}`} me={meSide.bench[i]} them={themSide.bench[i]} label="BN" />
+            <SlotRow key={`bn-${i}`} me={meSide.bench[i]} them={themSide.bench[i]} label="BN" wk={wk} />
           ))}
         </details>
       ) : null}

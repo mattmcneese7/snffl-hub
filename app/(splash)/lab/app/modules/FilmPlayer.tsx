@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import WeekStory from '@/components/WeekStory';
+import Story from './Story';
 import type { StorySlide } from '@/lib/week-story';
 import { MX } from './icons';
 import m from './modules.module.css';
@@ -13,8 +13,8 @@ const Play = () => (
 );
 
 /**
- * The league's two films as square tiles: the week in 90 seconds (the story
- * player every version of the app has used) and the latest chug, which opens
+ * The league's two films as square tiles: the week in 90 seconds, which opens
+ * the story player, and the latest chug, which opens
  * full screen with its controls so the sound is one tap away.
  */
 export default function FilmPlayer({
@@ -72,7 +72,7 @@ export default function FilmPlayer({
           </span>
         </button>
       ) : null}
-      {story ? <WeekStory slides={slides} onClose={() => setStory(false)} /> : null}
+      {story ? <Story slides={slides} onClose={() => setStory(false)} /> : null}
       {film && chug ? (
         <div className={m.modal} role="dialog" aria-modal="true" aria-label={`The chug, week ${chug.week}`} onClick={() => setFilm(false)}>
           <video src={chug.src} controls autoPlay playsInline onClick={(e) => e.stopPropagation()} />

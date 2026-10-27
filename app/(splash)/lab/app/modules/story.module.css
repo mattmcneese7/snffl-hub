@@ -1,0 +1,57 @@
+/* The week in 90 seconds, full screen over the app. The stage is always
+   dark (it is footage), so its type is white in both themes. */
+.wrap { position: fixed; inset: 0; z-index: 130; display: grid; grid-template-rows: auto auto 1fr auto; background: #0b0d12; color: #fff; font-family: var(--ui, system-ui, sans-serif); }
+.stage { position: absolute; inset: 0; overflow: hidden; }
+.media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.fadeIn { animation: fade 600ms ease both; }
+.scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8, 10, 14, 0.7) 0%, rgba(8, 10, 14, 0.15) 30%, rgba(8, 10, 14, 0.35) 55%, rgba(8, 10, 14, 0.9) 100%); }
+
+.progress { position: relative; z-index: 2; display: flex; gap: 4px; padding: calc(env(safe-area-inset-top) + 10px) 14px 0; }
+.progress i { flex: 1; height: 3px; border-radius: 2px; background: rgba(255, 255, 255, 0.3); overflow: hidden; position: relative; }
+.progress i::after { content: ''; position: absolute; inset: 0; background: #fff; transform-origin: left; transform: scaleX(0); }
+.progress .done::after { transform: scaleX(1); }
+.progress .now::after { animation: fill 4500ms linear forwards; }
+
+.top { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 10px 14px 0; }
+.top span { display: grid; }
+.top b { font-size: 15px; font-weight: 800; }
+.top small { font-size: 11px; color: rgba(255, 255, 255, 0.75); }
+.close { display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 50%; background: rgba(255, 255, 255, 0.16); color: #fff; cursor: pointer; }
+
+.tap { position: absolute; top: 90px; bottom: 90px; z-index: 1; width: 50%; border: 0; background: none; cursor: pointer; }
+.back { left: 0; }
+.next { right: 0; }
+
+.card { position: relative; z-index: 2; align-self: end; display: grid; gap: 6px; justify-items: start; padding: 0 20px 18px; pointer-events: none; animation: rise 420ms cubic-bezier(0.32, 0.72, 0, 1) both; }
+.kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255, 255, 255, 0.82); }
+.huge { font-size: 38px; font-weight: 900; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.name { font-size: 24px; font-weight: 800; line-height: 1.15; text-wrap: balance; }
+.sub { font-size: 13px; color: rgba(255, 255, 255, 0.8); }
+.line { margin: 0; max-width: 34ch; font-size: 15px; line-height: 1.45; color: rgba(255, 255, 255, 0.92); }
+.line b { font-weight: 800; font-variant-numeric: tabular-nums; }
+.who { display: flex; align-items: center; margin-bottom: 4px; }
+.avatar { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.9); margin-right: -10px; }
+.bad { color: #ff9b8f; }
+.good { color: #7ee2b0; }
+.star { display: flex; align-items: center; gap: 10px; margin-top: 6px; padding: 6px 12px 6px 6px; border-radius: 999px; background: rgba(255, 255, 255, 0.14); }
+.star img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; object-position: top; background: rgba(255, 255, 255, 0.2); }
+.star span { display: grid; }
+.star b { font-size: 15px; font-weight: 800; }
+.star small { font-size: 11px; color: rgba(255, 255, 255, 0.8); }
+
+.movers { display: grid; gap: 2px; width: 100%; margin: 4px 0 0; padding: 0; list-style: none; }
+.movers li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 12px; align-items: center; padding: 8px 0; border-top: 1px solid rgba(255, 255, 255, 0.16); }
+.movers li:first-child { border-top: 0; }
+.movers li > span:first-child { display: grid; min-width: 0; }
+.movers b { font-size: 15px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.movers small { font-size: 11px; color: rgba(255, 255, 255, 0.75); }
+.movers li > span:nth-child(2) { font-size: 13px; font-weight: 800; }
+.seat { font-size: 13px; color: rgba(255, 255, 255, 0.85); font-variant-numeric: tabular-nums; }
+
+.foot { position: relative; z-index: 2; display: flex; gap: 8px; padding: 0 14px calc(env(safe-area-inset-bottom) + 14px); }
+.action { flex: 1; display: grid; place-items: center; height: 44px; border: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.16); color: #fff; font-family: inherit; font-size: 15px; font-weight: 600; text-decoration: none; cursor: pointer; }
+
+@keyframes fill { to { transform: scaleX(1); } }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+@keyframes fade { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .card, .fadeIn { animation: none; } .progress .now::after { animation: none; transform: scaleX(0.5); } }

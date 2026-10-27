@@ -9,6 +9,7 @@ import type { Lore } from '../../../scoreboard/parts/lore';
 import type { GameView, SideView } from '../data';
 import { Ms } from '../icons';
 import { shortName } from './weekData';
+import { LivePoints } from '../live/Live';
 import s from '../v4.module.css';
 import x from './scores.module.css';
 
@@ -69,7 +70,7 @@ export function LoreChips({ lore, max = 2 }: { lore: Lore; max?: number }) {
   );
 }
 
-function GameRow({ side, final, preview, expected, lore }: { side: SideView; final: boolean; preview: boolean; expected: number; lore: Lore }) {
+function GameRow({ side, final, preview, expected, lore, wk }: { side: SideView; final: boolean; preview: boolean; expected: number; lore: Lore; wk?: number }) {
   return (
     <div className={`${x.gmRow} ${side.lost ? x.gmLost : ''}`}>
       <span className={`${s.av} ${x.avSm}`} style={{ ['--mgr' as string]: side.color }}>
@@ -83,7 +84,7 @@ function GameRow({ side, final, preview, expected, lore }: { side: SideView; fin
         <LoreChips lore={lore} />
       </span>
       <span className={x.gmScore}>
-        <b>{side.score.toFixed(2)}</b>
+        <b>{wk ? <LivePoints week={wk} rosterId={side.rosterId} fallback={side.score} /> : side.score.toFixed(2)}</b>
         {!final && !preview ? <small>Proj {expected.toFixed(2)}</small> : null}
       </span>
       <small className={x.gmMark}>
@@ -121,6 +122,8 @@ export function GameCard({
   const margin = Math.abs(g.a.score - g.b.score);
   const close = !preview && margin < 10;
   const pA = Number(g.a.mark.replace('%', '')) / 100;
+  // Scores tick in place only while this game is being played.
+  const wk = game.inPlay && !final ? week : undefined;
   return (
     <Link href={`/lab/app/matchup?id=${g.id}&week=${week}`} className={x.gm} aria-label={`${g.a.team} against ${g.b.team}`}>
       {label || game.inPlay ? (
@@ -129,8 +132,8 @@ export function GameCard({
           {game.inPlay ? <LiveChip /> : null}
         </span>
       ) : null}
-      <GameRow side={g.a} final={final} preview={preview} expected={a.expected} lore={lore(g.a.rosterId)} />
-      <GameRow side={g.b} final={final} preview={preview} expected={b.expected} lore={lore(g.b.rosterId)} />
+      <GameRow side={g.a} final={final} preview={preview} expected={a.expected} lore={lore(g.a.rosterId)} wk={wk} />
+      <GameRow side={g.b} final={final} preview={preview} expected={b.expected} lore={lore(g.b.rosterId)} wk={wk} />
       {!final && Number.isFinite(pA) ? <WinBar first={pA} indent /> : null}
       <span className={x.gmFoot}>
         <span>

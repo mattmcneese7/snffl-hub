@@ -1,0 +1,16 @@
+/* The live tick: a score lights up for a moment in the pastel performance
+   colors when it changes. Tokens come from .root in v4.module.css. */
+.tick { border-radius: 6px; box-shadow: 0 0 0 3px var(--tk-bg); background: var(--tk-bg); color: var(--tk-fg); animation: tick 1.6s ease-out both; }
+.up { --tk-bg: #ddf8e8; --tk-fg: #047c50; }
+.down { --tk-bg: #feebe8; --tk-fg: #94352d; }
+@media (prefers-color-scheme: dark) {
+  .up { --tk-bg: #12392a; --tk-fg: #4cc993; }
+  .down { --tk-bg: #3d1f1c; --tk-fg: #f08a7e; }
+}
+@keyframes tick {
+  0%, 55% { background: var(--tk-bg); box-shadow: 0 0 0 3px var(--tk-bg); color: var(--tk-fg); }
+  100% { background: transparent; box-shadow: 0 0 0 3px transparent; color: inherit; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tick { animation: none; background: transparent; box-shadow: none; color: var(--tk-fg); }
+}

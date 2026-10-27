@@ -45,7 +45,7 @@ export default async function V4Chug() {
 
   return (
     <Shell data={data} active="league">
-      <XHead icon="beer" word="chug" week={data.week} mine={data.myRoster} />
+      <XHead icon="beer" word="chug" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
 
       <div className={s.title}>
         <h2>Who Owes</h2>

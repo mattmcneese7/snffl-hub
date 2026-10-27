@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { getTrophyBoard, type TrophyBoard } from '@/lib/trophies';
+import type { TrophyBoard } from '@/lib/trophies';
+import { trophyBoard } from '../cached';
 import AwardIcon, { AWARD_NAME } from './AwardIcon';
 import { managerOf, teamOf } from './shared';
 import s from '../v4.module.css';
@@ -10,7 +11,7 @@ import m from './modules.module.css';
  * that won it first and the manager under it. Pass `board` if the page has it.
  */
 export default async function Hardware({ board }: { board?: TrophyBoard }) {
-  const b = board ?? (await getTrophyBoard().catch(() => null));
+  const b = board ?? (await trophyBoard().catch(() => null));
   if (!b?.latest.length) return null;
   return (
     <section aria-label={`Week ${b.latestWeek} hardware`}>

@@ -38,7 +38,7 @@ export default async function V4Trophies() {
 
   return (
     <Shell data={data} active="league">
-      <SectionHead icon="trophy" word="trophies" week={data.week} mine={data.myRoster} />
+      <SectionHead icon="trophy" word="trophies" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
 
       {board.latest.length ? (
         <>

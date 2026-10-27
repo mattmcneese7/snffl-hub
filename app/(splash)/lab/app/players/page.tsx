@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
+import { weekProjections } from '../cached';
 import { cookies } from 'next/headers';
 import { league, teamByRoster, teams } from '@/lib/league';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { getPlayerDirectory } from '@/lib/players';
-import { getWeekProjections } from '@/lib/projections';
 import { positionRank, snapSharePct, totalTouchdowns, totalYards } from '@/lib/stats';
 import { nflTeamName } from '../../../kit/nflTeams';
 import { getV4Data } from '../data';
@@ -25,7 +25,7 @@ export default async function V4Players() {
   const [data, { players, ownershipComplete }, projections] = await Promise.all([
     getV4Data(mine),
     getPlayerDirectory(),
-    getWeekProjections(league.season, upcoming).catch(() => ({}) as Record<string, number>),
+    weekProjections(league.season, upcoming).catch(() => ({}) as Record<string, number>),
   ]);
   const rows: Row[] = players.map((e) => {
     const owner = e.ownerRosterId ? teamByRoster(e.ownerRosterId) : null;
@@ -52,8 +52,8 @@ export default async function V4Players() {
     .sort((a, b) => nflTeamName(a).localeCompare(nflTeamName(b)))
     .map((abbr) => ({ abbr, name: nflTeamName(abbr) }));
   return (
-    <Shell data={data} active="">
-      <SectionHead icon="groups" word="players" week={data.week} mine={data.myRoster} />
+    <Shell data={data} active="league">
+      <SectionHead icon="groups" word="players" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
       <Browser rows={rows} owners={owners} nflTeams={nflTeams} week={upcoming} complete={ownershipComplete} mine={mine} />
     </Shell>
   );

@@ -5,13 +5,13 @@ import { firstNameOf } from '@/config/managers';
 import { allPlayers, league, teamByRoster } from '@/lib/league';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { outlookFor } from '@/lib/outlook';
-import { getWeekProjections } from '@/lib/projections';
+import { weekProjections } from '../cached';
 import { getRosters } from '@/lib/sleeper';
 import { POSITIONS, type Pos } from '@/lib/spine';
-import { weekLine } from '../../../kit/PlayerRow';
-import Trade from '../../../swami/Trade';
-import Waivers from '../../../swami/Waivers';
 import { keepMoves, type SwamiQuery } from '../../../swami/moves-query';
+import { weekLine } from './parts';
+import Trade from './Trade';
+import Waivers from './Waivers';
 import { getV4Data } from '../data';
 import Shell, { SectionHead } from '../Shell';
 import s from '../v4.module.css';
@@ -27,7 +27,7 @@ const OWN = [
 ] as const;
 
 /**
- * Swami: the trade checker and waiver picks from 3.0, then the research list,
+ * Swami: the trade checker and waiver pickups, then the research list,
  * every player the league can reach ranked by this week's projection on this
  * league's rules. Tap a player for the sheet.
  */
@@ -38,7 +38,7 @@ export default async function V4Swami({ searchParams }: { searchParams: Promise<
   const jar = await cookies();
   const mine = parseTeam(jar.get(TEAM_COOKIE)?.value);
   const week = league.state.week;
-  const [data, projections, rosters] = await Promise.all([getV4Data(mine), getWeekProjections(league.state.season, week), getRosters().catch(() => [])]);
+  const [data, projections, rosters] = await Promise.all([getV4Data(mine), weekProjections(league.state.season, week), getRosters().catch(() => [])]);
   const ownerOf = new Map<string, number>();
   for (const r of rosters) for (const id of r.players ?? []) ownerOf.set(id, r.roster_id);
   const rows = allPlayers()
@@ -60,10 +60,8 @@ export default async function V4Swami({ searchParams }: { searchParams: Promise<
   return (
     <Shell data={data} active="swami">
       <SectionHead icon="swami" word="swami" week={data.week} mine={data.myRoster} />
-      <div className={s.legacy}>
-        <Trade query={params} mine={mine} base="/lab/app/swami" />
-        <Waivers query={params} mine={mine} base="/lab/app/swami" />
-      </div>
+      <Trade query={params} mine={mine} />
+      <Waivers query={params} mine={mine} />
       <div className={s.title}>
         <h2>Week {week} Projections</h2>
       </div>

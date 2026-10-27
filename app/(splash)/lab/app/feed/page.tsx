@@ -289,7 +289,7 @@ export default async function V4Feed() {
 
   return (
     <Shell data={v4} active="home">
-      <XHead icon="feed" word="feed" week={v4.week} mine={v4.myRoster} />
+      <XHead icon="feed" word="feed" week={v4.week} mine={v4.myRoster} back={{ href: '/lab/app', label: 'Home' }} />
 
       <div className={s.title}>
         <h2>Stories</h2>

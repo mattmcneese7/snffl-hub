@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
-import LiveRefresh from '@/components/LiveRefresh';
+import { LiveStart } from '../live/Live';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { bookFrom, mainBook, slateLines } from '../../../lib/odds-books';
 import { getV4Data } from '../data';
@@ -32,8 +32,8 @@ export default async function V4Nfl({ searchParams }: { searchParams: Promise<{ 
   const lineBook = mainBook(Object.values(lines));
   return (
     <Shell data={data} active="scores">
-      <LiveRefresh live={wv.ctx.nfl.some((g) => g.state === 'in')} week={week} />
-      <SectionHead icon="football" word="nfl" week={data.week} mine={data.myRoster} />
+      <LiveStart live={wv.ctx.nfl.some((g) => g.state === 'in')} week={week} />
+      <SectionHead icon="football" word="nfl" week={data.week} mine={data.myRoster} back={{ href: `/lab/app/scores/${week}`, label: `Week ${week} Scores` }} />
       <WeekStrip week={week} last={lastFantasyWeek()} base="/lab/app/nfl" query />
       <div className={s.title}>
         <h2>NFL Week {week}</h2>

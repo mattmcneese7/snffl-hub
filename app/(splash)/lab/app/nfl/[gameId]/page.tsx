@@ -1,12 +1,12 @@
 import type { CSSProperties } from 'react';
 import type { Metadata } from 'next';
+import { weekProjections } from '../../cached';
 import Link from 'next/link';
 import { cookies } from 'next/headers';
-import LiveRefresh from '@/components/LiveRefresh';
+import { LiveStart } from '../../live/Live';
 import { getGameExtras, getGameLines, getNflGames, impliedTeamTotal, leagueEntriesInGame, type NflGame, type NflSide, type SeasonLine } from '@/lib/gameday';
 import { league, teamByRoster } from '@/lib/league';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
-import { getWeekProjections } from '@/lib/projections';
 import { embedClipsForWeek } from '../../../../lib/embed-clips';
 import { bookFrom, bookName, getLine, linesAcrossBooks, moneyText, polymarketFor, readOdds } from '../../../../lib/odds-books';
 import { getV4Data } from '../../data';
@@ -78,7 +78,7 @@ export default async function V4NflGame({ params, searchParams }: { params: Prom
     getGameLines(game.id, game.state === 'in').catch(() => null),
     weekView(week, mine, data),
     getGameExtras(game.id, game.state === 'in').catch(() => ({ venue: null, weather: null, attendance: null, season: [] as SeasonLine[] })),
-    getWeekProjections(league.season, week).catch(() => ({}) as Record<string, number>),
+    weekProjections(league.season, week).catch(() => ({}) as Record<string, number>),
     embedClipsForWeek(week).catch(() => []),
     readOdds(),
     polymarketFor([game]).catch(() => ({}) as Awaited<ReturnType<typeof polymarketFor>>),
@@ -133,11 +133,8 @@ export default async function V4NflGame({ params, searchParams }: { params: Prom
 
   return (
     <Shell data={data} active="scores">
-      <LiveRefresh live={game.state === 'in'} week={week} />
-      <SectionHead icon="football" word="nfl" week={data.week} mine={data.myRoster} />
-      <Link href={`/lab/app/nfl?week=${week}`} className={s.back}>
-        &lsaquo; NFL Week {week}
-      </Link>
+      <LiveStart live={game.state === 'in'} week={week} />
+      <SectionHead icon="football" word="nfl" week={data.week} mine={data.myRoster} back={{ href: `/lab/app/nfl?week=${week}`, label: `NFL Week ${week}` }} />
       <section className={x.board}>
         <div className={x.art} style={{ '--home': game.home.color ?? '#2d4c9c' } as CSSProperties}>
           {extras.venue?.image ? <img src={extras.venue.image} alt="" /> : null}

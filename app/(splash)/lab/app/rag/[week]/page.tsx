@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { publishedWeeks, readIssue } from '@/lib/rag';
-import { issueArt } from '../../../../rag/parts';
+import { issueArt } from '../art';
 import { weekParam } from '../../../../kit/weekParam';
 import { getV4Data } from '../../data';
 import Shell, { SectionHead } from '../../Shell';

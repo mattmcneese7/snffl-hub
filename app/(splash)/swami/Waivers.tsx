@@ -51,7 +51,7 @@ function UsageChips({ usage, trend, position }: { usage: UsageEntry | null; tren
 }
 
 /** One free agent: the research row, its number on the right, opening onto the why. */
-function PickRow({ read, value, children, root = '' }: { read: RosRead; value: string; children: ReactNode; root?: string }) {
+function PickRow({ read, value, children }: { read: RosRead; value: string; children: ReactNode }) {
   return (
     <li>
       <details className={s.item}>
@@ -69,7 +69,7 @@ function PickRow({ read, value, children, root = '' }: { read: RosRead; value: s
         <div className={s.detail}>
           <span className={s.tags}>{children}</span>
           <RosWorking read={read} />
-          <Link href={`${root}/players/${read.player.id}`} className={s.go}>
+          <Link href={`/players/${read.player.id}`} className={s.go}>
             Player page
           </Link>
         </div>
@@ -78,7 +78,7 @@ function PickRow({ read, value, children, root = '' }: { read: RosRead; value: s
   );
 }
 
-export default async function Waivers({ query, mine, base = '/swami' }: { query: SwamiQuery; mine: number | null; base?: string }) {
+export default async function Waivers({ query, mine }: { query: SwamiQuery; mine: number | null }) {
   const { ctx, rosters, readOf, unrostered } = await rosBoard();
 
   // A team in the URL wins, so a pasted link shows what its sender saw. With
@@ -105,10 +105,8 @@ export default async function Waivers({ query, mine, base = '/swami' }: { query:
 
   const weakSlots = new Set((teamView?.picks ?? []).slice(0, 3).flatMap((p) => (p.replaces ? [p.replaces.read.player.id] : [])));
 
-  // Inside the 4.0 lab, player links stay in the lab.
-  const root = base.startsWith('/lab/app') ? '/lab/app' : '';
-  const teamHref = (t: number | 'league') => swamiHref(query, { team: String(t) }, base);
-  const posHref = (p: string | null) => swamiHref(query, { team: team ? String(team) : 'league', wpos: p }, base);
+  const teamHref = (t: number | 'league') => swamiHref(query, { team: String(t) });
+  const posHref = (p: string | null) => swamiHref(query, { team: team ? String(team) : 'league', wpos: p });
   const ordered = [...teams].sort((x, y) => Number(y.rosterId === mine) - Number(x.rosterId === mine));
   const window = windowLabel(ctx);
   const Window = window.charAt(0).toUpperCase() + window.slice(1);
@@ -182,7 +180,7 @@ export default async function Waivers({ query, mine, base = '/swami' }: { query:
                 </span>
                 <ul className={w.list}>
                   {teamView.picks.map((p) => (
-                    <PickRow key={p.read.player.id} read={p.read} value={`+${fmt(p.rosGain)}`} root={root}>
+                    <PickRow key={p.read.player.id} read={p.read} value={`+${fmt(p.rosGain)}`}>
                       <Chip label="Lineup gain" value={`+${fmt(p.rosGain)}`} />
                       <Chip label="Per game" value={p.perGame > 0 ? `+${fmt(p.perGame)}` : 'Spot starts'} plain />
                       {p.replaces ? (
@@ -207,7 +205,7 @@ export default async function Waivers({ query, mine, base = '/swami' }: { query:
                   <li key={`${slot.slot}-${i}`} className={`${m.slot} ${slot.id && weakSlots.has(slot.id) ? m.slotWeak : ''}`}>
                     <span className={m.slotName}>{slot.slot}</span>
                     {slot.read ? (
-                      <Link href={`${root}/players/${slot.read.player.id}`} className={m.slotWho}>
+                      <Link href={`/players/${slot.read.player.id}`} className={m.slotWho}>
                         {slot.read.player.name}
                       </Link>
                     ) : (
@@ -239,7 +237,7 @@ export default async function Waivers({ query, mine, base = '/swami' }: { query:
               {leagueView.picks.length ? (
                 <ul className={w.list}>
                   {leagueView.picks.map((p) => (
-                    <PickRow key={p.read.player.id} read={p.read} value={`+${fmt(p.meanGain)}`} root={root}>
+                    <PickRow key={p.read.player.id} read={p.read} value={`+${fmt(p.meanGain)}`}>
                       <Chip label="Average gain" value={`+${fmt(p.meanGain)}`} />
                       <Chip label="Starts for" value={`${p.startsFor} of ${rosters.length}`} plain />
                       {p.best ? <Chip label="Most to" value={`${p.best.manager}, +${fmt(p.best.gain)}`} plain /> : null}

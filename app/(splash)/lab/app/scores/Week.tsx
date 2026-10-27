@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { cookies } from 'next/headers';
-import LiveRefresh from '@/components/LiveRefresh';
 import { lastFantasyWeek } from '@/lib/league';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { sleeperLink } from '@/lib/sleeper-links';
@@ -12,6 +11,7 @@ import Shell, { SectionHead } from '../Shell';
 import { GameCard, LiveChip, Slate, Verdicts } from './parts';
 import { shortName, sidesOf, weekView, type WeekView } from './weekData';
 import WeekStrip from './WeekStrip';
+import { LivePoints, LiveStart } from '../live/Live';
 import s from '../v4.module.css';
 import x from './scores.module.css';
 
@@ -39,7 +39,7 @@ function YourGame({ g, wv, lore }: { g: GameView; wv: WeekView; lore: Awaited<Re
             <b>{side.team}</b>
             <small>{side.manager}</small>
           </span>
-          <span className={s.heroScore}>{side.score.toFixed(2)}</span>
+          <span className={s.heroScore}>{m.game.inPlay && !final ? <LivePoints week={wv.week} rosterId={side.rosterId} fallback={side.score} /> : side.score.toFixed(2)}</span>
         </div>
       ))}
       <div className={s.heroWin}>
@@ -125,7 +125,7 @@ export default async function ScoresWeek({ week }: { week?: number }) {
 
   return (
     <Shell data={data} active="scores">
-      <LiveRefresh live={live} week={wk} />
+      <LiveStart live={live} week={wk} />
       <SectionHead icon="football" word="scores" week={data.week} mine={data.myRoster} />
       <WeekStrip week={wk} last={lastFantasyWeek()} base="/lab/app/scores" />
       {wv.mine ? (

@@ -4,10 +4,10 @@ import { cookies } from 'next/headers';
 import { firstNameOf } from '@/config/managers';
 import { getStandings, teams } from '@/lib/league';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
-import TeamSelect from '../../../my-team/TeamSelect';
-import Alerts from '../../../settings/Alerts';
-import BookPicker from '../../../settings/BookPicker';
 import { bookFrom } from '../../../lib/odds-books';
+import Alerts from './Alerts';
+import Books from './Books';
+import TeamPick from './TeamPick';
 import { getV4Data } from '../data';
 import Shell, { SectionHead } from '../Shell';
 import s from '../v4.module.css';
@@ -25,7 +25,7 @@ export default async function V4Account() {
   const mine = parseTeam(jar.get(TEAM_COOKIE)?.value);
   const [data, standings] = await Promise.all([getV4Data(mine), getStandings().catch(() => [])]);
   const me = standings.find((t) => t.rosterId === mine);
-  const pickable = teams.map((t) => ({ rosterId: t.rosterId, teamName: t.teamName, manager: firstNameOf(t.rosterId) ?? t.manager }));
+  const pickable = teams.map((t) => ({ rosterId: t.rosterId, teamName: t.teamName, manager: firstNameOf(t.rosterId) ?? t.manager, avatar: t.avatarUrl ?? null, color: t.colors?.primary ?? null }));
   return (
     <Shell data={data} active="">
       <SectionHead icon="account" word="account" week={data.week} mine={data.myRoster} />
@@ -46,19 +46,19 @@ export default async function V4Account() {
       ) : null}
       <section className={s.card}>
         <h3>My Team</h3>
-        <TeamSelect teams={pickable} current={mine} empty="Not set" />
         <p className={s.note}>Remembered on this device. No account or password.</p>
+        <TeamPick teams={pickable} current={mine} />
       </section>
       <section className={s.card}>
         <h3>Odds</h3>
-        <BookPicker current={bookFrom(jar)} />
         <p className={s.note}>Lines come from your book. Where it has none, the DraftKings line shows, labeled.</p>
+        <Books current={bookFrom(jar)} />
       </section>
       <section className={s.card}>
         <h3>Alerts</h3>
         <Alerts hasTeam={mine != null} />
       </section>
-      <section className={s.card}>
+      <section className={s.card} id="install">
         <h3>Install on Your Phone</h3>
         <p className={s.note}>
           <b>iPhone:</b> open in Safari, tap Share, then Add to Home Screen. Alerts only arrive in the installed app.
@@ -72,8 +72,7 @@ export default async function V4Account() {
         <div className={s.chips}>
           <Link href="/lab/app/my-team" className={s.chipA}>My Team</Link>
           <Link href="/lab/app/rules" className={s.chipA}>League rules</Link>
-          <Link href="/join" className={s.chipA}>Invite someone</Link>
-          <Link href="/" className={s.chipA}>Splash 3.0</Link>
+          <Link href="/lab/app/join" className={s.chipA}>Invite someone</Link>
         </div>
       </section>
     </Shell>

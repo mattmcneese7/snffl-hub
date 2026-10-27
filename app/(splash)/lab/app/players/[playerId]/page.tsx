@@ -118,9 +118,9 @@ export default async function V4Player({ params }: Params) {
   const injury = d.injury ?? pl.injuryStatus ?? null;
 
   return (
-    <Shell data={data} active="">
+    <Shell data={data} active="league">
       <div className={p.wrap}>
-        <SectionHead icon="person" word="player" week={data.week} mine={data.myRoster} />
+        <SectionHead icon="person" word="player" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/players', label: 'Players' }} />
 
         <article className={p.hero}>
           <div className={p.heroHead} style={{ ['--tc' as string]: g?.color ?? 'var(--deep)' }}>

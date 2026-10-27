@@ -11,9 +11,10 @@ import { Fragment, type ReactNode } from 'react';
 import { firstNameOf } from '@/config/managers';
 import { latestChug } from '@/lib/chug-video';
 import { teamByRoster } from '@/lib/league';
-import { getTrophyBoard } from '@/lib/trophies';
+import { trophyBoard } from './cached';
 import { getV4Data, type GameView, type SideView } from './data';
 import { momentOf, orderOf, type ModuleKey } from './schedule';
+import { LivePoints } from './live/Live';
 import ChugPop from './ChugPop';
 import Moments, { type MomentKind } from './Moments';
 import ChugCounts from './modules/ChugCounts';
@@ -32,7 +33,7 @@ export const dynamic = 'force-dynamic';
 
 const CT_DATE = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', month: 'short', day: 'numeric' });
 
-function Row({ side }: { side: SideView }) {
+function Row({ side, week, live }: { side: SideView; week: number; live: boolean }) {
   return (
     <span className={`${s.row} ${side.lost ? s.lost : ''}`}>
       <span className={s.av} style={{ width: 26, height: 26, ['--mgr' as string]: side.color }}>
@@ -42,7 +43,7 @@ function Row({ side }: { side: SideView }) {
         <b>{side.team}</b>
         <small>{side.manager}</small>
       </span>
-      <span className={s.score}>{side.score.toFixed(2)}</span>
+      <span className={s.score}>{live ? <LivePoints week={week} rosterId={side.rosterId} fallback={side.score} /> : side.score.toFixed(2)}</span>
       <small className={s.mark}>
         {side.mark === 'W' || side.mark === 'L' ? <b className={side.mark === 'W' ? s.win : s.loss}>{side.mark}</b> : side.mark}
       </small>
@@ -50,11 +51,11 @@ function Row({ side }: { side: SideView }) {
   );
 }
 
-function GameRow({ g, week }: { g: GameView; week: number }) {
+function GameRow({ g, week, live }: { g: GameView; week: number; live: boolean }) {
   return (
     <Link href={`/lab/app/matchup?id=${g.id}`} className={s.game}>
-      <Row side={g.a} />
-      <Row side={g.b} />
+      <Row side={g.a} week={week} live={live} />
+      <Row side={g.b} week={week} live={live} />
       <small className={s.foot}>{g.foot}</small>
     </Link>
   );
@@ -101,7 +102,7 @@ export default async function V4Home({ searchParams }: { searchParams: Promise<{
   const sp = await searchParams;
   const jar = await cookies();
   const mine = parseTeam(jar.get(TEAM_COOKIE)?.value);
-  const [data, board] = await Promise.all([getV4Data(mine), getTrophyBoard().catch(() => null)]);
+  const [data, board] = await Promise.all([getV4Data(mine), trophyBoard().catch(() => null)]);
   const moment = momentOf(data.state, data.games.some((g) => g.inPlay), sp.at);
   const shart = board?.latest.find((a) => a.kind === 'shart');
   const chug = latestChug(data.week);
@@ -173,7 +174,7 @@ export default async function V4Home({ searchParams }: { searchParams: Promise<{
       {data.others.length ? (
         <div className={s.list}>
           {data.others.map((g) => (
-            <GameRow key={g.id} g={g} week={data.week} />
+            <GameRow key={g.id} g={g} week={data.week} live={data.state === 'live'} />
           ))}
         </div>
       ) : (

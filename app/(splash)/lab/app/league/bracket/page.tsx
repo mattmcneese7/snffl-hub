@@ -92,7 +92,7 @@ export default async function V4Bracket() {
   const shart = post.shartRosterId != null ? teamByRoster(post.shartRosterId) : undefined;
   return (
     <Shell data={data} active="league">
-      <SectionHead icon="trophy" word="bracket" week={data.week} mine={data.myRoster} />
+      <SectionHead icon="trophy" word="bracket" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
       {champ ? (
         <section className={s.champ}>
           <Ms name="trophy" size={36} />

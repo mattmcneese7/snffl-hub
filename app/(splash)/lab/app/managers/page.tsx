@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { cookies } from 'next/headers';
-import { TROPHIES } from '@/components/Trophy';
+import { TROPHY_NAMES as TROPHIES } from '@/lib/trophy-names';
 import { firstNameOf } from '@/config/managers';
 import { getStandings } from '@/lib/league';
 import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
@@ -28,7 +28,7 @@ export default async function V4Managers() {
   return (
     <Shell data={data} active="league">
       <div className={p.wrap}>
-        <SectionHead icon="groups" word="managers" week={data.week} mine={data.myRoster} />
+        <SectionHead icon="groups" word="managers" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
         {standings.length ? (
           <div className={s.list}>
             {standings.map((t) => {

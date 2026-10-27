@@ -92,7 +92,7 @@ export default async function V4Insights() {
 
   return (
     <Shell data={data} active="league">
-      <XHead icon="insights" word="insights" week={data.week} mine={data.myRoster} />
+      <XHead icon="insights" word="insights" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
 
       <Head title="Draft Value" note={`Through week ${throughWeek}`} />
       {draft.steals.length || draft.busts.length ? (

@@ -1,0 +1,7 @@
+/* Points by Week: the tap readout. Tokens come from .root in v4.module.css. */
+.readout { display: flex; align-items: baseline; gap: 8px; margin: 0; min-height: 22px; }
+.readout b { font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--ink); }
+.readout span { font-size: 13px; color: var(--ink-2); }
+.barDim { opacity: 0.35; }
+.barHit { fill: transparent; cursor: pointer; outline: none; -webkit-tap-highlight-color: transparent; }
+.barHit:focus-visible { stroke: var(--deep); stroke-width: 1.5; }

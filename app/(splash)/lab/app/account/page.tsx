@@ -28,7 +28,7 @@ export default async function V4Account() {
   const pickable = teams.map((t) => ({ rosterId: t.rosterId, teamName: t.teamName, manager: firstNameOf(t.rosterId) ?? t.manager, avatar: t.avatarUrl ?? null, color: t.colors?.primary ?? null }));
   return (
     <Shell data={data} active="">
-      <SectionHead icon="account" word="account" week={data.week} mine={data.myRoster} />
+      <SectionHead icon="account" word="account" week={data.week} mine={data.myRoster} back={{ href: '/lab/app', label: 'Home' }} />
       {me ? (
         <section className={s.card} aria-label="Your team">
           <div className={s.row} style={{ gridTemplateColumns: 'auto minmax(0, 1fr) auto' }}>

@@ -134,3 +134,11 @@
 .deckDots button::after { content: ''; position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--hair); transition: transform 160ms ease-out, background 160ms ease-out; }
 .deckDots .deckDotOn::after { background: var(--deep); transform: scale(1.35); }
 .deckCount { margin-left: 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* Home's chug row: one line, sized to its content. */
+.chugLine { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 8px 14px; min-height: 52px; }
+.watchPill { min-height: 44px; padding: 0 16px; border: 0; border-radius: 999px; background: var(--deep); color: var(--on-deep); font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }
+
+/* Week in 90 Seconds: a single pill that opens the story. */
+.storyPill { display: inline-flex; align-items: center; gap: 8px; justify-self: start; min-height: 44px; padding: 0 16px 0 12px; border: 0; border-radius: 999px; background: var(--card); box-shadow: var(--shadow); color: var(--ink); font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }
+.storyPill svg { color: var(--deep); }

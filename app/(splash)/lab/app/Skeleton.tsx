@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { CSSProperties, ReactNode } from 'react';
 import Pattern from '../../home/Pattern';
 import { Ms, type MsName } from './icons';
-import { Drop, SWITZER, TabBar, type Back } from './Chrome';
+import { Drop, SWITZER, TabBar, TopBar, type Back } from './Chrome';
 import s from './v4.module.css';
 import k from './skeleton.module.css';
 
@@ -35,28 +35,27 @@ export function Frame({
       <link rel="stylesheet" href={SWITZER} precedence="default" />
       <Pattern mode="wallpaper" />
       <main className={s.page} aria-busy={bar ? true : undefined}>
-        <div className={s.head}>
-          {icon && word ? (
-            <h1 className={s.secHead}>
-              {typeof icon === 'string' ? <Ms name={icon as MsName} /> : icon}
-              {word}
-            </h1>
-          ) : (
-            <Link href="/lab/app" className={s.lockup} aria-label="splash, home">
-              <Drop className={s.lockupMark} />
-              splash
-            </Link>
-          )}
-          <span className={s.headR}>
-            <i className={k.bone} style={{ width: 52, height: 14 }} />
-            <span className={s.acct} aria-hidden />
-          </span>
-        </div>
         {back ? (
-          <Link href={back.href} className={s.back}>
-            &lsaquo; {back.label}
-          </Link>
-        ) : null}
+          <TopBar title={word ? word.replace(/\b([a-z])/g, (c) => c.toUpperCase()) : ''} back={back} right={<span className={s.acct} aria-hidden />} />
+        ) : (
+          <div className={s.head}>
+            {icon && word ? (
+              <h1 className={s.secHead}>
+                {typeof icon === 'string' ? <Ms name={icon as MsName} /> : icon}
+                {word}
+              </h1>
+            ) : (
+              <Link href="/lab/app" className={s.lockup} aria-label="splash, home">
+                <Drop className={s.lockupMark} />
+                splash
+              </Link>
+            )}
+            <span className={s.headR}>
+              <i className={k.bone} style={{ width: 52, height: 14 }} />
+              <span className={s.acct} aria-hidden />
+            </span>
+          </div>
+        )}
         {children}
       </main>
       <div className={s.dock}>

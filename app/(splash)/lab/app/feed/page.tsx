@@ -289,7 +289,7 @@ export default async function V4Feed() {
 
   return (
     <Shell data={v4} active="home">
-      <SectionHead icon="feed" word="feed" week={v4.week} mine={v4.myRoster} back={{ href: '/lab/app', label: 'Home' }} />
+      <SectionHead icon="feed" word="feed" week={v4.week} mine={v4.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
 
       <FeedTabs id="page">
         <div className={f.pane} data-show="all clips">

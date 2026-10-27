@@ -134,7 +134,7 @@ export default async function V4NflGame({ params, searchParams }: { params: Prom
   return (
     <Shell data={data} active="scores">
       <LiveStart live={game.state === 'in'} week={week} />
-      <SectionHead icon="football" word="nfl" week={data.week} mine={data.myRoster} back={{ href: `/lab/app/nfl?week=${week}`, label: `NFL Week ${week}` }} />
+      <SectionHead icon="football" word="nfl" title="NFL Game" week={data.week} mine={data.myRoster} back={{ href: `/lab/app/nfl?week=${week}`, label: `NFL Week ${week}` }} />
       <section className={x.board}>
         <div className={x.art} style={{ '--home': game.home.color ?? '#2d4c9c' } as CSSProperties}>
           {extras.venue?.image ? <img src={extras.venue.image} alt="" /> : null}

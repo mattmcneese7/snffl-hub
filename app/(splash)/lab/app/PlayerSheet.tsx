@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { boxLine } from './boxLine';
+import { useOverlayHistory } from './nav/overlay';
 import type { PlayerWeek } from './playerData';
 import s from './v4.module.css';
 import q from './players/p4.module.css';
@@ -38,6 +39,11 @@ export default function PlayerSheet() {
   const [id, setId] = useState<string | null>(null);
   const [data, setData] = useState<Data | null>(null);
   const sheet = useRef<HTMLDivElement>(null);
+  const dismiss = useOverlayHistory('player', id != null, () => setId(null));
+  const drag = useRef<{ y: number; dy: number } | null>(null);
+
+  const dismissRef = useRef(dismiss);
+  dismissRef.current = dismiss;
 
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
@@ -47,7 +53,7 @@ export default function PlayerSheet() {
       setData(null);
       setId(el.dataset.player!);
     };
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setId(null);
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && dismissRef.current();
     document.addEventListener('click', onClick);
     document.addEventListener('keydown', onKey);
     return () => {
@@ -80,8 +86,31 @@ export default function PlayerSheet() {
   const tc = 'var(--deep)';
   return (
     <>
-      <div className={s.scrim} onClick={() => setId(null)} aria-hidden />
-      <div ref={sheet} className={s.sheet} role="dialog" aria-modal="true" aria-label={data?.name ?? 'Player'}>
+      <div className={s.scrim} onClick={dismiss} aria-hidden />
+      <div
+        ref={sheet}
+        className={s.sheet}
+        role="dialog"
+        aria-modal="true"
+        aria-label={data?.name ?? 'Player'}
+        onTouchStart={(e) => {
+          // Swipe down to close, only from the top of the sheet's scroll.
+          if (sheet.current && sheet.current.scrollTop <= 0) drag.current = { y: e.touches[0].clientY, dy: 0 };
+        }}
+        onTouchMove={(e) => {
+          const d = drag.current;
+          if (!d || !sheet.current) return;
+          d.dy = Math.max(0, e.touches[0].clientY - d.y);
+          sheet.current.style.transform = `translate(-50%, ${d.dy}px)`;
+        }}
+        onTouchEnd={() => {
+          const d = drag.current;
+          drag.current = null;
+          if (!d || !sheet.current) return;
+          sheet.current.style.transform = '';
+          if (d.dy > 90) dismiss();
+        }}
+      >
         <div className={s.grab} />
         <div className={s.shHead} style={{ ['--tc' as string]: tc }}>
           {data?.team ? <img className={s.shLogo} src={logo(data.team)} alt="" /> : null}
@@ -96,7 +125,7 @@ export default function PlayerSheet() {
               </span>
             ) : null}
           </div>
-          <button type="button" className={s.shClose} onClick={() => setId(null)} aria-label="Close">
+          <button type="button" className={s.shClose} onClick={dismiss} aria-label="Close">
             &times;
           </button>
         </div>

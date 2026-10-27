@@ -17,15 +17,10 @@ import { momentOf, orderOf, type ModuleKey } from './schedule';
 import { LivePoints } from './live/Live';
 import ChugPop from './ChugPop';
 import Moments, { type MomentKind } from './Moments';
-import ChugCounts from './modules/ChugCounts';
-import FeedDigest from './modules/FeedDigest';
-import FilmTile from './modules/FilmTile';
-import ChugNowCard from './modules/ChugNow';
 import Hardware from './modules/Hardware';
-import LatestTrade from './modules/LatestTrade';
-import NflScores from './modules/NflScores';
-import SquirtSays from './modules/SquirtSays';
-import TopScorers from './modules/TopScorers';
+import ChugRow from './modules/ChugRow';
+import StoryPill from './modules/StoryPill';
+import { latestWeekStory } from '@/lib/week-story';
 import Shell, { HomeHead } from './Shell';
 import s from './v4.module.css';
 
@@ -63,10 +58,10 @@ function GameRow({ g, week, live }: { g: GameView; week: number; live: boolean }
 }
 
 /**
- * Home, the front page. The same modules every week, in an order set by the
- * moment (see schedule.ts): the awards and the chug after a final, the Rag
- * midweek, Squirt's reads on a game day morning, every matchup once games
- * are on. Your own game lives in the score bar, so it is not repeated here.
+ * Home, the front page: only what Matt approved, each module in its moment
+ * (see schedule.ts). The awards and the chug after a final, the Rag
+ * midweek, every matchup on game days. Your own game lives in the score bar,
+ * so it is not repeated here.
  */
 export default async function V4Home({ searchParams }: { searchParams: Promise<{ at?: string; moment?: string }> }) {
   const sp = await searchParams;
@@ -97,15 +92,25 @@ export default async function V4Home({ searchParams }: { searchParams: Promise<{
   const leadSrc = leadArt ? (leadArt.kind === 'photo' ? leadArt.src : leadArt.cutout) : null;
 
   const live = moment === 'live';
+  const order = orderOf(moment);
+  const slides = order.includes('story') ? await latestWeekStory(data.week).catch(() => []) : [];
+  const storyIntro = slides.find((x) => x.kind === 'intro');
+  const storyWeek = storyIntro && storyIntro.kind === 'intro' ? storyIntro.week : data.week;
+  const ragTop = issue ? (
+    <Link href={`/lab/app/rag/${issue.week}`} className={s.ragTop} style={{ textDecoration: 'none' }}>
+      <b>The Rag</b>
+      <span>
+        Week {issue.week} &middot; {CT_DATE.format(new Date(issue.publishedAt))}
+      </span>
+    </Link>
+  ) : null;
   const modules: Record<ModuleKey, ReactNode> = {
-    rag: issue && lead ? (
+    awards: board ? <Hardware board={board} mine={mine} /> : null,
+    chug: <ChugRow board={board} week={data.week} moment={moment} />,
+    rag:
+      issue && lead ? (
         <article className={s.rag}>
-          <Link href={`/lab/app/rag/${issue.week}`} className={s.ragTop} style={{ textDecoration: 'none' }}>
-            <b>The Rag</b>
-            <span>
-              Week {issue.week} &middot; {CT_DATE.format(new Date(issue.publishedAt))}
-            </span>
-          </Link>
+          {ragTop}
           <Link href={`/lab/app/rag/${issue.week}/${lead.slug}`} style={{ color: 'inherit', textDecoration: 'none' }}>
             {leadSrc ? (
               <span className={s.ragArt} style={{ display: 'block' }}>
@@ -129,39 +134,51 @@ export default async function V4Home({ searchParams }: { searchParams: Promise<{
           </div>
         </article>
       ) : null,
-    hardware: board ? <Hardware board={board} mine={mine} /> : null,
-    // The chug lives in one place: who owes, by when, and the film once paid.
-    chug: <ChugNowCard board={board} week={data.week} />,
-    film: <FilmTile week={data.week} withChug={false} />,
-    scorers: <TopScorers week={data.week} mine={mine} />,
+    ragCompact:
+      issue && lead ? (
+        <article className={s.rag}>
+          {ragTop}
+          <Link href={`/lab/app/rag/${issue.week}/${lead.slug}`} className={s.ragLead}>
+            {leadSrc ? <img src={leadSrc} alt="" /> : null}
+            <span>
+              <small>{lead.category}</small>
+              <b>{lead.headline}</b>
+            </span>
+          </Link>
+          <div className={s.ragList}>
+            {articles.slice(1, 3).map((a) => (
+              <Link key={a.slug} href={`/lab/app/rag/${issue.week}/${a.slug}`} className={s.ragRow}>
+                <small>{a.category}</small>
+                <b>{a.headline}</b>
+              </Link>
+            ))}
+          </div>
+        </article>
+      ) : null,
     matchups: (
       <>
         <div className={s.title}>
-        <h2>{live ? 'Live Matchups' : 'All Matchups'}</h2>
-        
-      </div>
-      {data.others.length ? (
-        <div className={s.list}>
-          {data.others.map((g) => (
-            <GameRow key={g.id} g={g} week={data.week} live={data.state === 'live'} />
-          ))}
+          <h2>{live ? 'Live Matchups' : 'All Matchups'}</h2>
+          <Link href="/lab/app/feed">Feed</Link>
         </div>
-      ) : (
-        <p className={s.empty}>No matchups for week {data.week} yet.</p>
-      )}
+        {data.others.length ? (
+          <div className={s.list}>
+            {data.others.map((g) => (
+              <GameRow key={g.id} g={g} week={data.week} live={data.state === 'live'} />
+            ))}
+          </div>
+        ) : (
+          <p className={s.empty}>No matchups for week {data.week} yet.</p>
+        )}
       </>
     ),
-    nfl: <NflScores week={data.week} />,
-    squirt: <SquirtSays week={data.week} mine={mine} />,
-    trade: <LatestTrade mine={mine} />,
-    feed: <FeedDigest mine={mine} week={data.week} games={data.games} />,
-    chugs: <ChugCounts mine={mine} />,
+    story: slides.length ? <StoryPill slides={slides} week={storyWeek} /> : null,
   };
 
   return (
     <Shell data={data} active="home">
       <HomeHead week={data.week} mine={data.myRoster} />
-      {orderOf(moment).map((k) => (
+      {order.map((k) => (
         <Fragment key={k}>{modules[k]}</Fragment>
       ))}
       <Moments week={data.week} won={won} sharted={sharted} name={mine != null ? (firstNameOf(mine) ?? null) : null} force={forced} />

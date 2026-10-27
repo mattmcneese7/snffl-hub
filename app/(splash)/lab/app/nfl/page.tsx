@@ -33,7 +33,7 @@ export default async function V4Nfl({ searchParams }: { searchParams: Promise<{ 
   return (
     <Shell data={data} active="scores">
       <LiveStart live={wv.ctx.nfl.some((g) => g.state === 'in')} week={week} />
-      <SectionHead icon="football" word="nfl" week={data.week} mine={data.myRoster} back={{ href: `/lab/app/scores/${week}`, label: `Week ${week} Scores` }} />
+      <SectionHead icon="football" word="nfl" title="NFL Slate" week={data.week} mine={data.myRoster} back={{ href: `/lab/app/scores/${week}`, label: `Week ${week} Scores` }} />
       <WeekStrip week={week} last={lastFantasyWeek()} base="/lab/app/nfl" query />
       <div className={s.title}>
         <h2>NFL Week {week}</h2>

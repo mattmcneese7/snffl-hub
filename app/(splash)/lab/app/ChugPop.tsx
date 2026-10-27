@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Ms } from './icons';
+import { useOverlayHistory } from './nav/overlay';
 import p from './pop.module.css';
 
 const seenKey = (week: number) => `splash4.chug.seen.w${week}`;
@@ -43,6 +44,7 @@ export default function ChugPop({ week, src, who }: { week: number; src: string;
       // Not being able to remember is no reason to keep it up.
     }
   }, [week]);
+  const dismiss = useOverlayHistory('chug', open, close);
 
   useEffect(() => {
     let seen = true;
@@ -68,13 +70,13 @@ export default function ChugPop({ week, src, who }: { week: number; src: string;
 
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && close();
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && dismiss();
     window.addEventListener('keydown', onKey);
     if (card.current && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       card.current.animate([{ transform: 'translateY(24px) scale(0.96)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 420, easing: EASE });
     }
     return () => window.removeEventListener('keydown', onKey);
-  }, [open, close]);
+  }, [open, dismiss]);
 
   // Refit when the phone rotates.
   useEffect(() => {
@@ -99,7 +101,7 @@ export default function ChugPop({ week, src, who }: { week: number; src: string;
   if (!open) return null;
   return createPortal(
     <div className={p.wrap} role="dialog" aria-modal="true" aria-label={`Week ${week} chug`}>
-      <button type="button" className={p.scrim} onClick={close} aria-label="Close" tabIndex={-1} />
+      <button type="button" className={p.scrim} onClick={dismiss} aria-label="Close" tabIndex={-1} />
       <div ref={card} className={p.card}>
         <div className={p.head}>
           <span className={p.badge}>
@@ -109,7 +111,7 @@ export default function ChugPop({ week, src, who }: { week: number; src: string;
             <b>Week {week} Chug</b>
             {who ? <span>{who} pays up</span> : null}
           </span>
-          <button type="button" className={p.close} onClick={close} aria-label="Close">
+          <button type="button" className={p.close} onClick={dismiss} aria-label="Close">
             <Ms name="close" size={20} />
           </button>
         </div>
@@ -121,7 +123,7 @@ export default function ChugPop({ week, src, who }: { week: number; src: string;
             autoPlay
             muted
             preload="auto"
-            onEnded={close}
+            onEnded={dismiss}
             onLoadedMetadata={(e) => setSize(fit(e.currentTarget.videoWidth, e.currentTarget.videoHeight))}
             style={size ? { width: size.w, height: size.h } : undefined}
           />

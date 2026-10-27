@@ -1,11 +1,11 @@
-import Link from 'next/link';
+import type { ReactNode } from 'react';
 import { CUT_WIDTH, LACE_SPINE, LACE_STITCHES, SEAM_FOOT, SEAM_TOP } from '../../marks';
-import { Ms, type MsName } from './icons';
+import BackButton from './nav/BackButton';
 import s from './v4.module.css';
 
 /**
  * The frame's own parts, safe on the server and in the browser alike: the
- * drop, the tab bar and the back link. Shell, the loading skeletons and the
+ * drop, the tab bar and the top bar. Shell, the loading skeletons and the
  * error page all draw from here, so they cannot drift apart.
  */
 export const SWITZER = 'https://api.fontshare.com/v2/css?f[]=switzer@900,901&display=swap';
@@ -26,36 +26,23 @@ export function Drop({ className }: { className?: string }) {
   );
 }
 
-export const TABS: { key: string; label: string; icon: MsName; href: string }[] = [
-  { key: 'home', label: 'Home', icon: 'home', href: '/lab/app' },
-  { key: 'scores', label: 'Scores', icon: 'football', href: '/lab/app/scores' },
-  { key: 'rag', label: 'The Rag', icon: 'rag', href: '/lab/app/rag' },
-  { key: 'league', label: 'League', icon: 'league', href: '/lab/app/league' },
-  { key: 'swami', label: 'Swami', icon: 'swami', href: '/lab/app/swami' },
-];
+/** The five tabs, on every screen; each remembers where you left it. */
+export { default as TabBar } from './nav/TabBar';
 
-/** The five tabs, on every screen, the current one lit. */
-export function TabBar({ active }: { active: string }) {
-  return (
-    <nav className={s.tabs} aria-label="Sections">
-      {TABS.map((t) => (
-        <Link key={t.key} href={t.href} className={`${s.tab} ${t.key === active ? s.tabOn : ''}`} aria-current={t.key === active ? 'page' : undefined}>
-          <Ms name={t.icon} />
-          {t.label}
-        </Link>
-      ))}
-    </nav>
-  );
-}
-
-/** Where a sub page goes back to, under its head: "‹ League". */
+/** Where a sub page goes back to when there is no earlier screen this session. */
 export type Back = { href: string; label: string };
 
-export function BackLink({ back }: { back?: Back }) {
-  return back ? (
-    <Link href={back.href} className={s.back}>
-      &lsaquo; {back.label}
-    </Link>
-  ) : null;
+/**
+ * The top bar on every screen below a tab's top page: back to where you
+ * were (named), the page's title, and whatever sits on the right (your
+ * avatar). Pinned under the status bar.
+ */
+export function TopBar({ title, back, right }: { title: string; back: Back; right?: ReactNode }) {
+  return (
+    <header className={s.topBar}>
+      <BackButton fallbackHref={back.href} fallbackLabel={back.label} />
+      <h1 className={s.topTitle}>{title}</h1>
+      <span className={s.topRight}>{right}</span>
+    </header>
+  );
 }
-

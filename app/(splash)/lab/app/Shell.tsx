@@ -2,9 +2,11 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import Pattern from '../../home/Pattern';
 import { Ms, type MsName } from './icons';
-import { BackLink, Drop, SWITZER, TabBar, type Back } from './Chrome';
+import { Suspense } from 'react';
+import { Drop, SWITZER, TabBar, TopBar, type Back } from './Chrome';
+import Tracker from './nav/Tracker';
 
-export { BackLink, Drop, TabBar, type Back };
+export { Drop, TabBar, TopBar, type Back };
 import ScoreBar from './ScoreBar';
 import PlayerSheet from './PlayerSheet';
 import { LiveStart } from './live/Live';
@@ -40,25 +42,28 @@ export function HomeHead({ week, mine }: { week: number; mine: number | null }) 
   );
 }
 
-/** Every other tab: its own icon and name, in the same Switzer as the lockup. Sub pages pass `back`. */
-export function SectionHead({ icon, word, week, mine, back }: { icon: MsName; word: string; week: number; mine: number | null; back?: Back }) {
+/**
+ * Every other tab's top page: its own icon and name, in the same Switzer as
+ * the lockup. Screens below a tab's top page pass `back` and get the top bar
+ * instead: back to where you were, the page's title, your avatar.
+ */
+export function SectionHead({ icon, word, week, mine, back, title }: { icon: MsName; word: string; week: number; mine: number | null; back?: Back; title?: string }) {
+  if (back) return <TopBar title={title ?? titleCase(word)} back={back} right={<Account mine={mine} />} />;
   return (
-    <>
-      <div className={s.head}>
-        <h1 className={s.secHead}>
-          <Ms name={icon} />
-          {word}
-        </h1>
-        <span className={s.headR}>
-          <span className={s.wk}>Week {week}</span>
-          <Account mine={mine} />
-        </span>
-      </div>
-      <BackLink back={back} />
-    </>
+    <div className={s.head}>
+      <h1 className={s.secHead}>
+        <Ms name={icon} />
+        {word}
+      </h1>
+      <span className={s.headR}>
+        <span className={s.wk}>Week {week}</span>
+        <Account mine={mine} />
+      </span>
+    </div>
   );
 }
 
+const titleCase = (w: string) => w.replace(/\b(nfl)\b/gi, 'NFL').replace(/\b([a-z])/g, (c) => c.toUpperCase());
 
 /**
  * Splash 4.0's frame: paper and wallpaper, the page, and the dock with the
@@ -87,6 +92,9 @@ export default function Shell({ data, active, children }: { data: V4Data; active
         <TabBar active={active} />
       </div>
       <PlayerSheet />
+      <Suspense fallback={null}>
+        <Tracker />
+      </Suspense>
       <LiveStart live={data.state === 'live' && data.games.some((g) => g.inPlay)} week={data.week} />
       {mine ? <SquirtLive week={data.week} state={data.state} me={mine.a.rosterId} them={mine.b.rosterId} base={[mine.a.score, mine.b.score]} /> : null}
     </div>

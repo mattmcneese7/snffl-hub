@@ -406,7 +406,7 @@ export default async function V4Matchup({ searchParams }: { searchParams: Promis
   return (
     <Shell data={data} active="scores">
       <LiveStart live={ctx.nfl.some((g) => g.state === 'in')} week={week} />
-      <SectionHead icon="football" word="scores" week={data.week} mine={data.myRoster} back={{ href: `/lab/app/scores/${week}`, label: `Week ${week} Scores` }} />
+      <SectionHead icon="football" word="scores" title="Matchup" week={data.week} mine={data.myRoster} back={{ href: `/lab/app/scores/${week}`, label: `Week ${week} Scores` }} />
       <section className={s.hero} aria-label={`Week ${week} matchup`}>
         <div className={s.heroTop}>
           <span>{isMine ? `Week ${week} Matchup` : `Week ${week}`}</span>

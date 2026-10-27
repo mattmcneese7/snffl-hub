@@ -2,40 +2,28 @@ import type { BarState } from './data';
 
 /**
  * Home's running order, set by where the league is in its week (Central
- * time). The same modules every week, led by whichever one the moment is
- * about:
+ * time). Only the modules Matt approved, each in its moment:
  *
- *   recap     Monday night final to Wednesday: the awards, who owes the chug,
- *             the week in 90 seconds, last week's best performers, the Rag
- *   midweek   Wednesday until Thursday kickoff: the Rag leads, the chug film
- *             (or the chug still owed), Squirt's early reads, the latest trade
- *   gameday   a game day with nothing on yet (Sunday morning): Squirt's lineup
- *             reads, the day's NFL slate, the chug deadline at noon
- *   live      games on: every matchup live first, top performers, NFL scores,
- *             the feed's live posts
+ *   recap     Monday night final to Wednesday: the week's awards, the chug,
+ *             the Rag, every final, and the week in 90 seconds
+ *   midweek   Wednesday until Thursday kickoff: the Rag leads, the chug while
+ *             it is still owed, every matchup's projection
+ *   gameday   a game day with nothing on yet: every matchup and kickoff, the
+ *             chug until Sunday noon, the Rag compact
+ *   live      games on: every matchup live, the Rag compact; scoring plays
+ *             come through the score bar
  *
  * `?at=recap|midweek|gameday|live` shows any of them on any day, for review.
  */
 export type Moment = 'recap' | 'midweek' | 'gameday' | 'live';
 
-export type ModuleKey =
-  | 'rag'
-  | 'hardware'
-  | 'film'
-  | 'chug'
-  | 'scorers'
-  | 'matchups'
-  | 'nfl'
-  | 'squirt'
-  | 'trade'
-  | 'feed'
-  | 'chugs';
+export type ModuleKey = 'awards' | 'chug' | 'rag' | 'ragCompact' | 'matchups' | 'story';
 
 const ORDER: Record<Moment, ModuleKey[]> = {
-  recap: ['hardware', 'chug', 'film', 'rag', 'scorers', 'matchups', 'feed', 'chugs', 'trade'],
-  midweek: ['rag', 'chug', 'film', 'squirt', 'matchups', 'trade', 'hardware', 'feed', 'chugs'],
-  gameday: ['squirt', 'chug', 'nfl', 'matchups', 'rag', 'feed', 'trade'],
-  live: ['matchups', 'scorers', 'nfl', 'feed', 'squirt', 'rag', 'chug'],
+  recap: ['awards', 'chug', 'rag', 'matchups', 'story'],
+  midweek: ['rag', 'chug', 'matchups'],
+  gameday: ['matchups', 'chug', 'ragCompact'],
+  live: ['matchups', 'ragCompact'],
 };
 
 const MOMENTS: Moment[] = ['recap', 'midweek', 'gameday', 'live'];

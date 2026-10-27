@@ -22,7 +22,7 @@ export default async function V4RagWeek({ params }: { params: Promise<{ week: st
   const art = await issueArt(week, issue.articles).catch(() => ({}));
   return (
     <Shell data={data} active="rag">
-      <SectionHead icon="rag" word="the rag" week={data.week} mine={data.myRoster} />
+      <SectionHead icon="rag" word="the rag" title={`Week ${week}`} week={data.week} mine={data.myRoster} back={{ href: '/lab/app/rag', label: 'The Rag' }} />
       <IssueView issue={issue} art={art} weeks={publishedWeeks()} />
     </Shell>
   );

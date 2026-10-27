@@ -37,7 +37,7 @@ export default async function V4RagArticle({ params }: Params) {
   const more = issue.articles.filter((x) => x.slug !== slug && !x.retracted).slice(0, 3);
   return (
     <Shell data={data} active="rag">
-      <SectionHead icon="rag" word="the rag" week={data.week} mine={data.myRoster} />
+      <SectionHead icon="rag" word="the rag" title="The Rag" week={data.week} mine={data.myRoster} back={{ href: `/lab/app/rag/${week}`, label: `Week ${week}` }} />
       <article className={`${s.card} ${s.read}`}>
         <Link href={`/lab/app/rag/${week}`} className={s.back}>
           Week {week} issue

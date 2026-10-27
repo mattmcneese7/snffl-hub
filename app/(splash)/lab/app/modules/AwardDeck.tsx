@@ -16,22 +16,29 @@ export type DeckAward = { kind: string; name: string; rosterId: number; team: st
  */
 export default function AwardDeck({ awards }: { awards: DeckAward[] }) {
   const [at, setAt] = useState(0);
+  // Squirt takes the pose of the slide that comes to rest, not every slide
+  // the track passes on the way there.
+  const [rest, setRest] = useState(0);
   const track = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = track.current;
     if (!el) return;
     let raf = 0;
+    let settle = 0;
+    const index = () => Math.max(0, Math.min(awards.length - 1, Math.round(el.scrollLeft / el.clientWidth)));
     const onScroll = () => {
       cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => setAt(Math.max(0, Math.min(awards.length - 1, Math.round(el.scrollLeft / el.clientWidth)))));
+      raf = requestAnimationFrame(() => setAt(index()));
+      window.clearTimeout(settle);
+      settle = window.setTimeout(() => setRest(index()), 140);
     };
     el.addEventListener('scroll', onScroll, { passive: true });
-    return () => { el.removeEventListener('scroll', onScroll); cancelAnimationFrame(raf); };
+    return () => { el.removeEventListener('scroll', onScroll); cancelAnimationFrame(raf); window.clearTimeout(settle); };
   }, [awards.length]);
 
   const go = (i: number) => track.current?.scrollTo({ left: i * track.current.clientWidth, behavior: 'smooth' });
-  const a = awards[at];
+  const a = awards[rest];
 
   return (
     <Card className={ui.deck}>

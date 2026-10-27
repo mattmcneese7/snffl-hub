@@ -9,7 +9,7 @@ decided something more specific, his decision is noted.
 |---|---|---|---|
 | 1 | One focal point per screen. On a game day, Home opens on your game. | One hero per screen; your game first on game day (the score bar carries it on every screen) | Look: what does the eye land on first? |
 | 2 | Each fact once. One place for each game; everywhere else links to it. | No score, name or fact repeated on a screen | Count repeats on each screen |
-| 3 | One highlight per screen, for the one thing to notice. Emphasis only works when it is rare. | At most one accent emphasis per screen (brand blue fill, gold award, red live) beyond the hero | Count accent fills per screen |
+| 3 | One highlight per screen, for the one thing to notice. Emphasis only works when it is rare. | At most one accent emphasis per screen (brand blue fill, gold award, red live) beyond the hero. Matt, 2026-10-27: several colors are fine in places where they carry meaning (the Top Performers tickets in club colors), just never going wild | Count accent fills per screen |
 | 4 | Five places, always visible, within thumb reach. The ticker joins the menu as one bar. | 5 tabs at the bottom, never hidden; the score bar attached to the tab bar | Look |
 | 5 | Fixed bars small. | Step 1 said about 10%; Matt later set the score bar plus tab bar at or under 20% | Measure |
 | 6 | Seven type sizes, three weights, one typeface for data. Handwriting only for Squirt, the italic only for the Rag. | Sizes 38/24/18/15/13/11 (plus Switzer titles); UI weights 400, 600, 800; Switzer 900 only for the lockup and branded titles | Measure computed styles |

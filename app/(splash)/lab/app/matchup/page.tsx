@@ -6,14 +6,11 @@ import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import type { LiveMatchup, LivePlayer, LiveSide } from '@/lib/matchup-live';
 import { sleeperLink } from '@/lib/sleeper-links';
 import { swamiLine, swamiRead } from '@/lib/swami';
-import { embedClipsForPlayers } from '../../../lib/embed-clips';
 import { moneyText } from '../../../lib/book-pref';
 import { bookFrom, mainBook, withBook } from '../../../lib/odds-books';
 import { getV4Data, sleeperWinProb, type GameView } from '../data';
 import Shell, { SectionHead } from '../Shell';
 import { LivePoints, LiveStart } from '../live/Live';
-import Clips from '../scores/Clips';
-import { railOf } from '../scores/clipData';
 import { kickoffText, quarter, record } from '../scores/format';
 import type { NflGame } from '@/lib/gameday';
 import m from './matchup.module.css';
@@ -294,11 +291,7 @@ export default async function V4Matchup({ searchParams }: { searchParams: Promis
   const wk = chip === 'Live' ? week : undefined;
   const isMine = mine.a.rosterId === mineId;
 
-  const ids = [...meSide.lineup, ...meSide.bench, ...themSide.lineup, ...themSide.bench].map((y) => y.id);
-  const owner = new Map<string, string>();
-  for (const side of [meSide, themSide]) for (const y of [...side.lineup, ...side.bench]) owner.set(y.id, teamByRoster(side.rosterId)?.teamName ?? side.team);
-  const [clips, lastMet] = await Promise.all([embedClipsForPlayers(week, ids).catch(() => []), lastMeeting(week, mine.a.rosterId, mine.b.rosterId)]);
-  const rail = railOf(clips, (id) => owner.get(id) ?? null, 8);
+  const lastMet = await lastMeeting(week, mine.a.rosterId, mine.b.rosterId);
 
   const inGames = new Set([...meSide.lineup, ...themSide.lineup].map((y) => y.nfl?.game.id).filter(Boolean));
   const relevant = ctx.nfl.filter((g) => inGames.has(g.id));
@@ -412,12 +405,7 @@ export default async function V4Matchup({ searchParams }: { searchParams: Promis
           </List>
         </Section>
       ) : null}
-      {rail.length ? (
-        <Section title="Highlights">
-          <Clips clips={rail} />
-        </Section>
-      ) : null}
-      <p className={ui.spec}>Sources: Sleeper, ESPN, DraftSharks{lineBook ? `, ${lineBook}` : ''}, YouTube</p>
+      <p className={ui.spec}>Sources: Sleeper, ESPN, DraftSharks{lineBook ? `, ${lineBook}` : ''}</p>
     </Shell>
   );
 }

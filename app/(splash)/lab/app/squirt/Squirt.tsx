@@ -43,6 +43,7 @@ export default function Squirt({ mood: moodProp = 'calm', award, size = 160, lis
   const visible = useRef(false);
   const spring = useRef({ sx: [1, 0], sy: [1, 0], r: [0, 0], y: [0, 0] } as Record<string, [number, number]>);
   const hold = useRef<number | null>(null);
+  const seq = useRef(0);
 
   // Video only where it can be seen well: big enough, motion allowed, data allowed.
   useEffect(() => {
@@ -59,6 +60,7 @@ export default function Squirt({ mood: moodProp = 'calm', award, size = 160, lis
   /** Play a clip on the back player, then bring it to the front. */
   const play = useCallback((name: string, loop: boolean, then?: () => void) => {
     if (lite) return;
+    const ticket = ++seq.current;
     const next = 1 - front.current;
     const v = vids[next].current;
     const cur = vids[front.current].current;
@@ -73,6 +75,8 @@ export default function Squirt({ mood: moodProp = 'calm', award, size = 160, lis
     }
     v.currentTime = 0;
     const go = () => {
+      // A newer clip was asked for while this one loaded: it wins.
+      if (ticket !== seq.current) return;
       v.style.opacity = '1';
       if (cur) cur.style.opacity = '0';
       front.current = next;
@@ -136,6 +140,7 @@ export default function Squirt({ mood: moodProp = 'calm', award, size = 160, lis
       if (lite) return;
       if (v?.dataset.name) void v.play().catch(() => undefined);
       else if (award && AWARD_LOOPS.has(award)) play(awardClip(award), true);
+      else if (award && AWARD_ARRIVE[award]) play(AWARD_ARRIVE[award], false);
       else if (!award) play(`idle-${mood}`, true);
     }, { threshold: 0.2 });
     io.observe(el);

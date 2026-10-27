@@ -23,7 +23,7 @@ version exists under `/lab/app` and holds up in both themes.
 - [x] Scoreboard with week selector 1 to 17, your game first, CLOSE, margin, lore chips
 - [x] Squirt says for every manager
 - [x] Matchup: hero, Starters, Top Performers, Next Game (built)
-- [x] Matchup: Carrying X, Swami panel, expandable rows with ranges, bench, Their Games, tape, last met
+- [x] Matchup: Carrying X, Swami panel, expandable rows with ranges, bench, Their Games, last met. Tape moved to each NFL game page and the player profile (Matt, 2026-10-27, to keep the matchup under 3 screens)
 - [x] NFL slate: odds, spread, O/U, implied totals, win bar, league starters
 - [x] NFL game page: board, At Kickoff weather, Season So Far, The Line, Lines Across Books, tape, Who Has Skin in This
 

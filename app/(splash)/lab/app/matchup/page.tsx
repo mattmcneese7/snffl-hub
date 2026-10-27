@@ -300,10 +300,11 @@ export default async function V4Matchup({ searchParams }: { searchParams: Promis
   const rows = Math.max(meSide.bench.length, themSide.bench.length);
 
   return (
-    <Shell data={data} active="scores">
+    <Shell data={data} active="scores" barDock={isMine && week === data.week ? 'yourGame' : undefined}>
       <LiveStart live={ctx.nfl.some((g) => g.state === 'in')} week={week} />
       <SectionHead icon="football" word="scores" title="Matchup" week={data.week} mine={data.myRoster} back={{ href: `/lab/app/scores/${week}`, label: 'Scores' }} />
       <Hero
+        id="yourGame"
         label={isMine ? `Week ${week} Matchup` : `Week ${week}`}
         state={chip === 'Live' ? <LiveTag /> : <Label>{chip}</Label>}
         sides={[mine.a, mine.b].map((x) => ({ avatar: x.avatar, color: x.color, team: x.team, manager: x.manager, lost: x.lost, score: wk ? <LivePoints week={wk} rosterId={x.rosterId} fallback={x.score} /> : x.score.toFixed(2) }))}

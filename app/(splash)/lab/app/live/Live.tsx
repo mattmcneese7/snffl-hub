@@ -172,3 +172,31 @@ export function LivePoints({
   }
   return <Tick value={value} digits={digits} className={className} />;
 }
+
+/**
+ * Says what changed, for screen readers: when either side of your matchup
+ * scores, one polite announcement with who moved, the new score and the change.
+ * Visually hidden; the tick is the sighted version of the same news.
+ */
+export function LiveAnnounce({ week, sides, className }: { week: number; sides: { rosterId: number; team: string }[]; className?: string }) {
+  const live = useLive();
+  const prev = useRef<Record<number, number>>({});
+  const [text, setText] = useState('');
+  useEffect(() => {
+    if (live.week !== week) return;
+    const moved: string[] = [];
+    for (const s of sides) {
+      const now = live.teams[s.rosterId];
+      if (now == null) continue;
+      const was = prev.current[s.rosterId];
+      if (was != null && now !== was) moved.push(`${s.team} ${now.toFixed(2)}, ${now > was ? 'up' : 'down'} ${Math.abs(now - was).toFixed(2)}`);
+      prev.current[s.rosterId] = now;
+    }
+    if (moved.length) setText(moved.join('. '));
+  }, [live, week, sides]);
+  return (
+    <span className={className} role="status" aria-live="polite" aria-atomic="true">
+      {text}
+    </span>
+  );
+}

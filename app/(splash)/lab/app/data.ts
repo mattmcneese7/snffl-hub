@@ -1,4 +1,5 @@
 import { cache } from 'react';
+import { cookies } from 'next/headers';
 import { firstNameOf } from '@/config/managers';
 import { getWeekGames, lastFantasyWeek, scoredWeek, teamByRoster } from '@/lib/league';
 import { buildLiveMatchup, getMatchupContext, markInPlay, type LiveMatchup, type LiveSide } from '@/lib/matchup-live';
@@ -49,6 +50,12 @@ export type GameView = { id: number; a: SideView; b: SideView; foot: string };
 /** Which matchup the app shows right now, by the clock and the NFL slate (Central time). */
 const pickWeek = cache(async (): Promise<{ week: number; state: BarState }> => {
   const week = await scoredWeek();
+  // Development only: a `splash_dev_state` cookie forces the state, so live
+  // scoring can be tested when no game is on. Production ignores it.
+  if (process.env.NODE_ENV !== 'production') {
+    const forced = (await cookies()).get('splash_dev_state')?.value;
+    if (forced === 'live' || forced === 'preview' || forced === 'final') return { week, state: forced };
+  }
   const ctx = await getMatchupContext(week).catch(() => null);
   const nfl = ctx?.nfl ?? [];
   const started = nfl.some((g) => g.state !== 'pre');

@@ -3,8 +3,8 @@
 import Link from 'next/link';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { BarState, SideView } from './data';
-import { LivePoints } from './live/Live';
-import { LiveTag } from './ui';
+import { LiveAnnounce, LivePoints } from './live/Live';
+import { LiveTag, ui } from './ui';
 import s from './ui/blocks/ScoreBar.module.css';
 
 const EASE = 'cubic-bezier(0.32, 0.72, 0, 1)';
@@ -130,6 +130,7 @@ export default function ScoreBar({ week, state, rows, href, dockTo }: { week: nu
           </small>
         </span>
       ))}
+      {state === 'live' ? <LiveAnnounce week={week} sides={rows.map((r) => ({ rosterId: r.rosterId, team: r.team }))} className={ui.sr} /> : null}
       {stub ? null : <Link href={href} className={s.barGo} data-fade>
         Full matchup
       </Link>}

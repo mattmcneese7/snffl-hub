@@ -48,6 +48,7 @@ jobs:
 
   iphone:
     needs: matte
+    if: ${{ always() && needs.matte.result == 'success' }}
     runs-on: macos-14
     timeout-minutes: 20
     steps:
@@ -62,12 +63,13 @@ jobs:
         run: |
           FF=$(python3 -c "import imageio_ffmpeg as f; print(f.get_ffmpeg_exe())")
           for d in out/*/; do
+            [ -d "$d" ] || continue
             n=$(basename "$d")
             "$FF" -hide_banner -loglevel error -y -framerate "$(jq .fps jobs.json)" -i "$d/%03d.png" -c:v hevc_videotoolbox -allow_sw 1 -alpha_quality 0.8 -tag:v hvc1 -pix_fmt bgra -b:v 900k -an "out/$n.mov"
             echo "mov $n $(( $(stat -f%z "out/$n.mov") / 1024 )) KB"
           done
           rm -rf out/*/
-          cat out/*.report.txt > out/report.txt
+          cat out/*.report.txt > out/report.txt 2>/dev/null || true
       - uses: actions/upload-artifact@v4
         with:
           name: squirt-matte

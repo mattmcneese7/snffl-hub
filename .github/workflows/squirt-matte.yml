@@ -1,32 +1,73 @@
 name: squirt matte
 
-# Cuts Squirt out of his studio background in the cloud, so the Mac does
-# not have to. Runs only on this branch; results come back as an artifact.
+# Cuts Squirt out of his studio background in the cloud, one job per still
+# or clip, all at once. A short Mac job then encodes the iPhone format
+# (HEVC with alpha) from the transparent frames. Runs only on this branch.
 on:
   push:
     branches: [squirt/matte]
   workflow_dispatch:
 
 jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      items: ${{ steps.p.outputs.items }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: p
+        run: echo "items=$(jq -c '[.stills[] | {kind:"still",name,url}] + [.clips[] | {kind:"clip",name,url}]' jobs.json)" >> "$GITHUB_OUTPUT"
+
   matte:
-    runs-on: macos-14
-    timeout-minutes: 180
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        item: ${{ fromJson(needs.plan.outputs.items) }}
+    name: ${{ matrix.item.kind }} ${{ matrix.item.name }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Cache the matting model
-        uses: actions/cache@v4
+      - uses: actions/cache@v4
         with:
           path: |
             ~/.u2net
             ~/.rembg
-          key: rembg-birefnet-general-v1
-      - name: Install tools
-        run: pip install "rembg[cpu]==2.0.86" imageio-ffmpeg pillow numpy
-      - name: Matte stills and clips
-        run: python matte.py
+          key: rembg-birefnet-general-linux-v1
+      - run: pip install "rembg[cpu]==2.0.86" imageio-ffmpeg pillow numpy
+      - run: python matte.py "${{ matrix.item.kind }}" "${{ matrix.item.name }}" "${{ matrix.item.url }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: part-${{ matrix.item.name }}
+          path: out/
+          retention-days: 14
+
+  iphone:
+    needs: matte
+    runs-on: macos-14
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: part-*
+          merge-multiple: true
+          path: out
+      - run: pip3 install --break-system-packages imageio-ffmpeg
+      - name: Encode HEVC with alpha for Safari
+        run: |
+          FF=$(python3 -c "import imageio_ffmpeg as f; print(f.get_ffmpeg_exe())")
+          for d in out/*/; do
+            n=$(basename "$d")
+            "$FF" -hide_banner -loglevel error -y -framerate "$(jq .fps jobs.json)" -i "$d/%03d.png" -c:v hevc_videotoolbox -allow_sw 1 -alpha_quality 0.8 -tag:v hvc1 -pix_fmt bgra -b:v 900k -an "out/$n.mov"
+            echo "mov $n $(( $(stat -f%z "out/$n.mov") / 1024 )) KB"
+          done
+          rm -rf out/*/
+          cat out/*.report.txt > out/report.txt
       - uses: actions/upload-artifact@v4
         with:
           name: squirt-matte

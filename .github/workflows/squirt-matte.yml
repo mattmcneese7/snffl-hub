@@ -1,0 +1,34 @@
+name: squirt matte
+
+# Cuts Squirt out of his studio background in the cloud, so the Mac does
+# not have to. Runs only on this branch; results come back as an artifact.
+on:
+  push:
+    branches: [squirt/matte]
+  workflow_dispatch:
+
+jobs:
+  matte:
+    runs-on: macos-14
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Cache the matting model
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.u2net
+            ~/.rembg
+          key: rembg-birefnet-general-v1
+      - name: Install tools
+        run: pip install "rembg[cpu]==2.0.86" imageio-ffmpeg pillow numpy
+      - name: Matte stills and clips
+        run: python matte.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: squirt-matte
+          path: out/
+          retention-days: 14

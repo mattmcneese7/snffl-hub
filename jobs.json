@@ -1,0 +1,19 @@
+{
+  "fps": 15,
+  "size": 480,
+  "model": "birefnet-general",
+  "stills": [
+    {"name": "smug", "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/KbwmP4NEz7hMD73rOTrt/gpt-image-2-1_1793113781171_1dfa58e2.png"},
+    {"name": "sweat", "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/KbwmP4NEz7hMD73rOTrt/gpt-image-2-edit-1_1793114397802_7300243c.png"},
+    {"name": "gloom", "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/KbwmP4NEz7hMD73rOTrt/gpt-image-2-edit-1_1793114400764_265da6b9.png"},
+    {"name": "calm", "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/KbwmP4NEz7hMD73rOTrt/gpt-image-2-edit-1_1793114402499_cdd0a0e7.png"},
+    {"name": "sleep", "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/KbwmP4NEz7hMD73rOTrt/gpt-image-2-edit-1_1793114412449_8b3a9458.png"},
+    {"name": "crown", "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/KbwmP4NEz7hMD73rOTrt/gpt-image-2-edit-1_1793114414216_1e04455a.png"},
+    {"name": "trophy", "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/KbwmP4NEz7hMD73rOTrt/gpt-image-2-edit-1_1793114421222_03c14e53.png"},
+    {"name": "stein", "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/KbwmP4NEz7hMD73rOTrt/gpt-image-2-edit-1_1793114423732_64cbce66.png"},
+    {"name": "shart", "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/KbwmP4NEz7hMD73rOTrt/gpt-image-2-edit-1_1793114429259_b789b3bc.png"}
+  ],
+  "clips": [
+    {"name": "idle-smug", "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-video/KbwmP4NEz7hMD73rOTrt/58ab1add42264a45811ad59e877a9d81-metadata_user_f6cf04e66b798130_1793114584941_3493e78f.mp4"}
+  ]
+}

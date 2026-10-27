@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
-import { CHUG_RULES, CHUG_SUBMISSION } from '@/config/league-rules';
+import { CHUG_RULES } from '@/config/league-rules';
 import { getChugCounts, getWeeklyExtremes } from '@/lib/awards';
 import { latestChug } from '@/lib/chug-video';
 import { scoredWeek, teams } from '@/lib/league';
@@ -12,7 +12,7 @@ import ShartCitation from '../modules/ShartCitation';
 import ChugNowCard from '../modules/ChugNow';
 import { trophyBoard } from '../cached';
 import { managerOf, teamOf } from '../modules/shared';
-import { Avatar, Drawer, List, Rank, Row, Section, ui } from '../ui';
+import { Avatar, Drawer, List, Row, Section, ui } from '../ui';
 import l from '../modules/layout.module.css';
 
 export const metadata: Metadata = { title: { absolute: 'Chug Meter, Splash 4.0' }, robots: { index: false, follow: false } };
@@ -21,7 +21,8 @@ export const dynamic = 'force-dynamic';
 /**
  * The Chug Meter: a beer for every week a team finished with the lowest
  * score, every team listed, most owed first. Then the latest chug on film,
- * the current Shart's citation, the Wall of Sharts, the archive and the rules.
+ * the current Shart's citation, the Wall of Sharts, the archive and a link to
+ * the rules, which live on the Rules page.
  */
 export default async function V4Chug() {
   const jar = await cookies();
@@ -36,6 +37,9 @@ export default async function V4Chug() {
     })
     .sort((a, b) => b.count - a.count || a.team.teamName.localeCompare(b.team.teamName));
   const total = rows.reduce((n, r) => n + r.count, 0);
+  // Everyone with a beer gets a row; the rest share one line.
+  const owed = rows.filter((r) => r.count > 0);
+  const dry = rows.filter((r) => r.count === 0);
   const film = latestChug(week);
   const archive = chugFilms(week).filter((f) => f.week !== film?.week);
   const lowOf = (wk: number) => extremes.lows.find((l) => l.week === wk) ?? null;
@@ -49,7 +53,7 @@ export default async function V4Chug() {
 
       <Section title="Chug Meter">
         <List>
-          {rows.map((r) => (
+          {owed.map((r) => (
             <Row
               key={r.team.rosterId}
               lead={<Avatar src={r.team.avatarUrl} color={r.team.colors?.primary} />}
@@ -58,9 +62,9 @@ export default async function V4Chug() {
               sub={`${managerOf(r.team.rosterId)}${r.weeks.length ? ` · ${r.weeks.map((w) => `W${w}`).join(', ')}` : ''}`}
               value={r.count}
               valueSub={r.count === 1 ? 'beer' : 'beers'}
-              muted={!r.count}
             />
           ))}
+          {dry.length ? <Row label="0 beers" title={dry.map((r) => managerOf(r.team.rosterId)).join(', ')} muted /> : null}
         </List>
         <p className={`${ui.sub} ${l.note}`}>
           {total} {total === 1 ? 'beer' : 'beers'} this season.
@@ -111,15 +115,9 @@ export default async function V4Chug() {
         </Drawer>
       ) : null}
 
-      <Section title={CHUG_RULES.title.replace(/\b\w/g, (x) => x.toUpperCase())}>
-        {CHUG_RULES.intro ? <p className={`${ui.bodyText} ${l.note}`}>{CHUG_RULES.intro}</p> : null}
-        <List>
-          {CHUG_RULES.rules.map((rule, i) => (
-            <Row key={rule} lead={<Rank n={i + 1} />} title={rule} />
-          ))}
-        </List>
-        <p className={`${ui.sub} ${l.note}`}>{CHUG_SUBMISSION}</p>
-      </Section>
+      <List tap>
+        <Row href="/lab/app/rules" title={CHUG_RULES.title.replace(/\b\w/g, (x) => x.toUpperCase())} sub={CHUG_RULES.intro?.split('. ')[0]} />
+      </List>
     </Shell>
   );
 }

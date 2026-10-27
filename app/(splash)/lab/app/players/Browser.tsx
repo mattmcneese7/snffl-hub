@@ -28,7 +28,7 @@ export type Row = {
 type SortKey = 'points' | 'projected' | 'posRank' | 'yards' | 'touchdowns' | 'snapPct';
 type Show = 'rostered' | 'all' | 'free';
 
-const PAGE = 50;
+const PAGE = 25;
 const POSITIONS = ['All', 'QB', 'RB', 'WR', 'TE', 'K', 'DEF'];
 const SORTS: { key: SortKey; label: (week: number) => string; unit: string }[] = [
   { key: 'points', label: () => 'Points', unit: 'PTS' },

@@ -5,6 +5,7 @@
 .chart svg { width: 100%; height: auto; display: block; overflow: visible; }
 .chart text { font: 600 11px var(--ui); fill: var(--ink-3); font-variant-numeric: tabular-nums; }
 .readout { display: flex; align-items: baseline; gap: 8px; margin: 0; }
+.game { display: grid; gap: 2px; margin: 0; min-height: 38px; }
 .solid { fill: var(--deep); }
 .hollow { fill: none; stroke: var(--deep); stroke-width: 1.5; }
 .grid { stroke: var(--hair); stroke-width: 1; }

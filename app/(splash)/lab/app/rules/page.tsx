@@ -6,7 +6,7 @@ import { parseTeam, TEAM_COOKIE } from '@/lib/my-team';
 import { DEFENSE, KICKING, OFFENSE, perPoint, POINTS_ALLOWED, rowsOf, signed, YARDS_ALLOWED, type Row } from '../../../rules/scoring';
 import { getV4Data } from '../data';
 import Shell, { SectionHead } from '../Shell';
-import { Label, List, Rank, Row as UiRow, Section, ui } from '../ui';
+import { Drawer, Label, List, Rank, Row as UiRow, Section, ui } from '../ui';
 import { Pos } from '../ui/blocks/Pos';
 import l from '../modules/layout.module.css';
 
@@ -75,31 +75,23 @@ export default async function V4Rules() {
           </div>
         </div>
       </Section>
-      {offense.length ? (
-        <Section title="Offense">
-          <Rows rows={offense} />
-        </Section>
-      ) : null}
-      {kicking.length ? (
-        <Section title="Kicking">
-          <Rows rows={kicking} />
-        </Section>
-      ) : null}
-      {defense.length ? (
-        <Section title="Defense">
-          <Rows rows={defense} />
-        </Section>
-      ) : null}
-      {points.length ? (
-        <Section title="Points Allowed">
-          <Rows rows={points} />
-        </Section>
-      ) : null}
-      {yards.some((y) => y.value !== 0) ? (
-        <Section title="Yards Allowed">
-          <Rows rows={yards} />
-        </Section>
-      ) : null}
+      <Section title="Scoring">
+        {(
+          [
+            ['Offense', offense],
+            ['Kicking', kicking],
+            ['Defense', defense],
+            ['Points Allowed', points],
+            ['Yards Allowed', yards.some((y) => y.value !== 0) ? yards : []],
+          ] as [string, Row[]][]
+        )
+          .filter(([, rows]) => rows.length)
+          .map(([title, rows]) => (
+            <Drawer key={title} title={title} value={`${rows.length} rules`}>
+              <Rows rows={rows} />
+            </Drawer>
+          ))}
+      </Section>
       <p className={`${ui.sub} ${l.note}`}>Setup and scoring come from Sleeper&rsquo;s league settings.</p>
     </Shell>
   );

@@ -8,7 +8,7 @@ import type { DraftValueRow, UsageMove } from '../../../lib/deep/insights';
 import { getV4Data } from '../data';
 import Shell, { SectionHead } from '../Shell';
 import { managerOf, shortName, teamOf } from '../modules/shared';
-import { Avatar, Empty, Face, Label, List, Row, Section, ui } from '../ui';
+import { Avatar, Empty, Face, Label, List, Row, Section, Seg, ui } from '../ui';
 import l from '../modules/layout.module.css';
 
 export const metadata: Metadata = { title: { absolute: 'Insights, Splash 4.0' }, robots: { index: false, follow: false } };
@@ -33,12 +33,24 @@ const Group = ({ children }: { children: string }) => (
 );
 const Via = ({ children }: { children: ReactNode }) => <p className={`${ui.sub} ${l.note}`}>{children}</p>;
 
+const VIEWS = [
+  { key: 'draft', label: 'Draft' },
+  { key: 'usage', label: 'Usage' },
+  { key: 'pickups', label: 'Pickups' },
+  { key: 'trending', label: 'Trending' },
+  { key: 'luck', label: 'Luck' },
+] as const;
+type View = (typeof VIEWS)[number]['key'];
+
 /**
  * Insights: what the league's own data says once it is added up. Draft
  * value, whose role is moving, what pickups have been worth, who the rest of
- * Sleeper is adding that nobody here has, and who has been lucky.
+ * Sleeper is adding that nobody here has, and who has been lucky. One list at
+ * a time, picked from the switch, so the page stays short (Step 1 rule 8).
  */
-export default async function V4Insights() {
+export default async function V4Insights({ searchParams }: { searchParams: Promise<{ view?: string }> }) {
+  const sp = await searchParams;
+  const view: View = VIEWS.some((v) => v.key === sp.view) ? (sp.view as View) : 'draft';
   const jar = await cookies();
   const mine = parseTeam(jar.get(TEAM_COOKIE)?.value);
   const [data, ins] = await Promise.all([getV4Data(mine), getInsights()]);
@@ -69,8 +81,9 @@ export default async function V4Insights() {
   return (
     <Shell data={data} active="league">
       <SectionHead icon="insights" word="insights" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
+      <Seg label="Insights" items={VIEWS.map((v) => ({ label: v.label, href: v.key === 'draft' ? '/lab/app/insights' : `/lab/app/insights?view=${v.key}`, on: v.key === view }))} />
 
-      <Section title="Draft Value">
+      {view === 'draft' ? <Section title="Draft Value">
         {draft.steals.length || draft.busts.length ? (
           <>
             {draft.steals.length ? (
@@ -90,9 +103,9 @@ export default async function V4Insights() {
         ) : (
           <Empty>No finished weeks to rank the draft against yet.</Empty>
         )}
-      </Section>
+      </Section> : null}
 
-      <Section title="Usage">
+      {view === 'usage' ? <Section title="Usage">
         {usage && (usage.risers.length || usage.fallers.length) ? (
           <>
             {usage.risers.length ? (
@@ -114,9 +127,9 @@ export default async function V4Insights() {
         ) : (
           <Empty>No rostered player&rsquo;s role has moved enough to call yet.</Empty>
         )}
-      </Section>
+      </Section> : null}
 
-      <Section title="Pickups">
+      {view === 'pickups' ? <Section title="Pickups">
         {pickups.length ? (
           <>
             <List tap>
@@ -143,9 +156,9 @@ export default async function V4Insights() {
         ) : (
           <Empty>No waiver claims or free agent adds yet.</Empty>
         )}
-      </Section>
+      </Section> : null}
 
-      <Section title="Trending Free Agents">
+      {view === 'trending' ? <Section title="Trending Free Agents">
         {trending.length ? (
           <>
             <List tap>
@@ -159,9 +172,9 @@ export default async function V4Insights() {
         ) : (
           <Empty>Nobody Sleeper is chasing is a free agent here.</Empty>
         )}
-      </Section>
+      </Section> : null}
 
-      <Section title="Luck">
+      {view === 'luck' ? <Section title="Luck">
         {luck.length ? (
           <>
             <List>
@@ -181,7 +194,7 @@ export default async function V4Insights() {
         ) : (
           <Empty>Two finished weeks before luck means anything.</Empty>
         )}
-      </Section>
+      </Section> : null}
     </Shell>
   );
 }

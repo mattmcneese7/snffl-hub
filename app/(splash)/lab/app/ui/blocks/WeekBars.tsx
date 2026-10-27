@@ -12,7 +12,9 @@ import t from './WeekBars.module.css';
  * column reads it out above the chart, and a finger dragged across scrubs
  * week to week (the whole chart is the target, since a season's columns are
  * narrower than a fingertip); tapping the same week again goes back to the
- * best. Arrow keys step through the weeks.
+ * best. Arrow keys step through the weeks. With `log`, the readout also
+ * carries that week's game: the opponent, the box score and the projection,
+ * so a game log needs no second list of the same points.
  */
 export function WeekBars({
   points,
@@ -20,12 +22,14 @@ export function WeekBars({
   weeks,
   solid,
   hollow,
+  log,
 }: {
   points: { week: number; points: number; good: boolean }[];
   playoffWeekStart: number;
   weeks: number;
   solid: string;
   hollow: string;
+  log?: Record<number, { opp: string; line: string; proj: string | null }>;
 }) {
   const [picked, setPicked] = useState<number | null>(null);
   const down = useRef(false);
@@ -68,6 +72,15 @@ export function WeekBars({
           {shown === best ? ' · Best' : ''}
         </span>
       </p>
+      {log?.[shown.week] ? (
+        <p className={t.game}>
+          <span className={u.title}>
+            {log[shown.week].opp}
+            {log[shown.week].proj ? <span className={u.muted}> &middot; Proj {log[shown.week].proj}</span> : null}
+          </span>
+          {log[shown.week].line ? <span className={u.sub}>{log[shown.week].line}</span> : null}
+        </p>
+      ) : null}
       <svg
         viewBox={`0 0 ${W} ${H}`}
         className={t.scrub}

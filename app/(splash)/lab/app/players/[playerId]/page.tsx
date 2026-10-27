@@ -17,7 +17,7 @@ import { boxLine } from '../../boxLine';
 import { getV4Data } from '../../data';
 import { getPlayerData, getPlayerWeek } from '../../playerData';
 import Shell, { SectionHead } from '../../Shell';
-import { Art, Avatar, Card, Crest, Empty, Face, List, Row, Section, Tag, ui as u, type Tone } from '../../ui';
+import { Art, Avatar, Card, Crest, Empty, Face, List, Row, Section, Seg, Tag, ui as u, type Tone } from '../../ui';
 import { ProfileHead } from '../../ui/blocks/ProfileHead';
 import { WeekBars } from '../../ui/blocks/WeekBars';
 import { Pos } from '../../ui/blocks/Pos';
@@ -73,8 +73,23 @@ const TONE: Record<'soft' | 'even' | 'hard', Tone> = { soft: 'good', even: 'neut
  * it, the news, his plays, the season, every week he has scored, the full
  * stat sheet, his usage and the rest of his season.
  */
-export default async function V4Player({ params }: Params) {
+const VIEWS = [
+  { key: 'outlook', label: 'Outlook' },
+  { key: 'season', label: 'Season' },
+  { key: 'log', label: 'Game Log' },
+] as const;
+type View = (typeof VIEWS)[number]['key'];
+
+/**
+ * A player: who he is, who has him and this week's game up top, then one
+ * view at a time (Outlook, Season, Game Log) so the page reads summary first
+ * (Step 1 rule 8). The game log rides on the points chart: tap a week for
+ * its game, so each week's points show once.
+ */
+export default async function V4Player({ params, searchParams }: Params & { searchParams: Promise<{ view?: string }> }) {
   const { playerId } = await params;
+  const sp = await searchParams;
+  const view: View = VIEWS.some((v) => v.key === sp.view) ? (sp.view as View) : 'outlook';
   if (!/^[0-9A-Z]{1,8}$/.test(playerId)) notFound();
   if (/^\d+$/.test(playerId) ? playerOf(playerId).name === 'Unknown Player' : !NFL_TEAMS[playerId]) notFound();
   const jar = await cookies();
@@ -97,7 +112,6 @@ export default async function V4Player({ params }: Params) {
   const usage = USAGE[pl.position] ? recentUsage(playerId, 3) : [];
   const clips = [...clipsNow, ...clipsBefore.filter((c) => !clipsNow.some((x) => x.videoId === c.videoId))].slice(0, 8);
   const best = season.weeks.length ? season.weeks.reduce((a, b) => (b.points > a.points ? b : a)) : null;
-  const started = new Map(season.weeks.map((x) => [x.week, x]));
   const thisWeek = d.log.find((x) => x.week === week);
   const g = wk.game;
   const final = g?.state === 'post';
@@ -200,6 +214,10 @@ export default async function V4Player({ params }: Params) {
         ) : null}
       </Section>
 
+      <Seg label={pl.name} items={VIEWS.map((v) => ({ label: v.label, href: v.key === 'outlook' ? `/lab/app/players/${playerId}` : `/lab/app/players/${playerId}?view=${v.key}`, on: v.key === view }))} />
+
+      {view === 'outlook' ? (
+        <>
       {wk.props.length ? (
         <Section title="Props">
           <List>
@@ -284,6 +302,21 @@ export default async function V4Player({ params }: Params) {
         </Section>
       ) : null}
 
+      <Section title="Rest of Season">
+        {ros ? (
+          <Card>
+            <StatGrid items={rosCells} />
+            <p className={`${u.label} ${l.note}`}>Source: DraftSharks</p>
+          </Card>
+        ) : (
+          <Empty>Not ranked by DraftSharks.</Empty>
+        )}
+      </Section>
+        </>
+      ) : null}
+
+      {view === 'season' ? (
+        <>
       <Section title="Season">
         <Card>
           <StatGrid
@@ -301,38 +334,6 @@ export default async function V4Player({ params }: Params) {
             ]}
           />
         </Card>
-      </Section>
-
-      <Section title="Points by Week">
-        <Card>
-          <WeekBars
-            points={season.weeks.map((x) => ({ week: x.week, points: x.points, good: x.started }))}
-            playoffWeekStart={league.playoffWeekStart}
-            weeks={Math.max(week, ...season.weeks.map((x) => x.week))}
-            solid="Started here"
-            hollow="Benched or free agent"
-          />
-        </Card>
-      </Section>
-
-      <Section title="Game Log">
-        <List>
-          {d.log.map((x) => {
-            const here = x.opp === 'BYE' ? undefined : started.get(x.week);
-            const pts = x.opp === 'BYE' ? null : (here?.points ?? x.pts);
-            return (
-              <Row
-                key={x.week}
-                label={`Week ${x.week}${here ? (here.started ? ' · Started' : ' · Benched') : ''}`}
-                title={x.opp === 'BYE' ? 'Bye' : x.opp}
-                muted={x.opp === 'BYE'}
-                sub={pts != null ? boxLine(pl.position, x.line) || 'No stats' : x.opp === 'BYE' ? undefined : 'Yet to play'}
-                value={pts != null ? pts.toFixed(2) : '–'}
-                valueSub={x.proj != null ? `Proj ${x.proj.toFixed(2)}` : undefined}
-              />
-            );
-          })}
-        </List>
       </Section>
 
       <Section title="Season Stats">
@@ -371,16 +372,27 @@ export default async function V4Player({ params }: Params) {
         </Section>
       ) : null}
 
-      <Section title="Rest of Season">
-        {ros ? (
+        </>
+      ) : null}
+
+      {view === 'log' ? (
+        <Section title="Game Log">
           <Card>
-            <StatGrid items={rosCells} />
-            <p className={`${u.label} ${l.note}`}>Source: DraftSharks</p>
+            <WeekBars
+              points={season.weeks.map((x) => ({ week: x.week, points: x.points, good: x.started }))}
+              playoffWeekStart={league.playoffWeekStart}
+              weeks={Math.max(week, ...season.weeks.map((x) => x.week))}
+              solid="Started here"
+              hollow="Benched or free agent"
+              log={Object.fromEntries(
+                d.log
+                  .filter((x) => x.opp !== 'BYE')
+                  .map((x) => [x.week, { opp: x.opp, line: boxLine(pl.position, x.line) || 'No stats', proj: x.proj != null ? x.proj.toFixed(2) : null }]),
+              )}
+            />
           </Card>
-        ) : (
-          <Empty>Not ranked by DraftSharks.</Empty>
-        )}
-      </Section>
+        </Section>
+      ) : null}
     </Shell>
   );
 }

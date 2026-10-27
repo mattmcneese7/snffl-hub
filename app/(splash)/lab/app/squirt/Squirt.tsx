@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AWARD_ART, AWARD_LOOPS, MOMENT_STILL, MOVES, awardClip, clip, still } from './assets';
+import { AWARD_ARRIVE, AWARD_ART, AWARD_LOOPS, MOMENT_STILL, MOVES, awardClip, clip, still } from './assets';
 import { hearSquirt, type Mood, type Moment } from './bus';
 import s from './squirt.module.css';
 
@@ -113,13 +113,20 @@ export default function Squirt({ mood: moodProp = 'calm', award, size = 160, lis
   // Props drive the mood too, so a page can set it from server data.
   useEffect(() => { if (!award) changeMood(moodProp); }, [moodProp, award, changeMood]);
 
-  // Awards hold their pose, looping when the award has a clip.
+  // Awards hold their pose: a loop where the award has one, its arrival clip
+  // (held on the last frame) where it has that, else the still alone. A
+  // change of award lands with a small squash, as when he is swiped to it.
+  const firstAward = useRef(true);
   useEffect(() => {
     if (!award) return;
-    const art = AWARD_ART[award] ?? 'calm';
-    setPose(art);
+    setPose(AWARD_ART[award] ?? 'calm');
+    if (!firstAward.current) kick(0.8, -1.2, 0, 24);
+    firstAward.current = false;
     if (AWARD_LOOPS.has(award)) play(awardClip(award), true);
-  }, [award, play]);
+    else if (AWARD_ARRIVE[award]) play(AWARD_ARRIVE[award], false);
+    else for (const r of vids) { if (r.current) { r.current.style.opacity = '0'; r.current.pause(); } }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [award, play, kick]);
 
   // First paint: start the idle once the players exist and he is on screen.
   useEffect(() => {

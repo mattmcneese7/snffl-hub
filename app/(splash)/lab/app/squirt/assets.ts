@@ -21,5 +21,8 @@ export const AWARD_ART: Record<string, string> = {
 /** Awards with their own looping clip; the rest hold their still. */
 export const AWARD_LOOPS = new Set(['blowout', 'squeaker', 'heartbreaker', 'lucky', 'bench', 'plunger', 'chug']);
 
+/** Awards without a loop arrive by their moment clip and hold its last frame. */
+export const AWARD_ARRIVE: Record<string, string> = { motw: 'event-crown', champion: 'event-trophy', shart: 'event-shart' };
+
 /** The looping clip for an award pose; the chug reuses its moment clip. */
 export const awardClip = (award: string) => (award === 'chug' ? 'event-chug' : `award-${award}`);

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { useRouter } from 'next/navigation';
+import NumberFlow from '@number-flow/react';
 import { SLEEPER_LEAGUE_ID } from '@/lib/sleeper-links';
 import l from '../ui/blocks/Tick.module.css';
 
@@ -131,6 +132,10 @@ function useLive() {
   );
 }
 
+// The roll DESIGN-v4 sets for a score change: 650 ms on the app's ease-out.
+const ROLL = { duration: 650, easing: 'cubic-bezier(0.32, 0.72, 0, 1)' };
+
+/** A live score: rolls to the new number and lights up once (Step 1 rule 10). */
 function Tick({ value, digits, className }: { value: number; digits: number; className?: string }) {
   const prev = useRef(value);
   const [flash, setFlash] = useState<'up' | 'down' | null>(null);
@@ -141,7 +146,11 @@ function Tick({ value, digits, className }: { value: number; digits: number; cla
     const t = setTimeout(() => setFlash(null), 1600);
     return () => clearTimeout(t);
   }, [value]);
-  return <span className={`${className ?? ''} ${flash ? `${l.tick} ${flash === 'up' ? l.up : l.down}` : ''}`}>{value.toFixed(digits)}</span>;
+  return (
+    <span className={`${className ?? ''} ${flash ? `${l.tick} ${flash === 'up' ? l.up : l.down}` : ''}`}>
+      <NumberFlow value={value} format={{ minimumFractionDigits: digits, maximumFractionDigits: digits }} spinTiming={ROLL} transformTiming={ROLL} />
+    </span>
+  );
 }
 
 /**

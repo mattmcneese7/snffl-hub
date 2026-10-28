@@ -14,3 +14,19 @@
 .lost { color: var(--ink-3); font-weight: 400; }
 .faces { display: flex; flex-wrap: wrap; gap: 4px; min-height: 26px; }
 .gate { display: flex; align-items: flex-end; gap: 8px; flex-wrap: wrap; }
+
+/* Team over manager on each side. */
+.who { display: grid; gap: 2px; min-width: 0; }
+.manager { font: 400 13px/1.2 var(--ui); opacity: 0.85; }
+/* The preview: a 44 tall disclosure under each game, the numbers behind the
+   pick side by side, the better figure heavier (box score convention). */
+.preview summary { display: flex; align-items: center; justify-content: center; gap: 4px; min-height: 44px; list-style: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.preview summary::-webkit-details-marker { display: none; }
+.caret { display: grid; place-items: center; width: 16px; height: 16px; color: var(--ink-3); transition: transform 160ms ease-out; }
+.preview[open] .caret { transform: rotate(90deg); }
+.table { display: grid; gap: 0; padding-bottom: 4px; }
+.stat { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; min-height: 36px; border-top: 1px solid var(--hair); font: 400 15px var(--ui); font-variant-numeric: tabular-nums; }
+.stat > :first-child { text-align: left; }
+.stat > :last-child { text-align: right; }
+.better { font-weight: 800; }
+.last { margin: 8px 0 0; text-align: center; }

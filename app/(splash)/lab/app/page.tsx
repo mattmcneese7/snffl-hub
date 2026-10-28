@@ -82,7 +82,7 @@ export default async function V4Home({ searchParams }: { searchParams: Promise<{
       : null;
   const modules: Record<ModuleKey, ReactNode> = {
     awards: board ? <Hardware board={board} mine={mine} /> : null,
-    pickem: <PickemRow state={data.state} week={data.week} mine={mine} />,
+    pickem: <PickemRow state={data.state} week={data.week} mine={mine} prominent={moment === 'midweek'} />,
     rag: ragProps ? <RagCard {...ragProps} /> : null,
     ragCompact: ragProps ? <RagCard {...ragProps} compact /> : null,
     matchups: (

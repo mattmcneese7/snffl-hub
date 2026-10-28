@@ -1,12 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Ms } from '../icons';
 import { Avatar, Empty, Label, ui } from '../ui';
 import { PinField } from '../ui/blocks/Field';
 import p from '../ui/blocks/Pick.module.css';
 
 export type BoardTeam = { rosterId: number; team: string; manager: string; avatar: string | null; color: string };
-export type BoardGame = { matchupId: number; a: BoardTeam; b: BoardTeam; winner: number | null };
+export type BoardPreview = { rows: { label: string; a: string; b: string; better: 'a' | 'b' | null }[]; lastMet: string };
+export type BoardGame = { matchupId: number; a: BoardTeam; b: BoardTeam; winner: number | null; preview?: BoardPreview };
 
 const keyOf = (rosterId: number) => `splash4.pickem.${rosterId}`;
 const readToken = (rosterId: number) => {
@@ -121,6 +123,7 @@ export default function Board({ week, mine, games, locked, decided, all, teams }
                       <Avatar src={t.avatar} color={t.color} size={28} />
                       <span className={p.result}>
                         <span className={`${p.name} ${result}`}>{t.team}</span>
+                        <span className={p.manager}>{t.manager}</span>
                         <span className={p.faces} aria-label={`${pickers(t.rosterId).length} picked ${t.team}`}>
                           {pickers(t.rosterId).map((x) => (
                             <Avatar key={x.rosterId} src={x.avatar} color={x.color} size={26} />
@@ -131,11 +134,34 @@ export default function Board({ week, mine, games, locked, decided, all, teams }
                   ) : (
                     <button key={t.rosterId} type="button" className={`${p.side} ${on ? p.on : ''}`} aria-pressed={on} disabled={!token} onClick={() => pick(g.matchupId, t.rosterId)}>
                       <Avatar src={t.avatar} color={t.color} size={28} />
-                      <span className={p.name}>{t.team}</span>
+                      <span className={p.who}>
+                        <span className={p.name}>{t.team}</span>
+                        <span className={p.manager}>{t.manager}</span>
+                      </span>
                     </button>
                   );
                 })}
               </div>
+              {g.preview ? (
+                <details className={p.preview}>
+                  <summary>
+                    <span className={ui.label}>Preview</span>
+                    <span className={p.caret} aria-hidden>
+                      <Ms name="chevronRight" size={16} />
+                    </span>
+                  </summary>
+                  <div className={p.table}>
+                    {g.preview.rows.map((r) => (
+                      <div key={r.label} className={p.stat}>
+                        <span className={r.better === 'a' ? p.better : ''}>{r.a}</span>
+                        <span className={ui.label}>{r.label}</span>
+                        <span className={r.better === 'b' ? p.better : ''}>{r.b}</span>
+                      </div>
+                    ))}
+                    <p className={`${ui.sub} ${p.last}`}>{g.preview.lastMet}</p>
+                  </div>
+                </details>
+              ) : null}
             </div>
           );
         })}

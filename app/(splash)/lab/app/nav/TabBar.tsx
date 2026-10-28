@@ -38,7 +38,8 @@ export default function TabBar({ active }: { active: string }) {
       {TABS.map((t) => {
         const on = t.key === active;
         const root = TAB_ROOTS[t.key];
-        const href = on ? root : (last[t.key] ?? root);
+        // || not ??: an empty remembered path (a session from before the fix) falls back to the tab's top page.
+        const href = on ? root : last[t.key] || root;
         return (
           <Link
             key={t.key}
@@ -49,7 +50,7 @@ export default function TabBar({ active }: { active: string }) {
               if (t.key !== current) return;
               // Already here: go to this tab's top page, at the top.
               e.preventDefault();
-              const atRoot = pathname.replace(/\/+$/, '') === root && !window.location.search;
+              const atRoot = (pathname.replace(/\/+$/, '') || '/') === root && !window.location.search;
               if (atRoot) window.scrollTo({ top: 0, behavior: 'smooth' });
               else router.push(root);
             }}

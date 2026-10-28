@@ -33,7 +33,9 @@ export type Ledger = {
   entries: { at: string; job: string; model: string; usd: number }[];
 };
 
-const DEFAULT_LIMIT = Number(process.env.CLAUDE_SPEND_LIMIT_USD ?? '8.5');
+// $15 for the season (Matt, 2026-10-28), up from $8.50 once the Rag moved to
+// sourced, full length articles at about $0.55 to $0.75 an issue.
+const DEFAULT_LIMIT = Number(process.env.CLAUDE_SPEND_LIMIT_USD ?? '15');
 
 export function readLedger(): Ledger {
   try {

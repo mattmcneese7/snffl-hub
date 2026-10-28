@@ -53,7 +53,9 @@ export function templateFor(id: ArticleId, facts: WeekFacts): Candidate {
       };
 
     case 'game': {
-      const g = facts.gameOfWeek;
+      const g = facts.gameOfWeek ?? facts.games[0];
+      // No game to recap (Sleeper sent nothing): say so rather than crash the issue.
+      if (!g) return { headline: 'The Game of the Week', deck: 'Results still coming in.', body: ['The scores were not in yet when this went to press.'] };
       return {
         headline: `${first(g.winner)} Edges ${first(g.loser)} in the Game of the Week`,
         deck: `Decided by ${g.margin.toFixed(2)} points.`,

@@ -305,8 +305,98 @@
    "job": "rag retry trades",
    "model": "claude-sonnet-5",
    "usd": 0.025
+  },
+  {
+   "at": "2026-10-28T00:12:58.432Z",
+   "job": "rag week 7",
+   "model": "claude-sonnet-5",
+   "usd": 0.5338
+  },
+  {
+   "at": "2026-10-28T00:13:08.413Z",
+   "job": "rag retry hardware",
+   "model": "claude-sonnet-5",
+   "usd": 0.0885
+  },
+  {
+   "at": "2026-10-28T00:13:18.406Z",
+   "job": "rag retry game",
+   "model": "claude-sonnet-5",
+   "usd": 0.022
+  },
+  {
+   "at": "2026-10-28T00:13:41.925Z",
+   "job": "rag retry waiver",
+   "model": "claude-sonnet-5",
+   "usd": 0.0313
+  },
+  {
+   "at": "2026-10-28T00:14:23.829Z",
+   "job": "rag retry hardware",
+   "model": "claude-sonnet-5",
+   "usd": 0.0231
+  },
+  {
+   "at": "2026-10-28T00:14:32.921Z",
+   "job": "rag retry game",
+   "model": "claude-sonnet-5",
+   "usd": 0.0216
+  },
+  {
+   "at": "2026-10-28T00:14:46.071Z",
+   "job": "rag retry waiver",
+   "model": "claude-sonnet-5",
+   "usd": 0.0225
+  },
+  {
+   "at": "2026-10-28T00:16:14.845Z",
+   "job": "rag retry power",
+   "model": "claude-sonnet-5",
+   "usd": 0.1023
+  },
+  {
+   "at": "2026-10-28T00:16:49.438Z",
+   "job": "rag retry preview",
+   "model": "claude-sonnet-5",
+   "usd": 0.0374
+  },
+  {
+   "at": "2026-10-28T00:17:33.201Z",
+   "job": "rag retry hardware",
+   "model": "claude-sonnet-5",
+   "usd": 0.0204
+  },
+  {
+   "at": "2026-10-28T00:17:47.024Z",
+   "job": "rag retry game",
+   "model": "claude-sonnet-5",
+   "usd": 0.0256
+  },
+  {
+   "at": "2026-10-28T00:18:06.456Z",
+   "job": "rag retry waiver",
+   "model": "claude-sonnet-5",
+   "usd": 0.0283
+  },
+  {
+   "at": "2026-10-28T00:18:56.844Z",
+   "job": "rag retry power",
+   "model": "claude-sonnet-5",
+   "usd": 0.0547
+  },
+  {
+   "at": "2026-10-28T00:19:22.911Z",
+   "job": "rag retry power",
+   "model": "claude-sonnet-5",
+   "usd": 0.0411
+  },
+  {
+   "at": "2026-10-28T00:20:03.851Z",
+   "job": "rag retry preview",
+   "model": "claude-sonnet-5",
+   "usd": 0.0354
   }
  ],
  "limitUsd": 8.5,
- "spent": 2.4035
+ "spent": 3.4915
 }

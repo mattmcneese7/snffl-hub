@@ -19,6 +19,7 @@ import { getPlayoffOdds } from './playoff-odds.ts';
 import { awardsForWeek, TROPHY_NAMES } from './trophies.ts';
 import { getTrades } from './trades.ts';
 import type { Game } from './types.ts';
+import { contextNumbers, matchupContext, seasonHistory, type MatchupContext, type SeasonHistory } from './matchup-context.ts';
 
 export type TeamFact = {
   rosterId: number;
@@ -69,6 +70,15 @@ export type WeekFacts = {
   managers: { team: string; manager: string; firstName: string; pronouns: string }[];
   /** The week's hardware, in the order The Hardware hands it out. */
   trophies: { award: string; about: string; team: string; manager: string; firstName: string; detail: string }[];
+  /**
+   * The story under every score: each starter against his projection with
+   * his box score, the bench calls that cost points (and whether one cost the
+   * game), records, streaks, where each score ranked, and the teams' earlier
+   * meetings. See lib/matchup-context.ts.
+   */
+  matchups: MatchupContext[];
+  /** Every finished week's lowest and highest score so far. */
+  history: SeasonHistory;
 };
 
 const fact = (game: Game, side: 'home' | 'away'): TeamFact => {
@@ -126,6 +136,10 @@ export async function buildWeekFacts(week: number): Promise<WeekFacts> {
   );
 
   const featured = matchupOfTheWeek(played);
+  const [matchups, history] = await Promise.all([
+    matchupContext(week, league.season, played, standings).catch(() => [] as MatchupContext[]),
+    getWeeklyExtremes().then(seasonHistory).catch(() => ({ weeklyLows: [], weeklyHighs: [] }) as SeasonHistory),
+  ]);
 
   return {
     week,
@@ -207,6 +221,8 @@ export async function buildWeekFacts(week: number): Promise<WeekFacts> {
       shartCount: chugs.find((c) => c.rosterId === s.rosterId)?.count ?? 0,
     })),
 
+    matchups,
+    history,
     trophies: (await awardsForWeek(week)).map((award) => {
       const team = teamByRoster(award.rosterId);
       return {
@@ -346,6 +362,8 @@ export function allowedNumbers(facts: WeekFacts): Set<string> {
     if (r.movement != null) add(Math.abs(r.movement));
   }
   for (const o of facts.odds) add(o.makePlayoffs);
+  // The matchup context and the season's history, every figure in them.
+  for (const n of contextNumbers(facts.matchups ?? [], facts.history ?? { weeklyLows: [], weeklyHighs: [] })) add(n);
   for (const a of facts.awards) {
     add(a.managerOfWeekCount);
     add(a.shartCount);

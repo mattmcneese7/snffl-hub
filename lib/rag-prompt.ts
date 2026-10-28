@@ -24,6 +24,7 @@ export const SOURCING_RULE = [
   '- Build the article out of those specifics. Name the decision, the player, his line and what it cost. A starter who busted against his projection, a bench player who outscored the man who started, a game lost by less than a bench call: that is the story. Generic recaps of the final score are not.',
   '- Every number you write must appear in these facts exactly as written. Do not add, subtract, round, average or remember numbers, and do not bring in earlier weeks unless they are in history or headToHead. If you want a number that is not here, write the sentence without it.',
   '- Write the record and streak the way they appear (3-4, L5). Use first names from managers when you talk about the people.',
+  '- The field names (weekRank, vsProjection, benchCalls, benchedTheWin, headToHead, statLine and the rest) are for you. Never write them; say what they mean in plain English (the ninth best score of the week, 11.3 under his projection).',
 ].join('\n');
 
 /** The facts block, identical for every article in the issue (the cached part). */

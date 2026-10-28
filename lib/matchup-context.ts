@@ -91,7 +91,39 @@ function benchCalls(side: GameSide): BenchCall[] {
   return out.slice(0, 3);
 }
 
-function sideContext(side: GameSide, rank: number, standing: Standing | undefined, proj: Record<string, number>, stats: Awaited<ReturnType<typeof getWeekStatLines>>): SideContext {
+type AsOf = { record: string; streak: string };
+
+/**
+ * Each team's record and streak as they stood after `week`, from that week's
+ * results and every week before it. Today's standings would put a later
+ * record into an earlier week's story when an issue is rewritten.
+ */
+function recordsThrough(weeks: Game[][]): Map<number, AsOf> {
+  const runs = new Map<number, ('W' | 'L' | 'T')[]>();
+  for (const games of weeks) {
+    for (const g of games) {
+      if (g.winner == null) continue;
+      const tie = g.home.points === g.away.points;
+      for (const side of [g.home, g.away]) {
+        const r: 'W' | 'L' | 'T' = tie ? 'T' : g.winner === side.rosterId ? 'W' : 'L';
+        runs.set(side.rosterId, [...(runs.get(side.rosterId) ?? []), r]);
+      }
+    }
+  }
+  const out = new Map<number, AsOf>();
+  for (const [id, rs] of runs) {
+    const w = rs.filter((r) => r === 'W').length;
+    const l = rs.filter((r) => r === 'L').length;
+    const t = rs.filter((r) => r === 'T').length;
+    const last = rs[rs.length - 1];
+    let n = 0;
+    for (let i = rs.length - 1; i >= 0 && rs[i] === last; i--) n++;
+    out.set(id, { record: `${w}-${l}${t ? `-${t}` : ''}`, streak: last ? `${last}${n}` : '' });
+  }
+  return out;
+}
+
+function sideContext(side: GameSide, rank: number, standing: AsOf | undefined, proj: Record<string, number>, stats: Awaited<ReturnType<typeof getWeekStatLines>>): SideContext {
   const team = teamByRoster(side.rosterId);
   const starters: StarterFact[] = side.lineup.map((s: LineupSlot) => {
     const projected = proj[s.id] != null ? round(proj[s.id]) : null;
@@ -114,7 +146,7 @@ function sideContext(side: GameSide, rank: number, standing: Standing | undefine
     firstName: firstNameOf(side.rosterId) ?? side.manager,
     points: side.points,
     projected,
-    record: standing ? `${standing.wins}-${standing.losses}${standing.ties ? `-${standing.ties}` : ''}` : '',
+    record: standing?.record ?? '',
     streak: standing?.streak ?? '',
     weekRank: rank,
     starters,
@@ -135,7 +167,12 @@ export async function matchupContext(week: number, season: string, games: Game[]
   ]);
   const scores = played.flatMap((g) => [g.home.points, g.away.points]).sort((a, b) => b - a);
   const rankOf = (pts: number) => scores.indexOf(pts) + 1;
-  const standingOf = (id: number) => standings.find((s) => s.rosterId === id);
+  // Records as of this week, so a rewritten issue never quotes a later one.
+  const asOf = recordsThrough([...earlier, played]);
+  const standingOf = (id: number) => asOf.get(id) ?? (() => {
+    const s = standings.find((x) => x.rosterId === id);
+    return s ? { record: `${s.wins}-${s.losses}${s.ties ? `-${s.ties}` : ''}`, streak: s.streak } : undefined;
+  })();
   const nameOf = (id: number) => teamByRoster(id)?.teamName ?? `Team ${id}`;
 
   return played.map((g) => {

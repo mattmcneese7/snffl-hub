@@ -50,6 +50,20 @@ const WEEK_ARG = Number(
   process.argv.find((arg) => /^--week=\d+$/.test(arg))?.split('=')[1] ?? 0
 );
 
+// Announce an issue that is already written and approved as drafted: send
+// its alerts (claimed per week, so never twice) and stop, without rewriting a
+// word. node scripts/publish.ts --announce --week=7
+if (process.argv.includes('--announce')) {
+  const file = path.join('data', 'rag', `week-${WEEK_ARG}.json`);
+  if (!WEEK_ARG || !fs.existsSync(file)) {
+    console.error(`  no issue at ${file} to announce`);
+    process.exit(1);
+  }
+  const written = JSON.parse(fs.readFileSync(file, 'utf8')) as { articles: { headline: string }[] };
+  await announce(WEEK_ARG, written.articles);
+  process.exit(0);
+}
+
 let pending: { week: number; batchId: string | null; allowed?: string[] };
 try {
   pending = JSON.parse(fs.readFileSync(PENDING, 'utf8'));
@@ -261,10 +275,13 @@ console.log(
   `published week ${week}: ${articles.length} articles, ${templated} from templates, byline ${BYLINE}`
 );
 
+await announce(week, articles);
+
 // The issue is out, so say so: one alert to everybody who wants the Rag, and a
 // separate one to each manager who won hardware, naming what he won. Claimed
 // per week, so a second run of the publisher does not announce it twice.
-if (pushConfigured()) {
+async function announce(week: number, articles: { headline: string }[]) {
+  if (!pushConfigured()) return;
   const awards = await awardsForWeek(week);
   const hardware = new Map<number, string[]>();
   for (const award of awards) {

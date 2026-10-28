@@ -9,17 +9,10 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import {
-  ARTICLE_ORDER,
-  ARTICLE_SPECS,
-  SIGN_OFF_RULE,
-  SIGN_OFF_SEED,
-  VOICE,
-  type ArticleId,
-} from '../config/style-guide.ts';
+import { ARTICLE_ORDER, VOICE, type ArticleId } from '../config/style-guide.ts';
 import { canSpend, spendSummary, submitBatch, type BatchRequest } from '../lib/claude.ts';
 import { allowedNumbers, buildWeekFacts, type WeekFacts } from '../lib/fact-packets.ts';
-import { signOffHistory } from '../lib/rag.ts';
+import { factsBlock, instructionsFor } from '../lib/rag-prompt.ts';
 
 const PENDING = path.join('data', 'rag', 'pending.json');
 
@@ -35,31 +28,8 @@ const ARTICLE_SCHEMA = {
   },
 } as const;
 
-export function promptFor(id: ArticleId, facts: WeekFacts): string {
-  const spec = ARTICLE_SPECS[id];
-  const history = signOffHistory();
-
-  const parts = [
-    `Write the ${spec.title} article for Week ${facts.week} of ${facts.leagueName}.`,
-    spec.brief,
-    `Length: roughly ${spec.words[0]} to ${spec.words[1]} words in the body.`,
-    '',
-    'These are the only facts you may use. Every number you write must appear here:',
-    JSON.stringify(facts, null, 1),
-  ];
-
-  if (id === 'shart') {
-    parts.push(
-      '',
-      SIGN_OFF_RULE,
-      history.length ? history.map((line, i) => `${i + 1}. ${line}`).join('\n') : `1. ${SIGN_OFF_SEED}`,
-      '',
-      'Put your sign off in the signOff field as well as at the end of the body.'
-    );
-  }
-
-  return parts.join('\n');
-}
+/** The article's prompt, after the issue's cached facts (lib/rag-prompt.ts). */
+export const promptFor = (id: ArticleId, facts: WeekFacts) => instructionsFor(id, facts);
 
 const week = Number(process.argv[2] ?? process.env.SNFFL_WEEK ?? '0');
 if (!week) {
@@ -88,6 +58,7 @@ const ids = ARTICLE_ORDER.filter((id) => id !== 'corrections');
 const requests: BatchRequest[] = ids.map((id) => ({
   customId: `week-${week}-${id}`,
   system: VOICE,
+  facts: factsBlock(facts),
   prompt: promptFor(id, facts),
   schema: ARTICLE_SCHEMA as unknown as Record<string, unknown>,
   // Week 1 truncated three articles at exactly 2000: Power Rankings needs 14

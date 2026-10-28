@@ -33,7 +33,9 @@ export function writeNav(state: NavState) {
   window.dispatchEvent(new Event(NAV_EVENT));
 }
 
-export const herePath = () => window.location.pathname.replace(/\/+$/, '') + window.location.search;
+// Trailing slashes off, but Home stays "/": stripped to "" it became an empty
+// link, and the Home tab went nowhere once you had visited it (2026-10-28).
+export const herePath = () => (window.location.pathname.replace(/\/+$/, '') || '/') + window.location.search;
 
 /** The screen before this one, if this session came from inside the app. */
 export function previousEntry(): NavEntry | null {

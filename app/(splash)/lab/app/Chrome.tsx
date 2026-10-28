@@ -1,8 +1,7 @@
 import type { ReactNode } from 'react';
 import { CUT_WIDTH, LACE_SPINE, LACE_STITCHES, SEAM_FOOT, SEAM_TOP } from '../../marks';
 import BackButton from './nav/BackButton';
-import TopTitle from './nav/TopTitle';
-import type { MsName } from './icons';
+import { Ms, type MsName } from './icons';
 import s from './ui/blocks/Frame.module.css';
 
 /**
@@ -35,17 +34,27 @@ export { default as TabBar } from './nav/TabBar';
 export type Back = { href: string; label: string };
 
 /**
- * The top bar on every screen below a tab's top page: back to where you
- * were (named), the page's branded wordmark once its large title has
- * scrolled away, and whatever sits on the right (your avatar). Pinned under
- * the status bar.
+ * The top bar, the same on every screen (Matt, 2026-10-27): back on the
+ * left where there is somewhere to go back to, the page's title centered
+ * (the lockup on Home, the tab's icon and lowercase Switzer name elsewhere),
+ * your avatar on the right. Pinned under the status bar.
  */
-export function TopBar({ word, icon, back, right }: { word: string; icon?: MsName; back: Back; right?: ReactNode }) {
+export function TopBar({ center, back, right }: { center: ReactNode; back?: Back; right?: ReactNode }) {
   return (
     <header className={s.topBar}>
-      <BackButton fallbackHref={back.href} fallbackLabel={back.label} />
-      <TopTitle icon={icon} word={word} />
+      {back ? <BackButton fallbackHref={back.href} fallbackLabel={back.label} /> : <span />}
+      <span className={s.topCenter}>{center}</span>
       <span className={s.topRight}>{right}</span>
     </header>
+  );
+}
+
+/** A page's title in the bar: its tab's icon and its lowercase name in Switzer. */
+export function BarTitle({ icon, word }: { icon?: MsName | ReactNode; word: string }) {
+  return (
+    <h1 className={s.barTitle}>
+      {typeof icon === 'string' ? <Ms name={icon as MsName} /> : (icon ?? null)}
+      {word}
+    </h1>
   );
 }

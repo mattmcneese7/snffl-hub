@@ -3,7 +3,7 @@ import type { CSSProperties, ReactNode } from 'react';
 import { Wallpaper } from './ui/blocks/Wallpaper';
 import { Ms, type MsName } from './icons';
 import { ui } from './ui';
-import { Drop, SWITZER, TabBar, TopBar, type Back } from './Chrome';
+import { BarTitle, Drop, SWITZER, TabBar, TopBar, type Back } from './Chrome';
 import s from './v4.module.css';
 import f from './ui/blocks/Frame.module.css';
 import b from './ui/blocks/ScoreBar.module.css';
@@ -38,27 +38,20 @@ export function Frame({
       <link rel="stylesheet" href={SWITZER} precedence="default" />
       <Wallpaper />
       <main className={f.page} aria-busy={bar ? true : undefined}>
-        {back ? (
-          <TopBar word={word ?? ''} back={back} right={<span className={f.acct} aria-hidden><span className={`${f.acctFace} ${k.round} ${k.bone}`} /></span>} />
-        ) : (
-          <div className={f.head}>
-            {icon && word ? (
-              <h1 className={f.secHead}>
-                {typeof icon === 'string' ? <Ms name={icon as MsName} /> : icon}
-                {word}
-              </h1>
+        <TopBar
+          back={back}
+          center={
+            icon && word ? (
+              <BarTitle icon={icon} word={word} />
             ) : (
               <Link href="/" className={f.lockup} aria-label="splash, home">
                 <Drop className={f.lockupMark} />
                 splash
               </Link>
-            )}
-            <span className={f.headR}>
-              <i className={k.bone} style={{ width: 52, height: 14 }} />
-              <span className={f.acct} aria-hidden><span className={`${f.acctFace} ${k.round} ${k.bone}`} /></span>
-            </span>
-          </div>
-        )}
+            )
+          }
+          right={<span className={f.acct} aria-hidden><span className={`${f.acctFace} ${k.round} ${k.bone}`} /></span>}
+        />
         {children}
       </main>
       <div className={f.dock}>

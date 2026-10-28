@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { Wallpaper } from './ui/blocks/Wallpaper';
 import { Ms, type MsName } from './icons';
 import { Suspense } from 'react';
-import { Drop, SWITZER, TabBar, TopBar, type Back } from './Chrome';
+import { BarTitle, Drop, SWITZER, TabBar, TopBar, type Back } from './Chrome';
 import Tracker from './nav/Tracker';
 
 export { Drop, TabBar, TopBar, type Back };
@@ -36,61 +36,29 @@ export function Account({ mine }: { mine: number | null }) {
   );
 }
 
-/** Home's top line: the lowercase lockup, drop sized like a letter. */
-export function HomeHead({ week, mine }: { week: number; mine: number | null }) {
+/** Home's top bar: the lowercase lockup centered, your avatar on the right. */
+export function HomeHead({ mine }: { week?: number; mine: number | null }) {
   return (
-    <div className={f.head}>
-      <Link href="/" className={f.lockup} aria-label="splash, home">
-        <Drop className={f.lockupMark} />
-        splash
-      </Link>
-      <span className={f.headR}>
-        <span className={f.wk}>Week {week}</span>
-        <Account mine={mine} />
-      </span>
-    </div>
+    <TopBar
+      center={
+        <Link href="/" className={f.lockup} aria-label="splash, home">
+          <Drop className={f.lockupMark} />
+          splash
+        </Link>
+      }
+      right={<Account mine={mine} />}
+    />
   );
 }
 
 /**
- * Every other tab's top page: its own icon and name, in the same Switzer as
- * the lockup. Screens below a tab's top page pass `back` and get the top bar
- * instead: back to where you were, the page's title, your avatar.
+ * Every other page's top bar: back where there is somewhere to go back to,
+ * the page's title centered (its tab's icon and lowercase name in the same
+ * Switzer as the lockup, once), your avatar on the right.
  */
-export function SectionHead({ icon, word, week, mine, back, title }: { icon: MsName; word: string; week: number; mine: number | null; back?: Back; title?: string }) {
-  // Sub pages keep the branded large title under the top bar; it collapses
-  // into the bar as the page scrolls.
-  if (back) {
-    const brand = (title ?? word).toLowerCase();
-    return (
-      <>
-        <TopBar word={brand} icon={icon} back={back} right={<Account mine={mine} />} />
-        <div className={f.head}>
-          <h1 id="pageTitle" className={f.secHead}>
-            <Ms name={icon} />
-            {brand}
-          </h1>
-          <span className={f.headR}>
-            <span className={f.wk}>Week {week}</span>
-          </span>
-        </div>
-      </>
-    );
-  }
-  return (
-    <div className={f.head}>
-      <h1 className={f.secHead}>
-        <Ms name={icon} />
-        {word}
-      </h1>
-      <span className={f.headR}>
-        <span className={f.wk}>Week {week}</span>
-        <Account mine={mine} />
-      </span>
-    </div>
-  );
+export function SectionHead({ icon, word, mine, back, title }: { icon: MsName; word: string; week?: number; mine: number | null; back?: Back; title?: string }) {
+  return <TopBar back={back} center={<BarTitle icon={icon} word={(title ?? word).toLowerCase()} />} right={<Account mine={mine} />} />;
 }
-
 
 /**
  * Splash 4.0's frame: paper and wallpaper, the page, and the dock with the

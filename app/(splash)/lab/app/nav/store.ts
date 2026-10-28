@@ -46,4 +46,5 @@ export function previousEntry(): NavEntry | null {
   return stack.length > 1 ? stack[stack.length - 2] : null;
 }
 
-export const cleanTitle = (t: string) => t.replace(/,\s*Splash 4\.0$/, '').trim();
+// Page titles end ", Splash" (", Splash 4.0" in the lab); the back button wants the page name alone.
+export const cleanTitle = (t: string) => t.replace(/,\s*Splash(?: 4\.0)?$/, '').trim();

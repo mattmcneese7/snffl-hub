@@ -1,0 +1,14 @@
+/* Win chance across a week. Marks in the kit tokens: the line in deep, the
+   even line and day splits as hairlines, moments as deep dots, the picked
+   play ringed in the card color; axis text the 11/600 label role. */
+.chart { display: grid; gap: 8px; }
+.readout { display: grid; gap: 2px; min-height: 92px; align-content: start; }
+.big { display: flex; align-items: baseline; gap: 8px; }
+.scrub { width: 100%; height: auto; display: block; overflow: visible; touch-action: none; cursor: pointer; outline: none; }
+.scrub:focus-visible { outline: 2px solid var(--deep); outline-offset: 4px; border-radius: 10px; }
+.scrub text { font: 600 11px var(--ui); fill: var(--ink-3); }
+.line { fill: none; stroke: var(--deep); stroke-width: 2; stroke-linejoin: round; }
+.even { stroke: var(--hair); stroke-width: 1; stroke-dasharray: 3 3; }
+.grid { stroke: var(--hair); stroke-width: 1; }
+.dot { fill: var(--deep); }
+.here { fill: var(--deep); stroke: var(--card); stroke-width: 2; }

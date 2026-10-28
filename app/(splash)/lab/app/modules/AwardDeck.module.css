@@ -1,0 +1,4 @@
+/* Layout only: the deck's step buttons and count in a row; the next arrow is
+   the back chevron turned around. */
+.nav { display: flex; align-items: center; gap: 8px; }
+.next svg { transform: scaleX(-1); }

@@ -1,0 +1,22 @@
+/* The Feed: layout only. Look comes from ui. */
+
+/* The type toggle hides what is not in the chosen tab; each pane stays mounted once. */
+.tabs { display: grid; gap: 24px; min-width: 0; }
+.tabs > * { min-width: 0; }
+.tabs[data-tab='clips'] [data-show]:not([data-show~='clips']),
+.tabs[data-tab='league'] [data-show]:not([data-show~='league']),
+.tabs[data-tab='all'] [data-show]:not([data-show~='all']) { display: none; }
+.pane { display: grid; gap: 8px; min-width: 0; }
+
+/* Stories: a manager's face and first name, one tap target */
+.bubble { display: grid; justify-items: center; gap: 4px; width: 64px; min-height: 44px; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; }
+
+/* A moment's lines and links */
+.text { margin: 0; }
+.tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.out { justify-self: start; }
+
+/* History filters */
+.filters { display: grid; gap: 8px; padding: 12px 0 0; }
+.day { display: flex; justify-content: space-between; padding: 12px 14px 0; }
+.ol { margin: 0; list-style: none; }

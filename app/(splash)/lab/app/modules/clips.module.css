@@ -1,0 +1,19 @@
+/* Clips that play in place: layout only, the look from ui (media, title, tag, pill). */
+.clip { display: grid; align-content: start; gap: 8px; color: inherit; text-decoration: none; }
+.meta { display: grid; gap: 4px; min-width: 0; }
+.wide { width: 300px; }
+.tall { width: 200px; }
+.still { width: 100%; }
+.still.stillTall { aspect-ratio: 9 / 16; }
+.still[data-playing] img { visibility: hidden; }
+.frame { position: absolute; inset: 0; display: block; }
+.frame iframe { display: block; width: 100%; height: 100%; border: 0; }
+.tap { position: absolute; inset: 0; z-index: 1; display: block; margin: 0; padding: 0; border: 0; background: transparent; cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+.play { position: absolute; left: 12px; bottom: 12px; }
+.title { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.owners { display: flex; flex-wrap: wrap; gap: 4px; }
+.owners > * { min-width: 0; }
+/* Stacked: one clip per row, full width, as the Feed lists them */
+.stack { display: grid; gap: 16px; min-width: 0; padding: 0 14px; }
+.inStack { width: 100%; min-width: 0; }
+.inStack .stillTall { aspect-ratio: 4 / 5; }

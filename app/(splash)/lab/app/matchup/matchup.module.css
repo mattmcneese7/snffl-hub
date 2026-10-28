@@ -1,0 +1,2 @@
+/* Layout only: two crests side by side in a row lead. */
+.crests { display: flex; gap: 4px; }

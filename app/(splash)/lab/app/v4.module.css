@@ -1,0 +1,49 @@
+/* Splash 4.0 in the lab: the tokens, and nothing else. Every color, the
+   one shadow and the two faces live here on .root (and on the page around
+   it, so sheets and pops portaled to <body> read the same values), light and
+   dark. The frame's own styles are ui/blocks/Frame.module.css; every
+   building block is ui/ui.module.css or ui/blocks. Type scale: 38 hero
+   score, 24 display, 18 titles and list scores, 15 primary, 13 secondary,
+   11 labels; UI weights 400, 600, 800; Switzer 900 only for the lockup and
+   branded titles. */
+
+/* The only fixed values are brand ones: --blue, the score bar and hero fill
+   in both themes, and --live, the red Live chip. */
+.root, :global(html):has(.root) {
+  --paper: #f7f6f2; --card: #ffffff; --ink: #141518; --ink-2: #3d434e; --ink-3: #5a616d;
+  --hair: rgba(20, 21, 24, 0.08); --deep: #2d4c9c; --on-deep: #ffffff; --powder: #c9dcfa; --powder-soft: #e7eefb;
+  --blue: #2d4c9c; --on-blue: #ffffff; --live: #c42034; --live-ink: #c42034;
+  --win: #047c50; --loss: #94352d;
+  --good-bg: #ddf8e8; --good-fg: #047c50; --bad-bg: #feebe8; --bad-fg: #94352d;
+  --warn-bg: #fdf1cc; --warn-fg: #7a5600; --gold: #8e6704; --gold-bg: #fef2dc;
+  --chip-bg: #edf0f6; --chip-fg: #464e5c;
+  --pos-fg: #626c7e; --pos-bg: #ecf0f8; --qb-fg: #a64c7b; --qb-bg: #feeaf2; --rb-fg: #017a75; --rb-bg: #d7f8f5; --wr-fg: #0573a0; --wr-bg: #e1f3ff;
+  --te-fg: #a05b01; --te-bg: #feedde; --k-fg: #7c5baf; --k-bg: #f2edff; --def-fg: #7d684b; --def-bg: #f8efe2;
+  --scrim: rgba(10, 12, 16, 0.45);
+  --shadow: 0 0 0 0.5px rgba(30, 26, 20, 0.06), 0 1px 2px rgba(30, 26, 20, 0.05), 0 10px 24px -12px rgba(30, 26, 20, 0.2);
+  --ui: system-ui, -apple-system, 'SF Pro Text', Roboto, 'Helvetica Neue', sans-serif;
+  --brand: 'Switzer', 'Helvetica Neue', Arial, sans-serif;
+  --gutter: 16px;
+}
+.root { background: var(--paper); }
+/* A bare b or strong defaults to 700, outside the Step 1 weights. Zero specificity, so every kit rule still wins. */
+:where(.root) :where(b, strong) { font-weight: 800; }
+@media (prefers-color-scheme: dark) {
+  .root, :global(html):has(.root) {
+    --paper: #111318; --card: #1a1d24; --ink: #eef0f3; --ink-2: #c3c8d1; --ink-3: #9aa2ae;
+    --hair: rgba(255, 255, 255, 0.09); --deep: #8fa8f5; --on-deep: #111318; --powder: #3b5799; --powder-soft: #22304f;
+    --live-ink: #ff7a8a;
+    --win: #4cc993; --loss: #f08a7e;
+    --good-bg: #12392a; --good-fg: #4cc993; --bad-bg: #3d1f1c; --bad-fg: #f08a7e;
+    --warn-bg: #3a3016; --warn-fg: #f2cf66; --gold: #e3b84a; --gold-bg: #3a2f12;
+    --chip-bg: #262b35; --chip-fg: #c3c8d1;
+    --pos-fg: #b3bccc; --pos-bg: #272c36; --qb-fg: #f59ac4; --qb-bg: #3a2230; --rb-fg: #5fd6cf; --rb-bg: #163533; --wr-fg: #6cc4f0; --wr-bg: #16303f;
+    --te-fg: #f4b066; --te-bg: #3a2a16; --k-fg: #bfa6f5; --k-bg: #2b2440; --def-fg: #d6bf9b; --def-bg: #332b20;
+    --scrim: rgba(0, 0, 0, 0.55);
+    --shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.06), 0 10px 24px -12px rgba(0, 0, 0, 0.6);
+    color-scheme: dark;
+  }
+}
+/* The root layout paints <html> light inline; the lab's paper wins in both
+   themes, so no light strip shows past the page in dark. */
+:global(html):has(.root), :global(body):has(.root) { background: var(--paper) !important; }

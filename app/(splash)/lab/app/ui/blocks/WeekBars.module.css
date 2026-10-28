@@ -1,0 +1,21 @@
+/* Points by week. Marks in the kit tokens: deep for the bars, hairline grid,
+   powder for the playoff weeks; axis text the 11/600 label role. Bars are
+   square; the playoff wash is a 10. */
+.chart { display: grid; gap: 8px; }
+.chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.chart text { font: 600 11px var(--ui); fill: var(--ink-3); font-variant-numeric: tabular-nums; }
+.readout { display: flex; align-items: baseline; gap: 8px; margin: 0; }
+.game { display: grid; gap: 2px; margin: 0; min-height: 38px; }
+.solid { fill: var(--deep); }
+.hollow { fill: none; stroke: var(--deep); stroke-width: 1.5; }
+.grid { stroke: var(--hair); stroke-width: 1; }
+.playoffs { fill: var(--powder-soft); }
+.dim { opacity: 0.35; }
+.scrub { cursor: pointer; touch-action: pan-y; outline: none; -webkit-tap-highlight-color: transparent; }
+.scrub:focus-visible { outline: 2px solid var(--deep); outline-offset: 4px; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.legend > span { display: inline-flex; align-items: center; gap: 4px; }
+.legend i { width: 10px; height: 10px; }
+.keySolid { background: var(--deep); }
+.keyHollow { box-shadow: inset 0 0 0 1.5px var(--deep); }
+.keyPlayoffs { background: var(--powder-soft); }

@@ -1,0 +1,13 @@
+/* Layout only: the opened roster row's blocks stacked, the range on one
+   line, the facts two across, the usage table's columns. */
+.read { display: grid; gap: 12px; padding-left: 52px; }
+.block { display: grid; gap: 4px; margin: 0; }
+.range { display: grid; grid-template-columns: auto auto minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+.tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 12px; margin: 0; }
+.facts dd { margin: 0; }
+.prop { display: flex; justify-content: space-between; gap: 12px; }
+.usage { display: grid; grid-template-columns: minmax(0, 1fr) repeat(var(--n, 3), 52px); gap: 4px 0; }
+.usageRow { display: contents; }
+.num { text-align: right; }
+.start { justify-self: start; }

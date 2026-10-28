@@ -1,0 +1,5 @@
+/* Layout only: the clip's width in the rail, the frame filling its box. Every look comes from the kit. */
+.clip { display: grid; gap: 8px; align-content: start; width: 264px; }
+.frame { width: 100%; padding: 0; border: 0; cursor: pointer; }
+.frame iframe { display: block; width: 100%; height: 100%; border: 0; }
+.clamp { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }

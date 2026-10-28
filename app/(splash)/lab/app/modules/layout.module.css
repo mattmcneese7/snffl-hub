@@ -1,0 +1,14 @@
+/* Layout only for the league pages and modules: arrangement, never look. Look comes from ui. */
+.note { margin: 0; padding: 0 14px; }
+.lead { display: flex; align-items: center; gap: 8px; }
+.inline { display: inline-flex; align-items: center; gap: 4px; vertical-align: middle; }
+.stack { display: grid; gap: 8px; margin: 0; }
+.split { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.cut { padding: 8px 0; }
+.stack > .tall, .grid2 .tall { aspect-ratio: 9 / 16; max-height: 70dvh; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 0 14px; }
+.center { display: grid; place-items: center; }
+.bare { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; text-align: left; }
+.fill { width: 100%; max-height: 80dvh; }
+.wrapLine { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+.nowrap { white-space: nowrap; }

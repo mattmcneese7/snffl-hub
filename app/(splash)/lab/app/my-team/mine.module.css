@@ -1,0 +1,5 @@
+/* Layout only. The rows are kit rows on buttons, so the reset clears the
+   button's own box; the meta line lines up its tags. */
+.reset { width: 100%; margin: 0; border-right: 0; border-bottom: 0; border-left: 0; background: none; font: inherit; color: inherit; text-align: left; cursor: pointer; }
+.meta { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+.start { justify-self: start; }

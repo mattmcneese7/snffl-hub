@@ -183,7 +183,7 @@ export async function runLineupAlerts(log: (line: string) => void = () => {}) {
       {
         title: candidate.final ? `Last call. ${title}` : title,
         body,
-        url: `/matchups/${week}/${candidate.problem.matchupId}`,
+        url: `/matchup?id=${candidate.problem.matchupId}&week=${week}`,
         tag: `lineup-${candidate.problem.player.id}`,
       }
     );

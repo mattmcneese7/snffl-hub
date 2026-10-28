@@ -1,0 +1,13 @@
+/* Layout only for the players, player and manager pages: stacks and insets
+   on the 4 px grid. Every look comes from the kit (ui.module.css). */
+.stack { display: grid; gap: 12px; min-width: 0; }
+.inset { margin: 0; padding: 0 14px; }
+.note { margin: 0; }
+.lead { display: inline-flex; align-items: center; gap: 8px; }
+.mark { display: grid; justify-items: start; width: 56px; }
+.drawerBody { display: grid; gap: 12px; margin: 0; padding: 0 0 14px; }
+.more { justify-self: center; }
+.per3 > div { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 16px; }
+.per4 > div { grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: 16px; }
+.taps { min-width: 0; }
+.taps a, .taps button { min-width: 44px; justify-content: center; }

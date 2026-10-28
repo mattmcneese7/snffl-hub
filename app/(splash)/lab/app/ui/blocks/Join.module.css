@@ -1,0 +1,10 @@
+/* The invite: one centered column on the paper. The icon is the home screen
+   icon at 96 with the container corner; the lockup is the Home one, larger;
+   the steps are kit pills, full width, 44 tall. */
+.page { display: grid; justify-items: center; align-content: center; gap: 16px; min-height: 90dvh; padding-block: 48px; text-align: center; }
+.icon { width: 96px; height: 96px; border-radius: 20px; outline: 1px solid var(--hair); outline-offset: -1px; }
+.lockup { font-size: 38px; }
+.lockup svg { width: 30px; height: 30px; }
+.line { max-width: 30ch; margin: 0; }
+.steps { display: grid; gap: 12px; width: min(100%, 320px); }
+.link { overflow-wrap: anywhere; user-select: all; }

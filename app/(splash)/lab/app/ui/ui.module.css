@@ -1,0 +1,248 @@
+/* Splash 4.0 building blocks. Every page is assembled from these and only
+   these, so spacing, corners, type and surfaces cannot drift. Tokens come
+   from .root in v4.module.css. The rules, all from DESIGN-v4.md:
+     4 px grid: 4, 8, 12, 16, 24, 32, 48
+     screen edge 16, card inner edge 14, rows 52 tall, taps 44
+     three corners, from the Step 1 audit: 20 for every container (card, list,
+       hero, score bar, tab bar, tile, sheet, pop, media, the Rag card); 10 for
+       everything inside a container or small (buttons, chips, the segmented
+       control and its thumb, tags, crests, thumbnails, the selected tab,
+       inputs, meter fills); 50% only for faces. Nothing else, no capsules.
+     cards only for tappable units; static content sits on the page, 14 in
+       from the screen gutter, with hairlines between groups
+     one shadow, only on tappable cards
+     type: 38/800 hero score, 24/800 display, 18 titles and list scores,
+           15 primary, 13 secondary, 11/600 caps labels; UI weights 400, 600, 800;
+           Switzer 900 only for the lockup and branded titles (the large title,
+           the Rag masthead)
+     one focal point per screen; at most one accent emphasis beyond the hero
+       (brand fill, gold award, red live); each fact once
+     summary first, detail on tap: a player is one line until you ask */
+
+/* Section: a title row and its content, 8 apart; sections sit 24 apart. */
+.section { display: grid; gap: 8px; }
+.sectionHead { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 0 14px; }
+.sectionHead h2 { margin: 0; font: 800 18px/1.1 var(--ui); letter-spacing: -0.01em; }
+.sectionHead a { display: inline-flex; align-items: center; min-height: 44px; margin: -14px 0; font-size: 13px; font-weight: 600; color: var(--deep); text-decoration: none; }
+
+/* Card: a tappable unit is one surface, 14 inside, with the shadow. Static content sits flat on the page. */
+.card { display: grid; gap: 12px; padding: 0 14px; color: inherit; text-decoration: none; min-width: 0; }
+.surface { padding: 14px; border-radius: 20px; background: var(--card); box-shadow: var(--shadow); }
+.tap { box-shadow: var(--shadow); -webkit-tap-highlight-color: transparent; }
+.tap:active { transform: scale(0.985); transition: transform 60ms ease-out; }
+@media (prefers-reduced-motion: reduce) { .tap:active { transform: none; } }
+
+/* List: like items, divided rows. Tappable rows share one card; static rows sit flat on the page. */
+.list { display: grid; padding: 0 14px; }
+.list.tapList { border-radius: 20px; background: var(--card); box-shadow: var(--shadow); }
+.row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; min-height: 52px; padding: 12px 0; border-top: 1px solid var(--hair); color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+.row:first-child { border-top: 0; }
+.rowNoLead { grid-template-columns: minmax(0, 1fr) auto; }
+.body { display: grid; gap: 2px; min-width: 0; }
+.body .label { margin-bottom: 2px; }
+.title { font-size: 15px; font-weight: 600; line-height: 1.25; overflow-wrap: anywhere; }
+.strong { font-weight: 800; }
+.sub { font-size: 13px; line-height: 1.3; color: var(--ink-2); }
+.trail { display: grid; justify-items: end; gap: 2px; text-align: right; }
+.value { font-size: 18px; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.valueSub { font-size: 11px; font-weight: 600; color: var(--ink-3); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.muted { color: var(--ink-3); font-weight: 400; }
+
+/* Text roles on their own. */
+.label { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); }
+.labelBrand { color: var(--deep); }
+.labelGold { color: var(--gold); }
+.display { margin: 0; font: italic 800 24px/1.1 var(--ui); letter-spacing: -0.02em; text-wrap: balance; }
+.bodyText { margin: 0; font-size: 15px; line-height: 1.45; color: var(--ink-2); }
+
+/* Faces: managers in rings of their color, NFL clubs on white tiles, art in a square. */
+.avatar { flex: none; border-radius: 50%; overflow: hidden; background: var(--mgr, var(--powder)); box-shadow: 0 0 0 2px var(--card), 0 0 0 3.5px var(--mgr, var(--powder)); }
+.avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.crest { display: grid; place-items: center; flex: none; border-radius: 10px; background: #ffffff; box-shadow: inset 0 0 0 1px rgba(20, 21, 24, 0.08); }
+.crest img { width: 76%; height: 76%; object-fit: contain; }
+/* A player: the headshot in a circle with his club's badge at the corner. Defenses show the club alone. */
+.face { position: relative; flex: none; }
+.face > img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: top; background: var(--powder-soft); display: block; }
+.faceBadge { position: absolute; right: -3px; bottom: -2px; width: 45%; height: 45%; border-radius: 50%; background: #ffffff; display: grid; place-items: center; box-shadow: 0 0 0 1.5px var(--card); }
+.faceBadge img { width: 74%; height: 74%; object-fit: contain; }
+.art { display: grid; place-items: center; flex: none; }
+.art img { width: 100%; height: 100%; object-fit: contain; }
+.rank { width: 20px; font: 800 18px/1 var(--ui); color: var(--deep); text-align: center; font-variant-numeric: tabular-nums; }
+
+/* Hero: one per screen, brand blue, your game. */
+.hero { display: grid; gap: 12px; padding: 14px; border-radius: 20px; background: var(--blue); color: var(--on-blue); color-scheme: dark; text-decoration: none; }
+.heroTop { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.heroTop .label { color: rgba(255, 255, 255, 0.85); }
+.heroRow { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; }
+.heroRow .avatar { box-shadow: 0 0 0 2px var(--blue), 0 0 0 3.5px var(--mgr, #fff); }
+.heroRow .title { font-weight: 800; }
+.heroRow .sub { color: rgba(255, 255, 255, 0.78); }
+.heroScore { font-size: 38px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+.heroLost .title, .heroLost .heroScore { color: rgba(255, 255, 255, 0.7); font-weight: 400; }
+.heroFoot { display: grid; gap: 8px; font-size: 13px; color: rgba(255, 255, 255, 0.85); }
+
+/* Pair: a contest with two sides. In a List each is a row; big leads a page. */
+.pair { display: grid; gap: 8px; padding: 12px 0; border-top: 1px solid var(--hair); color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+.pair:first-child { border-top: 0; }
+.pairTop { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); }
+.pairSide { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; gap: 12px; align-items: center; }
+.pairSide > :first-child:empty { display: none; }
+.pairMark { min-width: 24px; font-size: 11px; font-weight: 600; color: var(--ink-3); text-align: right; font-variant-numeric: tabular-nums; }
+.pairLost .title, .pairLost .value { color: var(--ink-3); font-weight: 400; }
+.pairFoot { padding-left: 40px; }
+.pairBig { gap: 12px; padding: 0; border-top: 0; }
+.valueBig { font-size: 38px; line-height: 1; }
+
+/* Versus: two sides compared, value, label, value. */
+.versus { display: grid; }
+.versusRow { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 12px; align-items: center; min-height: 44px; border-top: 1px solid var(--hair); text-align: center; }
+.versusRow:first-child { border-top: 0; min-height: 40px; }
+.versusRow > :first-child { justify-self: start; }
+.versusEnd { justify-self: end; }
+
+/* Meter: a chance or a share, 6 tall. */
+.meter { display: flex; height: 6px; border-radius: 10px; overflow: hidden; background: var(--hair); }
+.meter u { display: block; height: 100%; border-radius: 10px; background: var(--deep); }
+.hero .meter { background: rgba(255, 255, 255, 0.22); }
+.hero .meter u { background: #fff; }
+
+/* Rail: tiles that scroll sideways, bleeding to the screen edge. */
+.rail { display: flex; min-width: 0; gap: 8px; margin: 0 calc(-1 * var(--gutter)); padding: 4px var(--gutter) 8px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 var(--gutter); scrollbar-width: none; }
+.rail::-webkit-scrollbar { display: none; }
+.rail > * { flex: none; scroll-snap-align: start; }
+.tile { display: grid; gap: 8px; align-content: start; min-width: 112px; padding: 12px; border-radius: 20px; background: var(--card); box-shadow: var(--shadow); color: inherit; text-decoration: none; }
+.tileRow { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 8px; align-items: center; font-size: 13px; }
+.tileRow b { font-weight: 800; }
+.tileRow .value { font-size: 15px; }
+.tileLost { color: var(--ink-3); }
+.tileLost b, .tileLost .value { font-weight: 400; }
+
+/* Media: a still or a clip at 16:9 with its label. */
+.media { position: relative; display: block; aspect-ratio: 16 / 9; max-width: 100%; border-radius: 20px; overflow: hidden; background: var(--powder-soft); }
+.media img, .media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mediaTag { position: absolute; left: 12px; bottom: 12px; }
+
+/* Controls. Every one is 44 to the finger, corners 10. */
+.pill { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 16px; border: 0; border-radius: 10px; font: 600 15px var(--ui); text-decoration: none; cursor: pointer; }
+.pillPrimary { background: var(--deep); color: var(--on-deep); }
+.pillSecondary { background: var(--chip-bg); color: var(--ink); }
+.pillWhite { background: rgba(255, 255, 255, 0.16); color: #fff; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { position: relative; display: inline-flex; align-items: center; justify-content: center; height: 44px; min-width: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: var(--chip-bg); color: var(--chip-fg); font: 600 13px var(--ui); text-decoration: none; cursor: pointer; }
+.chipOn { background: var(--deep); color: var(--on-deep); }
+.seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; height: 44px; border-radius: 10px; background: var(--hair); }
+.segBtn { display: grid; place-items: center; min-height: 44px; border: 0; border-radius: 10px; background: transparent; font: 600 13px var(--ui); color: var(--ink-2); text-decoration: none; cursor: pointer; }
+.segOn { background: var(--card); color: var(--ink); box-shadow: inset 0 0 0 3px var(--hair); }
+
+/* Tags: state at a glance, never color alone, 22 tall. */
+.tag { display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: 10px; background: var(--chip-bg); color: var(--chip-fg); font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; font-style: normal; }
+.tagGood { background: var(--good-bg); color: var(--good-fg); }
+.tagBad { background: var(--bad-bg); color: var(--bad-fg); }
+.tagWarn { background: var(--warn-bg); color: var(--warn-fg); }
+.tagGold { background: var(--gold-bg); color: var(--gold); }
+.tagLive { background: var(--live); color: #fff; }
+.tagLive i { width: 6px; height: 6px; border-radius: 50%; background: #fff; animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: 0.35; } }
+@media (prefers-reduced-motion: reduce) { .tagLive i { animation: none; } }
+
+/* Stats: up to four numbers in a card, value over label. */
+.stats { display: grid; grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr)); gap: 12px; }
+.stat { display: grid; gap: 4px; min-width: 0; }
+.stat b { font-size: 18px; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
+
+/* Empty: says what will appear and how to get it. */
+.empty { display: grid; gap: 12px; justify-items: start; padding: 0 14px; }
+
+/* Kit page only: the spec beside each block. */
+.spec { margin: 0; padding: 0 14px; font-size: 13px; line-height: 1.4; color: var(--ink-3); }
+.scale { display: grid; gap: 8px; }
+.scaleRow { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: baseline; }
+.swatches { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.swatch { display: grid; gap: 4px; }
+.swatch i { display: block; height: 40px; border-radius: 10px; box-shadow: inset 0 0 0 1px var(--hair); }
+.spaceRow { display: flex; align-items: flex-end; gap: 12px; }
+.spaceRow i { display: block; width: 16px; background: var(--powder); }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* The Rag: brand blue masthead slab, the lead, two more stories. One card. */
+.rag { display: grid; border-radius: 20px; overflow: hidden; background: var(--card); box-shadow: var(--shadow); }
+.ragTop { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 12px 14px; background: var(--blue); color: var(--on-blue); text-decoration: none; }
+.ragTop b { font: italic 900 24px/1 var(--brand); letter-spacing: -0.04em; text-transform: uppercase; white-space: nowrap; }
+.ragTop .label { color: rgba(255, 255, 255, 0.85); }
+.ragLead { display: grid; color: inherit; text-decoration: none; }
+.ragLead .media { border-radius: 0; }
+.ragBody { display: grid; gap: 8px; padding: 14px; }
+.ragMore { display: grid; padding: 0 14px; }
+.ragMore .ragRow:first-child { border-top: 1px solid var(--hair); }
+.thumb { width: 72px; height: 72px; border-radius: 10px; object-fit: cover; display: block; }
+.rag > .ragRow { padding: 12px 14px; }
+
+/* Deck: Squirt fixed at the left, the slides swipe beside him. */
+.deck { grid-template-columns: 120px minmax(0, 1fr); align-items: center; }
+.deckStage { display: grid; place-items: center; width: 120px; height: 120px; }
+.deckSide { display: grid; gap: 4px; min-width: 0; }
+.deckTrack { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
+.deckTrack::-webkit-scrollbar { display: none; }
+.deckSlide { flex: 0 0 100%; scroll-snap-align: start; display: grid; gap: 4px; min-width: 0; min-height: 52px; color: inherit; text-decoration: none; }
+.deckSlide .title { font-size: 18px; font-weight: 800; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.deckSlide .sub { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.deckMine .title { color: var(--deep); }
+.dots { display: flex; align-items: center; margin-left: -8px; }
+.dots button { position: relative; width: 16px; height: 44px; border: 0; background: none; cursor: pointer; }
+.dots button::after { content: ''; position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--hair); transition: transform 160ms ease-out, background 160ms ease-out; }
+.dots .dotOn::after { background: var(--deep); transform: scale(1.35); }
+.dots .label { margin-left: 8px; }
+
+/* Duel: two lineups slot by slot; a slot opens to both players' game, odds and range. */
+.duel { display: grid; padding: 0 14px; border-radius: 20px; background: var(--card); box-shadow: var(--shadow); }
+.duelHead { position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: minmax(0, 1fr) 34px minmax(0, 1fr); align-items: center; justify-items: center; gap: 4px; margin: 0 -14px; padding: 12px 14px; border-bottom: 1px solid var(--hair); border-radius: 20px 20px 0 0; background: var(--card); }
+.duelWho { display: flex; align-items: center; gap: 8px; justify-self: stretch; min-width: 0; font-size: 13px; font-weight: 600; line-height: 1.2; }
+.duelSlot { display: grid; grid-template-columns: minmax(0, 1fr) 34px minmax(0, 1fr); gap: 4px; align-items: start; padding: 12px 0; }
+.duelMid { display: grid; justify-items: center; gap: 4px; margin-top: 4px; }
+.slotTag { display: grid; place-items: center; width: 34px; height: 22px; border-radius: 10px; background: var(--chip-bg); font-size: 11px; font-weight: 600; color: var(--chip-fg); }
+.duelPlayer { display: grid; gap: 4px; align-content: start; min-width: 0; width: 100%; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.duelPlayer .title { font-size: 13px; }
+.duelTop { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.duelR { flex-direction: row-reverse; text-align: right; }
+.duelR .duelTop { flex-direction: row-reverse; }
+.duelR .duelTop .trail { justify-items: start; text-align: left; }
+.xp { border-top: 1px solid var(--hair); }
+.duelHead + .xp { border-top: 0; }
+.xp > summary { list-style: none; cursor: pointer; }
+.xp > summary::-webkit-details-marker { display: none; }
+.caret { display: grid; place-items: center; width: 16px; height: 16px; color: var(--ink-3); transition: transform 160ms ease-out; }
+.duelLost .value { color: var(--ink-3); font-weight: 400; }
+.xp[open] .caret { transform: rotate(90deg); }
+.xpBody { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; padding: 0 0 12px; }
+.info { display: grid; gap: 4px; align-content: start; min-width: 0; font-size: 13px; color: var(--ink-2); }
+.infoR { text-align: right; justify-items: end; }
+.info b { color: var(--ink); font-weight: 600; }
+.info span { display: block; }
+.injury { margin-left: 4px; font-weight: 800; color: var(--loss); }
+
+/* Range: a floor to ceiling band, a dot for the points so far. */
+.range { position: relative; width: 100%; height: 6px; border-radius: 10px; background: var(--powder-soft); }
+.rangeBand { position: absolute; top: 0; bottom: 0; border-radius: 10px; background: var(--powder); }
+.rangeDot { position: absolute; top: 50%; width: 10px; height: 10px; margin: -4px 0 0 -4px; border-radius: 50%; background: var(--ink-3); box-shadow: 0 0 0 2px var(--card); }
+.rangeHit { background: var(--deep); }
+
+/* Drawer: a list that opens from a 52 tall summary row. */
+.drawer { padding: 0 14px; border-radius: 20px; background: var(--card); box-shadow: var(--shadow); }
+.drawer > summary { list-style: none; display: flex; justify-content: space-between; align-items: center; min-height: 52px; font-size: 15px; font-weight: 600; cursor: pointer; }
+.drawer > summary::-webkit-details-marker { display: none; }
+.drawer > summary span:last-child { font-size: 13px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+
+/* Ticket: a top performer in his club's color, 104 tall, the box score on the strip. */
+.ticket { position: relative; display: grid; grid-template-columns: 80px minmax(0, 1fr) auto; grid-template-rows: 1fr 24px; width: 100%; height: 104px; padding: 0; border: 0; border-radius: 20px; overflow: hidden; background: var(--tk); color: #fff; box-shadow: var(--shadow); font: inherit; text-align: left; cursor: pointer; }
+.ticketLogo { position: absolute; right: -24px; top: -20px; width: 140px; height: 140px; object-fit: contain; opacity: 0.14; filter: grayscale(1) brightness(3); }
+.ticketCut { position: relative; grid-row: 1 / 3; overflow: hidden; }
+.ticketCut img { position: absolute; left: 50%; bottom: 0; height: 100%; width: auto; max-width: none; transform: translateX(-50%); }
+.ticketMid { position: relative; display: grid; align-content: center; gap: 2px; min-width: 0; padding: 8px 4px 4px 12px; }
+.ticketMid .title { font-weight: 800; }
+.ticketMid .sub { color: rgba(255, 255, 255, 0.85); }
+.ticketMid .label, .ticketPts .valueSub { color: rgba(255, 255, 255, 0.85); }
+.ticketPts { position: relative; display: grid; justify-items: end; align-content: start; gap: 2px; padding: 12px 12px 0 4px; }
+.ticketPts b { font-size: 24px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+.ticketStrip { position: relative; grid-column: 2 / 4; display: flex; align-items: center; padding: 0 12px; background: rgba(0, 0, 0, 0.22); color: #fff; white-space: nowrap; overflow: hidden; }
+.tickets { display: grid; gap: 12px; }

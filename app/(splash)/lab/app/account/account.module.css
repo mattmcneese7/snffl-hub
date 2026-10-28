@@ -1,0 +1,12 @@
+/* Layout only. Account's rows are kit rows on buttons, so the reset clears
+   the button's own box; the switch is the kit's segmented control at a fixed
+   width; the book groups stack. */
+.reset { width: 100%; margin: 0; border-right: 0; border-bottom: 0; border-left: 0; background: none; font: inherit; color: inherit; text-align: left; cursor: pointer; }
+.toggle { width: 112px; padding: 0; border: 0; cursor: pointer; }
+.toggle:disabled { opacity: 0.5; }
+.groups { display: grid; gap: 12px; }
+.group { display: grid; gap: 8px; }
+.check { display: grid; place-items: center; width: 24px; height: 24px; }
+.start { justify-self: start; }
+.logo.logo { width: 32px; height: 32px; }
+.flush.flush { padding: 0; }

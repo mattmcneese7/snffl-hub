@@ -1,0 +1,12 @@
+/* Layout only for the Swami: stacks on the 4 px grid. Every look comes from
+   the kit (ui.module.css). */
+.stack { display: grid; gap: 12px; min-width: 0; }
+.copy { display: grid; gap: 12px; }
+.copyRow { display: flex; flex-wrap: wrap; gap: 8px; }
+.drawerBody { display: grid; gap: 12px; margin: 0; padding: 0 0 14px; }
+.slot { display: grid; justify-items: start; width: 40px; }
+.more { justify-self: center; }
+.note { margin: 0; }
+.inset { margin: 0; padding: 0 14px; }
+.taps { min-width: 0; }
+.taps a, .taps button { min-width: 44px; justify-content: center; }

@@ -32,14 +32,14 @@ export function keepMoves(query: SwamiQuery): URLSearchParams {
 }
 
 /** The Swami with some keys changed. Null removes one. */
-export function swamiHref(query: SwamiQuery, next: Record<string, string | null>): string {
+export function swamiHref(query: SwamiQuery, next: Record<string, string | null>, base = '/swami'): string {
   const q = new URLSearchParams();
   for (const key of ALL_KEYS) {
     const v = key in next ? next[key] : one(query[key]);
     if (v) q.set(key, v);
   }
   const qs = q.toString();
-  return qs ? `/swami?${qs}` : '/swami';
+  return qs ? `${base}?${qs}` : base;
 }
 
 /** Comma separated player ids, cleaned the way v2 cleans them. */

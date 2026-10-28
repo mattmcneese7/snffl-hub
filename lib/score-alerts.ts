@@ -109,7 +109,7 @@ export async function scoreAlerts(input: {
     if (!won.has(candidate.claim.key)) continue;
     const delivered = await sendAlert(
       { alert: candidate.alert, teamIds: [String(candidate.rosterId)] },
-      { title: candidate.title, body: candidate.body, url: `/matchups/${week}`, tag: candidate.tag }
+      { title: candidate.title, body: candidate.body, url: `/scores/${week}`, tag: candidate.tag }
     );
     sent += delivered;
     log(`  ${candidate.alert}: ${candidate.title} for ${nameOf(candidate.rosterId)} (${delivered} devices)`);

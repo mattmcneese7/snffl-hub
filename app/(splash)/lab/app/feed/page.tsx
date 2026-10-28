@@ -24,7 +24,7 @@ import Stories, { type Slide, type StoryManager } from './Stories';
 import { LinkedText, MomentRow } from './Rows';
 import f from './feed.module.css';
 
-export const metadata: Metadata = { title: { absolute: 'The Feed, Splash 4.0' }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: 'The Feed, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 const FANTASY_POSITIONS = new Set(['QB', 'RB', 'WR', 'TE', 'K']);
@@ -165,7 +165,7 @@ export default async function V4Feed() {
             // Only the bench: v2's other two lines repeat the score above.
             lines: [{ label: own.status === 'final' ? 'Bench points' : 'Bench points so far', value: card.lines[2]?.value ?? '0.00' }],
             player: card.player && best ? { ...card.player, name: best.name } : card.player,
-            href: own.week === v4.week ? `/lab/app/matchup?id=${own.matchupId}` : `/lab/app/matchup?id=${own.matchupId}&week=${own.week}`,
+            href: own.week === v4.week ? `/matchup?id=${own.matchupId}` : `/matchup?id=${own.matchupId}&week=${own.week}`,
           });
       }
       return { rosterId: team.rosterId, firstName: first, teamName: team.teamName.trim(), avatarUrl: team.avatarUrl, clips: clipCount, slides };
@@ -290,7 +290,7 @@ export default async function V4Feed() {
 
   return (
     <Shell data={v4} active="home">
-      <SectionHead icon="feed" word="feed" week={v4.week} mine={v4.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
+      <SectionHead icon="feed" word="feed" week={v4.week} mine={v4.myRoster} back={{ href: '/league', label: 'League' }} />
 
       <FeedTabs id="page">
         <div className={f.pane} data-show="all clips">
@@ -310,7 +310,7 @@ export default async function V4Feed() {
           </div>
         ) : null}
         <div className={f.pane} data-show="all league">
-          <Section title="Your Week" action={mine == null ? { href: '/lab/app/account', label: 'Pick your team' } : undefined}>
+          <Section title="Your Week" action={mine == null ? { href: '/account', label: 'Pick your team' } : undefined}>
             {mine == null ? (
               <Empty>Pick your team to see your touchdowns, lead changes and callouts here.</Empty>
             ) : yours.length ? (

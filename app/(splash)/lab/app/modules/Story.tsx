@@ -242,7 +242,7 @@ function Slide({ slide }: { slide: StorySlide }) {
 function ShareRow({ week, index }: { week: number; index: number }) {
   const [said, setSaid] = useState<string | null>(null);
   const share = async () => {
-    const url = `${window.location.origin}/lab/app/rag/${week}`;
+    const url = `${window.location.origin}/rag/${week}`;
     try {
       if (navigator.share) {
         await navigator.share({ title: `Splash, week ${week}`, url });

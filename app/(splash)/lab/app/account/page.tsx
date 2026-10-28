@@ -14,7 +14,7 @@ import Shell, { SectionHead } from '../Shell';
 import { Avatar, Card, Drawer, List, Row, Section, ui } from '../ui';
 import a from './account.module.css';
 
-export const metadata: Metadata = { title: { absolute: 'Account, Splash 4.0' }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: 'Account, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 /**
@@ -31,7 +31,7 @@ export default async function V4Account() {
   const pickable = teams.map((t) => ({ rosterId: t.rosterId, teamName: t.teamName, manager: firstNameOf(t.rosterId) ?? t.manager, avatar: t.avatarUrl ?? null, color: t.colors?.primary ?? null }));
   return (
     <Shell data={data} active="">
-      <SectionHead icon="account" word="account" week={data.week} mine={data.myRoster} back={{ href: '/lab/app', label: 'Home' }} />
+      <SectionHead icon="account" word="account" week={data.week} mine={data.myRoster} back={{ href: '/', label: 'Home' }} />
       <Section title="My Team">
         {me ? (
           <List>
@@ -77,9 +77,9 @@ export default async function V4Account() {
       </div>
       <Section title="More">
         <List tap>
-          <Row href="/lab/app/my-team" title="My Team" />
-          <Row href="/lab/app/rules" title="League Rules" />
-          <Row href="/lab/app/join" title="Invite Someone" />
+          <Row href="/my-team" title="My Team" />
+          <Row href="/rules" title="League Rules" />
+          <Row href="/join" title="Invite Someone" />
         </List>
       </Section>
       {/* Seven quick taps open every version this app has been (the easter egg that lived at the foot of v3's More). */}

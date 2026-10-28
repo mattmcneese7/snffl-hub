@@ -75,7 +75,7 @@ export default function Invite({ line }: { line: string }) {
   return (
     <div className={j.steps}>
       {stage === 'installed' ? (
-        <a href="/lab/app" className={`${ui.pill} ${ui.pillPrimary}`}>
+        <a href="/" className={`${ui.pill} ${ui.pillPrimary}`}>
           Open Splash
         </a>
       ) : null}
@@ -86,7 +86,7 @@ export default function Invite({ line }: { line: string }) {
       ) : null}
       {stage === 'ios' || stage === 'android' ? (
         <>
-          <a href="/lab/app" className={`${ui.pill} ${ui.pillPrimary}`}>
+          <a href="/" className={`${ui.pill} ${ui.pillPrimary}`}>
             Go to Splash
           </a>
           <p className={ui.sub}>

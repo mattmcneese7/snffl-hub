@@ -35,7 +35,7 @@ import {
   ui,
 } from '../ui';
 
-export const metadata: Metadata = { title: { absolute: 'Kit, Splash 4.0' }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: 'Kit, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 function Spec({ children }: { children: string }) {
@@ -59,7 +59,7 @@ export default async function Kit() {
 
   return (
     <Shell data={data} active="">
-      <SectionHead icon="league" word="kit" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/account', label: 'Account' }} />
+      <SectionHead icon="league" word="kit" week={data.week} mine={data.myRoster} back={{ href: '/account', label: 'Account' }} />
 
       <Section title="Type">
         <Card>
@@ -125,7 +125,7 @@ export default async function Kit() {
 
       <Section title="Your Game">
         <Hero
-          href="/lab/app/matchup"
+          href="/matchup"
           label="Week 7 Matchup"
           state={<LiveTag text="Q3 4:12" />}
           sides={[
@@ -144,12 +144,12 @@ export default async function Kit() {
         <Spec>The hero: one per screen, brand blue, your game. Two rows, the score at 38, one status line. The whole card is one tap into the matchup.</Spec>
       </Section>
 
-      <Section title="Lists" action={{ href: '/lab/app/league', label: 'Standings' }}>
+      <Section title="Lists" action={{ href: '/league', label: 'Standings' }}>
         <List tap>
           {[0, 1, 2].map((i) => (
             <Row
               key={i}
-              href={`/lab/app/managers/${t(i).rosterId}`}
+              href={`/managers/${t(i).rosterId}`}
               lead={
                 <span style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                   <Rank n={i + 1} />
@@ -176,14 +176,14 @@ export default async function Kit() {
         <Spec>Awards wear Squirt&rsquo;s pose as their art, then the award, the winner and the number that won it. Gold is for Manager of the Week and the champion only; every other award label is neutral.</Spec>
       </Section>
 
-      <Section title="Tiles" action={{ href: '/lab/app/nfl', label: 'All games' }}>
+      <Section title="Tiles" action={{ href: '/nfl', label: 'All games' }}>
         <Rail label="NFL games">
           {[
             ['Final', 'NE', 24, 'CHI', 30],
             ['Q4 2:05', 'PIT', 16, 'NO', 10],
             ['Sun 12:00 PM', 'SF', null, 'ATL', null],
           ].map(([head, a, as, h, hs]) => (
-            <Tile key={`${a}${h}`} href="/lab/app/nfl" head={head === 'Q4 2:05' ? <LiveTag text="Q4 2:05" /> : head} label={`${a} at ${h}`}>
+            <Tile key={`${a}${h}`} href="/nfl" head={head === 'Q4 2:05' ? <LiveTag text="Q4 2:05" /> : head} label={`${a} at ${h}`}>
               <TileRow crest={<Crest src={ESPN_TEAM_LOGO(a as string)} size={24} />} name={a} value={as as number | null} lost={as != null && (as as number) < (hs as number)} />
               <TileRow crest={<Crest src={ESPN_TEAM_LOGO(h as string)} size={24} />} name={h} value={hs as number | null} lost={hs != null && (hs as number) < (as as number)} />
             </Tile>
@@ -199,7 +199,7 @@ export default async function Kit() {
 
       <Section title="Controls">
         <Card>
-          <Seg label="Feed type" items={[{ label: 'All', href: '/lab/app/kit', on: true }, { label: 'NFL Clips', href: '/lab/app/kit?t=nfl' }, { label: 'League', href: '/lab/app/kit?t=league' }]} />
+          <Seg label="Feed type" items={[{ label: 'All', href: '/kit', on: true }, { label: 'NFL Clips', href: '/kit?t=nfl' }, { label: 'League', href: '/kit?t=league' }]} />
           <Chips label="Positions">
             <Chip on>All</Chip>
             <Chip>QB</Chip>
@@ -244,7 +244,7 @@ export default async function Kit() {
       </Section>
 
       <Section title="Empty">
-        <Empty action={{ href: '/lab/app/account', label: 'Pick your team' }}>Pick your team and your game leads this page.</Empty>
+        <Empty action={{ href: '/account', label: 'Pick your team' }}>Pick your team and your game leads this page.</Empty>
         <Spec>Says what will appear and how to get it. Never a blank card.</Spec>
       </Section>
     </Shell>

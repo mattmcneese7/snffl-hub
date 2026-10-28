@@ -10,7 +10,7 @@ export default async function ChugCounts({ tallies, mine = null }: { tallies?: A
   const owed = all.filter((t) => t.count > 0).sort((a, b) => b.count - a.count).slice(0, 5);
   const total = all.reduce((n, t) => n + t.count, 0);
   return (
-    <Section title="Chug Meter" label="Who owes" action={{ href: '/lab/app/chug', label: 'All teams' }}>
+    <Section title="Chug Meter" label="Who owes" action={{ href: '/chug', label: 'All teams' }}>
       {owed.length ? (
         <>
           <List tap>
@@ -19,7 +19,7 @@ export default async function ChugCounts({ tallies, mine = null }: { tallies?: A
               return (
                 <Row
                   key={t.rosterId}
-                  href="/lab/app/chug"
+                  href="/chug"
                   lead={
                     <span className={l.lead}>
                       <Rank n={i + 1} />

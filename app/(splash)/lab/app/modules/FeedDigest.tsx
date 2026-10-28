@@ -24,7 +24,7 @@ export default async function FeedDigest({ week, games, mine = null, items }: { 
   const now = Date.now();
   const mineId = mine != null ? String(mine) : null;
   return (
-    <Section title="The Feed" action={{ href: '/lab/app/feed', label: 'Everything' }}>
+    <Section title="The Feed" action={{ href: '/feed', label: 'Everything' }}>
       <FeedTabs id="home">
         {clips.length ? (
           <>
@@ -43,7 +43,7 @@ export default async function FeedDigest({ week, games, mine = null, items }: { 
         {list.length ? (
           <div className={`${ui.list} ${ui.tapList}`} data-show="all league">
             {list.map((item, i) => (
-              <Link key={`${item.kind}-${item.id}`} href="/lab/app/feed" data-show={i < 3 ? 'all league' : 'league'} className={ui.row}>
+              <Link key={`${item.kind}-${item.id}`} href="/feed" data-show={i < 3 ? 'all league' : 'league'} className={ui.row}>
                 <Tag tone={feedMarkTone(item.kind)}>{FEED_MARK[item.kind]}</Tag>
                 <span className={ui.body}>
                   <span className={`${ui.title} ${mineId && item.managerIds.includes(mineId) ? ui.strong : ''}`}>{item.title}</span>

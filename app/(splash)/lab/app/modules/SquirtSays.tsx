@@ -28,7 +28,7 @@ export default async function SquirtSays({ week, mine = null }: { week?: number;
   const mood = data?.mine ? moodFor(data.state, data.mine.a.score, data.mine.b.score) : 'calm';
   const [lead, ...rest] = ordered;
   return (
-    <Section title="Squirt Says" action={{ href: '/lab/app/matchup', label: 'Your matchup' }}>
+    <Section title="Squirt Says" action={{ href: '/matchup', label: 'Your matchup' }}>
       <div className={`${ui.card} ${l.lead}`}>
         <Squirt mood={mood} size={128} listen label={`Squirt, ${mood}`} />
         <p className={`${ui.body} ${l.note}`}>

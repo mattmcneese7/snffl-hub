@@ -15,19 +15,49 @@ const nextConfig: NextConfig = {
   // rather than on a 404.
   async redirects() {
     return [
-      { source: '/power-rankings', destination: '/standings#power', permanent: true },
-      { source: '/playoffs', destination: '/standings#playoffs', permanent: true },
-      // Splash 3.0. Home is "/", the v2 Matchups section is the Scoreboard,
-      // and the links people saved from the /testing preview land on the
-      // real page. Not permanent, so the paths can still change.
+      // Splash 4.0. v3's paths that v4 named differently land on their v4
+      // page, in one hop: saved links, and push alerts already sent. The
+      // older v2 and /testing links follow the same map. Not permanent, so
+      // the paths can still change.
+      { source: '/power-rankings', destination: '/league', permanent: false },
+      { source: '/playoffs', destination: '/league/bracket', permanent: false },
+      { source: '/standings', destination: '/league', permanent: false },
+      { source: '/scoreboard', destination: '/scores', permanent: false },
+      { source: '/scoreboard/:week', destination: '/scores/:week', permanent: false },
+      { source: '/scoreboard/:week/:matchupId', destination: '/matchup?id=:matchupId&week=:week', permanent: false },
+      { source: '/matchups', destination: '/scores', permanent: false },
+      { source: '/matchups/:week', destination: '/scores/:week', permanent: false },
+      { source: '/matchups/:week/:matchupId', destination: '/matchup?id=:matchupId&week=:week', permanent: false },
+      { source: '/settings', destination: '/account', permanent: false },
+      { source: '/more', destination: '/league', permanent: false },
       { source: '/home', destination: '/', permanent: false },
-      { source: '/matchups', destination: '/scoreboard', permanent: false },
-      { source: '/matchups/:week', destination: '/scoreboard/:week', permanent: false },
-      { source: '/matchups/:week/:matchupId', destination: '/scoreboard/:week/:matchupId', permanent: false },
       { source: '/testing', destination: '/', permanent: false },
       { source: '/testing/home', destination: '/', permanent: false },
       { source: '/testing/:path*', destination: '/:path*', permanent: false },
+      // The 4.0 preview links Matt has land on the real page. The kit stays
+      // where it is (the reference for future work), and so does the invite's
+      // chat card, whose URL Next builds from the file's own path.
+      { source: '/lab/app', destination: '/', permanent: false },
+      { source: '/lab/app/:path((?!kit|modules|join/opengraph-image).*)', destination: '/:path', permanent: false },
     ];
+  },
+
+  // Splash 4.0 swap, Phase A (app/(splash)/lab/GOLIVE-v4.md). The v4 pages
+  // still live under app/(splash)/lab/app; these serve them at the public
+  // paths, ahead of v3's page files at the same paths, so the address bar
+  // shows /scores while v4 answers. Undo: revert this commit. Phase B moves
+  // the files and retires these.
+  async rewrites() {
+    const v4 = ['scores', 'matchup', 'nfl', 'rag', 'league', 'swami', 'players', 'managers', 'chug', 'feed', 'insights', 'trades', 'trophies', 'rules', 'my-team', 'account', 'pickem', 'join'];
+    return {
+      beforeFiles: [
+        { source: '/', destination: '/lab/app' },
+        ...v4.flatMap((p) => [
+          { source: `/${p}`, destination: `/lab/app/${p}` },
+          { source: `/${p}/:path*`, destination: `/lab/app/${p}/:path*` },
+        ]),
+      ],
+    };
   },
 
   async headers() {

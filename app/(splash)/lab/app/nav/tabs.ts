@@ -5,20 +5,22 @@
 export type TabKey = 'home' | 'scores' | 'rag' | 'league' | 'swami';
 
 export const TAB_ROOTS: Record<TabKey, string> = {
-  home: '/lab/app',
-  scores: '/lab/app/scores',
-  rag: '/lab/app/rag',
-  league: '/lab/app/league',
-  swami: '/lab/app/swami',
+  home: '/',
+  scores: '/scores',
+  rag: '/rag',
+  league: '/league',
+  swami: '/swami',
 };
 
-const LEAGUE = ['league', 'players', 'managers', 'feed', 'trades', 'trophies', 'chug', 'insights', 'rules'];
+const LEAGUE = ['league', 'players', 'managers', 'feed', 'trades', 'trophies', 'chug', 'insights', 'rules', 'pickem'];
 const SCORES = ['scores', 'matchup', 'nfl'];
 
+// The browser shows the public path (/scores) once the swap's rewrites are
+// on, and /scores before; both read the same.
 export function tabOf(path: string): TabKey | null {
-  const p = path.split(/[?#]/)[0].replace(/\/+$/, '');
-  if (p === '/lab/app') return 'home';
-  const seg = p.replace(/^\/lab\/app\/?/, '').split('/')[0];
+  const p = path.split(/[?#]/)[0].replace(/^\/lab\/app/, '').replace(/\/+$/, '');
+  if (p === '') return 'home';
+  const seg = p.replace(/^\//, '').split('/')[0];
   if (SCORES.includes(seg)) return 'scores';
   if (seg === 'rag') return 'rag';
   if (LEAGUE.includes(seg)) return 'league';

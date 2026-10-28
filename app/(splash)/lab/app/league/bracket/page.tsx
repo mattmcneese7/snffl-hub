@@ -10,7 +10,7 @@ import Shell, { SectionHead } from '../../Shell';
 import { Empty, Label, List, Pair, Rank, Row, Section, ui, type PairSide } from '../../ui';
 import l from '../../modules/layout.module.css';
 
-export const metadata: Metadata = { title: { absolute: 'Bracket, Splash 4.0' }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: 'Bracket, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 const NONE: Postseason = { rounds: [], shartBowl: [], championRosterId: null, shartRosterId: null, byeRosterIds: [] };
@@ -85,7 +85,7 @@ export default async function V4Bracket() {
   const shart = post.shartRosterId != null ? teamByRoster(post.shartRosterId) : undefined;
   return (
     <Shell data={data} active="league">
-      <SectionHead icon="trophy" word="bracket" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
+      <SectionHead icon="trophy" word="bracket" week={data.week} mine={data.myRoster} back={{ href: '/league', label: 'League' }} />
       {champ ? (
         <List>
           <Row lead={<Ms name="trophy" size={28} />} label={<Label tone="gold">Champion</Label>} title={champ.teamName} strong sub={firstNameOf(champ.rosterId) ?? champ.manager} />

@@ -20,7 +20,7 @@ export default async function TopScorers({ week, mine = null }: { week?: number;
   const owner = new Map<string, number>();
   for (const g of games) for (const side of [g.away, g.home]) for (const p of side.lineup) owner.set(p.id, side.rosterId);
   return (
-    <Section title="Top Scorers" label={`Week ${wk} top scorers`} action={{ href: '/lab/app/swami', label: 'Swami' }}>
+    <Section title="Top Scorers" label={`Week ${wk} top scorers`} action={{ href: '/swami', label: 'Swami' }}>
       <List tap>
         {scored.map((p) => {
           const r = owner.get(p.id);

@@ -9,7 +9,7 @@ export const artSrc = (a?: StoryArt) => (a ? (a.kind === 'photo' ? a.src : a.cut
 export default function IssueView({ issue, art, weeks }: { issue: Issue; art: Record<string, StoryArt>; weeks: number[] }) {
   const stories = issue.articles.filter((a) => !a.retracted);
   const [lead, ...rest] = stories;
-  const href = (slug: string) => `/lab/app/rag/${issue.week}/${slug}`;
+  const href = (slug: string) => `/rag/${issue.week}/${slug}`;
   return (
     <>
       <Rail label="Issues">
@@ -17,14 +17,14 @@ export default function IssueView({ issue, art, weeks }: { issue: Issue; art: Re
           .slice()
           .reverse()
           .map((w) => (
-            <Chip key={w} href={`/lab/app/rag/${w}`} on={w === issue.week}>
+            <Chip key={w} href={`/rag/${w}`} on={w === issue.week}>
               Week {w}
             </Chip>
           ))}
       </Rail>
       {lead ? (
         <RagCard
-          issueHref={`/lab/app/rag/${issue.week}`}
+          issueHref={`/rag/${issue.week}`}
           meta={`Week ${issue.week} · ${CT_DATE.format(new Date(issue.publishedAt))}`}
           lead={{ href: href(lead.slug), category: lead.category, headline: lead.headline }}
           art={artSrc(art[lead.slug])}
@@ -48,7 +48,7 @@ export function StoryList({ week, stories, art }: { week: number; stories: Issue
     <List tap>
       {stories.map((a) => {
         const src = artSrc(art[a.slug]);
-        return <Row key={a.slug} href={`/lab/app/rag/${week}/${a.slug}`} lead={src ? <img className={ui.thumb} src={src} alt="" loading="lazy" /> : undefined} label={a.category} title={a.headline} sub={`${a.readTime} min read`} />;
+        return <Row key={a.slug} href={`/rag/${week}/${a.slug}`} lead={src ? <img className={ui.thumb} src={src} alt="" loading="lazy" /> : undefined} label={a.category} title={a.headline} sub={`${a.readTime} min read`} />;
       })}
     </List>
   );

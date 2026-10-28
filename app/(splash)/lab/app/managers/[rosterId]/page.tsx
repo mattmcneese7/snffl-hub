@@ -27,7 +27,7 @@ type Params = { params: Promise<{ rosterId: string }> };
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { rosterId } = await params;
   const t = teamByRoster(Number(rosterId));
-  return { title: { absolute: `${t?.teamName.trim() ?? 'Manager'}, Splash 4.0` }, robots: { index: false, follow: false } };
+  return { title: { absolute: `${t?.teamName.trim() ?? 'Manager'}, Splash` }, robots: { index: false, follow: false } };
 }
 
 const record = (t: { wins: number; losses: number; ties: number }) => `${t.wins}-${t.losses}${t.ties ? `-${t.ties}` : ''}`;
@@ -178,7 +178,7 @@ export default async function V4Manager({ params }: Params) {
 
   return (
     <Shell data={data} active="league">
-      <SectionHead icon="person" word="manager" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/managers', label: 'Managers' }} />
+      <SectionHead icon="person" word="manager" week={data.week} mine={data.myRoster} back={{ href: '/managers', label: 'Managers' }} />
 
       <ProfileHead
         lead={<Avatar src={team.avatarUrl} color={team.colors?.primary} size={44} />}
@@ -201,14 +201,14 @@ export default async function V4Manager({ params }: Params) {
       <Section title={`Week ${data.week} Matchup`}>
         {game ? (
           <List tap>
-            <Pair href={`/lab/app/matchup?id=${game.id}`} label={`${game.a.team} vs ${game.b.team}`} sides={[pairSide(game.a), pairSide(game.b)]} foot={game.foot} />
+            <Pair href={`/matchup?id=${game.id}`} label={`${game.a.team} vs ${game.b.team}`} sides={[pairSide(game.a), pairSide(game.b)]} foot={game.foot} />
           </List>
         ) : (
           <Empty>No game on the board this week.</Empty>
         )}
       </Section>
 
-      <Section title="Season" action={{ href: '/lab/app/league', label: 'Standings' }}>
+      <Section title="Season" action={{ href: '/league', label: 'Standings' }}>
         <Card>
           <StatGrid
             items={[

@@ -10,7 +10,7 @@ import { Row } from '../ui';
 export default function AwardTile({ kind, rosterId, detail, mine = false, art }: { kind: TrophyKey; rosterId: number; detail?: string | null; mine?: boolean; art?: string; row?: boolean }) {
   return (
     <Row
-      href={`/lab/app/managers/${rosterId}`}
+      href={`/managers/${rosterId}`}
       lead={<AwardArt kind={kind} art={art} />}
       label={AWARD_NAME[kind]}
       title={teamOf(rosterId)}

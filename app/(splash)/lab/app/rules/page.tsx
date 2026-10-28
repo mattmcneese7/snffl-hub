@@ -10,7 +10,7 @@ import { Drawer, Label, List, Rank, Row as UiRow, Section, ui } from '../ui';
 import { Pos } from '../ui/blocks/Pos';
 import l from '../modules/layout.module.css';
 
-export const metadata: Metadata = { title: { absolute: 'Rules, Splash 4.0' }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: 'Rules, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 function Rows({ rows }: { rows: Row[] }) {
@@ -48,7 +48,7 @@ export default async function V4Rules() {
   ];
   return (
     <Shell data={data} active="league">
-      <SectionHead icon="league" word="rules" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
+      <SectionHead icon="league" word="rules" week={data.week} mine={data.myRoster} back={{ href: '/league', label: 'League' }} />
       {CUSTOM_RULES.map((sec) => (
         <Section key={sec.title} title={sec.title}>
           {sec.intro ? <p className={`${ui.bodyText} ${l.note}`}>{sec.intro}</p> : null}

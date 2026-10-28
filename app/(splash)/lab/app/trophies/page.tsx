@@ -11,7 +11,7 @@ import AwardTile from '../modules/AwardTile';
 import { managerOf, teamOf } from '../modules/shared';
 import { Avatar, Drawer, List, Row, Section } from '../ui';
 
-export const metadata: Metadata = { title: { absolute: 'Trophy Case, Splash 4.0' }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: 'Trophy Case, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 const ORDER: TrophyKey[] = ['champion', 'plunger', 'motw', 'shart', 'blowout', 'squeaker', 'heartbreaker', 'lucky', 'bench'];
@@ -37,7 +37,7 @@ export default async function V4Trophies() {
 
   return (
     <Shell data={data} active="league">
-      <SectionHead icon="trophy" word="trophies" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
+      <SectionHead icon="trophy" word="trophies" week={data.week} mine={data.myRoster} back={{ href: '/league', label: 'League' }} />
 
       {board.latest.length ? (
         <Section title={`Week ${board.latestWeek} Hardware`}>
@@ -86,7 +86,7 @@ export default async function V4Trophies() {
           {shelves.map(({ team, total, counts }) => (
             <Row
               key={team.rosterId}
-              href={`/lab/app/managers/${team.rosterId}`}
+              href={`/managers/${team.rosterId}`}
               lead={<Avatar src={team.avatarUrl} color={team.colors?.primary} />}
               title={team.teamName.trim()}
               strong={team.rosterId === mine}

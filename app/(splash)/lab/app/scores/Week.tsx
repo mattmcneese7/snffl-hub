@@ -23,7 +23,7 @@ function YourGame({ g, wv }: { g: GameView; wv: WeekView }) {
   return (
     <Hero
       id="yourGame"
-      href={`/lab/app/matchup?id=${g.id}&week=${wv.week}`}
+      href={`/matchup?id=${g.id}&week=${wv.week}`}
       label={`Week ${wv.week} Matchup`}
       state={live ? <LiveTag /> : <Label>{final ? 'Final' : wv.state === 'preview' ? 'Preview' : 'Live'}</Label>}
       sides={[g.a, g.b].map((x) => ({ avatar: x.avatar, color: x.color, team: x.team, manager: x.manager, score: score(x), lost: x.lost }))}
@@ -49,7 +49,7 @@ function NflTile({ game, week }: { game: NflGame; week: number }) {
   const a = game.away.score ?? 0;
   const h = game.home.score ?? 0;
   return (
-    <Tile href={`/lab/app/nfl/${game.id}?week=${week}`} label={`${game.away.name} at ${game.home.name}`} head={game.state === 'in' ? <LiveTag text={quarter(game.period, game.clock)} /> : post ? 'Final' : kickoffText(game.kickoff)}>
+    <Tile href={`/nfl/${game.id}?week=${week}`} label={`${game.away.name} at ${game.home.name}`} head={game.state === 'in' ? <LiveTag text={quarter(game.period, game.clock)} /> : post ? 'Final' : kickoffText(game.kickoff)}>
       <TileRow crest={<Crest src={game.away.logo} size={24} />} name={game.away.abbr} value={game.state === 'pre' ? undefined : a} lost={post && a < h} />
       <TileRow crest={<Crest src={game.home.logo} size={24} />} name={game.home.abbr} value={game.state === 'pre' ? undefined : h} lost={post && h < a} />
     </Tile>
@@ -75,11 +75,11 @@ export default async function ScoresWeek({ week }: { week?: number }) {
     <Shell data={data} active="scores" barDock={wk === data.week && wv.mine ? 'yourGame' : undefined}>
       <LiveStart live={live} week={wk} />
       <SectionHead icon="football" word="scores" week={data.week} mine={data.myRoster} />
-      <WeekStrip week={wk} last={lastFantasyWeek()} base="/lab/app/scores" />
+      <WeekStrip week={wk} last={lastFantasyWeek()} base="/scores" />
       {wv.mine ? (
         <YourGame g={wv.mine} wv={wv} />
       ) : (
-        <Empty action={mine == null ? { href: '/lab/app/account', label: 'Pick your team' } : undefined}>
+        <Empty action={mine == null ? { href: '/account', label: 'Pick your team' } : undefined}>
           {mine != null ? `No game for your team in week ${wk}.` : 'Pick your team and your game leads this page.'}
         </Empty>
       )}
@@ -91,7 +91,7 @@ export default async function ScoresWeek({ week }: { week?: number }) {
         <BiggestSwings wv={wv} week={wk} />
       </Suspense>
       {nfl.length ? (
-        <Section title="NFL Scores" action={{ href: `/lab/app/nfl?week=${wk}`, label: 'All games' }}>
+        <Section title="NFL Scores" action={{ href: `/nfl?week=${wk}`, label: 'All games' }}>
           <Rail label="NFL scores">
             {nfl.map((g) => (
               <NflTile key={g.id} game={g} week={wk} />

@@ -19,7 +19,7 @@ import { FilterSheet } from '../ui/blocks/FilterSheet';
 import { Pos } from '../ui/blocks/Pos';
 import w from './swami.module.css';
 
-export const metadata: Metadata = { title: { absolute: 'Swami, Splash 4.0' }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: 'Swami, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 const OWN = [

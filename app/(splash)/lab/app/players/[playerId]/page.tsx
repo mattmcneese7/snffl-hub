@@ -31,7 +31,7 @@ type Params = { params: Promise<{ playerId: string }> };
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { playerId } = await params;
   const name = /^\d+$/.test(playerId) ? playerOf(playerId).name : nflTeamName(playerId);
-  return { title: { absolute: `${name}, Splash 4.0` }, robots: { index: false, follow: false } };
+  return { title: { absolute: `${name}, Splash` }, robots: { index: false, follow: false } };
 }
 
 const PLURAL: Record<string, string> = { QB: 'quarterbacks', RB: 'running backs', WR: 'wide receivers', TE: 'tight ends', K: 'kickers', DEF: 'defenses' };
@@ -142,7 +142,7 @@ export default async function V4Player({ params, searchParams }: Params & { sear
 
   return (
     <Shell data={data} active="league">
-      <SectionHead icon="person" word="player" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/players', label: 'Players' }} />
+      <SectionHead icon="person" word="player" week={data.week} mine={data.myRoster} back={{ href: '/players', label: 'Players' }} />
 
       <ProfileHead
         lead={lead}
@@ -168,7 +168,7 @@ export default async function V4Player({ params, searchParams }: Params & { sear
         {owner ? (
           <List tap>
             <Row
-              href={`/lab/app/managers/${owner.rosterId}`}
+              href={`/managers/${owner.rosterId}`}
               lead={<Avatar src={owner.avatarUrl} color={owner.colors?.primary} size={34} />}
               title={owner.teamName.trim()}
               sub={`${owner.rosterId === mine ? 'Your team' : (d.owner?.manager ?? owner.manager)}${d.owner ? ` · ${d.owner.starts} starts` : ''}`}
@@ -195,7 +195,7 @@ export default async function V4Player({ params, searchParams }: Params & { sear
         {g ? (
           <List tap>
             <Row
-              href={`/lab/app/nfl/${g.id}`}
+              href={`/nfl/${g.id}`}
               lead={<Crest src={g.oppLogo} size={32} />}
               title={`${g.home ? 'vs' : 'at'} ${g.oppName}`}
               sub={`${gameLine}${final && thisWeek?.pts != null ? ` · ${thisWeek.pts.toFixed(2)} pts` : ''}`}
@@ -214,7 +214,7 @@ export default async function V4Player({ params, searchParams }: Params & { sear
         ) : null}
       </Section>
 
-      <Seg label={pl.name} items={VIEWS.map((v) => ({ label: v.label, href: v.key === 'outlook' ? `/lab/app/players/${playerId}` : `/lab/app/players/${playerId}?view=${v.key}`, on: v.key === view }))} />
+      <Seg label={pl.name} items={VIEWS.map((v) => ({ label: v.label, href: v.key === 'outlook' ? `/players/${playerId}` : `/players/${playerId}?view=${v.key}`, on: v.key === view }))} />
 
       {view === 'outlook' ? (
         <>

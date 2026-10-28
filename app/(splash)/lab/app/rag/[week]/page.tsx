@@ -9,7 +9,7 @@ import { getV4Data } from '../../data';
 import Shell, { SectionHead } from '../../Shell';
 import IssueView from '../Issue';
 
-export const metadata: Metadata = { title: { absolute: 'The Rag, Splash 4.0' }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: 'The Rag, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 /** One week's issue. */
@@ -22,7 +22,7 @@ export default async function V4RagWeek({ params }: { params: Promise<{ week: st
   const art = await issueArt(week, issue.articles).catch(() => ({}));
   return (
     <Shell data={data} active="rag">
-      <SectionHead icon="rag" word="the rag" title={`Week ${week}`} week={data.week} mine={data.myRoster} back={{ href: '/lab/app/rag', label: 'The Rag' }} />
+      <SectionHead icon="rag" word="the rag" title={`Week ${week}`} week={data.week} mine={data.myRoster} back={{ href: '/rag', label: 'The Rag' }} />
       <IssueView issue={issue} art={art} weeks={publishedWeeks()} />
     </Shell>
   );

@@ -10,7 +10,7 @@ import Shell, { SectionHead } from '../Shell';
 import { Avatar, Empty, List, Rank, Row } from '../ui';
 import l from '../players/layout.module.css';
 
-export const metadata: Metadata = { title: { absolute: 'Managers, Splash 4.0' }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: 'Managers, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 const record = (t: { wins: number; losses: number; ties: number }) => `${t.wins}-${t.losses}${t.ties ? `-${t.ties}` : ''}`;
@@ -26,7 +26,7 @@ export default async function V4Managers() {
   const [data, standings, board] = await Promise.all([getV4Data(mine), getStandings(), getTrophyBoard().catch(() => null)]);
   return (
     <Shell data={data} active="league">
-      <SectionHead icon="groups" word="managers" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
+      <SectionHead icon="groups" word="managers" week={data.week} mine={data.myRoster} back={{ href: '/league', label: 'League' }} />
       {standings.length ? (
         <List tap>
           {standings.map((t) => {
@@ -35,7 +35,7 @@ export default async function V4Managers() {
             return (
               <Row
                 key={t.rosterId}
-                href={`/lab/app/managers/${t.rosterId}`}
+                href={`/managers/${t.rosterId}`}
                 lead={
                   <span className={l.lead}>
                     <Rank n={t.seed} />

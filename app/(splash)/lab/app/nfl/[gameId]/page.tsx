@@ -16,7 +16,7 @@ import { kickoffText, managerOf, quarter } from '../../scores/format';
 import { shortName, weekView } from '../../scores/weekData';
 import { Avatar, Card, Chips, Crest, Empty, Face, List, LiveTag, Meter, Pair, Row, Section, Stats, Tag, Versus, ui } from '../../ui';
 
-export const metadata: Metadata = { title: { absolute: 'NFL game, Splash 4.0' }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: 'NFL game, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 const money = (v: number | null) => (v == null ? null : v > 0 ? `+${v}` : `${v}`);
@@ -44,8 +44,8 @@ export default async function V4NflGame({ params, searchParams }: { params: Prom
   if (!game) {
     return (
       <Shell data={data} active="scores">
-        <SectionHead icon="football" word="nfl" week={data.week} mine={data.myRoster} back={{ href: `/lab/app/nfl?week=${week}`, label: 'NFL Scores' }} />
-        <Empty action={{ href: `/lab/app/nfl?week=${week}`, label: 'NFL Scores' }}>That game is not on ESPN&rsquo;s week {week} schedule.</Empty>
+        <SectionHead icon="football" word="nfl" week={data.week} mine={data.myRoster} back={{ href: `/nfl?week=${week}`, label: 'NFL Scores' }} />
+        <Empty action={{ href: `/nfl?week=${week}`, label: 'NFL Scores' }}>That game is not on ESPN&rsquo;s week {week} schedule.</Empty>
       </Shell>
     );
   }
@@ -121,7 +121,7 @@ export default async function V4NflGame({ params, searchParams }: { params: Prom
   return (
     <Shell data={data} active="scores">
       <LiveStart live={game.state === 'in'} week={week} />
-      <SectionHead icon="football" word="nfl" week={data.week} mine={data.myRoster} back={{ href: `/lab/app/nfl?week=${week}`, label: 'NFL Scores' }} />
+      <SectionHead icon="football" word="nfl" week={data.week} mine={data.myRoster} back={{ href: `/nfl?week=${week}`, label: 'NFL Scores' }} />
       <h1 className={ui.sr}>
         {awayName} at {homeName}
       </h1>
@@ -203,7 +203,7 @@ export default async function V4NflGame({ params, searchParams }: { params: Prom
             return (
               <List key={rosterId} tap>
                 <Row
-                  href={`/lab/app/managers/${rosterId}`}
+                  href={`/managers/${rosterId}`}
                   lead={<Avatar src={t?.avatarUrl} color={t?.colors?.primary} size={28} />}
                   title={t?.teamName ?? list[0].teamName}
                   strong

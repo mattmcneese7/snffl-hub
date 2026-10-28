@@ -21,7 +21,7 @@ export default function ChugNowCard({ board, week, title = 'The Chug', link = tr
   const t = teamByRoster(now.rosterId);
   const tone = now.state === 'paid' ? 'good' : now.state === 'owed' ? 'warn' : 'bad';
   return (
-    <Section title={title} label={`Week ${now.week} chug`} action={link ? { href: '/lab/app/chug', label: 'Chug Meter' } : undefined}>
+    <Section title={title} label={`Week ${now.week} chug`} action={link ? { href: '/chug', label: 'Chug Meter' } : undefined}>
       <List>
         <Row
           lead={<Avatar src={t?.avatarUrl} color={t?.colors?.primary} size={44} />}

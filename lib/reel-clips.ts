@@ -93,7 +93,7 @@ export function weekCardClip(
     tags: [managerName, `Week ${week}`, final ? 'Final' : 'In progress'],
     still: null,
     embed: null,
-    sourceUrl: `/matchups/${week}`,
+    sourceUrl: `/scores/${week}`,
     source: 'espn',
     card: {
       headline,

@@ -15,7 +15,7 @@ import { managerOf, teamOf } from '../modules/shared';
 import { Avatar, Drawer, List, Row, Section, ui } from '../ui';
 import l from '../modules/layout.module.css';
 
-export const metadata: Metadata = { title: { absolute: 'Chug Meter, Splash 4.0' }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: 'Chug Meter, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 /**
@@ -47,7 +47,7 @@ export default async function V4Chug() {
 
   return (
     <Shell data={data} active="league">
-      <SectionHead icon="beer" word="chug" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
+      <SectionHead icon="beer" word="chug" week={data.week} mine={data.myRoster} back={{ href: '/league', label: 'League' }} />
 
       <ChugNowCard board={board} week={week} title="This Week" link={false} film={false} />
 
@@ -116,7 +116,7 @@ export default async function V4Chug() {
       ) : null}
 
       <List tap>
-        <Row href="/lab/app/rules" title={CHUG_RULES.title.replace(/\b\w/g, (x) => x.toUpperCase())} sub={CHUG_RULES.intro?.split('. ')[0]} />
+        <Row href="/rules" title={CHUG_RULES.title.replace(/\b\w/g, (x) => x.toUpperCase())} sub={CHUG_RULES.intro?.split('. ')[0]} />
       </List>
     </Shell>
   );

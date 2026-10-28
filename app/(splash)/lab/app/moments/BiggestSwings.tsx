@@ -39,7 +39,7 @@ export default async function BiggestSwings({ wv, week }: { wv: WeekView; week: 
           return (
             <Row
               key={`${g.id}-${m.at}`}
-              href={`/lab/app/matchup?id=${g.id}&week=${week}&view=moments`}
+              href={`/matchup?id=${g.id}&week=${week}&view=moments`}
               label={`${m.when} · ${m.clock}`}
               title={m.what}
               sub={`${m.where} · ${helped.team} ${verb} against ${other.team}`}

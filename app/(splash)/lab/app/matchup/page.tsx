@@ -22,7 +22,7 @@ import m from './matchup.module.css';
 import { weekView } from '../scores/weekData';
 import { Avatar, Card, Chips, Crest, Drawer, Duel, DuelPlayer, DuelRow, Empty, Face, Hero, Label, List, LiveTag, Meter, Pair, Row, Section, Tag, Ticket, ui, Seg } from '../ui';
 
-export const metadata: Metadata = { title: { absolute: 'Matchup, Splash 4.0' }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: 'Matchup, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 const shortName = (name: string, position: string, team?: string) => {
@@ -79,7 +79,7 @@ async function NextGame({ players, week }: { players: LivePlayer[]; week: number
   const chips = venueChips(g, await getGameExtras(g.id).catch(() => null));
   return (
     <Section title="Next Game">
-      <Card href={`/lab/app/nfl/${g.id}?week=${week}`}>
+      <Card href={`/nfl/${g.id}?week=${week}`}>
         <Pair big sides={[side(g.away), side(g.home)]} status={<span>{[g.status, g.broadcast, odds].filter(Boolean).join(' \u00b7 ')}</span>} />
         {chips.length ? (
           <Chips label="Venue">
@@ -99,7 +99,7 @@ function GameLine({ g, week, sides, counts }: { g: NflGame; week: number; sides:
   const pre = g.state === 'pre';
   return (
     <Row
-      href={`/lab/app/nfl/${g.id}?week=${week}`}
+      href={`/nfl/${g.id}?week=${week}`}
       lead={
         <span className={m.crests}>
           <Crest src={g.away.logo} size={28} />
@@ -209,7 +209,7 @@ function Swami({ live }: { live: LiveMatchup }) {
   const line = swamiLine(read);
   if (read.settled || !line) return null;
   return (
-    <Section title="Swami" action={{ href: '/lab/app/swami', label: 'Research' }}>
+    <Section title="Swami" action={{ href: '/swami', label: 'Research' }}>
       <Card>
         <p className={ui.bodyText}>{line}</p>
         {read.path ? (
@@ -284,7 +284,7 @@ export default async function V4Matchup({ searchParams }: { searchParams: Promis
     return (
       <Shell data={data} active="scores">
         <SectionHead icon="football" word="scores" week={data.week} mine={data.myRoster} />
-        <Empty action={{ href: '/lab/app/account', label: 'Pick your team' }}>Pick your team to see your matchup.</Empty>
+        <Empty action={{ href: '/account', label: 'Pick your team' }}>Pick your team to see your matchup.</Empty>
       </Shell>
     );
   }
@@ -315,7 +315,7 @@ export default async function V4Matchup({ searchParams }: { searchParams: Promis
   return (
     <Shell data={data} active="scores" barDock={isMine && week === data.week ? 'yourGame' : undefined}>
       <LiveStart live={ctx.nfl.some((g) => g.state === 'in')} week={week} />
-      <SectionHead icon="football" word="scores" title="Matchup" week={data.week} mine={data.myRoster} back={{ href: `/lab/app/scores/${week}`, label: 'Scores' }} />
+      <SectionHead icon="football" word="scores" title="Matchup" week={data.week} mine={data.myRoster} back={{ href: `/scores/${week}`, label: 'Scores' }} />
       <Hero
         id="yourGame"
         label={isMine ? `Week ${week} Matchup` : `Week ${week}`}
@@ -346,7 +346,7 @@ export default async function V4Matchup({ searchParams }: { searchParams: Promis
           { label: 'Moments', key: 'moments' },
         ].map((v) => {
           const qs = new URLSearchParams({ ...(q.id ? { id: q.id } : {}), ...(q.week ? { week: q.week } : {}), ...(v.key ? { view: v.key } : {}) }).toString();
-          return { label: v.label, href: `/lab/app/matchup${qs ? `?${qs}` : ''}`, on: (q.view === 'moments') === Boolean(v.key) };
+          return { label: v.label, href: `/matchup${qs ? `?${qs}` : ''}`, on: (q.view === 'moments') === Boolean(v.key) };
         })}
       />
       {q.view === 'moments' ? (
@@ -434,7 +434,7 @@ export default async function V4Matchup({ searchParams }: { searchParams: Promis
         <Section title="Their Games">
           <List tap>
             {relevant.length > 4 ? (
-              <Row href={`/lab/app/nfl?week=${week}`} title="NFL Scores" sub={`${relevant.length} games with starters from this matchup`} />
+              <Row href={`/nfl?week=${week}`} title="NFL Scores" sub={`${relevant.length} games with starters from this matchup`} />
             ) : (
               relevant.map((g) => <GameLine key={g.id} g={g} week={week} sides={[mine.a.manager, mine.b.manager]} counts={[meSide, themSide].map((side) => side.lineup.filter((y) => y.nfl?.game.id === g.id).length)} />)
             )}

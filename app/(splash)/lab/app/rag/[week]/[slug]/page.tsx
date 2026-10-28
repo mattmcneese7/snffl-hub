@@ -17,7 +17,7 @@ type Params = { params: Promise<{ week: string; slug: string }> };
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { week, slug } = await params;
   const a = readIssue(Number(week))?.articles.find((x) => x.slug === slug);
-  return { title: { absolute: `${a ? a.headline.trim() : 'The Rag'}, Splash 4.0` }, robots: { index: false, follow: false } };
+  return { title: { absolute: `${a ? a.headline.trim() : 'The Rag'}, Splash` }, robots: { index: false, follow: false } };
 }
 
 const DAY = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', month: 'short', day: 'numeric' });
@@ -36,7 +36,7 @@ export default async function V4RagArticle({ params }: Params) {
   const more = issue.articles.filter((x) => x.slug !== slug && !x.retracted).slice(0, 3);
   return (
     <Shell data={data} active="rag">
-      <SectionHead icon="rag" word="the rag" title="The Rag" week={data.week} mine={data.myRoster} back={{ href: `/lab/app/rag/${week}`, label: `Week ${week}` }} />
+      <SectionHead icon="rag" word="the rag" title="The Rag" week={data.week} mine={data.myRoster} back={{ href: `/rag/${week}`, label: `Week ${week}` }} />
       <article className={ui.card}>
           <Label tone="brand">{a.category}</Label>
           <h2 className={ui.display}>{a.headline.trim()}</h2>

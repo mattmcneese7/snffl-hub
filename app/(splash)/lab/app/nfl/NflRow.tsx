@@ -27,7 +27,7 @@ export default function NflRow({ g, week, starters }: { g: NflGame; week: number
     );
   return (
     <Pair
-      href={`/lab/app/nfl/${g.id}?week=${week}`}
+      href={`/nfl/${g.id}?week=${week}`}
       label={`${g.away.name} at ${g.home.name}`}
       status={status}
       sides={[side(g.away, g, post && a < h), side(g.home, g, post && h < a)]}

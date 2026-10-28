@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 import { cleanTitle, herePath, readNav, writeNav } from './store';
 import { tabOf } from './tabs';
 
-const HOME = '/lab/app';
+const HOME = '/';
 const LAST = 'splash4.last';
 const RESUME_MS = 12 * 3600 * 1000;
 
@@ -31,7 +31,7 @@ export default function Tracker() {
     try {
       const installed = window.matchMedia('(display-mode: standalone)').matches || (navigator as Navigator & { standalone?: boolean }).standalone === true;
       const last = JSON.parse(localStorage.getItem(LAST) ?? 'null') as { path: string; at: number } | null;
-      if (!stack.length && path === HOME && installed && last && last.path !== HOME && Date.now() - last.at < RESUME_MS) {
+      if (!stack.length && (path === HOME || path === '/') && installed && last && last.path !== HOME && Date.now() - last.at < RESUME_MS) {
         router.replace(last.path);
         return;
       }

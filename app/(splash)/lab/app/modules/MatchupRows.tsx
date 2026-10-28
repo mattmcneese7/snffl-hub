@@ -23,7 +23,7 @@ export default function MatchupRows({ games, week, live, current = true }: { gam
       {games.map((g) => (
         <Pair
           key={g.id}
-          href={`/lab/app/matchup?id=${g.id}${current ? '' : `&week=${week}`}`}
+          href={`/matchup?id=${g.id}${current ? '' : `&week=${week}`}`}
           label={`${g.a.team} against ${g.b.team}`}
           sides={[side(g.a, week, live), side(g.b, week, live)]}
           foot={g.foot}

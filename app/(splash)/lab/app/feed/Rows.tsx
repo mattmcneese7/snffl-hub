@@ -28,7 +28,7 @@ export function LinkedText({ text, names }: { text: string; names: NameEntry[] }
     <>
       {text.split(pattern).map((part, i) =>
         byName.has(part) ? (
-          <Link key={i} href={`/lab/app/managers/${byName.get(part)}`} className={ui.labelBrand}>
+          <Link key={i} href={`/managers/${byName.get(part)}`} className={ui.labelBrand}>
             {part}
           </Link>
         ) : (

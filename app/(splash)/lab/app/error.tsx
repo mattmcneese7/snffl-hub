@@ -22,7 +22,7 @@ export default function V4Error({ error, reset }: { error: Error & { digest?: st
           <button type="button" className={`${ui.pill} ${ui.pillPrimary}`} onClick={reset}>
             Try again
           </button>
-          <Pill href="/lab/app" kind="secondary">
+          <Pill href="/" kind="secondary">
             Home
           </Pill>
         </div>

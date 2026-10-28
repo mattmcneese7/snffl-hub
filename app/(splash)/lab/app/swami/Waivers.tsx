@@ -46,7 +46,7 @@ function Pick({ read, value, label, stats, note, move }: { read: RosRead; value:
       {note ? <p className={`${u.sub} ${w.note}`}>{note}</p> : null}
       <CopyMove text={move} label="Copy claim" />
       <RosWorking read={read} />
-      <Pill href={`/lab/app/players/${read.player.id}`} kind="secondary">
+      <Pill href={`/players/${read.player.id}`} kind="secondary">
         Player page
       </Pill>
     </ExpandRow>

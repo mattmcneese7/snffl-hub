@@ -25,10 +25,10 @@ export default function ChugRow({ board, week, moment }: { board: TrophyBoard | 
   const t = teamByRoster(now.rosterId);
   const tone = now.state === 'owed' ? 'warn' : 'bad';
   const row = (
-    <Section title="The Chug" action={{ href: '/lab/app/chug', label: 'Chug Meter' }} label={`Week ${now.week} chug`}>
+    <Section title="The Chug" action={{ href: '/chug', label: 'Chug Meter' }} label={`Week ${now.week} chug`}>
       <List tap>
         <Row
-          href="/lab/app/chug"
+          href="/chug"
           data={now.state === 'paid' ? { chug: '' } : undefined}
           lead={now.state === 'paid' ? <Avatar src={t?.avatarUrl} color={t?.colors?.primary} size={44} /> : <Squirt award="chug" size={72} label={`Squirt with the beer ${managerOf(now.rosterId)} owes`} />}
           title={teamOf(now.rosterId)}

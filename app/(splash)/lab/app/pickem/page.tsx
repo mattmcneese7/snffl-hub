@@ -10,7 +10,7 @@ import l from '../modules/layout.module.css';
 import Board, { type BoardTeam } from './Board';
 import { pickWeek, seasonStandings, weekPicks } from './store';
 
-export const metadata: Metadata = { title: { absolute: "Pick'em, Splash 4.0" }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: "Pick'em, Splash" }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 const LOCK = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', weekday: 'short', hour: 'numeric', minute: '2-digit' });
@@ -38,7 +38,7 @@ export default async function V4Pickem() {
 
   return (
     <Shell data={data} active="league">
-      <SectionHead icon="checklist" word="pick'em" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
+      <SectionHead icon="checklist" word="pick'em" week={data.week} mine={data.myRoster} back={{ href: '/league', label: 'League' }} />
       {!w.configured ? (
         <Empty>Pick&rsquo;em opens once the league table is set up.</Empty>
       ) : (
@@ -48,7 +48,7 @@ export default async function V4Pickem() {
               {w.locked ? (w.decided ? 'Final' : `Locked ${lockText ? `at ${lockText}` : ''}`.trim()) : lockText ? `Locks ${lockText}` : 'Locks at the first kickoff'} &middot; {w.inRosters.length} of {Object.keys(everyone).length} teams in
               {!w.locked && out.length && out.length <= 5 ? ` · Still out: ${out.map((t) => t.manager).join(', ')}` : ''}
             </p>
-            {mine == null ? <Empty action={{ href: '/lab/app/account', label: 'Pick your team' }}>Pick your team to make picks.</Empty> : null}
+            {mine == null ? <Empty action={{ href: '/account', label: 'Pick your team' }}>Pick your team to make picks.</Empty> : null}
             <Board week={week} mine={mine} games={games} locked={w.locked} decided={w.decided} all={w.all} teams={everyone} />
           </Section>
           <Section title="Season">

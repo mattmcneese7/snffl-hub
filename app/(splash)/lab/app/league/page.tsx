@@ -11,20 +11,20 @@ import Shell, { SectionHead } from '../Shell';
 import { Avatar, Chip, Label, List, Rail, Rank, Row, Section, ui } from '../ui';
 import l from '../modules/layout.module.css';
 
-export const metadata: Metadata = { title: { absolute: 'League, Splash 4.0' }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: 'League, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 const PAGES: [string, string][] = [
-  ['Bracket', '/lab/app/league/bracket'],
-  ["Pick'em", '/lab/app/pickem'],
-  ['Feed', '/lab/app/feed'],
-  ['Managers', '/lab/app/managers'],
-  ['Trades', '/lab/app/trades'],
-  ['Trophy Case', '/lab/app/trophies'],
-  ['Chug Meter', '/lab/app/chug'],
-  ['Insights', '/lab/app/insights'],
-  ['Players', '/lab/app/players'],
-  ['Rules', '/lab/app/rules'],
+  ['Bracket', '/league/bracket'],
+  ["Pick'em", '/pickem'],
+  ['Feed', '/feed'],
+  ['Managers', '/managers'],
+  ['Trades', '/trades'],
+  ['Trophy Case', '/trophies'],
+  ['Chug Meter', '/chug'],
+  ['Insights', '/insights'],
+  ['Players', '/players'],
+  ['Rules', '/rules'],
 ];
 
 const avg = (t: { pointsFor: number; wins: number; losses: number; ties: number }) => {
@@ -64,7 +64,7 @@ export default async function V4League() {
             const row = (
               <Row
                 key={t.rosterId}
-                href={`/lab/app/managers/${t.rosterId}`}
+                href={`/managers/${t.rosterId}`}
                 lead={
                   <span className={l.lead}>
                     <Rank n={t.seed} />
@@ -106,7 +106,7 @@ export default async function V4League() {
             {power.map((p) => (
               <Row
                 key={p.team.rosterId}
-                href={`/lab/app/managers/${p.team.rosterId}`}
+                href={`/managers/${p.team.rosterId}`}
                 lead={
                   <span className={l.lead}>
                     <Rank n={p.rank} />

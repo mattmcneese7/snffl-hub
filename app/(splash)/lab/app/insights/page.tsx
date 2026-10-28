@@ -11,7 +11,7 @@ import { managerOf, shortName, teamOf } from '../modules/shared';
 import { Avatar, Empty, Face, Label, List, Row, Section, Seg, ui } from '../ui';
 import l from '../modules/layout.module.css';
 
-export const metadata: Metadata = { title: { absolute: 'Insights, Splash 4.0' }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: 'Insights, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 const pct = (n: number) => `${Math.round(n * 100)}%`;
@@ -80,8 +80,8 @@ export default async function V4Insights({ searchParams }: { searchParams: Promi
 
   return (
     <Shell data={data} active="league">
-      <SectionHead icon="insights" word="insights" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
-      <Seg label="Insights" items={VIEWS.map((v) => ({ label: v.label, href: v.key === 'draft' ? '/lab/app/insights' : `/lab/app/insights?view=${v.key}`, on: v.key === view }))} />
+      <SectionHead icon="insights" word="insights" week={data.week} mine={data.myRoster} back={{ href: '/league', label: 'League' }} />
+      <Seg label="Insights" items={VIEWS.map((v) => ({ label: v.label, href: v.key === 'draft' ? '/insights' : `/insights?view=${v.key}`, on: v.key === view }))} />
 
       {view === 'draft' ? <Section title="Draft Value">
         {draft.steals.length || draft.busts.length ? (

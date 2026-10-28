@@ -18,7 +18,7 @@ export default async function Hardware({ board, mine = null }: { board?: TrophyB
   const picks = b.latestWeek ? (await seasonStandings(b.latestWeek).catch(() => null))?.lastWinner : null;
   const pickem = picks && picks.week === b.latestWeek ? picks.rosterIds.map((id) => ({ kind: 'pickem', name: "Pick'em", rosterId: id, team: teamOf(id), manager: managerOf(id), detail: `${picks.correct} of ${picks.of} right`, mine: id === mine })) : [];
   return (
-    <Section title={`Week ${b.latestWeek} Hardware`} action={{ href: '/lab/app/trophies', label: 'Trophy Case' }}>
+    <Section title={`Week ${b.latestWeek} Hardware`} action={{ href: '/trophies', label: 'Trophy Case' }}>
       <AwardDeck
         awards={[
           ...b.latest.map((a) => ({

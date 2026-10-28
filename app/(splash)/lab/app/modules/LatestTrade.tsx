@@ -7,7 +7,7 @@ export default async function LatestTrade({ trade, mine = null }: { trade?: Trad
   const t = trade !== undefined ? trade : ((await getTrades().catch(() => [] as Trade[]))[0] ?? null);
   if (!t) return null;
   return (
-    <Section title="Latest Trade" action={{ href: '/lab/app/trades', label: 'All trades' }}>
+    <Section title="Latest Trade" action={{ href: '/trades', label: 'All trades' }}>
       <List>
         <TradeRows trade={t} mine={mine} />
       </List>

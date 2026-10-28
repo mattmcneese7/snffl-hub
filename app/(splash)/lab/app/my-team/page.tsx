@@ -23,7 +23,7 @@ import { Pos } from '../ui/blocks/Pos';
 import t from './mine.module.css';
 import PlayerRead from './Read';
 
-export const metadata: Metadata = { title: { absolute: 'My Team, Splash 4.0' }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: 'My Team, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 const pts = (n: number) => n.toFixed(2);
@@ -54,8 +54,8 @@ export default async function V4MyTeam() {
   if (!rosterId) {
     return (
       <Shell data={data} active="">
-        <SectionHead icon="person" word="my team" week={data.week} mine={null} back={{ href: '/lab/app/account', label: 'Account' }} />
-        <Empty action={{ href: '/lab/app/account', label: 'Pick Your Team' }}>Pick your team to see your lineup, what is wrong with it and your moves.</Empty>
+        <SectionHead icon="person" word="my team" week={data.week} mine={null} back={{ href: '/account', label: 'Account' }} />
+        <Empty action={{ href: '/account', label: 'Pick Your Team' }}>Pick your team to see your lineup, what is wrong with it and your moves.</Empty>
       </Shell>
     );
   }
@@ -178,10 +178,10 @@ export default async function V4MyTeam() {
 
   return (
     <Shell data={data} active="">
-      <SectionHead icon="person" word="my team" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/account', label: 'Account' }} />
+      <SectionHead icon="person" word="my team" week={data.week} mine={data.myRoster} back={{ href: '/account', label: 'Account' }} />
 
       <Hero
-        href={opp && game ? '/lab/app/matchup' : undefined}
+        href={opp && game ? '/matchup' : undefined}
         label={`Week ${week} Projected`}
         state={<span className={ui.label}>{status}</span>}
         sides={[{ avatar: team?.avatarUrl, color: team?.colors?.primary, team: team?.teamName.trim() ?? '', manager: managerOf(rosterId), score: pts(total) }]}

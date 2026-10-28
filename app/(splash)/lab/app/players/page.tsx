@@ -10,7 +10,7 @@ import { getV4Data } from '../data';
 import Shell, { SectionHead } from '../Shell';
 import Browser, { type Row } from './Browser';
 
-export const metadata: Metadata = { title: { absolute: 'Players, Splash 4.0' }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: 'Players, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 /**
@@ -53,7 +53,7 @@ export default async function V4Players() {
     .map((abbr) => ({ abbr, name: nflTeamName(abbr) }));
   return (
     <Shell data={data} active="league">
-      <SectionHead icon="groups" word="players" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
+      <SectionHead icon="groups" word="players" week={data.week} mine={data.myRoster} back={{ href: '/league', label: 'League' }} />
       <Browser rows={rows} owners={owners} nflTeams={nflTeams} week={upcoming} complete={ownershipComplete} mine={mine} />
     </Shell>
   );

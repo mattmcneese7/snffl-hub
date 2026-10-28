@@ -24,7 +24,7 @@ import b from './ui/blocks/ScoreBar.module.css';
 export function Account({ mine }: { mine: number | null }) {
   const t = mine != null ? teamByRoster(mine) : undefined;
   return (
-    <Link href="/lab/app/account" className={f.acct} aria-label="Account and settings">
+    <Link href="/account" className={f.acct} aria-label="Account and settings">
       {t ? (
         <Avatar src={t.avatarUrl} color={t.colors?.primary} size={34} />
       ) : (
@@ -40,7 +40,7 @@ export function Account({ mine }: { mine: number | null }) {
 export function HomeHead({ week, mine }: { week: number; mine: number | null }) {
   return (
     <div className={f.head}>
-      <Link href="/lab/app" className={f.lockup} aria-label="splash, home">
+      <Link href="/" className={f.lockup} aria-label="splash, home">
         <Drop className={f.lockupMark} />
         splash
       </Link>
@@ -108,9 +108,9 @@ export default function Shell({ data, active, children, barDock }: { data: V4Dat
       <div className={f.dock}>
         {mine && data.state === 'live' ? <ScorePop week={data.week} sides={[mine.a, mine.b].map((x) => ({ team: x.team, starters: x.starters ?? [] }))} /> : null}
         {mine ? (
-          <ScoreBar week={data.week} state={data.state} rows={[mine.a, mine.b]} href="/lab/app/matchup" dockTo={barDock} />
+          <ScoreBar week={data.week} state={data.state} rows={[mine.a, mine.b]} href="/matchup" dockTo={barDock} />
         ) : (
-          <Link href="/lab/app/account" className={b.bar}>
+          <Link href="/account" className={b.bar}>
             <span className={b.barHead}>
               <b>Week {data.week} Matchup</b>
               <span>Pick your team</span>

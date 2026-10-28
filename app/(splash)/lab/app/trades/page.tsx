@@ -8,7 +8,7 @@ import { TradeRows } from '../modules/TradeCard';
 import { Empty, List, Section, ui } from '../ui';
 import l from '../modules/layout.module.css';
 
-export const metadata: Metadata = { title: { absolute: 'Trades, Splash 4.0' }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: 'Trades, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 /**
@@ -23,7 +23,7 @@ export default async function V4Trades() {
   const yours = mine != null ? trades.filter((t) => t.sides.some((x) => x.rosterId === mine)).length : 0;
   return (
     <Shell data={data} active="league">
-      <SectionHead icon="swap" word="trades" week={data.week} mine={data.myRoster} back={{ href: '/lab/app/league', label: 'League' }} />
+      <SectionHead icon="swap" word="trades" week={data.week} mine={data.myRoster} back={{ href: '/league', label: 'League' }} />
       {trades.length ? (
         <Section title="Every Trade">
           <p className={`${ui.sub} ${l.note}`}>
@@ -36,7 +36,7 @@ export default async function V4Trades() {
           </List>
         </Section>
       ) : (
-        <Empty action={{ href: '/lab/app/swami', label: 'Check a trade in Swami' }}>No trades yet this season.</Empty>
+        <Empty action={{ href: '/swami', label: 'Check a trade in Swami' }}>No trades yet this season.</Empty>
       )}
     </Shell>
   );

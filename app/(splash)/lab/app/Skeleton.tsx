@@ -48,7 +48,7 @@ export function Frame({
                 {word}
               </h1>
             ) : (
-              <Link href="/lab/app" className={f.lockup} aria-label="splash, home">
+              <Link href="/" className={f.lockup} aria-label="splash, home">
                 <Drop className={f.lockupMark} />
                 splash
               </Link>

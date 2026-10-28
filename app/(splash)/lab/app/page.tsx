@@ -23,7 +23,7 @@ import Shell, { HomeHead } from './Shell';
 import { Empty, RagCard, Section } from './ui';
 import MatchupRows from './modules/MatchupRows';
 
-export const metadata: Metadata = { title: { absolute: 'Home, Splash 4.0' }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: 'Home, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 const CT_DATE = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', month: 'short', day: 'numeric' });
@@ -71,13 +71,13 @@ export default async function V4Home({ searchParams }: { searchParams: Promise<{
   const ragProps =
     issue && lead
       ? {
-          issueHref: `/lab/app/rag/${issue.week}`,
+          issueHref: `/rag/${issue.week}`,
           meta: `Week ${issue.week} · ${CT_DATE.format(new Date(issue.publishedAt))}`,
-          lead: { href: `/lab/app/rag/${issue.week}/${lead.slug}`, category: lead.category, headline: lead.headline },
+          lead: { href: `/rag/${issue.week}/${lead.slug}`, category: lead.category, headline: lead.headline },
           art: leadSrc,
           deck: lead.deck,
           readTime: lead.readTime,
-          more: articles.slice(1, 3).map((x) => ({ href: `/lab/app/rag/${issue.week}/${x.slug}`, category: x.category, headline: x.headline })),
+          more: articles.slice(1, 3).map((x) => ({ href: `/rag/${issue.week}/${x.slug}`, category: x.category, headline: x.headline })),
         }
       : null;
   const modules: Record<ModuleKey, ReactNode> = {
@@ -86,7 +86,7 @@ export default async function V4Home({ searchParams }: { searchParams: Promise<{
     rag: ragProps ? <RagCard {...ragProps} /> : null,
     ragCompact: ragProps ? <RagCard {...ragProps} compact /> : null,
     matchups: (
-      <Section title="All Matchups" action={{ href: '/lab/app/feed', label: 'The Feed' }}>
+      <Section title="All Matchups" action={{ href: '/feed', label: 'The Feed' }}>
         {data.others.length ? <MatchupRows games={data.others} week={data.week} live={data.state === 'live'} /> : <Empty>No matchups for week {data.week} yet.</Empty>}
       </Section>
     ),

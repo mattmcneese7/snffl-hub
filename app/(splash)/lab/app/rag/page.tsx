@@ -8,7 +8,7 @@ import Shell, { SectionHead } from '../Shell';
 import IssueView from './Issue';
 import { Empty } from '../ui';
 
-export const metadata: Metadata = { title: { absolute: 'The Rag, Splash 4.0' }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: 'The Rag, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 /** The Rag tab: the latest issue. */

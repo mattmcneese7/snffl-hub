@@ -17,7 +17,7 @@ import w from './swami.module.css';
  * numbers shows what it was built from.
  */
 
-export const BASE = '/lab/app/swami';
+export const BASE = '/swami';
 export type Tab = 'players' | 'waivers' | 'trade';
 
 /** A Swami link that keeps you on the same view. */

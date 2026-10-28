@@ -171,7 +171,7 @@ export default async function Trade({ query, mine }: { query: SwamiQuery; mine: 
             {gets.map((r) => (
               <ExpandRow key={r.player.id} lead={<PlayerFace read={r} />} title={short(r.player.name, r.player.position)} sub={<PlayerSub read={r} />} value={r.total != null ? fmt(r.total) : 'No read'}>
                 <RosWorking read={r} />
-                <Pill href={`/lab/app/players/${r.player.id}`} kind="secondary">
+                <Pill href={`/players/${r.player.id}`} kind="secondary">
                   Player page
                 </Pill>
               </ExpandRow>

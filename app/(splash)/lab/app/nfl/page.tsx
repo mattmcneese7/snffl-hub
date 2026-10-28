@@ -12,7 +12,7 @@ import WeekStrip from '../scores/WeekStrip';
 import Shell, { SectionHead } from '../Shell';
 import { Empty, List, Section } from '../ui';
 
-export const metadata: Metadata = { title: { absolute: 'NFL Scores, Splash 4.0' }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: 'NFL Scores, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 const DAY = new Intl.DateTimeFormat('en-US', { weekday: 'long', timeZone: 'America/Chicago' });
@@ -49,8 +49,8 @@ export default async function V4Nfl({ searchParams }: { searchParams: Promise<{ 
   return (
     <Shell data={data} active="scores">
       <LiveStart live={live.length > 0} week={week} />
-      <SectionHead icon="football" word="nfl" week={data.week} mine={data.myRoster} back={{ href: `/lab/app/scores/${week}`, label: 'Scores' }} />
-      <WeekStrip week={week} last={lastFantasyWeek()} base="/lab/app/nfl" query />
+      <SectionHead icon="football" word="nfl" week={data.week} mine={data.myRoster} back={{ href: `/scores/${week}`, label: 'Scores' }} />
+      <WeekStrip week={week} last={lastFantasyWeek()} base="/nfl" query />
       {!games.length ? <Empty>ESPN has not posted the week {week} games yet.</Empty> : null}
       {live.length ? <Section title="Live">{group(live)}</Section> : null}
       {[...days.entries()].map(([d, list]) => (

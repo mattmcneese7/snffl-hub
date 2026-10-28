@@ -237,7 +237,7 @@ export default function PlayerSheet() {
               </div>
             ) : null}
             <div className={s.foot}>
-              <a className={`${ui.pill} ${ui.pillSecondary}`} href={`/lab/app/players/${data.id}`}>
+              <a className={`${ui.pill} ${ui.pillSecondary}`} href={`/players/${data.id}`}>
                 Full profile
               </a>
             </div>

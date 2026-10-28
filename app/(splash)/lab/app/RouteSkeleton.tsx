@@ -13,7 +13,7 @@ import { Frame, SkCard, SkChips, SkList, SkRail, SkStatus, SkTitle } from './Ske
  */
 const ROUTES: [RegExp, () => ReactNode][] = [
   [
-    /^\/lab\/app\/?$/,
+    /^(?:\/lab\/app)?\/?$/,
     () => (
       <Frame active="home">
         <SkStatus what="home" />
@@ -28,7 +28,7 @@ const ROUTES: [RegExp, () => ReactNode][] = [
     ),
   ],
   [
-    /^\/lab\/app\/scores(\/\d+)?$/,
+    /^(?:\/lab\/app)?\/scores(\/\d+)?$/,
     () => (
       <Frame active="scores" icon="football" word="scores">
         <SkStatus what="scores" />
@@ -40,9 +40,9 @@ const ROUTES: [RegExp, () => ReactNode][] = [
     ),
   ],
   [
-    /^\/lab\/app\/matchup$/,
+    /^(?:\/lab\/app)?\/matchup$/,
     () => (
-      <Frame active="scores" icon="football" word="scores" back={{ href: '/lab/app/scores', label: 'Scores' }}>
+      <Frame active="scores" icon="football" word="scores" back={{ href: '/scores', label: 'Scores' }}>
         <SkStatus what="the matchup" />
         <SkCard h={165} blue />
         <SkTitle />
@@ -51,9 +51,9 @@ const ROUTES: [RegExp, () => ReactNode][] = [
     ),
   ],
   [
-    /^\/lab\/app\/nfl$/,
+    /^(?:\/lab\/app)?\/nfl$/,
     () => (
-      <Frame active="scores" icon="football" word="nfl" back={{ href: '/lab/app/scores', label: 'Scores' }}>
+      <Frame active="scores" icon="football" word="nfl" back={{ href: '/scores', label: 'Scores' }}>
         <SkStatus what="the NFL slate" />
         <SkChips n={6} w={70} />
         <SkTitle />
@@ -64,9 +64,9 @@ const ROUTES: [RegExp, () => ReactNode][] = [
     ),
   ],
   [
-    /^\/lab\/app\/nfl\/[^\/]+$/,
+    /^(?:\/lab\/app)?\/nfl\/[^\/]+$/,
     () => (
-      <Frame active="scores" icon="football" word="nfl" back={{ href: '/lab/app/nfl', label: 'NFL' }}>
+      <Frame active="scores" icon="football" word="nfl" back={{ href: '/nfl', label: 'NFL' }}>
         <SkStatus what="the game" />
         <SkCard h={385} />
         <SkTitle />
@@ -77,7 +77,7 @@ const ROUTES: [RegExp, () => ReactNode][] = [
     ),
   ],
   [
-    /^\/lab\/app\/rag\/\d+\/[^\/]+$/,
+    /^(?:\/lab\/app)?\/rag\/\d+\/[^\/]+$/,
     () => (
       <Frame active="rag" icon="rag" word="the rag">
         <SkStatus what="the story" />
@@ -86,7 +86,7 @@ const ROUTES: [RegExp, () => ReactNode][] = [
     ),
   ],
   [
-    /^\/lab\/app\/rag(\/\d+)?$/,
+    /^(?:\/lab\/app)?\/rag(\/\d+)?$/,
     () => (
       <Frame active="rag" icon="rag" word="the rag">
         <SkStatus what="the Rag" />
@@ -98,7 +98,7 @@ const ROUTES: [RegExp, () => ReactNode][] = [
     ),
   ],
   [
-    /^\/lab\/app\/league$/,
+    /^(?:\/lab\/app)?\/league$/,
     () => (
       <Frame active="league" icon="league" word="league">
         <SkStatus what="the league" />
@@ -109,9 +109,9 @@ const ROUTES: [RegExp, () => ReactNode][] = [
     ),
   ],
   [
-    /^\/lab\/app\/league\/bracket$/,
+    /^(?:\/lab\/app)?\/league\/bracket$/,
     () => (
-      <Frame active="league" icon="trophy" word="bracket" back={{ href: '/lab/app/league', label: 'League' }}>
+      <Frame active="league" icon="trophy" word="bracket" back={{ href: '/league', label: 'League' }}>
         <SkStatus what="the bracket" />
         <SkTitle w={200} />
         <SkCard h={100} />
@@ -121,9 +121,9 @@ const ROUTES: [RegExp, () => ReactNode][] = [
     ),
   ],
   [
-    /^\/lab\/app\/rules$/,
+    /^(?:\/lab\/app)?\/rules$/,
     () => (
-      <Frame active="league" icon="league" word="rules" back={{ href: '/lab/app/league', label: 'League' }}>
+      <Frame active="league" icon="league" word="rules" back={{ href: '/league', label: 'League' }}>
         <SkStatus what="the rules" />
         <SkCard h={486} />
         <SkTitle />
@@ -134,7 +134,7 @@ const ROUTES: [RegExp, () => ReactNode][] = [
     ),
   ],
   [
-    /^\/lab\/app\/swami$/,
+    /^(?:\/lab\/app)?\/swami$/,
     () => (
       <Frame active="swami" icon="swami" word="swami">
         <SkStatus what="Swami" />
@@ -147,7 +147,7 @@ const ROUTES: [RegExp, () => ReactNode][] = [
     ),
   ],
   [
-    /^\/lab\/app\/account$/,
+    /^(?:\/lab\/app)?\/account$/,
     () => (
       <Frame active="" icon="account" word="account">
         <SkStatus what="your account" />
@@ -158,9 +158,9 @@ const ROUTES: [RegExp, () => ReactNode][] = [
     ),
   ],
   [
-    /^\/lab\/app\/players$/,
+    /^(?:\/lab\/app)?\/players$/,
     () => (
-      <Frame active="league" icon="groups" word="players" back={{ href: '/lab/app/league', label: 'League' }}>
+      <Frame active="league" icon="groups" word="players" back={{ href: '/league', label: 'League' }}>
         <SkStatus what="players" />
         <SkCard h={300} />
         <SkTitle />
@@ -169,9 +169,9 @@ const ROUTES: [RegExp, () => ReactNode][] = [
     ),
   ],
   [
-    /^\/lab\/app\/players\/[^\/]+$/,
+    /^(?:\/lab\/app)?\/players\/[^\/]+$/,
     () => (
-      <Frame active="league" icon="person" word="player" back={{ href: '/lab/app/players', label: 'Players' }}>
+      <Frame active="league" icon="person" word="player" back={{ href: '/players', label: 'Players' }}>
         <SkStatus what="the player" />
         <SkCard h={302} />
         <SkTitle />
@@ -182,18 +182,18 @@ const ROUTES: [RegExp, () => ReactNode][] = [
     ),
   ],
   [
-    /^\/lab\/app\/managers$/,
+    /^(?:\/lab\/app)?\/managers$/,
     () => (
-      <Frame active="league" icon="groups" word="managers" back={{ href: '/lab/app/league', label: 'League' }}>
+      <Frame active="league" icon="groups" word="managers" back={{ href: '/league', label: 'League' }}>
         <SkStatus what="managers" />
         <SkList rows={14} h={70} />
       </Frame>
     ),
   ],
   [
-    /^\/lab\/app\/managers\/[^\/]+$/,
+    /^(?:\/lab\/app)?\/managers\/[^\/]+$/,
     () => (
-      <Frame active="league" icon="person" word="manager" back={{ href: '/lab/app/managers', label: 'Managers' }}>
+      <Frame active="league" icon="person" word="manager" back={{ href: '/managers', label: 'Managers' }}>
         <SkStatus what="the manager" />
         <SkCard h={152} />
         <SkTitle />
@@ -206,9 +206,9 @@ const ROUTES: [RegExp, () => ReactNode][] = [
     ),
   ],
   [
-    /^\/lab\/app\/feed$/,
+    /^(?:\/lab\/app)?\/feed$/,
     () => (
-      <Frame active="home" icon="feed" word="feed" back={{ href: '/lab/app', label: 'Home' }}>
+      <Frame active="home" icon="feed" word="feed" back={{ href: '/', label: 'Home' }}>
         <SkStatus what="the feed" />
         <SkTitle />
         <SkRail n={5} w={64} h={64} round />
@@ -218,9 +218,9 @@ const ROUTES: [RegExp, () => ReactNode][] = [
     ),
   ],
   [
-    /^\/lab\/app\/trophies$/,
+    /^(?:\/lab\/app)?\/trophies$/,
     () => (
-      <Frame active="league" icon="trophy" word="trophies" back={{ href: '/lab/app/league', label: 'League' }}>
+      <Frame active="league" icon="trophy" word="trophies" back={{ href: '/league', label: 'League' }}>
         <SkStatus what="the trophy case" />
         <SkTitle />
         <SkCard h={685} />
@@ -228,9 +228,9 @@ const ROUTES: [RegExp, () => ReactNode][] = [
     ),
   ],
   [
-    /^\/lab\/app\/chug$/,
+    /^(?:\/lab\/app)?\/chug$/,
     () => (
-      <Frame active="league" icon="beer" word="chug" back={{ href: '/lab/app/league', label: 'League' }}>
+      <Frame active="league" icon="beer" word="chug" back={{ href: '/league', label: 'League' }}>
         <SkStatus what="the Chug Meter" />
         <SkTitle />
         <SkList rows={12} h={66} />
@@ -238,9 +238,9 @@ const ROUTES: [RegExp, () => ReactNode][] = [
     ),
   ],
   [
-    /^\/lab\/app\/trades$/,
+    /^(?:\/lab\/app)?\/trades$/,
     () => (
-      <Frame active="league" icon="swap" word="trades" back={{ href: '/lab/app/league', label: 'League' }}>
+      <Frame active="league" icon="swap" word="trades" back={{ href: '/league', label: 'League' }}>
         <SkStatus what="trades" />
         <SkTitle />
         <SkCard h={180} />
@@ -248,9 +248,9 @@ const ROUTES: [RegExp, () => ReactNode][] = [
     ),
   ],
   [
-    /^\/lab\/app\/insights$/,
+    /^(?:\/lab\/app)?\/insights$/,
     () => (
-      <Frame active="league" icon="insights" word="insights" back={{ href: '/lab/app/league', label: 'League' }}>
+      <Frame active="league" icon="insights" word="insights" back={{ href: '/league', label: 'League' }}>
         <SkStatus what="insights" />
         <SkTitle />
         <SkList rows={10} h={72} />
@@ -258,9 +258,9 @@ const ROUTES: [RegExp, () => ReactNode][] = [
     ),
   ],
   [
-    /^\/lab\/app\/my-team$/,
+    /^(?:\/lab\/app)?\/my-team$/,
     () => (
-      <Frame active="" icon="person" word="my team" back={{ href: '/lab/app/account', label: 'Account' }}>
+      <Frame active="" icon="person" word="my team" back={{ href: '/account', label: 'Account' }}>
         <SkStatus what="your team" />
         <SkCard h={154} blue />
         <SkTitle link />
@@ -271,7 +271,8 @@ const ROUTES: [RegExp, () => ReactNode][] = [
 ];
 
 export default function RouteSkeleton() {
-  const path = (usePathname() ?? '/lab/app').replace(/\/$/, '') || '/lab/app';
+  // The public path after the swap (/scores) or the lab one before (/scores).
+  const path = (usePathname() ?? '/').replace(/\/$/, '') || '/';
   const hit = ROUTES.find(([rx]) => rx.test(path));
   return <>{(hit ?? ROUTES[0])[1]()}</>;
 }

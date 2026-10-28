@@ -13,7 +13,7 @@ import ShartCitation from '../ShartCitation';
 import SquirtSays from '../SquirtSays';
 import TopScorers from '../TopScorers';
 
-export const metadata: Metadata = { title: { absolute: 'Modules, Splash 4.0' }, robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: { absolute: 'Modules, Splash' }, robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 /** Every Home module on one page, for checking them before they go on Home. Not linked from anywhere. */

@@ -28,7 +28,7 @@ export default async function PickemRow({ state, week, mine }: { state: 'final' 
   return (
     <Section title="Pick'em">
       <List tap>
-        <Row href="/lab/app/pickem" label={`Week ${pw} Picks`} title={title} sub={sub} />
+        <Row href="/pickem" label={`Week ${pw} Picks`} title={title} sub={sub} />
       </List>
     </Section>
   );

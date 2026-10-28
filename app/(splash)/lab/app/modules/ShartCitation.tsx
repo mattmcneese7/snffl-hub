@@ -63,7 +63,7 @@ export default async function ShartCitation({ onChug = false }: { onChug?: boole
     charges.push(`Outscored by ${nm(theirBest)} alone, ${pts(theirBest.points)} to this roster's best, ${pts(hisBest.points)}.`);
 
   return (
-    <Section title="Shart of the Week" label={`Week ${week} Shart of the Week`} action={slug ? { href: `/lab/app/rag/${week}/${slug}`, label: 'The story' } : undefined}>
+    <Section title="Shart of the Week" label={`Week ${week} Shart of the Week`} action={slug ? { href: `/rag/${week}/${slug}`, label: 'The story' } : undefined}>
       {!onChug ? (
         <>
           <List>
@@ -82,7 +82,7 @@ export default async function ShartCitation({ onChug = false }: { onChug?: boole
         </List>
       ) : null}
       <List>
-        <Row lead={<AwardIcon kind="shart" size={14} />} label="Sentence" title="One chug" strong trail={!onChug ? <Pill href="/lab/app/chug" kind="secondary">Chug Meter</Pill> : undefined} />
+        <Row lead={<AwardIcon kind="shart" size={14} />} label="Sentence" title="One chug" strong trail={!onChug ? <Pill href="/chug" kind="secondary">Chug Meter</Pill> : undefined} />
       </List>
     </Section>
   );

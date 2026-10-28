@@ -297,7 +297,7 @@ export async function runWatcher(log: Log = () => {}): Promise<WatchResult> {
           {
             title: post.title,
             body: post.body ?? '',
-            url: `/matchups/${week}/${payload.matchup_id}`,
+            url: `/matchup?id=${payload.matchup_id}&week=${week}`,
             tag: `lead-${payload.matchup_id}`,
           }
         );

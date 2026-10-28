@@ -24,7 +24,7 @@ import {
 } from '../lib/rag.ts';
 import { templateFor } from '../lib/templates.ts';
 import { retryArticle } from '../lib/rag-writer.ts';
-import { validateArticle, type Candidate } from '../lib/validate.ts';
+import { validateArticle, type Candidate, type Violation } from '../lib/validate.ts';
 import { claimAlerts } from '../lib/alert-claims.ts';
 import { pushConfigured, sendAlert } from '../lib/push.ts';
 import { awardsForWeek, TROPHY_NAMES } from '../lib/trophies.ts';
@@ -50,6 +50,20 @@ const WEEK_ARG = Number(
   process.argv.find((arg) => /^--week=\d+$/.test(arg))?.split('=')[1] ?? 0
 );
 
+// Announce an issue that is already written and approved as drafted: send
+// its alerts (claimed per week, so never twice) and stop, without rewriting a
+// word. node scripts/publish.ts --announce --week=7
+if (process.argv.includes('--announce')) {
+  const file = path.join('data', 'rag', `week-${WEEK_ARG}.json`);
+  if (!WEEK_ARG || !fs.existsSync(file)) {
+    console.error(`  no issue at ${file} to announce`);
+    process.exit(1);
+  }
+  const written = JSON.parse(fs.readFileSync(file, 'utf8')) as { articles: { headline: string }[] };
+  await announce(WEEK_ARG, written.articles);
+  process.exit(0);
+}
+
 let pending: { week: number; batchId: string | null; allowed?: string[] };
 try {
   pending = JSON.parse(fs.readFileSync(PENDING, 'utf8'));
@@ -74,7 +88,19 @@ const { week, batchId } = pending;
 console.log(`publishing week ${week}`);
 console.log(`  spend: ${spendSummary()}`);
 
-const facts = await buildWeekFacts(week);
+// Sleeper sometimes answers a runner with nothing. An issue built on no games
+// would be wrong from the headline down (and the templates have nothing to
+// fill), so try again, then stop cleanly: the next hourly run picks it up.
+let facts = await buildWeekFacts(week);
+for (let attempt = 1; !facts.games.length && attempt <= 3; attempt++) {
+  console.warn(`  Sleeper returned no games for week ${week}, retrying (${attempt} of 3)`);
+  await new Promise((r) => setTimeout(r, 15_000));
+  facts = await buildWeekFacts(week);
+}
+if (!facts.games.length) {
+  console.error(`  still no games for week ${week}; not publishing. The next run tries again.`);
+  process.exit(1);
+}
 const allowed = new Set(pending.allowed ?? [...allowedNumbers(facts)]);
 // Team and manager names are redacted before numbers are read out of prose.
 const names = properNouns(facts);
@@ -114,6 +140,21 @@ if (fs.existsSync(RAW)) {
   console.log('  no batch was submitted, every article uses a template.');
 }
 
+/**
+ * The draft with every sentence that carries a rejected claim removed: an
+ * unsourced number, a raw field name or a wrong count. Null when the headline
+ * or deck itself is at fault, since those cannot lose a sentence.
+ */
+function salvage(draft: Candidate, violations: Violation[]): Candidate | null {
+  const bad = violations.map((v) => v.detail.match(/^(\d+(?:\.\d+)?) is not in the fact packet/)?.[1] ?? v.detail.match(/raw field name "([^"]+)"/)?.[1] ?? v.detail.match(/^"([^"]+)" is a count/)?.[1]).filter(Boolean) as string[];
+  if (bad.length !== violations.length) return null;
+  // A count ("4 team") matches its plural too, so no trailing boundary for it.
+  const hit = (s: string) => bad.some((b) => new RegExp(`(?<![\\w.])${b.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}${/ /.test(b) ? '' : '(?![\\w])'}`, 'i').test(s.replace(/,/g, '')));
+  if (hit(draft.headline) || hit(draft.deck)) return null;
+  const body = draft.body.map((p) => (p.match(/[^.!?]+[.!?]+["\u201d]?\s*|[^.!?]+$/g) ?? [p]).filter((s) => !hit(s)).join('').trim()).filter(Boolean);
+  return body.length ? { ...draft, body } : null;
+}
+
 const articles: Article[] = [];
 let signOff: string | undefined;
 
@@ -138,27 +179,63 @@ for (const id of ARTICLE_ORDER) {
     console.warn(`  ${id} did not come back: ${result.error}`);
   }
 
-  // One retry, then the template.
+  // One revision, then salvage, then the template.
   //
-  // This used to be a comment saying a retry belonged here, and the absence was
-  // expensive: Week 1 sent six articles to templates, five of them over a
-  // single curly apostrophe, with no second attempt. A retry is one message
-  // rather than a whole batch, so a bad draft costs cents instead of an issue.
+  // The retry used to start over blind, fail for a brand new reason and send
+  // the lead story to a three line template (weeks 3 to 6). Now it gets its
+  // own draft back with exactly what the fact check rejected, and fixes that.
   if (!candidate && result?.ok) {
-    const retry = await retryArticle(id, facts);
+    const first = result.data as Candidate;
+    const firstCheck = validateArticle(first, allowed, names, counts, handlesOf(facts));
+    const retry = await retryArticle(id, facts, first, firstCheck.violations);
+    let last: { draft: Candidate; violations: Violation[] } = { draft: first, violations: firstCheck.violations };
     if (retry) {
       const check = validateArticle(retry, allowed, names, counts, handlesOf(facts));
       if (check.ok) {
         candidate = retry;
-        console.log(`  ${id} passed on retry`);
+        console.log(`  ${id} passed on revision`);
       } else {
         console.warn(`  ${id} failed again: ${check.violations.map((v) => v.detail).join('; ')}`);
+        last = { draft: retry, violations: check.violations };
+      }
+    }
+    // Salvage: drop only the sentences that carry an unsourced claim. Kept
+    // when the headline is clean and most of the article survives, because a
+    // full article minus one bad sentence beats a stub every time.
+    if (!candidate) {
+      const saved = salvage(last.draft, last.violations);
+      const words = saved ? saved.body.join(' ').split(/\s+/).length : 0;
+      if (saved && words >= spec.words[0] * 0.6 && validateArticle(saved, allowed, names, counts, handlesOf(facts)).ok) {
+        candidate = saved;
+        console.log(`  ${id} salvaged: kept ${words} words, dropped the unsourced sentences`);
       }
     }
   }
 
-  // A second failure falls through to the template, which is always correct
-  // because it is built from the facts.
+  // A draft that never came back (cut off at the token cap, or errored) gets
+  // one fresh single attempt with more room before anything falls back.
+  if (!candidate && result && !result.ok && id !== 'corrections') {
+    let fresh = await retryArticle(id, facts);
+    let check = fresh ? validateArticle(fresh, allowed, names, counts, handlesOf(facts)) : null;
+    // A fresh draft with a few unsourced claims gets the same revision as any other.
+    if (fresh && check && !check.ok) {
+      console.warn(`  ${id} fresh draft failed: ${check.violations.map((v) => v.detail).join('; ')}`);
+      const revised = await retryArticle(id, facts, fresh, check.violations);
+      const again = revised ? validateArticle(revised, allowed, names, counts, handlesOf(facts)) : null;
+      if (revised && again?.ok) [fresh, check] = [revised, again];
+      else if (revised && again) {
+        const saved = salvage(revised, again.violations);
+        const words = saved ? saved.body.join(' ').split(/\s+/).length : 0;
+        if (saved && words >= spec.words[0] * 0.6 && validateArticle(saved, allowed, names, counts, handlesOf(facts)).ok) [fresh, check] = [saved, { ok: true, violations: [] }];
+      }
+    }
+    if (fresh && check?.ok) {
+      candidate = fresh;
+      console.log(`  ${id} written fresh after the batch draft failed`);
+    } else if (!fresh) console.warn(`  ${id} fresh attempt came back empty`);
+  }
+
+  // The last resort, built from the facts. It must never take the issue down.
   if (!candidate) {
     candidate = templateFor(id, facts);
     fromTemplate = true;
@@ -198,10 +275,13 @@ console.log(
   `published week ${week}: ${articles.length} articles, ${templated} from templates, byline ${BYLINE}`
 );
 
+await announce(week, articles);
+
 // The issue is out, so say so: one alert to everybody who wants the Rag, and a
 // separate one to each manager who won hardware, naming what he won. Claimed
 // per week, so a second run of the publisher does not announce it twice.
-if (pushConfigured()) {
+async function announce(week: number, articles: { headline: string }[]) {
+  if (!pushConfigured()) return;
   const awards = await awardsForWeek(week);
   const hardware = new Map<number, string[]>();
   for (const award of awards) {

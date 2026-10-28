@@ -37,8 +37,8 @@ export const ARTICLE_SPECS: Record<
   shart: {
     title: 'Shart of the Week',
     brief:
-      'The lead story. The lowest score of the week and the manager who owns it. Be merciless. This is the one everybody reads. It must end with the sign off, escalated past every previous one.',
-    words: [320, 450],
+      'The lead story. The lowest score of the week and the manager who owns it. Build it from his game in matchups: who beat him and by how much, the starters who sank him (their points against projection and their box score lines), the bench calls that would have saved him and what they cost, his record and streak, where his score ranked, and whether he has sharted before (history). Be merciless and specific. This is the one everybody reads. It must end with the sign off, escalated past every previous one.',
+    words: [450, 700],
   },
   hardware: {
     title: 'The Hardware',
@@ -48,18 +48,18 @@ export const ARTICLE_SPECS: Record<
   },
   manager: {
     title: 'Manager of the Week',
-    brief: 'The highest score of the week. Give credit, then undercut it slightly.',
-    words: [180, 260],
+    brief: 'The highest score of the week. Give credit with specifics from his game in matchups: the starters who carried him, against their projections, with their box score lines, his record and streak, and how the score sits against the season (history). Then undercut it slightly, with something real: a bench call he got away with, a weak opponent, a starter who still busted.',
+    words: [300, 450],
   },
   game: {
     title: 'Game of the Week',
-    brief: 'The closest or most dramatic matchup. Tell it like a game recap.',
-    words: [200, 300],
+    brief: 'The closest or most dramatic matchup, told like a real game recap. Use its entry in matchups: both lineups\u2019 big performers and busts with their box score lines, the margin, the bench call that decided it if benchedTheWin, both records and streaks, and any earlier meeting (headToHead). If another game had a bigger bench blunder or a smaller margin, it can earn a line.',
+    words: [400, 600],
   },
   around: {
     title: 'Around the League',
-    brief: 'Every other matchup in one or two sentences each. Fast, punchy, no filler.',
-    words: [250, 400],
+    brief: 'Every other matchup, two or three sentences each, each built on the one fact that decided it from matchups: a bench call that cost the game, a starter who busted against his projection, a starter who blew past it, a margin under a point. Name the people. Fast and punchy, never filler, never just the final score.',
+    words: [350, 550],
   },
   waiver: {
     title: 'Waiver Wire',
@@ -68,8 +68,8 @@ export const ARTICLE_SPECS: Record<
   },
   performances: {
     title: 'Big Performances',
-    brief: 'The top individual scores, owned and free agent alike.',
-    words: [150, 240],
+    brief: 'The top individual scores, owned and free agent alike, each with his box score line from matchups where he started, against his projection, and what it did for the manager who started him (or the one who left him on the bench).',
+    words: [220, 350],
   },
   power: {
     title: 'Power Rankings',
@@ -85,8 +85,8 @@ export const ARTICLE_SPECS: Record<
   preview: {
     title: 'Next Week Preview',
     brief:
-      'What is coming. Name the favorites and call the Shart Bowl, the matchup most likely to produce next week low score.',
-    words: [180, 280],
+      'What is coming. For the biggest matchups, use both teams\u2019 records and streaks from standings and matchups, and any history between them. Name the favorites and call the Shart Bowl, the matchup most likely to produce next week low score, with the reasons from the facts.',
+    words: [250, 380],
   },
   corrections: {
     title: 'Corrections and Retractions',

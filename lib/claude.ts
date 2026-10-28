@@ -57,11 +57,14 @@ function writeLedger(ledger: Ledger) {
 
 export function costOf(
   model: string,
-  usage: { input_tokens?: number; output_tokens?: number },
+  usage: { input_tokens?: number; output_tokens?: number; cache_creation_input_tokens?: number | null; cache_read_input_tokens?: number | null },
   batch = false
 ): number {
   const price = PRICING[model] ?? PRICING['claude-sonnet-5'];
-  const input = ((usage.input_tokens ?? 0) / 1_000_000) * price.input;
+  // The issue's shared facts are cached: writing the cache costs a quarter
+  // more than plain input, reading it a tenth. Both count against the ceiling.
+  const cached = ((usage.cache_creation_input_tokens ?? 0) * 1.25 + (usage.cache_read_input_tokens ?? 0) * 0.1) / 1_000_000;
+  const input = ((usage.input_tokens ?? 0) / 1_000_000) * price.input + cached * price.input;
   const output = ((usage.output_tokens ?? 0) / 1_000_000) * price.output;
   // Batch bills at half rate.
   return (input + output) * (batch ? 0.5 : 1);
@@ -93,6 +96,8 @@ export function client(): Anthropic {
 export type BatchRequest = {
   customId: string;
   system: string;
+  /** The issue's shared facts, sent first and cached across the batch. */
+  facts?: string;
   prompt: string;
   schema: Record<string, unknown>;
   maxTokens?: number;
@@ -111,7 +116,17 @@ export async function submitBatch(requests: BatchRequest[]): Promise<string> {
         model: MODELS.writer,
         max_tokens: request.maxTokens ?? 4000,
         system: request.system,
-        messages: [{ role: 'user' as const, content: request.prompt }],
+        messages: [
+          {
+            role: 'user' as const,
+            content: request.facts
+              ? [
+                  { type: 'text' as const, text: request.facts, cache_control: { type: 'ephemeral' as const } },
+                  { type: 'text' as const, text: request.prompt },
+                ]
+              : request.prompt,
+          },
+        ],
         // Structured output keeps validation mechanical rather than parsing prose.
         output_config: { format: { type: 'json_schema' as const, schema: request.schema } },
       },

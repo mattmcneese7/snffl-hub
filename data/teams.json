@@ -15,7 +15,7 @@
   "rosterId": 1,
   "starters": [
    "1166",
-   "8132",
+   "12507",
    "5846",
    "7526",
    "7600",
@@ -41,7 +41,7 @@
   "losses": 1,
   "manager": "nunnells",
   "pointsAgainst": 735.86,
-  "pointsFor": 917.64,
+  "pointsFor": 918.64,
   "rosterId": 2,
   "starters": [
    "11566",
@@ -199,9 +199,9 @@
    "9487",
    "6794",
    "5844",
-   "0",
-   "8131",
-   "0",
+   "8134",
+   "13301",
+   "10955",
    "KC"
   ],
   "teamName": "Romo911",
@@ -224,7 +224,7 @@
   "pointsFor": 839.22,
   "rosterId": 8,
   "starters": [
-   "9228",
+   "3257",
    "9221",
    "10232",
    "6801",
@@ -250,7 +250,7 @@
   },
   "losses": 6,
   "manager": "Tayodin",
-  "pointsAgainst": 862.62,
+  "pointsAgainst": 863.62,
   "pointsFor": 624.8,
   "rosterId": 9,
   "starters": [
@@ -262,7 +262,7 @@
    "6806",
    "10229",
    "12713",
-   "DAL"
+   "CIN"
   ],
   "teamName": "Victorious Secrets",
   "ties": 0,
@@ -345,12 +345,12 @@
   "rosterId": 12,
   "starters": [
    "4046",
-   "4034",
-   "11632",
+   "12534",
+   "4983",
    "12514",
    "1466",
+   "13296",
    "9482",
-   "4035",
    "11533",
    "LAR"
   ],

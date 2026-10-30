@@ -921,5 +921,135 @@
       "playerIds": [],
       "score": 3
     }
+  ],
+  "8": [
+    {
+      "url": "https://a.espncdn.com/photo/2026/1029/r1738276_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Jahmyr Gibbs is fourth in the league in rushing yards and fourth in receptions among running backs.",
+      "gameId": "401873023",
+      "week": 8,
+      "playerIds": [
+        "9221"
+      ],
+      "score": 10
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1029/r1738283_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Dallas Cowboys running back Javonte Williams is tied for the league lead with eight rushing touchdowns.",
+      "gameId": "401873023",
+      "week": 8,
+      "playerIds": [
+        "7588"
+      ],
+      "score": 10
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0902/r1710593_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Jameson Williams is off to a slow start with six catches for 78 yards and no touchdowns for a Lions team that has 62 points in two games.",
+      "gameId": "401873023",
+      "week": 8,
+      "playerIds": [
+        "8148"
+      ],
+      "score": 10
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0903/r1711041_2_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Christian Watson, Green Bay Packers wide receiver",
+      "gameId": "401873023",
+      "week": 8,
+      "playerIds": [
+        "8167"
+      ],
+      "score": 9.16
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0928/r1723051_2_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Denzel Boston, Cleveland Browns wide receiver",
+      "gameId": "401873023",
+      "week": 8,
+      "playerIds": [
+        "13346"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1030/ss_20261030_103138401_3716761/ss_20261030_103138401_3716761.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "What Stephen A. still needs to see from Jordan Love",
+      "gameId": "401873023",
+      "week": 8,
+      "playerIds": [
+        "6804"
+      ],
+      "score": 6.69
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1029/5a5d3d945e7a44f5b2c02f513ba6f9a91413/5a5d3d945e7a44f5b2c02f513ba6f9a91413.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Jordan Love's 3rd passing TD pads the Packers' lead",
+      "gameId": "401873023",
+      "week": 8,
+      "playerIds": [
+        "6804"
+      ],
+      "score": 6.69
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1028/ss_20261028_132709613_3714236987/ss_20261028_132709613_3714236987.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "WE'RE SELFLESS!' - Jahmyr Gibbs on Lions' team culture and success",
+      "gameId": "401873023",
+      "week": 8,
+      "playerIds": [
+        "9221"
+      ],
+      "score": 4
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1026/ss_20261026_110653810_3712060680/ss_20261026_110653810_3712060680.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Is Courtland Sutton back on the flex radar?",
+      "gameId": "401873023",
+      "week": 8,
+      "playerIds": [
+        "5045"
+      ],
+      "score": 4
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1029/r1738278_1296x729_16-9.png",
+      "width": 1296,
+      "height": 729,
+      "caption": "Michael Vick lit up Washington with his arm (333 yards, 4 TDs) and his legs (80 yards, 2 TDs) in a 2010 Monday Night Football performance for the ages.",
+      "gameId": "401873023",
+      "week": 8,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0914/r1716707_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Michael Pittman Jr., Pittsburgh Steelers wide receiver",
+      "gameId": "401873023",
+      "week": 8,
+      "playerIds": [],
+      "score": 3
+    }
   ]
 }

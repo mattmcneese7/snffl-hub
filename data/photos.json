@@ -924,28 +924,41 @@
   ],
   "8": [
     {
-      "url": "https://a.espncdn.com/photo/2026/0914/r1716699_1296x729_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/1027/r1736851_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
-      "caption": "Jonathan Taylor, Indianapolis Colts running back",
+      "caption": "Saquon Barkley",
       "gameId": "401873023",
       "week": 8,
       "playerIds": [
-        "6813"
+        "4866"
       ],
       "score": 7
     },
     {
-      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1030/ss_20261030_082657414_3716722527/ss_20261030_082657414_3716722527.jpg",
-      "width": 576,
-      "height": 324,
-      "caption": "Orlovsky: Jordan Love is truly what an MVP looks like",
+      "url": "https://a.espncdn.com/photo/2026/1029/r1738267_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Commanders quarterback Jayden Daniels should have time to throw against the Eagles defense.",
       "gameId": "401873023",
       "week": 8,
       "playerIds": [
-        "6804"
+        "11566"
       ],
-      "score": 6.69
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1030/r1738466_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Dallas Goedert congratulates running back Saquon Barkley.",
+      "gameId": "401873023",
+      "week": 8,
+      "playerIds": [
+        "4866",
+        "5022"
+      ],
+      "score": 7
     },
     {
       "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1029/5a5d3d945e7a44f5b2c02f513ba6f9a91413/5a5d3d945e7a44f5b2c02f513ba6f9a91413.jpg",
@@ -960,19 +973,29 @@
       "score": 6.69
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1029/r1738274_608x342_16-9.jpg",
-      "width": 608,
-      "height": 342,
-      "caption": "Derrick Henry",
+      "url": "https://a.espncdn.com/photo/2026/1030/r1738638_576x324_16-9.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Philadelphia would have some major RB issues if Saquon Barkley can't play on Sunday night.",
       "gameId": "401873023",
       "week": 8,
       "playerIds": [
-        "3198"
+        "4866"
       ],
-      "score": 5
+      "score": 4
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1028/r1737483_1296x729_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/0903/r1711080_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Maxx Crosby, Las Vegas Raiders edge rusher",
+      "gameId": "401873023",
+      "week": 8,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1029/r1738080_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
       "caption": "",
@@ -982,7 +1005,7 @@
       "score": 2
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/0320/r1631265_1296x729_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/1029/r1738199_2_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
       "caption": "",
@@ -990,26 +1013,6 @@
       "week": 8,
       "playerIds": [],
       "score": 2
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/1025/r1736113_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "",
-      "gameId": "401873023",
-      "week": 8,
-      "playerIds": [],
-      "score": 2
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0912/r1715380_600x600_1-1.jpg",
-      "width": 600,
-      "height": 600,
-      "caption": "Oklahoma State's Drew Mestemaker was the runaway choice to be the first quarterback selected in the 2027 draft in a midseason poll of 25 NFL scouts and executives. He has thrown for 2,326 yards with 20 TDs and 6 INTs, while rushing for two more scores.",
-      "gameId": "401873023",
-      "week": 8,
-      "playerIds": [],
-      "score": 1
     }
   ]
 }

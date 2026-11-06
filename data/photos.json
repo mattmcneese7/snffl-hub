@@ -1203,5 +1203,89 @@
       "playerIds": [],
       "score": 3
     }
+  ],
+  "9": [
+    {
+      "url": "https://a.espncdn.com/photo/2026/1106/r1741990_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Puka Nacua has scored more than 20 fantasy points in four of his past five games.",
+      "gameId": "401873037",
+      "week": 9,
+      "playerIds": [
+        "9493"
+      ],
+      "score": 10
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0902/r1710593_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Jameson Williams is off to a slow start with six catches for 78 yards and no touchdowns for a Lions team that has 62 points in two games.",
+      "gameId": "401873037",
+      "week": 9,
+      "playerIds": [
+        "8148"
+      ],
+      "score": 10
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0928/r1723051_2_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Denzel Boston, Cleveland Browns wide receiver",
+      "gameId": "401873037",
+      "week": 9,
+      "playerIds": [
+        "13346"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0903/r1711041_2_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Christian Watson, Green Bay Packers wide receiver",
+      "gameId": "401873037",
+      "week": 9,
+      "playerIds": [
+        "8167"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1106/ss_20261106_100715530_3727572/ss_20261106_100715530_3727572.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "How the Bucs' defense could create problems for Caleb Williams",
+      "gameId": "401873037",
+      "week": 9,
+      "playerIds": [
+        "11560"
+      ],
+      "score": 4
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1101/ss_20261101_193751187_37215121185/ss_20261101_193751187_37215121185.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Why Tyler Allgeier is a reliable RB2 or flex option for fantasy managers",
+      "gameId": "401873037",
+      "week": 9,
+      "playerIds": [
+        "8132"
+      ],
+      "score": 4
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0914/r1716707_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Michael Pittman Jr., Pittsburgh Steelers wide receiver",
+      "gameId": "401873037",
+      "week": 9,
+      "playerIds": [],
+      "score": 3
+    }
   ]
 }

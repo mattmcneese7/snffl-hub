@@ -1206,18 +1206,6 @@
   ],
   "9": [
     {
-      "url": "https://a.espncdn.com/photo/2026/1106/r1741990_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Puka Nacua has scored more than 20 fantasy points in four of his past five games.",
-      "gameId": "401873037",
-      "week": 9,
-      "playerIds": [
-        "9493"
-      ],
-      "score": 10
-    },
-    {
       "url": "https://a.espncdn.com/photo/2026/0902/r1710593_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
@@ -1228,6 +1216,18 @@
         "8148"
       ],
       "score": 10
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1105/r1741710_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "In a positive matchup with the Eagles, Giants QB J.J. McCarthy is a superflex and deeper-league option in Week 9.",
+      "gameId": "401873037",
+      "week": 9,
+      "playerIds": [
+        "11565"
+      ],
+      "score": 7
     },
     {
       "url": "https://a.espncdn.com/photo/2026/0928/r1723051_2_1296x729_16-9.jpg",
@@ -1254,16 +1254,100 @@
       "score": 7
     },
     {
-      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1106/ss_20261106_100715530_3727572/ss_20261106_100715530_3727572.jpg",
-      "width": 576,
-      "height": 324,
-      "caption": "How the Bucs' defense could create problems for Caleb Williams",
+      "url": "https://a.espncdn.com/photo/2026/0903/r1711051_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Justin Jefferson, Minnesota Vikings wide receiver",
       "gameId": "401873037",
       "week": 9,
       "playerIds": [
-        "11560"
+        "6794"
       ],
-      "score": 4
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0914/r1716699_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Jonathan Taylor, Indianapolis Colts running back",
+      "gameId": "401873037",
+      "week": 9,
+      "playerIds": [
+        "6813"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0929/r1723237_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Brock Bowers, Las Vegas Raiders tight end",
+      "gameId": "401873037",
+      "week": 9,
+      "playerIds": [
+        "11604"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0903/r1711063_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Colston Loveland, Chicago Bears tight end",
+      "gameId": "401873037",
+      "week": 9,
+      "playerIds": [
+        "12517"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0903/r1711058_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "CeeDee Lamb, Dallas Cowboys wide receiver",
+      "gameId": "401873037",
+      "week": 9,
+      "playerIds": [
+        "6786"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0922/r1720547_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Kenneth Walker III, Kansas City Chiefs running back",
+      "gameId": "401873037",
+      "week": 9,
+      "playerIds": [
+        "8151"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0927/r1722612_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Jahmyr Gibbs #0 of the Detroit Lions runs the ball against the New York Jets during the second quarter at Ford Field on September 27, 2026 in Detroit, Michigan.",
+      "gameId": "401873037",
+      "week": 9,
+      "playerIds": [
+        "9221"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0903/r1711047_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Saquon Barkley, Philadelphia Eagles running back",
+      "gameId": "401873037",
+      "week": 9,
+      "playerIds": [
+        "4866"
+      ],
+      "score": 7
     },
     {
       "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1101/ss_20261101_193751187_37215121185/ss_20261101_193751187_37215121185.jpg",
@@ -1278,6 +1362,42 @@
       "score": 4
     },
     {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1101/dm_261101_Bucky_Irving/dm_261101_Bucky_Irving.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Why fantasy managers should be excited about Bucky Irving's upcoming schedule",
+      "gameId": "401873037",
+      "week": 9,
+      "playerIds": [
+        "11584"
+      ],
+      "score": 4
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1104/dm_261104_Why_Dopp_backs_Williams_St_Brown_as_Week_9_starts/dm_261104_Why_Dopp_backs_Williams_St_Brown_as_Week_9_starts.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Why Dopp likes Jameson Williams as a lineup lock in Week 9",
+      "gameId": "401873037",
+      "week": 9,
+      "playerIds": [
+        "8148"
+      ],
+      "score": 4
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1104/dm_261104_ffp_gainwell/dm_261104_ffp_gainwell.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Can fantasy managers trust Kenny Gainwell in Week 9?",
+      "gameId": "401873037",
+      "week": 9,
+      "playerIds": [
+        "7567"
+      ],
+      "score": 4
+    },
+    {
       "url": "https://a.espncdn.com/photo/2026/0914/r1716707_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
@@ -1286,6 +1406,26 @@
       "week": 9,
       "playerIds": [],
       "score": 3
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1006/r1727003_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Chiefs player in white jersey with red helmet and #9 pumping his arms while running with the ball",
+      "gameId": "401873037",
+      "week": 9,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1004/r1725951_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "",
+      "gameId": "401873037",
+      "week": 9,
+      "playerIds": [],
+      "score": 2
     }
   ]
 }

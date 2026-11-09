@@ -1,7 +1,7 @@
 {
  "season": "2026",
  "throughWeek": 8,
- "builtAt": "2026-11-08T14:44:59.601Z",
+ "builtAt": "2026-11-09T18:15:36.403Z",
  "shrinkGames": 4,
  "positionMean": {
   "QB": 16.64,
@@ -11227,6 +11227,189 @@
   }
  },
  "schedule": {
+  "MIN": [
+   {
+    "week": 9,
+    "opponent": "BUF",
+    "home": true
+   },
+   {
+    "week": 10,
+    "opponent": "GB",
+    "home": false
+   },
+   {
+    "week": 11,
+    "opponent": "SF",
+    "home": false
+   },
+   {
+    "week": 12,
+    "opponent": "ATL",
+    "home": true
+   },
+   {
+    "week": 13,
+    "opponent": "CAR",
+    "home": true
+   },
+   {
+    "week": 14,
+    "opponent": "NE",
+    "home": false
+   },
+   {
+    "week": 15,
+    "opponent": "DET",
+    "home": true
+   },
+   {
+    "week": 16,
+    "opponent": "WAS",
+    "home": true
+   },
+   {
+    "week": 17,
+    "opponent": "NYJ",
+    "home": false
+   }
+  ],
+  "BUF": [
+   {
+    "week": 9,
+    "opponent": "MIN",
+    "home": false
+   },
+   {
+    "week": 10,
+    "opponent": "NYJ",
+    "home": false
+   },
+   {
+    "week": 11,
+    "opponent": "MIA",
+    "home": true
+   },
+   {
+    "week": 12,
+    "opponent": "KC",
+    "home": true
+   },
+   {
+    "week": 13,
+    "opponent": "NE",
+    "home": false
+   },
+   {
+    "week": 14,
+    "opponent": "GB",
+    "home": false
+   },
+   {
+    "week": 15,
+    "opponent": "CHI",
+    "home": true
+   },
+   {
+    "week": 16,
+    "opponent": "DEN",
+    "home": false
+   },
+   {
+    "week": 17,
+    "opponent": "MIA",
+    "home": false
+   }
+  ],
+  "BAL": [
+   {
+    "week": 9,
+    "opponent": "JAX",
+    "home": true
+   },
+   {
+    "week": 10,
+    "opponent": "LAC",
+    "home": true
+   },
+   {
+    "week": 11,
+    "opponent": "CAR",
+    "home": false
+   },
+   {
+    "week": 12,
+    "opponent": "HOU",
+    "home": false
+   },
+   {
+    "week": 14,
+    "opponent": "TB",
+    "home": true
+   },
+   {
+    "week": 15,
+    "opponent": "PIT",
+    "home": false
+   },
+   {
+    "week": 16,
+    "opponent": "CLE",
+    "home": true
+   },
+   {
+    "week": 17,
+    "opponent": "CIN",
+    "home": false
+   }
+  ],
+  "JAX": [
+   {
+    "week": 9,
+    "opponent": "BAL",
+    "home": false
+   },
+   {
+    "week": 10,
+    "opponent": "TEN",
+    "home": false
+   },
+   {
+    "week": 11,
+    "opponent": "NYG",
+    "home": false
+   },
+   {
+    "week": 12,
+    "opponent": "TEN",
+    "home": true
+   },
+   {
+    "week": 13,
+    "opponent": "CHI",
+    "home": false
+   },
+   {
+    "week": 14,
+    "opponent": "PIT",
+    "home": true
+   },
+   {
+    "week": 15,
+    "opponent": "HOU",
+    "home": false
+   },
+   {
+    "week": 16,
+    "opponent": "DAL",
+    "home": false
+   },
+   {
+    "week": 17,
+    "opponent": "WAS",
+    "home": true
+   }
+  ],
   "ATL": [
    {
     "week": 9,
@@ -12372,189 +12555,6 @@
     "week": 17,
     "opponent": "LAR",
     "home": true
-   }
-  ],
-  "BAL": [
-   {
-    "week": 9,
-    "opponent": "JAX",
-    "home": true
-   },
-   {
-    "week": 10,
-    "opponent": "LAC",
-    "home": true
-   },
-   {
-    "week": 11,
-    "opponent": "CAR",
-    "home": false
-   },
-   {
-    "week": 12,
-    "opponent": "HOU",
-    "home": false
-   },
-   {
-    "week": 14,
-    "opponent": "TB",
-    "home": true
-   },
-   {
-    "week": 15,
-    "opponent": "PIT",
-    "home": false
-   },
-   {
-    "week": 16,
-    "opponent": "CLE",
-    "home": true
-   },
-   {
-    "week": 17,
-    "opponent": "CIN",
-    "home": false
-   }
-  ],
-  "JAX": [
-   {
-    "week": 9,
-    "opponent": "BAL",
-    "home": false
-   },
-   {
-    "week": 10,
-    "opponent": "TEN",
-    "home": false
-   },
-   {
-    "week": 11,
-    "opponent": "NYG",
-    "home": false
-   },
-   {
-    "week": 12,
-    "opponent": "TEN",
-    "home": true
-   },
-   {
-    "week": 13,
-    "opponent": "CHI",
-    "home": false
-   },
-   {
-    "week": 14,
-    "opponent": "PIT",
-    "home": true
-   },
-   {
-    "week": 15,
-    "opponent": "HOU",
-    "home": false
-   },
-   {
-    "week": 16,
-    "opponent": "DAL",
-    "home": false
-   },
-   {
-    "week": 17,
-    "opponent": "WAS",
-    "home": true
-   }
-  ],
-  "MIN": [
-   {
-    "week": 9,
-    "opponent": "BUF",
-    "home": true
-   },
-   {
-    "week": 10,
-    "opponent": "GB",
-    "home": false
-   },
-   {
-    "week": 11,
-    "opponent": "SF",
-    "home": false
-   },
-   {
-    "week": 12,
-    "opponent": "ATL",
-    "home": true
-   },
-   {
-    "week": 13,
-    "opponent": "CAR",
-    "home": true
-   },
-   {
-    "week": 14,
-    "opponent": "NE",
-    "home": false
-   },
-   {
-    "week": 15,
-    "opponent": "DET",
-    "home": true
-   },
-   {
-    "week": 16,
-    "opponent": "WAS",
-    "home": true
-   },
-   {
-    "week": 17,
-    "opponent": "NYJ",
-    "home": false
-   }
-  ],
-  "BUF": [
-   {
-    "week": 9,
-    "opponent": "MIN",
-    "home": false
-   },
-   {
-    "week": 10,
-    "opponent": "NYJ",
-    "home": false
-   },
-   {
-    "week": 11,
-    "opponent": "MIA",
-    "home": true
-   },
-   {
-    "week": 12,
-    "opponent": "KC",
-    "home": true
-   },
-   {
-    "week": 13,
-    "opponent": "NE",
-    "home": false
-   },
-   {
-    "week": 14,
-    "opponent": "GB",
-    "home": false
-   },
-   {
-    "week": 15,
-    "opponent": "CHI",
-    "home": true
-   },
-   {
-    "week": 16,
-    "opponent": "DEN",
-    "home": false
-   },
-   {
-    "week": 17,
-    "opponent": "MIA",
-    "home": false
    }
   ],
   "TEN": [

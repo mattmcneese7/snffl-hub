@@ -8,10 +8,10 @@
    "primary": "#c417cd",
    "secondary": "#f3dde6"
   },
-  "losses": 7,
+  "losses": 8,
   "manager": "mattmcneese",
-  "pointsAgainst": 922.78,
-  "pointsFor": 663.98,
+  "pointsAgainst": 1060.16,
+  "pointsFor": 751.3,
   "rosterId": 1,
   "starters": [
    "421",
@@ -40,8 +40,8 @@
   },
   "losses": 1,
   "manager": "nunnells",
-  "pointsAgainst": 849.46,
-  "pointsFor": 1056.62,
+  "pointsAgainst": 960.64,
+  "pointsFor": 1203.98,
   "rosterId": 2,
   "starters": [
    "11566",
@@ -57,7 +57,7 @@
   "teamName": "Ha Ha Ha, Now Heres A Guy",
   "ties": 0,
   "userId": "1395619896850669568",
-  "wins": 7
+  "wins": 8
  },
  {
   "avatar": "d22e52781a5d7a94bcbf2aa70e748382",
@@ -68,10 +68,10 @@
    "primary": "#da1899",
    "secondary": "#eeebe0"
   },
-  "losses": 6,
+  "losses": 7,
   "manager": "bearcat2789",
-  "pointsAgainst": 916.28,
-  "pointsFor": 789.5,
+  "pointsAgainst": 1020.82,
+  "pointsFor": 892.46,
   "rosterId": 3,
   "starters": [
    "4984",
@@ -100,8 +100,8 @@
   },
   "losses": 5,
   "manager": "BedBathNBIJAN22",
-  "pointsAgainst": 1024.12,
-  "pointsFor": 980.42,
+  "pointsAgainst": 1111.44,
+  "pointsFor": 1117.8,
   "rosterId": 4,
   "starters": [
    "8183",
@@ -117,7 +117,7 @@
   "teamName": "BedBathNBIJAN22",
   "ties": 0,
   "userId": "1285350940102127616",
-  "wins": 3
+  "wins": 4
  },
  {
   "avatar": "4f4090e5e9c3941414db40a871e3e909",
@@ -128,19 +128,19 @@
    "primary": "#0e7c73",
    "secondary": "#d8deef"
   },
-  "losses": 2,
+  "losses": 3,
   "manager": "ItsYaBoyJack",
-  "pointsAgainst": 778.92,
-  "pointsFor": 870.54,
+  "pointsAgainst": 892.7,
+  "pointsFor": 960.94,
   "rosterId": 5,
   "starters": [
    "3163",
    "8138",
    "12526",
-   "13150",
+   "8137",
    "12518",
    "12512",
-   "12517",
+   "9753",
    "7839",
    "SEA"
   ],
@@ -160,8 +160,8 @@
   },
   "losses": 5,
   "manager": "sebeatty",
-  "pointsAgainst": 968.34,
-  "pointsFor": 860.68,
+  "pointsAgainst": 1071.3,
+  "pointsFor": 965.22,
   "rosterId": 6,
   "starters": [
    "6770",
@@ -177,7 +177,7 @@
   "teamName": "Burrowed Alive",
   "ties": 0,
   "userId": "1394385750044217344",
-  "wins": 3
+  "wins": 4
  },
  {
   "avatar": "1fe089e517448d9fe207b8607ca8e81b",
@@ -190,8 +190,8 @@
   },
   "losses": 4,
   "manager": "DFWGilly",
-  "pointsAgainst": 822.32,
-  "pointsFor": 856.94,
+  "pointsAgainst": 917.2,
+  "pointsFor": 970.9,
   "rosterId": 7,
   "starters": [
    "11564",
@@ -207,7 +207,7 @@
   "teamName": "Romo911",
   "ties": 0,
   "userId": "466701626346827776",
-  "wins": 4
+  "wins": 5
  },
  {
   "avatar": "51385ba57cd089261f6de9ce483b8716",
@@ -218,10 +218,10 @@
    "primary": "#7f53ec",
    "secondary": "#f3dde6"
   },
-  "losses": 4,
+  "losses": 5,
   "manager": "LoRdAcE1848",
-  "pointsAgainst": 966.38,
-  "pointsFor": 952.88,
+  "pointsAgainst": 1080.34,
+  "pointsFor": 1047.58,
   "rosterId": 8,
   "starters": [
    "5854",
@@ -250,8 +250,8 @@
   },
   "losses": 6,
   "manager": "Tayodin",
-  "pointsAgainst": 956.92,
-  "pointsFor": 730.26,
+  "pointsAgainst": 1047.32,
+  "pointsFor": 844.4,
   "rosterId": 9,
   "starters": [
    "11563",
@@ -267,7 +267,7 @@
   "teamName": "Victorious Secrets",
   "ties": 0,
   "userId": "1262549737815429120",
-  "wins": 2
+  "wins": 3
  },
  {
   "avatar": "5625fd66f4e745ab04641f51d6d81116",
@@ -278,10 +278,10 @@
    "primary": "#424c20",
    "secondary": "#7a5f42"
   },
-  "losses": 4,
+  "losses": 5,
   "manager": "SexRobot69",
-  "pointsAgainst": 940.32,
-  "pointsFor": 959.56,
+  "pointsAgainst": 1045.96,
+  "pointsFor": 1028,
   "rosterId": 10,
   "starters": [
    "11560",
@@ -290,7 +290,7 @@
    "2449",
    "10859",
    "11635",
-   "13305",
+   "0",
    "6650",
    "HOU"
   ],
@@ -308,10 +308,10 @@
    "primary": "#2529e7",
    "secondary": "#230b04"
   },
-  "losses": 3,
+  "losses": 4,
   "manager": "JPellett3",
-  "pointsAgainst": 844.12,
-  "pointsFor": 909.4,
+  "pointsAgainst": 1005.3,
+  "pointsFor": 1010.24,
   "rosterId": 11,
   "starters": [
    "3294",
@@ -338,10 +338,10 @@
    "primary": "#956d30",
    "secondary": "#c5d06d"
   },
-  "losses": 4,
+  "losses": 5,
   "manager": "jwslaney",
-  "pointsAgainst": 755.58,
-  "pointsFor": 855.94,
+  "pointsAgainst": 902.94,
+  "pointsFor": 967.12,
   "rosterId": 12,
   "starters": [
    "4046",
@@ -370,8 +370,8 @@
   },
   "losses": 2,
   "manager": "Bheinzeyo",
-  "pointsAgainst": 839.2,
-  "pointsFor": 976.58,
+  "pointsAgainst": 907.64,
+  "pointsFor": 1082.22,
   "rosterId": 13,
   "starters": [
    "1166",
@@ -387,7 +387,7 @@
   "teamName": "Jackson Off",
   "ties": 0,
   "userId": "1394399079663931392",
-  "wins": 6
+  "wins": 7
  },
  {
   "avatar": "82aec8e811b839b8ec25d7b458afd57b",
@@ -400,8 +400,8 @@
   },
   "losses": 3,
   "manager": "tripnistico",
-  "pointsAgainst": 876.84,
-  "pointsFor": 998.64,
+  "pointsAgainst": 978.4,
+  "pointsFor": 1159.82,
   "rosterId": 14,
   "starters": [
    "7523",
@@ -417,6 +417,6 @@
   "teamName": "50 Shades of Zay",
   "ties": 0,
   "userId": "759861676316143616",
-  "wins": 5
+  "wins": 6
  }
 ]

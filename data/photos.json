@@ -1206,42 +1206,64 @@
   ],
   "9": [
     {
-      "url": "https://a.espncdn.com/photo/2026/1109/r1743377_1296x729_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/0903/r1711058_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
-      "caption": "Matthew Golden had 10 catches for 164 yards and a TD in what was a huge day for the Packers' passing game.",
-      "gameId": "401873044",
+      "caption": "CeeDee Lamb, Dallas Cowboys wide receiver",
+      "gameId": "401873048",
       "week": 9,
       "playerIds": [
-        "12501"
+        "6786"
       ],
-      "score": 14
+      "score": 11
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1106/r1741958_1296x729_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/0922/r1720547_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
-      "caption": "Trevor Lawrence connecting with Parker Washington on a 50-yard touchdown was one of the few fantasy high points of the night for either offense.",
-      "gameId": "401873044",
+      "caption": "Kenneth Walker III, Kansas City Chiefs running back",
+      "gameId": "401873048",
       "week": 9,
       "playerIds": [
-        "7523",
-        "9487"
+        "8151"
       ],
-      "score": 11.76
+      "score": 11
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1109/r1743594_1296x729_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/1108/r1743046_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
-      "caption": "Rams RB Blake Corum has taken more workload on early downs from Kyren Williams, but he remains on the flex radar for fantasy leagues.",
-      "gameId": "401873044",
+      "caption": "Joe Burrow, Cincinnati Bengals quarterback",
+      "gameId": "401873048",
       "week": 9,
       "playerIds": [
-        "8150",
-        "11586"
+        "6770"
       ],
-      "score": 8.48
+      "score": 10.69
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0927/r1722612_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Jahmyr Gibbs #0 of the Detroit Lions runs the ball against the New York Jets during the second quarter at Ford Field on September 27, 2026 in Detroit, Michigan.",
+      "gameId": "401873048",
+      "week": 9,
+      "playerIds": [
+        "9221"
+      ],
+      "score": 8.68
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0903/r1711049_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Josh Allen, Buffalo Bills quarterback",
+      "gameId": "401873048",
+      "week": 9,
+      "playerIds": [
+        "4984"
+      ],
+      "score": 8.61
     },
     {
       "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1108/2d7c77530a1647e2ab5b42122af9b5ef1022/2d7c77530a1647e2ab5b42122af9b5ef1022.jpg",
@@ -1254,6 +1276,18 @@
         "13424"
       ],
       "score": 8.4
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0903/r1711047_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Saquon Barkley, Philadelphia Eagles running back",
+      "gameId": "401873048",
+      "week": 9,
+      "playerIds": [
+        "4866"
+      ],
+      "score": 8.03
     },
     {
       "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1108/dm_261108_Packers_beat_Patriots_IA/dm_261108_Packers_beat_Patriots_IA.jpg",
@@ -1272,25 +1306,13 @@
       "width": 576,
       "height": 324,
       "caption": "Eric Moody: Joe Burrow, Ja'Marr Chase are matchup-proof in fantasy",
-      "gameId": "401873044",
+      "gameId": "401873048",
       "week": 9,
       "playerIds": [
         "6770",
         "7564"
       ],
       "score": 7.94
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/1102/r1740232_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Gardner Minshew II takes over as the Cardinals starting QB for Week 9 at Seattle.",
-      "gameId": "401873044",
-      "week": 9,
-      "playerIds": [
-        "6011"
-      ],
-      "score": 7.88
     },
     {
       "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1108/d5a5c53d737f48d3975732165165b41f1132/d5a5c53d737f48d3975732165165b41f1132.jpg",
@@ -1306,18 +1328,6 @@
       "score": 7.69
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1109/r1743573_608x342_16-9.jpg",
-      "width": 608,
-      "height": 342,
-      "caption": "Quarterback Kirk Cousins makes the Raiders' short list of players they could trade to obtain draft capital. Could he be on the move in order to help build the team's future?",
-      "gameId": "401873044",
-      "week": 9,
-      "playerIds": [
-        "1166"
-      ],
-      "score": 6.58
-    },
-    {
       "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1108/04082e318c864f10b464e649c74cace4989/04082e318c864f10b464e649c74cace4989.jpg",
       "width": 576,
       "height": 324,
@@ -1330,89 +1340,75 @@
       "score": 6.16
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1103/r1740464_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "The Bears have scored at least 30 points in all three games since Caleb Williams returned from injury.",
-      "gameId": "401873044",
-      "week": 9,
-      "playerIds": [
-        "11560"
-      ],
-      "score": 5.6
-    },
-    {
-      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1102/ss_20261102_134704266_3722120/ss_20261102_134704266_3722120.jpg",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1108/dm_261108_fantasy_mahomes/dm_261108_fantasy_mahomes.jpg",
       "width": 576,
       "height": 324,
-      "caption": "Schefter to McAfee: I don't see Kirk Cousins as a trade option",
-      "gameId": "401873044",
+      "caption": "What kind of fantasy QB is Patrick Mahomes right now?",
+      "gameId": "401873048",
       "week": 9,
       "playerIds": [
-        "1166"
+        "4046"
       ],
-      "score": 5.58
+      "score": 6.06
     },
     {
-      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/1108/63325deb-69a0-454b-9d60-3ce7059ac785/63325deb-69a0-454b-9d60-3ce7059ac785.jpg",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1109/ss_20261109_114612158_3734265731/ss_20261109_114612158_3734265731.jpg",
       "width": 576,
       "height": 324,
-      "caption": "J.J. McCarthy leaves game after taking hard hit ",
-      "gameId": "401873044",
+      "caption": "Yates: It should be the Cam Skattebo show in Week 10",
+      "gameId": "401873048",
       "week": 9,
       "playerIds": [
-        "11565"
+        "12481"
       ],
-      "score": 4.91
+      "score": 4
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/0915/r1717192_1296x729_16-9.jpg",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1109/ab3e5cbf9fd341e885ae80f085c6b59b1389/ab3e5cbf9fd341e885ae80f085c6b59b1389.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Carson Wentz picked off by Bills on back-to-back possessions",
+      "gameId": "401873051",
+      "week": 9,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1110/r1743983_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
       "caption": "",
-      "gameId": "401873044",
+      "gameId": "401873048",
       "week": 9,
       "playerIds": [],
       "score": 2
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1104/r1741120_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "If Garrett Wilson is out for Week 9, which Jets teammates should managers pick up?",
-      "gameId": "401873044",
-      "week": 9,
-      "playerIds": [
-        "8146"
-      ],
-      "score": 1
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/1106/r1741948_608x342_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/1109/r1743722_2_608x342_16-9.jpg",
       "width": 608,
       "height": 342,
-      "caption": "Lombardi Trophy",
-      "gameId": "401873044",
+      "caption": "Jordan Davis",
+      "gameId": "401873048",
       "week": 9,
       "playerIds": [],
       "score": 1
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1006/r1726988_608x342_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/1109/r1743628_608x342_16-9.jpg",
       "width": 608,
       "height": 342,
-      "caption": "Lombardi Trophy",
-      "gameId": "401873044",
+      "caption": "Andre Cisco",
+      "gameId": "401873048",
       "week": 9,
       "playerIds": [],
       "score": 1
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1109/r1743569_608x342_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/1109/r1743622_608x342_16-9.jpg",
       "width": 608,
       "height": 342,
-      "caption": "Should the Raider sit pat or move on from top players? Klint Kubiak and the Raiders' front office will have a tough decision to make at the trade deadline (Tuesday at 4 p.m. ET).",
-      "gameId": "401873044",
+      "caption": "Davon Godchaux",
+      "gameId": "401873048",
       "week": 9,
       "playerIds": [],
       "score": 1

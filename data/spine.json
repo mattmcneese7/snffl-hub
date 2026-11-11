@@ -1,7 +1,7 @@
 {
  "season": "2026",
  "throughWeek": 9,
- "builtAt": "2026-11-10T16:04:48.515Z",
+ "builtAt": "2026-11-11T15:50:22.915Z",
  "shrinkGames": 4,
  "positionMean": {
   "QB": 16.44,
@@ -1981,14 +1981,14 @@
   },
   "3258": {
    "weeks": 9,
-   "snapShare": 0.277,
+   "snapShare": 0.267,
    "targetShare": 0,
    "carryShare": 0,
    "redZone": 0,
    "pointsPerGame": 0,
    "recent": {
     "weeks": 3,
-    "snapShare": 0.247,
+    "snapShare": 0.212,
     "targetShare": 0,
     "carryShare": 0,
     "redZone": 0,
@@ -2422,14 +2422,14 @@
   },
   "4274": {
    "weeks": 8,
-   "snapShare": 0.043,
+   "snapShare": 0.049,
    "targetShare": 0.014,
    "carryShare": 0,
    "redZone": 0,
    "pointsPerGame": 0.21,
    "recent": {
     "weeks": 3,
-    "snapShare": 0.067,
+    "snapShare": 0.101,
     "targetShare": 0.01,
     "carryShare": 0,
     "redZone": 0,
@@ -3457,14 +3457,14 @@
   },
   "6154": {
    "weeks": 9,
-   "snapShare": 0.23,
+   "snapShare": 0.309,
    "targetShare": 0,
    "carryShare": 0,
    "redZone": 0,
    "pointsPerGame": 0,
    "recent": {
     "weeks": 3,
-    "snapShare": 0.23,
+    "snapShare": 0.309,
     "targetShare": 0,
     "carryShare": 0,
     "redZone": 0,
@@ -8234,14 +8234,14 @@
   },
   "12389": {
    "weeks": 8,
-   "snapShare": 0.257,
+   "snapShare": 0.28,
    "targetShare": 0.004,
    "carryShare": 0,
    "redZone": 0.13,
    "pointsPerGame": 0.96,
    "recent": {
     "weeks": 2,
-    "snapShare": 0.158,
+    "snapShare": 0.164,
     "targetShare": 0,
     "carryShare": 0,
     "redZone": 0,
@@ -8266,14 +8266,14 @@
   },
   "12457": {
    "weeks": 9,
-   "snapShare": 0.058,
+   "snapShare": 0.116,
    "targetShare": 0.003,
    "carryShare": 0,
    "redZone": 0,
    "pointsPerGame": 0.21,
    "recent": {
     "weeks": 3,
-    "snapShare": 0.058,
+    "snapShare": 0.116,
     "targetShare": 0.01,
     "carryShare": 0,
     "redZone": 0,

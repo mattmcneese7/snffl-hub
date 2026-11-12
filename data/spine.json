@@ -1,7 +1,7 @@
 {
  "season": "2026",
  "throughWeek": 9,
- "builtAt": "2026-11-11T15:50:22.915Z",
+ "builtAt": "2026-11-12T16:33:12.002Z",
  "shrinkGames": 4,
  "positionMean": {
   "QB": 16.44,
@@ -1838,14 +1838,14 @@
   "3048": {
    "weeks": 8,
    "snapShare": 0.339,
-   "targetShare": 0,
+   "targetShare": 0.004,
    "carryShare": 0,
    "redZone": 0,
    "pointsPerGame": 0,
    "recent": {
     "weeks": 2,
     "snapShare": 0.444,
-    "targetShare": 0,
+    "targetShare": 0.019,
     "carryShare": 0,
     "redZone": 0,
     "pointsPerGame": 0
@@ -1981,14 +1981,14 @@
   },
   "3258": {
    "weeks": 9,
-   "snapShare": 0.267,
+   "snapShare": 0.277,
    "targetShare": 0,
    "carryShare": 0,
    "redZone": 0,
    "pointsPerGame": 0,
    "recent": {
     "weeks": 3,
-    "snapShare": 0.212,
+    "snapShare": 0.247,
     "targetShare": 0,
     "carryShare": 0,
     "redZone": 0,
@@ -2078,14 +2078,14 @@
   "3634": {
    "weeks": 9,
    "snapShare": 0.627,
-   "targetShare": 0.14,
+   "targetShare": 0.139,
    "carryShare": 0.007,
    "redZone": 0.44,
    "pointsPerGame": 7.86,
    "recent": {
     "weeks": 3,
     "snapShare": 0.695,
-    "targetShare": 0.122,
+    "targetShare": 0.121,
     "carryShare": 0.011,
     "redZone": 0.67,
     "pointsPerGame": 4.83
@@ -2422,14 +2422,14 @@
   },
   "4274": {
    "weeks": 8,
-   "snapShare": 0.049,
+   "snapShare": 0.043,
    "targetShare": 0.014,
    "carryShare": 0,
    "redZone": 0,
    "pointsPerGame": 0.21,
    "recent": {
     "weeks": 3,
-    "snapShare": 0.101,
+    "snapShare": 0.067,
     "targetShare": 0.01,
     "carryShare": 0,
     "redZone": 0,
@@ -3698,7 +3698,7 @@
    "recent": {
     "weeks": 3,
     "snapShare": 0.785,
-    "targetShare": 0.082,
+    "targetShare": 0.081,
     "carryShare": 0.701,
     "redZone": 3.67,
     "pointsPerGame": 16.67
@@ -3826,7 +3826,7 @@
    "recent": {
     "weeks": 3,
     "snapShare": 0.551,
-    "targetShare": 0.031,
+    "targetShare": 0.03,
     "carryShare": 0,
     "redZone": 0,
     "pointsPerGame": 1.93
@@ -4068,14 +4068,14 @@
   "7090": {
    "weeks": 8,
    "snapShare": 0.548,
-   "targetShare": 0.1,
+   "targetShare": 0.096,
    "carryShare": 0.017,
    "redZone": 0,
    "pointsPerGame": 3.94,
    "recent": {
     "weeks": 2,
     "snapShare": 0.549,
-    "targetShare": 0.13,
+    "targetShare": 0.111,
     "carryShare": 0.031,
     "redZone": 0,
     "pointsPerGame": 4.85
@@ -6590,7 +6590,7 @@
   "10235": {
    "weeks": 9,
    "snapShare": 0.141,
-   "targetShare": 0.038,
+   "targetShare": 0.037,
    "carryShare": 0.096,
    "redZone": 1.44,
    "pointsPerGame": 3.54,
@@ -6982,7 +6982,7 @@
   },
   "11320": {
    "weeks": 8,
-   "snapShare": 0.004,
+   "snapShare": 0.005,
    "targetShare": 0,
    "carryShare": 0,
    "redZone": 0,
@@ -7673,14 +7673,14 @@
   "11620": {
    "weeks": 9,
    "snapShare": 0.853,
-   "targetShare": 0.174,
+   "targetShare": 0.173,
    "carryShare": 0,
    "redZone": 0.78,
    "pointsPerGame": 9.87,
    "recent": {
     "weeks": 3,
     "snapShare": 0.895,
-    "targetShare": 0.184,
+    "targetShare": 0.182,
     "carryShare": 0,
     "redZone": 1,
     "pointsPerGame": 13.2
@@ -8827,14 +8827,14 @@
   "12517": {
    "weeks": 9,
    "snapShare": 0.865,
-   "targetShare": 0.195,
+   "targetShare": 0.194,
    "carryShare": 0,
    "redZone": 1.11,
    "pointsPerGame": 9.26,
    "recent": {
     "weeks": 3,
     "snapShare": 0.88,
-    "targetShare": 0.276,
+    "targetShare": 0.273,
     "carryShare": 0,
     "redZone": 0.67,
     "pointsPerGame": 13.6
@@ -8859,14 +8859,14 @@
   "12519": {
    "weeks": 9,
    "snapShare": 0.594,
-   "targetShare": 0.222,
+   "targetShare": 0.224,
    "carryShare": 0.026,
    "redZone": 1.44,
    "pointsPerGame": 15.14,
    "recent": {
     "weeks": 3,
     "snapShare": 0.58,
-    "targetShare": 0.224,
+    "targetShare": 0.232,
     "carryShare": 0.011,
     "redZone": 1,
     "pointsPerGame": 21
@@ -10854,14 +10854,14 @@
   },
   "13827": {
    "weeks": 6,
-   "snapShare": 0.142,
+   "snapShare": 0.155,
    "targetShare": 0,
    "carryShare": 0,
    "redZone": 0,
    "pointsPerGame": 0,
    "recent": {
     "weeks": 3,
-    "snapShare": 0.14,
+    "snapShare": 0.169,
     "targetShare": 0,
     "carryShare": 0,
     "redZone": 0,

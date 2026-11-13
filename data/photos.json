@@ -1413,5 +1413,103 @@
       "playerIds": [],
       "score": 1
     }
+  ],
+  "10": [
+    {
+      "url": "https://a.espncdn.com/photo/2026/1113/r1745250_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Kenneth Walker III is tied for the league lead in touchdowns with 11 and second in rushing yards with 872 entering Week 10.",
+      "gameId": "401873052",
+      "week": 10,
+      "playerIds": [
+        "8151"
+      ],
+      "score": 10
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1112/r1745032_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "Kenneth Walker III found the end zone three times last week after going without a TD in his previous two games.",
+      "gameId": "401873052",
+      "week": 10,
+      "playerIds": [
+        "8151"
+      ],
+      "score": 8
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1112/r1744740_576x324_16-9.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Can Jayden Daniels recapture the magic he had in the first meeting between the Commanders and Giants?",
+      "gameId": "401873052",
+      "week": 10,
+      "playerIds": [
+        "11566"
+      ],
+      "score": 6.6
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1112/r1745045_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "Kenneth Walker III is coming off a huge game and should find success against the Falcons' defense.",
+      "gameId": "401873052",
+      "week": 10,
+      "playerIds": [
+        "8151"
+      ],
+      "score": 5
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1109/r1743451_2_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Brock Purdy and the 49ers visit the Cowboys in Week 10 in what is projected to be a high-scoring affair.",
+      "gameId": "401873052",
+      "week": 10,
+      "playerIds": [
+        "8183"
+      ],
+      "score": 4
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1110/ss_20261110_154759419_3735560950/ss_20261110_154759419_3735560950.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Mike Tannenbaum: Chiefs' trade for Josh Downs is a 'no-brainer'",
+      "gameId": "401873052",
+      "week": 10,
+      "playerIds": [
+        "9500"
+      ],
+      "score": 4
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1112/r1744753_576x324_16-9.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "DK Metcalf has had trouble finding his fantasy footing this season.",
+      "gameId": "401873052",
+      "week": 10,
+      "playerIds": [
+        "5846"
+      ],
+      "score": 4
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1111/ss_20261111_105241846_3736696/ss_20261111_105241846_3736696.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Should managers start Geno Smith over Jordan Love? Dopp and Clay debate",
+      "gameId": "401873052",
+      "week": 10,
+      "playerIds": [
+        "6804"
+      ],
+      "score": 1
+    }
   ]
 }

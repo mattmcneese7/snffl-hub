@@ -23449,6 +23449,12 @@
   "tm_off_snp": 180,
   "tm_st_snp": 71
  },
+ "13200": {
+  "gms_active": 8,
+  "pos_rank_half_ppr": 7992,
+  "pos_rank_ppr": 7992,
+  "pos_rank_std": 7992
+ },
  "13210": {
   "gms_active": 9,
   "gp": 1,

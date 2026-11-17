@@ -1416,6 +1416,30 @@
   ],
   "10": [
     {
+      "url": "https://a.espncdn.com/photo/2026/1115/r1746265_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "QB Kyle McCord picked up a rushing touchdown in his Dolphins debut.",
+      "gameId": "401873052",
+      "week": 10,
+      "playerIds": [
+        "12494"
+      ],
+      "score": 9.6
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1115/dm_261115_NFL_InstantAnalysis_Vikings_IA/dm_261115_NFL_InstantAnalysis_Vikings_IA.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Kevin Seifert breaks down Kirk Cousins' performance in his return to lead the Vikings to a win over the Packers.",
+      "gameId": "401873052",
+      "week": 10,
+      "playerIds": [
+        "1166"
+      ],
+      "score": 8.92
+    },
+    {
       "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1115/dm_261115_Vikings/dm_261115_Vikings.jpg",
       "width": 576,
       "height": 324,
@@ -1440,28 +1464,6 @@
       "score": 5.44
     },
     {
-      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1116/ss_20261116_113100015_3745205704/ss_20261116_113100015_3745205704.jpg",
-      "width": 576,
-      "height": 324,
-      "caption": "Is Sam LaPorta a starting fantasy TE right now?",
-      "gameId": "401873052",
-      "week": 10,
-      "playerIds": [
-        "10859"
-      ],
-      "score": 4.33
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/1116/r1746668_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Cam Ward",
-      "gameId": "401873052",
-      "week": 10,
-      "playerIds": [],
-      "score": 3
-    },
-    {
       "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/1116/5075e49a-b686-43f2-8f04-605dd1ede5fe/5075e49a-b686-43f2-8f04-605dd1ede5fe.jpg",
       "width": 576,
       "height": 324,
@@ -1472,7 +1474,7 @@
       "score": 3
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1116/r1746691_1296x729_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/1117/r1747122_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
       "caption": "",
@@ -1482,7 +1484,7 @@
       "score": 2
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1116/r1746667_1296x729_16-9.jpg",
+      "url": "https://a.espncdn.com/photo/2026/1117/r1747114_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
       "caption": "",

@@ -1,7 +1,7 @@
 {
  "season": "2026",
  "throughWeek": 10,
- "builtAt": "2026-11-17T17:21:31.837Z",
+ "builtAt": "2026-11-18T16:55:37.178Z",
  "shrinkGames": 4,
  "positionMean": {
   "QB": 16.55,
@@ -52,7 +52,7 @@
     "perGame": 7.5,
     "games": 10,
     "adjusted": 7.16,
-    "vsAverage": 1.135,
+    "vsAverage": 1.134,
     "rank": 14
    }
   },
@@ -93,11 +93,11 @@
     "rank": 27
    },
    "DEF": {
-    "perGame": 8.3,
+    "perGame": 8.4,
     "games": 10,
-    "adjusted": 7.73,
-    "vsAverage": 1.225,
-    "rank": 8
+    "adjusted": 7.8,
+    "vsAverage": 1.236,
+    "rank": 7
    }
   },
   "LAR": {
@@ -183,7 +183,7 @@
    "DEF": {
     "perGame": 1.33,
     "games": 9,
-    "adjusted": 2.86,
+    "adjusted": 2.87,
     "vsAverage": 0.454,
     "rank": 31
    }
@@ -272,7 +272,7 @@
     "perGame": 2.22,
     "games": 9,
     "adjusted": 3.48,
-    "vsAverage": 0.552,
+    "vsAverage": 0.551,
     "rank": 28
    }
   },
@@ -404,7 +404,7 @@
     "perGame": 6.9,
     "games": 10,
     "adjusted": 6.73,
-    "vsAverage": 1.067,
+    "vsAverage": 1.066,
     "rank": 17
    }
   },
@@ -579,7 +579,7 @@
    "DEF": {
     "perGame": 8.56,
     "games": 9,
-    "adjusted": 7.86,
+    "adjusted": 7.87,
     "vsAverage": 1.246,
     "rank": 6
    }
@@ -624,7 +624,7 @@
     "perGame": 7.67,
     "games": 9,
     "adjusted": 7.25,
-    "vsAverage": 1.149,
+    "vsAverage": 1.148,
     "rank": 13
    }
   },
@@ -756,7 +756,7 @@
     "perGame": 11,
     "games": 10,
     "adjusted": 9.66,
-    "vsAverage": 1.531,
+    "vsAverage": 1.53,
     "rank": 2
    }
   },
@@ -800,8 +800,8 @@
     "perGame": 8.4,
     "games": 10,
     "adjusted": 7.8,
-    "vsAverage": 1.237,
-    "rank": 7
+    "vsAverage": 1.236,
+    "rank": 8
    }
   },
   "HOU": {
@@ -888,7 +888,7 @@
     "perGame": 9.33,
     "games": 9,
     "adjusted": 8.4,
-    "vsAverage": 1.332,
+    "vsAverage": 1.331,
     "rank": 4
    }
   },
@@ -931,7 +931,7 @@
    "DEF": {
     "perGame": 5.67,
     "games": 9,
-    "adjusted": 5.86,
+    "adjusted": 5.87,
     "vsAverage": 0.929,
     "rank": 21
    }
@@ -975,8 +975,8 @@
    "DEF": {
     "perGame": 10,
     "games": 9,
-    "adjusted": 8.86,
-    "vsAverage": 1.405,
+    "adjusted": 8.87,
+    "vsAverage": 1.404,
     "rank": 3
    }
   },
@@ -1195,8 +1195,8 @@
    "DEF": {
     "perGame": 7.11,
     "games": 9,
-    "adjusted": 6.86,
-    "vsAverage": 1.088,
+    "adjusted": 6.87,
+    "vsAverage": 1.087,
     "rank": 16
    }
   },
@@ -1284,7 +1284,7 @@
     "perGame": 9.1,
     "games": 10,
     "adjusted": 8.3,
-    "vsAverage": 1.316,
+    "vsAverage": 1.315,
     "rank": 5
    }
   },
@@ -1328,7 +1328,7 @@
     "perGame": 5.3,
     "games": 10,
     "adjusted": 5.59,
-    "vsAverage": 0.886,
+    "vsAverage": 0.885,
     "rank": 23
    }
   },
@@ -9769,6 +9769,22 @@
     "pointsPerGame": 0
    }
   },
+  "13011": {
+   "weeks": 10,
+   "snapShare": 0.026,
+   "targetShare": 0,
+   "carryShare": 0,
+   "redZone": 0,
+   "pointsPerGame": 0,
+   "recent": {
+    "weeks": 3,
+    "snapShare": 0.026,
+    "targetShare": 0,
+    "carryShare": 0,
+    "redZone": 0,
+    "pointsPerGame": 0
+   }
+  },
   "13013": {
    "weeks": 10,
    "snapShare": 0.328,
@@ -11004,14 +11020,14 @@
   },
   "13580": {
    "weeks": 9,
-   "snapShare": 0.005,
+   "snapShare": 0.004,
    "targetShare": 0,
    "carryShare": 0,
    "redZone": 0,
    "pointsPerGame": 0,
    "recent": {
     "weeks": 3,
-    "snapShare": 0.005,
+    "snapShare": 0,
     "targetShare": 0,
     "carryShare": 0,
     "redZone": 0,
@@ -11481,14 +11497,14 @@
    "targetShare": 0,
    "carryShare": 0,
    "redZone": 0,
-   "pointsPerGame": 5.5,
+   "pointsPerGame": 5.6,
    "recent": {
     "weeks": 3,
     "snapShare": 0,
     "targetShare": 0,
     "carryShare": 0,
     "redZone": 0,
-    "pointsPerGame": 4
+    "pointsPerGame": 4.33
    }
   },
   "WAS": {
@@ -12735,38 +12751,6 @@
     "home": true
    }
   ],
-  "CLE": [
-   {
-    "week": 12,
-    "opponent": "LV",
-    "home": true
-   },
-   {
-    "week": 13,
-    "opponent": "CIN",
-    "home": true
-   },
-   {
-    "week": 14,
-    "opponent": "ATL",
-    "home": true
-   },
-   {
-    "week": 15,
-    "opponent": "NYG",
-    "home": false
-   },
-   {
-    "week": 16,
-    "opponent": "BAL",
-    "home": false
-   },
-   {
-    "week": 17,
-    "opponent": "IND",
-    "home": true
-   }
-  ],
   "ATL": [
    {
     "week": 12,
@@ -12796,6 +12780,38 @@
    {
     "week": 17,
     "opponent": "NO",
+    "home": true
+   }
+  ],
+  "NE": [
+   {
+    "week": 12,
+    "opponent": "LAC",
+    "home": false
+   },
+   {
+    "week": 13,
+    "opponent": "BUF",
+    "home": true
+   },
+   {
+    "week": 14,
+    "opponent": "MIN",
+    "home": true
+   },
+   {
+    "week": 15,
+    "opponent": "KC",
+    "home": false
+   },
+   {
+    "week": 16,
+    "opponent": "NYJ",
+    "home": false
+   },
+   {
+    "week": 17,
+    "opponent": "DEN",
     "home": true
    }
   ],
@@ -12831,35 +12847,35 @@
     "home": false
    }
   ],
-  "NE": [
+  "CLE": [
    {
     "week": 12,
-    "opponent": "LAC",
-    "home": false
+    "opponent": "LV",
+    "home": true
    },
    {
     "week": 13,
-    "opponent": "BUF",
+    "opponent": "CIN",
     "home": true
    },
    {
     "week": 14,
-    "opponent": "MIN",
+    "opponent": "ATL",
     "home": true
    },
    {
     "week": 15,
-    "opponent": "KC",
+    "opponent": "NYG",
     "home": false
    },
    {
     "week": 16,
-    "opponent": "NYJ",
+    "opponent": "BAL",
     "home": false
    },
    {
     "week": 17,
-    "opponent": "DEN",
+    "opponent": "IND",
     "home": true
    }
   ]

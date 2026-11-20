@@ -1505,5 +1505,67 @@
       ],
       "score": 1.38
     }
+  ],
+  "11": [
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1120/ss_20261120_110441688_3750995/ss_20261120_110441688_3750995.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Mike Clay: Tyler Warren is not startable in fantasy",
+      "gameId": "401873066",
+      "week": 11,
+      "playerIds": [
+        "12518"
+      ],
+      "score": 4.4
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1120/ss_20261120_110328687_3750993/ss_20261120_110328687_3750993.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Why Stephen A. thinks 'special' Joe Burrow is the MVP front-runner",
+      "gameId": "401873066",
+      "week": 11,
+      "playerIds": [
+        "6770"
+      ],
+      "score": 4
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1120/ss_20261120_110007186_3750991/ss_20261120_110007186_3750991.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Yates, Clay disagree over Ollie Gordon II in Week 11",
+      "gameId": "401873066",
+      "week": 11,
+      "playerIds": [
+        "12495"
+      ],
+      "score": 4
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1120/ss_20261120_105410092_3750983/ss_20261120_105410092_3750983.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Field Yates voices his concerns for Saquon Barkley in fantasy",
+      "gameId": "401873066",
+      "week": 11,
+      "playerIds": [
+        "4866"
+      ],
+      "score": 4
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1120/ss_20261120_105138395_3750980/ss_20261120_105138395_3750980.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Why Field Yates is elevating Omarion Hampton in Week 11",
+      "gameId": "401873066",
+      "week": 11,
+      "playerIds": [
+        "12507"
+      ],
+      "score": 4
+    }
   ]
 }

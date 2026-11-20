@@ -1,7 +1,7 @@
 {
  "season": "2026",
  "throughWeek": 10,
- "builtAt": "2026-11-19T17:02:03.924Z",
+ "builtAt": "2026-11-20T16:41:12.501Z",
  "shrinkGames": 4,
  "positionMean": {
   "QB": 16.55,
@@ -11020,14 +11020,14 @@
   },
   "13580": {
    "weeks": 9,
-   "snapShare": 0.004,
+   "snapShare": 0.005,
    "targetShare": 0,
    "carryShare": 0,
    "redZone": 0,
    "pointsPerGame": 0,
    "recent": {
     "weeks": 3,
-    "snapShare": 0,
+    "snapShare": 0.005,
     "targetShare": 0,
     "carryShare": 0,
     "redZone": 0,

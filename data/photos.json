@@ -1508,111 +1508,73 @@
   ],
   "11": [
     {
-      "url": "https://a.espncdn.com/photo/2026/0914/r1716699_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Jonathan Taylor, Indianapolis Colts running back",
-      "gameId": "401873066",
-      "week": 11,
-      "playerIds": [
-        "6813"
-      ],
-      "score": 7.84
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0927/r1722612_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Jahmyr Gibbs #0 of the Detroit Lions runs the ball against the New York Jets during the second quarter at Ford Field on September 27, 2026 in Detroit, Michigan.",
-      "gameId": "401873066",
-      "week": 11,
-      "playerIds": [
-        "9221"
-      ],
-      "score": 7
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0922/r1720547_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Kenneth Walker III, Kansas City Chiefs running back",
-      "gameId": "401873066",
-      "week": 11,
-      "playerIds": [
-        "8151"
-      ],
-      "score": 7
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0903/r1711047_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Saquon Barkley, Philadelphia Eagles running back",
-      "gameId": "401873066",
-      "week": 11,
-      "playerIds": [
-        "4866"
-      ],
-      "score": 7
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/0903/r1711051_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Justin Jefferson, Minnesota Vikings wide receiver",
-      "gameId": "401873066",
-      "week": 11,
-      "playerIds": [
-        "6794"
-      ],
-      "score": 7
-    },
-    {
-      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1116/ss_20261116_110817665_3745187697/ss_20261116_110817665_3745187697.jpg",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1123/ss_20261123_022650362_3757828/ss_20261123_022650362_3757828.jpg",
       "width": 576,
       "height": 324,
-      "caption": "How impressive has Tony Pollard been in fantasy recently?",
-      "gameId": "401873066",
+      "caption": "Cam Ward scrambles and heaves absurd TD pass to Calvin Ridley",
+      "gameId": "401873073",
       "week": 11,
       "playerIds": [
-        "5967"
+        "12522"
       ],
-      "score": 4
+      "score": 6.78
     },
     {
-      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1115/dm_261115_ffia_jordyntyson/dm_261115_ffia_jordyntyson.jpg",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/1123/05cbd8f0-def5-432f-82b3-4ce53510ed70/05cbd8f0-def5-432f-82b3-4ce53510ed70.jpg",
       "width": 576,
       "height": 324,
-      "caption": "Why Jordyn Tyson is firmly on the flex radar",
-      "gameId": "401873066",
+      "caption": "Trevor Lawrence dimes Brian Thomas Jr. for a Jags TD",
+      "gameId": "401873069",
       "week": 11,
       "playerIds": [
-        "13281"
+        "7523"
       ],
-      "score": 4
+      "score": 5.59
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1006/r1727003_1296x729_16-9.jpg",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1122/ad48625335584e4aa01dfffeda38b12f931/ad48625335584e4aa01dfffeda38b12f931.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "DK Metcalf ejected after altercations with Eagles",
+      "gameId": "401873076",
+      "week": 11,
+      "playerIds": [
+        "5846"
+      ],
+      "score": 4.15
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1105/r1741725_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
-      "caption": "Chiefs player in white jersey with red helmet and #9 pumping his arms while running with the ball",
+      "caption": "Brandon Aiyuk is being released by the 49ers, ending a soured relationship between the sides just two years after he signed a four-year, $120 million extension.",
       "gameId": "401873066",
       "week": 11,
       "playerIds": [],
       "score": 3
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1110/r1743974_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "",
-      "gameId": "401873066",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/1122/746b796b-3876-4b3a-9aa8-e2bc6a4faf59/746b796b-3876-4b3a-9aa8-e2bc6a4faf59.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Jeffery Simmons gets 3 sacks to help lead Bears past Saints",
+      "gameId": "401873071",
       "week": 11,
       "playerIds": [],
-      "score": 2
+      "score": 3
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1004/r1725951_1296x729_16-9.jpg",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/1123/d8520b75-b54b-492a-8f97-12c3e6a5582a/d8520b75-b54b-492a-8f97-12c3e6a5582a.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Jack Bech hauls in a tough catch for a Raiders TD ",
+      "gameId": "401873075",
+      "week": 11,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1123/r1750254_1296x729_16-9.jpg",
       "width": 1296,
       "height": 729,
       "caption": "",

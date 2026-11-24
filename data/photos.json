@@ -1508,6 +1508,54 @@
   ],
   "11": [
     {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1124/ss_20261124_001140480_3759053/ss_20261124_001140480_3759053.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Jayden Daniels reacts to Countdown crew picking Bengals over Commanders",
+      "gameId": "401873078",
+      "week": 11,
+      "playerIds": [
+        "11566"
+      ],
+      "score": 9.13
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1124/r1750699_608x342_16-9.jpg",
+      "width": 608,
+      "height": 342,
+      "caption": "Jonah Coleman bursts into the top 10 among RBs following a 111-yard, three-TD performance in Week 11.",
+      "gameId": "401873066",
+      "week": 11,
+      "playerIds": [
+        "13345"
+      ],
+      "score": 9
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1122/ss_20261122_181746147_3757134/ss_20261122_181746147_3757134.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Why Dak Prescott is a set-it-and-forget-it fantasy starter after big game vs. Titans",
+      "gameId": "401873066",
+      "week": 11,
+      "playerIds": [
+        "3294"
+      ],
+      "score": 8
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1122/ss_20261122_181905358_3757138/ss_20261122_181905358_3757138.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Why fantasy managers should keep starting Javonte Williams\n ",
+      "gameId": "401873066",
+      "week": 11,
+      "playerIds": [
+        "7588"
+      ],
+      "score": 7.01
+    },
+    {
       "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1123/ss_20261123_022650362_3757828/ss_20261123_022650362_3757828.jpg",
       "width": 576,
       "height": 324,
@@ -1518,6 +1566,19 @@
         "12522"
       ],
       "score": 6.78
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1124/ss_20261124_124953877_3759352792/ss_20261124_124953877_3759352792.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Is Stefon Diggs or Jameson Williams a better fantasy play in Week 12?",
+      "gameId": "401873066",
+      "week": 11,
+      "playerIds": [
+        "2449",
+        "8148"
+      ],
+      "score": 6.41
     },
     {
       "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/1123/05cbd8f0-def5-432f-82b3-4ce53510ed70/05cbd8f0-def5-432f-82b3-4ce53510ed70.jpg",
@@ -1532,6 +1593,30 @@
       "score": 5.59
     },
     {
+      "url": "https://a.espncdn.com/photo/2026/1124/r1750650_2_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Check if Ja'marr Chase of the Cincinnati Bengals is available in your league.",
+      "gameId": "401873066",
+      "week": 11,
+      "playerIds": [
+        "7564"
+      ],
+      "score": 5.01
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1124/ss_20261124_125654615_3759360780/ss_20261124_125654615_3759360780.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Why Mike Clay isn't worried about Jaylen Warren in fantasy",
+      "gameId": "401873066",
+      "week": 11,
+      "playerIds": [
+        "8228"
+      ],
+      "score": 4.61
+    },
+    {
       "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1122/ad48625335584e4aa01dfffeda38b12f931/ad48625335584e4aa01dfffeda38b12f931.jpg",
       "width": 576,
       "height": 324,
@@ -1542,16 +1627,6 @@
         "5846"
       ],
       "score": 4.15
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/1105/r1741725_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Brandon Aiyuk is being released by the 49ers, ending a soured relationship between the sides just two years after he signed a four-year, $120 million extension.",
-      "gameId": "401873066",
-      "week": 11,
-      "playerIds": [],
-      "score": 3
     },
     {
       "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/1122/746b796b-3876-4b3a-9aa8-e2bc6a4faf59/746b796b-3876-4b3a-9aa8-e2bc6a4faf59.jpg",
@@ -1572,16 +1647,6 @@
       "week": 11,
       "playerIds": [],
       "score": 3
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/1123/r1750254_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "",
-      "gameId": "401873066",
-      "week": 11,
-      "playerIds": [],
-      "score": 2
     }
   ]
 }

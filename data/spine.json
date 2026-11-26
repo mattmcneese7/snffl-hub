@@ -1,7 +1,7 @@
 {
  "season": "2026",
  "throughWeek": 11,
- "builtAt": "2026-11-25T18:24:25.501Z",
+ "builtAt": "2026-11-26T18:06:05.181Z",
  "shrinkGames": 4,
  "positionMean": {
   "QB": 16.55,
@@ -1440,14 +1440,14 @@
   },
   "96": {
    "weeks": 10,
-   "snapShare": 0.971,
+   "snapShare": 0.968,
    "targetShare": 0,
    "carryShare": 0.081,
    "redZone": 0.2,
    "pointsPerGame": 14.87,
    "recent": {
     "weeks": 2,
-    "snapShare": 0.917,
+    "snapShare": 0.82,
     "targetShare": 0,
     "carryShare": 0.163,
     "redZone": 0,
@@ -11895,70 +11895,6 @@
   }
  },
  "schedule": {
-  "LAR": [
-   {
-    "week": 12,
-    "opponent": "GB",
-    "home": true
-   },
-   {
-    "week": 13,
-    "opponent": "KC",
-    "home": true
-   },
-   {
-    "week": 14,
-    "opponent": "SF",
-    "home": false
-   },
-   {
-    "week": 15,
-    "opponent": "DAL",
-    "home": true
-   },
-   {
-    "week": 16,
-    "opponent": "SEA",
-    "home": false
-   },
-   {
-    "week": 17,
-    "opponent": "TB",
-    "home": false
-   }
-  ],
-  "GB": [
-   {
-    "week": 12,
-    "opponent": "LAR",
-    "home": false
-   },
-   {
-    "week": 13,
-    "opponent": "NO",
-    "home": false
-   },
-   {
-    "week": 14,
-    "opponent": "BUF",
-    "home": true
-   },
-   {
-    "week": 15,
-    "opponent": "MIA",
-    "home": true
-   },
-   {
-    "week": 16,
-    "opponent": "CHI",
-    "home": false
-   },
-   {
-    "week": 17,
-    "opponent": "HOU",
-    "home": true
-   }
-  ],
   "DET": [
    {
     "week": 12,
@@ -12144,6 +12080,70 @@
     "week": 17,
     "opponent": "LAC",
     "home": false
+   }
+  ],
+  "LAR": [
+   {
+    "week": 12,
+    "opponent": "GB",
+    "home": true
+   },
+   {
+    "week": 13,
+    "opponent": "KC",
+    "home": true
+   },
+   {
+    "week": 14,
+    "opponent": "SF",
+    "home": false
+   },
+   {
+    "week": 15,
+    "opponent": "DAL",
+    "home": true
+   },
+   {
+    "week": 16,
+    "opponent": "SEA",
+    "home": false
+   },
+   {
+    "week": 17,
+    "opponent": "TB",
+    "home": false
+   }
+  ],
+  "GB": [
+   {
+    "week": 12,
+    "opponent": "LAR",
+    "home": false
+   },
+   {
+    "week": 13,
+    "opponent": "NO",
+    "home": false
+   },
+   {
+    "week": 14,
+    "opponent": "BUF",
+    "home": true
+   },
+   {
+    "week": 15,
+    "opponent": "MIA",
+    "home": true
+   },
+   {
+    "week": 16,
+    "opponent": "CHI",
+    "home": false
+   },
+   {
+    "week": 17,
+    "opponent": "HOU",
+    "home": true
    }
   ],
   "PIT": [

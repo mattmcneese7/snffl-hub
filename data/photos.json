@@ -1648,5 +1648,79 @@
       "playerIds": [],
       "score": 3
     }
+  ],
+  "12": [
+    {
+      "url": "https://a.espncdn.com/photo/2026/1125/r1751353_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Caleb Williams thanked the Bears' front office for acquiring Simmons, who has made an immediate impact.",
+      "gameId": "401873081",
+      "week": 12,
+      "playerIds": [
+        "11560"
+      ],
+      "score": 7
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/0121/r1603837_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Steelers team president Art Rooney II said he is leading the head coaching search along with general manager Omar Khan.",
+      "gameId": "401873081",
+      "week": 12,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1126/r1751704_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Jeffery Simmons gets double-teamed as much as anyone in the league, and when he doesn't, offenses pay a price.",
+      "gameId": "401873081",
+      "week": 12,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1125/r1751338_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Was Jeffery Simmons the last piece to the Bears' Super Bowl puzzle? Chicago must believe so to have paid such a high price.",
+      "gameId": "401873081",
+      "week": 12,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/1126/125366bf-f501-4d3d-9ed7-13ce1273d9e7/125366bf-f501-4d3d-9ed7-13ce1273d9e7.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Rams pick up important home win over the Packers",
+      "gameId": "401873079",
+      "week": 12,
+      "playerIds": [],
+      "score": 3
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1126/r1751696_608x342_16-9.png",
+      "width": 608,
+      "height": 342,
+      "caption": "Bears defensive tackle Jeffery Simmons embraced fall fashion in a camel-colored coat.",
+      "gameId": "401873081",
+      "week": 12,
+      "playerIds": [],
+      "score": 1
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1125/r1751392_608x342_16-9.png",
+      "width": 608,
+      "height": 342,
+      "caption": "Aaron Donald kept it sleek in a black zip-up jacket and matching pants.",
+      "gameId": "401873081",
+      "week": 12,
+      "playerIds": [],
+      "score": 1
+    }
   ]
 }

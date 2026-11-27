@@ -1651,43 +1651,47 @@
   ],
   "12": [
     {
-      "url": "https://a.espncdn.com/photo/2026/1125/r1751353_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Caleb Williams thanked the Bears' front office for acquiring Simmons, who has made an immediate impact.",
-      "gameId": "401873081",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/1127/4f5a4748-cf79-4e31-9d08-a37a58aad430/4f5a4748-cf79-4e31-9d08-a37a58aad430.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "Crucial Rashee Rice catch on third down overturned after review",
+      "gameId": "401873082",
       "week": 12,
       "playerIds": [
-        "11560"
+        "10229"
+      ],
+      "score": 7.49
+    },
+    {
+      "url": "https://a.espncdn.com/photo/2026/1127/r1752092_1296x729_16-9.jpg",
+      "width": 1296,
+      "height": 729,
+      "caption": "Parker Washington",
+      "gameId": "401873079",
+      "week": 12,
+      "playerIds": [
+        "9487"
       ],
       "score": 7
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/0121/r1603837_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Steelers team president Art Rooney II said he is leading the head coaching search along with general manager Omar Khan.",
-      "gameId": "401873081",
+      "url": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/1127/ss_20261127_105030258_3762961653/ss_20261127_105030258_3762961653.jpg",
+      "width": 576,
+      "height": 324,
+      "caption": "What will Jaguars do with Parker Washington out week-to-week?",
+      "gameId": "401873079",
       "week": 12,
-      "playerIds": [],
-      "score": 3
+      "playerIds": [
+        "9487"
+      ],
+      "score": 4
     },
     {
-      "url": "https://a.espncdn.com/photo/2026/1126/r1751704_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Jeffery Simmons gets double-teamed as much as anyone in the league, and when he doesn't, offenses pay a price.",
-      "gameId": "401873081",
-      "week": 12,
-      "playerIds": [],
-      "score": 3
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/1125/r1751338_1296x729_16-9.jpg",
-      "width": 1296,
-      "height": 729,
-      "caption": "Was Jeffery Simmons the last piece to the Bears' Super Bowl puzzle? Chicago must believe so to have paid such a high price.",
-      "gameId": "401873081",
+      "url": "https://a.espncdn.com/photo/2026/1126/r1751834_1280x720_16-9.png",
+      "width": 1280,
+      "height": 720,
+      "caption": "For five weeks in 1999, Patrick Jeffers was a fantasy football league winner, with a 33-point game the highlight of five consecutive 20-point efforts to finish the season.",
+      "gameId": "401873079",
       "week": 12,
       "playerIds": [],
       "score": 3
@@ -1701,26 +1705,6 @@
       "week": 12,
       "playerIds": [],
       "score": 3
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/1126/r1751696_608x342_16-9.png",
-      "width": 608,
-      "height": 342,
-      "caption": "Bears defensive tackle Jeffery Simmons embraced fall fashion in a camel-colored coat.",
-      "gameId": "401873081",
-      "week": 12,
-      "playerIds": [],
-      "score": 1
-    },
-    {
-      "url": "https://a.espncdn.com/photo/2026/1125/r1751392_608x342_16-9.png",
-      "width": 608,
-      "height": 342,
-      "caption": "Aaron Donald kept it sleek in a black zip-up jacket and matching pants.",
-      "gameId": "401873081",
-      "week": 12,
-      "playerIds": [],
-      "score": 1
     }
   ]
 }
